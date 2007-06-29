@@ -240,6 +240,7 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 			for(UmfeldDatenSensorDatum sensorInformation:information){
 				AtgUmfeldDatenSensorWert wert = new AtgUmfeldDatenSensorWert(sensorInformation.getDatum());
 				wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
+				wert.setNichtErmittelbar();
 			
 				long zeitStempel = sensorInformation.getDatum().getDataTime() + 
 							sensorInformation.getDatum().getData().getTimeValue("T").getMillis(); //$NON-NLS-1$

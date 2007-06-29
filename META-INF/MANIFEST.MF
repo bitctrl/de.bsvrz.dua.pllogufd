@@ -8,3 +8,11 @@ Bundle-Vendor: BitCtrl Systems GmbH
 Require-Bundle: de.bitctrl.sys.funclib,
  de.bsvrz.dua.plformal,
  de.bitctrl.dav.daf
+Export-Package: de.bsvrz.dua.pllogufd,
+ de.bsvrz.dua.pllogufd.plformal,
+ de.bsvrz.dua.pllogufd.testaufab,
+ de.bsvrz.dua.pllogufd.testausfall,
+ de.bsvrz.dua.pllogufd.testdiff,
+ de.bsvrz.dua.pllogufd.testmeteo,
+ de.bsvrz.dua.pllogufd.typen,
+ de.bsvrz.dua.pllogufd.vew

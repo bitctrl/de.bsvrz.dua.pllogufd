@@ -37,6 +37,7 @@ import stauma.dav.configuration.interfaces.Aspect;
 import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 import de.bsvrz.sys.funclib.bitctrl.modell.AbstractSystemObjekt;
@@ -77,8 +78,10 @@ implements Comparable<AbstraktUmfeldDatenSensor>,
 	 * @verwaltung Verbindung zum Verwaltungsmodul
 	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
 	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException wird weitergereicht
 	 */
-	protected AbstraktUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj) {
+	protected AbstraktUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
+	throws DUAInitialisierungsException{
 		super(obj);
 		
 		if(VERWALTUNG == null){
@@ -102,10 +105,13 @@ implements Comparable<AbstraktUmfeldDatenSensor>,
 	/**
 	 * Erfragt die Parameter-Attributgruppen, auf die sich dieses
 	 * Objekt anmelden soll
-	 * 
+	 *
 	 * @return eine ggf. leere Menge von Attributgruppen
+	 * @throws DUAInitialisierungsException wenn ein Fehler bei der Bestimmung 
+	 * der Attributgruppen auftritt
 	 */
-	protected abstract Collection<AttributeGroup> getParameterAtgs();
+	protected abstract Collection<AttributeGroup> getParameterAtgs()
+	throws DUAInitialisierungsException;
 	
 	
 	/**

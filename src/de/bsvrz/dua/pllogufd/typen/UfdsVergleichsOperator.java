@@ -90,5 +90,35 @@ extends AbstractDavZustand{
 	public static final UfdsVergleichsOperator getZustand(int code){
 		return WERTE_BEREICH.get(code);
 	}
+	
+	
+	/**
+	 * Vergleicht zwei Werte mit diesem Operator miteinander
+	 * 
+	 * @param wert1 Wert Nr.1
+	 * @param wert2 Wert Nr.2
+	 * @return das Vergleichsergebnis
+	 */
+	public final boolean vergleiche(final long wert1, final long wert2){
+		boolean ergebnis = false;
+		
+		switch(this.getCode()){
+		case 0: ergebnis = false;
+		break;
+		case 1: ergebnis = true;
+		break;
+		case 2: ergebnis = wert1 < wert2;
+		break;
+		case 3: ergebnis = wert1 <= wert2;
+		break;
+		case 4: ergebnis = wert1 == wert2;
+		break;
+		case 5: ergebnis = wert1 >= wert2;
+		break;
+		case 6: ergebnis = wert1 > wert2;	
+		}
+		
+		return ergebnis;
+	}
 }
 

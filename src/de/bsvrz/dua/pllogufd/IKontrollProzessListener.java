@@ -35,7 +35,8 @@ package de.bsvrz.dua.pllogufd;
 public interface IKontrollProzessListener<T> {
 
 	/**
-	 * Kann von einem assoziierten Kontrollprozess aufgerufen werden
+	 * Wird von einem assoziierten Kontrollprozess zur Kontrollzeit
+	 * aufgerufen
 	 *
 	 * @param information ein Objekt mit einer bestimmten Information
 	 * zu diesem Ereignis. Dieses Objekt muss dem zugehörigen Kontrollprozess

@@ -36,16 +36,22 @@ import java.util.TimerTask;
 import sys.funclib.InvalidArgumentException;
 
 /**
- * Instanzen dieser Klasse rufen zu bestimmten Zeitpunkten alle ihre
+ * Instanzen dieser Klasse rufen zu bestimmten Zeitpunkten all ihre
  * Beobachter auf. Der Zeitpunkt kann dabei während der Laufzeit verändert werden
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
 public class KontrollProzess<T> {
+	
+	/**
+	 * Es dürfen nur Aufrufzeitpunkte jenseits dieses Zeitfensters in der
+	 * Zukunft eingeplant werden
+	 */
+	private static final long SICHERHEITS_ZEITFENSTER = 50;
 
 	/**
-	 * aktuell Timer
+	 * der Timer, der den Prozess steuert
 	 */
 	private Timer timer = null;
 	
@@ -60,8 +66,8 @@ public class KontrollProzess<T> {
 	private long naechsterAufrufZeitpunkt = -1;
 	
 	/**
-	 * ein Objekt mit einer bestimmten Information zu den Ereignis,
-	 * das zum übergebenen Zeitpunkt ausgelöst werden soll
+	 * ein Objekt mit einer bestimmten Information, das beim nächsten Aufrufzeitpunkt
+	 * an alle Beobachterobjekte weitergeleitet wird
 	 */
 	protected T aktuelleInformation = null;
 	
@@ -70,6 +76,7 @@ public class KontrollProzess<T> {
 	 */
 	protected Collection<IKontrollProzessListener<T>> listenerMenge = 
 			Collections.synchronizedSet(new HashSet<IKontrollProzessListener<T>>());
+	
 	
 	
 	/**
@@ -88,20 +95,21 @@ public class KontrollProzess<T> {
 	 * @param zeitpunktInMillis nächster Zeitpunkt, zu dem dieser Prozess
 	 * seine Beobachter informiert
 	 * @throws InvalidArgumentException wenn der übergebene Zeitpunkt weniger 
-	 * als 100ms in der Zukunft liegt
+	 * als <code>SICHERHEITS_ZEITFENSTER</code> ms in der Zukunft liegt
 	 */
-	public final void setNaechstenAufrufZeitpunkt(long zeitpunktInMillis)
+	public final void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis)
 	throws InvalidArgumentException{
-		if(zeitpunktInMillis < System.currentTimeMillis() + 100){
+		if(zeitpunktInMillis < System.currentTimeMillis() + SICHERHEITS_ZEITFENSTER){
 			throw new InvalidArgumentException("Übergebener Zeitpunkt ist nicht einplanbar, da" + //$NON-NLS-1$
-					" er weniger als 100ms in der Zukunft liegt"); //$NON-NLS-1$
+					" er weniger als " + SICHERHEITS_ZEITFENSTER + "ms in der Zukunft liegt"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		this.aktuelleInformation = null;
-		this.naechsterAufrufZeitpunkt = zeitpunktInMillis;
-		if(this.naechsterAufrufZeitpunkt != zeitpunktInMillis){
-			this.prozess.cancel();
-			this.prozess = new Prozess();
-			timer.schedule(this.prozess, new Date(this.naechsterAufrufZeitpunkt));		
+		synchronized (this) {
+			if(this.naechsterAufrufZeitpunkt != zeitpunktInMillis){
+				this.naechsterAufrufZeitpunkt = zeitpunktInMillis;
+				this.prozess.cancel();
+				this.prozess = new Prozess();
+				timer.schedule(this.prozess, new Date(this.naechsterAufrufZeitpunkt));		
+			}			
 		}
 	}
 
@@ -115,14 +123,17 @@ public class KontrollProzess<T> {
 	 * 
 	 * @param zeitpunktInMillis nächster Zeitpunkt, zu dem dieser Prozess
 	 * seine Beobachter informiert
-	 * @param information ein Objekt mit einer bestimmten Information zu den Ereignis,
-	 * das zum übergebenen Zeitpunkt ausgelöst werden soll
+	 * @param information ein Objekt mit einer bestimmten Information, das beim nächsten
+	 * Aufrufzeitpunkt an alle Beobachterobjekte weitergeleitet wird
 	 * @throws InvalidArgumentException wenn der übergebene Zeitpunkt weniger 
-	 * als 100ms in der Zukunft liegt
+	 * als <code>SICHERHEITS_ZEITFENSTER</code> ms in der Zukunft liegt
 	 */
-	public final void setNaechstenAufrufZeitpunkt(long zeitpunktInMillis, T information)
+	public final void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis, 
+												  final T information)
 	throws InvalidArgumentException{
-		this.aktuelleInformation = information;
+		synchronized (this) {
+			this.aktuelleInformation = information;	
+		}		
 		this.setNaechstenAufrufZeitpunkt(zeitpunktInMillis);
 	}
 	
@@ -132,10 +143,34 @@ public class KontrollProzess<T> {
 	 * 
 	 * @return nächster Zeitpunkt, zu dem dieser Prozess seine Beobachter informiert
 	 */
-	public final long getNaechstenAufrufZeitpunkt(){
+	public final synchronized long getNaechstenAufrufZeitpunkt(){
 		return this.naechsterAufrufZeitpunkt;
 	}	
 	
+	
+	/**
+	 * Setzt ein Objekt mit einer bestimmten Information, das beim nächsten
+	 * Aufrufzeitpunkt an alle Beobachterobjekte weitergeleitet wird 
+	 * 
+	 * @param information ein Objekt mit einer bestimmten Information, das beim nächsten
+	 * Aufrufzeitpunkt an alle Beobachterobjekte weitergeleitet wird
+	 */
+	public final synchronized void setInformation(final T information){
+		this.aktuelleInformation = information;
+	}
+
+	
+	/**
+	 * Erfragt das Objekt mit einer bestimmten Information, das beim nächsten
+	 * Aufrufzeitpunkt an alle Beobachterobjekte weitergeleitet wird 
+	 * 
+	 * @return das Objekt mit einer bestimmten Information, das beim nächsten
+	 * Aufrufzeitpunkt an alle Beobachterobjekte weitergeleitet wird
+	 */
+	public final synchronized T getInformation(){
+		return this.aktuelleInformation;
+	}
+
 
 	/**
 	 * Fügt diesem Element einen neuen Beobachter hinzu.
@@ -182,7 +217,7 @@ public class KontrollProzess<T> {
 		 */
 		@Override
 		public void run() {
-			synchronized (KontrollProzess.this.listenerMenge) {
+			synchronized (KontrollProzess.this) {
 				for(IKontrollProzessListener<T> listener:KontrollProzess.this.listenerMenge){
 					listener.trigger(KontrollProzess.this.aktuelleInformation);
 				}

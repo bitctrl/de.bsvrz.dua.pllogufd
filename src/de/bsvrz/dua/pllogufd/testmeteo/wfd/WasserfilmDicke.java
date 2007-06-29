@@ -24,40 +24,20 @@
  * mailto: info@bitctrl.de
  */
 
-package de.bsvrz.dua.pllogufd.testmeteo;
+package de.bsvrz.dua.pllogufd.testmeteo.wfd;
 
 import stauma.dav.clientside.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
-import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
 
 /**
- * Diese Klasse hat die Aufgabe vergleichbare oder meteorologisch sich
- * beeinflussende Messgrößen zueinander in Beziehung zu setzen, wenn diese
- * in den vorangegangenen Einzelprüfungen nicht als Implausibel gekennzeichnet
- * wurden. Wird ein Messwert über die Meteorologische Kontrolle als nicht
- * plausibel erkannt, so wird der entsprechende Wert auf Fehlerhaft
- * und Implausibel gesetzt
  *  
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
  */
-public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter {
+public class WasserfilmDicke extends AbstraktBearbeitungsKnotenAdapter {
 
-	/**
-	 * Standardkonstruktor
-	 * 
-	 * @param stdAspekte Informationen zu den
-	 * Standardpublikationsaspekten für diese
-	 * Instanz des Moduls Pl-Prüfung formal
-	 */
-	public MeteorologischeKontrolle(final IStandardAspekte stdAspekte){
-		if(stdAspekte != null){
-			this.standardAspekte = stdAspekte;
-		}
-	}
-	
 	public void aktualisiereDaten(ResultData[] resultate) {
 		// TODO Automatisch erstellter Methoden-Stub
 
