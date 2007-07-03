@@ -27,10 +27,9 @@
 package de.bsvrz.dua.pllogufd.testaufab;
 
 import stauma.dav.clientside.ResultData;
-import de.bsvrz.dua.pllogufd.AtgUmfeldDatenSensorWert;
-import de.bsvrz.dua.pllogufd.UFDAbkuerzungen;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
+import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.AtgDatenObjekt;
-import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
  * Klasse zum Auslesen von Parametersätzen der Attributgruppen
@@ -41,12 +40,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  */
 public class UniversalAtgUfdsAnstiegAbstiegKontrolle
 extends AtgDatenObjekt{
-	
-	/**
-	 * Länge des Präfixes bis zum eigentlichen UF-Daten-Name
-	 */
-	private static final int PRAEFIX_LEN = "atg.ufdsAnstiegAbstiegKontrolle".length(); //$NON-NLS-1$
-	
+		
 	/**
 	 * maximale Differenz zwischen zweier aufeinanderfolgender Messwerte
 	 */
@@ -77,14 +71,14 @@ extends AtgDatenObjekt{
 			throw new NullPointerException("Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
 		}
 		
-		final String ufdName = parameter.getDataDescription().getAttributeGroup().getPid().substring(PRAEFIX_LEN);
-		final String abkuerzung = UFDAbkuerzungen.getAbkFuerUfdName(ufdName);		
+		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject());
 		
-		this.maxDiff = parameter.getData().getUnscaledValue(abkuerzung + "maxDiff").longValue(); //$NON-NLS-1$
+		UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
+		wert.setWert(parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "maxDiff").longValue()); //$NON-NLS-1$
+		
+		this.maxDiff = wert.getWert();
 			
-		this.sinnvoll = this.maxDiff != AtgUmfeldDatenSensorWert.getWertStatusOffset(ufdName) + DUAKonstanten.NICHT_ERMITTELBAR &&
-						this.maxDiff != AtgUmfeldDatenSensorWert.getWertStatusOffset(ufdName) + DUAKonstanten.FEHLERHAFT &&
-						this.maxDiff != AtgUmfeldDatenSensorWert.getWertStatusOffset(ufdName) + DUAKonstanten.NICHT_ERMITTELBAR_BZW_FEHLERHAFT;
+		this.sinnvoll = !wert.isFehlerhaft() && !wert.isFehlerhaftBzwNichtErmittelbar() && !wert.isNichtErmittelbar();
 	}
 	
 	

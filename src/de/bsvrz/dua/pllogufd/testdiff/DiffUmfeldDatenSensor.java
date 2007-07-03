@@ -34,6 +34,7 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
+import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.VariableMitKonstanzZaehler;
@@ -48,12 +49,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  */
 public class DiffUmfeldDatenSensor
 extends AbstraktUmfeldDatenSensor{
-	
-	/**
-	 * Länge des Präfixes innnerhalb der Typ-Pid bis zum
-	 * eigentlichen Namen des Umfelddatensensors
-	 */
-	private static final int PRAEFIX_LEN = "typ.ufds".length(); //$NON-NLS-1$
 	
 	/**
 	 * aktueller Wert mit Historie
@@ -72,8 +67,7 @@ extends AbstraktUmfeldDatenSensor{
 	protected DiffUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
 	throws DUAInitialisierungsException{
 		super(verwaltung, obj);
-		final String ufdTyp = this.objekt.getType().getPid().substring(PRAEFIX_LEN);
-		this.wert = new VariableMitKonstanzZaehler<Long>(ufdTyp);
+		this.wert = new VariableMitKonstanzZaehler<Long>(UmfeldDatenArt.getUmfeldDatenArtVon(obj).getName());
 	}
 
 	
@@ -90,8 +84,8 @@ extends AbstraktUmfeldDatenSensor{
 
 		Collection<AttributeGroup> parameterAtgs = new TreeSet<AttributeGroup>();
 		
-		final String ufdTyp = this.objekt.getType().getPid().substring(PRAEFIX_LEN);
-		final String atgPid = "atg.ufdsDifferenzialKontrolle" + ufdTyp; //$NON-NLS-1$
+		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt. //$NON-NLS-1$
+										getUmfeldDatenArtVon(this.objekt).getName();
 		AttributeGroup atg = VERWALTUNG.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
 		if(atg != null){

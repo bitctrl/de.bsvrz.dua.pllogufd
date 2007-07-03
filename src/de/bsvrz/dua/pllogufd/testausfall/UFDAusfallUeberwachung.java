@@ -36,11 +36,14 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import stauma.dav.clientside.ClientReceiverInterface;
+import stauma.dav.clientside.DataDescription;
+import stauma.dav.clientside.ReceiveOptions;
+import stauma.dav.clientside.ReceiverRole;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.InvalidArgumentException;
 import sys.funclib.debug.Debug;
-import de.bsvrz.dua.pllogufd.AtgUmfeldDatenSensorWert;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.IKontrollProzessListener;
 import de.bsvrz.dua.pllogufd.KontrollProzess;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
@@ -68,7 +71,7 @@ import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
  */
 public class UFDAusfallUeberwachung
 extends AbstraktBearbeitungsKnotenAdapter 
-implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
+implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 		   ClientReceiverInterface{
 	
 	/**
@@ -80,8 +83,8 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	 * Eine Map mit allen aktuellen Kontrollzeitpunkten und den zu diesen
 	 * Kontrollzeitpunkten zu überprüfenden Umfelddatensensoren
 	 */
-	private SortedMap<Long, Collection<UmfeldDatenSensorDatum>> kontrollZeitpunkte =
-					Collections.synchronizedSortedMap(new TreeMap<Long, Collection<UmfeldDatenSensorDatum>>());
+	private SortedMap<Long, Collection<AusfallUFDSDatum>> kontrollZeitpunkte =
+					Collections.synchronizedSortedMap(new TreeMap<Long, Collection<AusfallUFDSDatum>>());
 	
 	/**
 	 * Mapt alle betrachteten Umfelddatensensoren auf den aktuell für sie
@@ -93,24 +96,25 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	/**
 	 * interner Kontrollprozess
 	 */
-	private KontrollProzess<Collection<UmfeldDatenSensorDatum>> kontrollProzess = null;
+	private KontrollProzess<Collection<AusfallUFDSDatum>> kontrollProzess = null;
 	
 		
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung) throws DUAInitialisierungsException {
+	public void initialisiere(IVerwaltung dieVerwaltung)
+	throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-		this.kontrollProzess = new KontrollProzess<Collection<UmfeldDatenSensorDatum>>();
+		this.kontrollProzess = new KontrollProzess<Collection<AusfallUFDSDatum>>();
 		this.kontrollProzess.addListener(this);
 		
-		/**
-		 * solange es keine Parameter gibt
-		 */
-		for(SystemObject obj:dieVerwaltung.getSystemObjekte()){
-			this.sensorWertErfassungVerzug.put(obj, new Long(1000L));
-		}
+		DataDescription parameterBeschreibung = new DataDescription(
+				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
+				dieVerwaltung.getVerbindung().getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_SOLL),
+				(short)0);
+		dieVerwaltung.getVerbindung().subscribeReceiver(this, dieVerwaltung.getSystemObjekte(),
+				parameterBeschreibung, ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
 
@@ -120,33 +124,32 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	public void aktualisiereDaten(ResultData[] resultate) {
 		if(resultate != null){
 			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
-					long kontrollZeitpunkt = this.getKontrollZeitpunktVon(resultat);
+				if(resultat != null && resultat.getData() != null){					
+					this.bereinigeKontrollZeitpunkte(resultat);
 					
+					long kontrollZeitpunkt = this.getKontrollZeitpunktVon(resultat);					
 					if(kontrollZeitpunkt > 0){
 						synchronized (this.kontrollZeitpunkte) {
-							Collection<UmfeldDatenSensorDatum> kontrollObjekte =
-								this.kontrollZeitpunkte.get(kontrollZeitpunkte);
+							Collection<AusfallUFDSDatum> kontrollObjekte =
+								this.kontrollZeitpunkte.get(kontrollZeitpunkt);
 							
 							/**
 							 * Kontrolldatum bestimmten
 							 */
-							UmfeldDatenSensorDatum kontrollDatum = null;							
+							AusfallUFDSDatum neuesKontrollObjekt = new AusfallUFDSDatum(resultat);							
 							if(kontrollObjekte != null){
 								synchronized (kontrollObjekte) {
-									kontrollObjekte.add(kontrollDatum);
+									kontrollObjekte.add(neuesKontrollObjekt);
 								}
 							}else{
 								synchronized (this) {
-									kontrollObjekte = new TreeSet<UmfeldDatenSensorDatum>();
-									kontrollObjekte.add(kontrollDatum);
+									kontrollObjekte = new TreeSet<AusfallUFDSDatum>();
+									kontrollObjekte.add(neuesKontrollObjekt);
 									this.kontrollZeitpunkte.put(new Long(kontrollZeitpunkt), kontrollObjekte);
 								}
 							}
 						}							
 					}
-					
-					this.bereinigeKontrollZeitpunkte(resultat);
 
 					synchronized (this.kontrollZeitpunkte) {
 						long fruehesterKontrollZeitpunkt = -1;
@@ -182,23 +185,45 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	 * 
 	 * @param resultat ein Roh-Datum eines Umfelddatensensors
 	 */
+	@SuppressWarnings("null")
 	private final void bereinigeKontrollZeitpunkte(final ResultData resultat){
-		synchronized (this.kontrollZeitpunkte) {
-			long maxZeitVerzug = this.getMaxZeitVerzug(resultat.getObject());
-			long letzterErwarteterZeitpunkt = resultat.getDataTime() + maxZeitVerzug;
+		/**
+		 * Berechne den wahrscheinlichsten Zeitpunkt, für den hier noch auf 
+		 * ein Datum dieses Objektes gewartet wird 
+		 */
+		final long maxZeitVerzug = this.getMaxZeitVerzug(resultat.getObject());
+		final UmfeldDatenSensorDatum rohWert = new UmfeldDatenSensorDatum(resultat);
+		final Long letzterErwarteterZeitpunkt = resultat.getDataTime() + rohWert.getT() + maxZeitVerzug;
 
-			Collection<UmfeldDatenSensorDatum> kontrollZeitpunkt = 
-						this.kontrollZeitpunkte.get(new Long(letzterErwarteterZeitpunkt));
+		synchronized (this.kontrollZeitpunkte) {
+			Collection<AusfallUFDSDatum> kontrollObjekte = 
+						this.kontrollZeitpunkte.get(letzterErwarteterZeitpunkt);
 			
-			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
-			if(kontrollZeitpunkt == null || !kontrollZeitpunkt.remove(datum)){
-				boolean gefunden = false;
-				for(Collection<UmfeldDatenSensorDatum> kontrollZeitpunkt1:this.kontrollZeitpunkte.values()){
-					gefunden = kontrollZeitpunkt1.remove(datum);
-					if( gefunden ) break;
+			AusfallUFDSDatum datum = new AusfallUFDSDatum(resultat);
+			if(kontrollObjekte != null){
+				if(kontrollObjekte.remove(datum)){
+					if(kontrollObjekte.isEmpty()){
+						this.kontrollZeitpunkte.remove(letzterErwarteterZeitpunkt);
+					}
+				}else{
+					kontrollObjekte = null;
+				}
+			}
+			if(kontrollObjekte == null){
+				Long gefundenInKontrollZeitpunkt = new Long(-1);
+				for(Long kontrollZeitpunkt:this.kontrollZeitpunkte.keySet()){
+					kontrollObjekte = this.kontrollZeitpunkte.get(kontrollZeitpunkt);
+					if(kontrollObjekte.remove(datum)){
+						gefundenInKontrollZeitpunkt = kontrollZeitpunkt;
+						break;
+					}
 				}
 				
-				if(!gefunden){
+				if(gefundenInKontrollZeitpunkt >= 0){
+					if(kontrollObjekte.isEmpty()){
+						this.kontrollZeitpunkte.remove(gefundenInKontrollZeitpunkt);
+					}					
+				}else{
 					LOGGER.warning("Datum " + datum + " konnte nicht aus" + //$NON-NLS-1$ //$NON-NLS-2$
 							" Kontrollwarteschlange gelöscht werden"); //$NON-NLS-1$
 				}
@@ -211,13 +236,14 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	 * Erfragt den maximalen Zeitverzug für einen Umfelddatensensor
 	 * 
 	 * @param obj ein Umfelddatensensor
-	 * @return der maximale Zeitverzug für den Umfelddatensensor
+	 * @return der maximale Zeitverzug für den Umfelddatensensor oder
+	 * -1, wenn dieser nicht ermittelt werden konnte
 	 */
 	private final long getMaxZeitVerzug(final SystemObject obj){
 		long maxZeitVerzug = -1;
-		
-		synchronized (this.sensorWertErfassungVerzug) {
-			if(obj != null){
+
+		if(obj != null){
+			synchronized (this.sensorWertErfassungVerzug) {
 				Long dummy = this.sensorWertErfassungVerzug.get(obj);
 				if(dummy != null && dummy >= 0){
 					maxZeitVerzug = dummy;
@@ -232,15 +258,15 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	/**
 	 * {@inheritDoc}
 	 */
-	public void trigger(Collection<UmfeldDatenSensorDatum> information) {
+	public void trigger(Collection<AusfallUFDSDatum> information) {
 		ResultData[] zuSendendeAusfallDaten = null;
 		
 		synchronized (this) {
 			List<ResultData> zuSendendeAusfallDatenMenge = new ArrayList<ResultData>();
-			for(UmfeldDatenSensorDatum sensorInformation:information){
-				AtgUmfeldDatenSensorWert wert = new AtgUmfeldDatenSensorWert(sensorInformation.getDatum());
+			for(AusfallUFDSDatum sensorInformation:information){
+				UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(sensorInformation.getDatum());
 				wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
-				wert.setNichtErmittelbar();
+				wert.getWert().setNichtErmittelbarAn();
 			
 				long zeitStempel = sensorInformation.getDatum().getDataTime() + 
 							sensorInformation.getDatum().getData().getTimeValue("T").getMillis(); //$NON-NLS-1$
@@ -274,23 +300,19 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	private final long getKontrollZeitpunktVon(final ResultData empfangenesResultat){
 		long kontrollZeitpunkt = -1;
 
-		if(empfangenesResultat != null && empfangenesResultat.getData() != null){
+		long maxZeitVerzug = this.getMaxZeitVerzug(empfangenesResultat.getObject());
 
-			long maxZeitVerzug = this.getMaxZeitVerzug(empfangenesResultat.getObject());
-
-			if(maxZeitVerzug >= 0){
-				kontrollZeitpunkt = empfangenesResultat.getDataTime() + 
-									2 * empfangenesResultat.getData().getTimeValue("T").getMillis() +  //$NON-NLS-1$
-									maxZeitVerzug;
-				if(kontrollZeitpunkt < System.currentTimeMillis() + 100){
-					kontrollZeitpunkt = -1;
-					LOGGER.error("Kontrollzeitpunkt liegt zu nah in der Zukunft:\n" + empfangenesResultat); //$NON-NLS-1$
-				}
-			}else{
-				LOGGER.warning("Es wurden noch keine (sinnvollen) Parameter empfangen: " //$NON-NLS-1$ 
-					+ empfangenesResultat.getObject());
+		if(maxZeitVerzug >= 0){
+			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(empfangenesResultat);
+			kontrollZeitpunkt = empfangenesResultat.getDataTime() + 2 * datum.getT() + maxZeitVerzug;
+			if(kontrollZeitpunkt < System.currentTimeMillis() + 100){
+				kontrollZeitpunkt = -1;
+				LOGGER.error("Kontrollzeitpunkt liegt zu nah in der Zukunft:\n" + empfangenesResultat); //$NON-NLS-1$
 			}
-		}		
+		}else{
+			LOGGER.warning("Es wurden noch keine (sinnvollen) Parameter empfangen: " //$NON-NLS-1$ 
+					+ empfangenesResultat.getObject());
+		}
 
 		return kontrollZeitpunkt;
 	}
@@ -299,8 +321,17 @@ implements IKontrollProzessListener<Collection<UmfeldDatenSensorDatum>>,
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] results) {
-		// TODO: Parameter abholen
+	public void update(ResultData[] resultate) {
+		if(resultate != null){
+			for(ResultData resultat:resultate){
+				if(resultat != null && resultat.getData() != null){
+					synchronized (this.sensorWertErfassungVerzug) {
+						this.sensorWertErfassungVerzug.put(resultat.getObject(), 
+								new Long(resultat.getData().getTimeValue("maxZeitVerzug").getMillis())); //$NON-NLS-1$						
+					}
+				}
+			}
+		}
 	}
 
 

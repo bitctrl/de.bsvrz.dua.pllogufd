@@ -26,11 +26,11 @@
 
 package de.bsvrz.dua.pllogufd.testdiff;
 
-import de.bsvrz.dua.pllogufd.UFDAbkuerzungen;
-import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
-import de.bsvrz.sys.funclib.bitctrl.dua.AtgDatenObjekt;
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
+import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
+import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.bitctrl.dua.AtgDatenObjekt;
 
 /**
  * Klasse zum Auslesen von Parametersätzen der Attributgruppen
@@ -41,11 +41,6 @@ import stauma.dav.clientside.ResultData;
  */
 public class UniversalAtgUfdsDifferenzialKontrolle 
 extends AtgDatenObjekt{
-	
-	/**
-	 * Länge des Präfixes
-	 */
-	private static final int PRAEFIX_LEN = "atg.ufdsDifferenzialKontrolle".length(); //$NON-NLS-1$
 	
 	/**
 	 * zu verwendender Operator zum Vergleich des Messwerts mit dem Grenzwert,
@@ -79,15 +74,14 @@ extends AtgDatenObjekt{
 		if(parameter.getData() == null){
 			throw new NullPointerException("Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
 		}
-		final String abkuerzung = UFDAbkuerzungen.getAbkFuerUfdName(
-				parameter.getDataDescription().getAttributeGroup().getPid().substring(PRAEFIX_LEN));
+		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject());
 		
 		Data.NumberValue oparatorValue = parameter.getData().getUnscaledValue("Operator"); //$NON-NLS-1$
 		if(oparatorValue != null){
 			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue.intValue());
 		}
-		this.grenz = parameter.getData().getUnscaledValue(abkuerzung + "Grenz").longValue(); //$NON-NLS-1$
-		this.maxZeit = parameter.getData().getTimeValue(abkuerzung + "maxZeit").getMillis(); //$NON-NLS-1$
+		this.grenz = parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue(); //$NON-NLS-1$
+		this.maxZeit = parameter.getData().getTimeValue(datenArt.getAbkuerzung() + "maxZeit").getMillis(); //$NON-NLS-1$
 	}
 	
 	

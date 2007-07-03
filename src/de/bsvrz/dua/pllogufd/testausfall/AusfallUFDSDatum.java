@@ -35,8 +35,8 @@ import stauma.dav.clientside.ResultData;
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
-public class UmfeldDatenSensorDatum
-implements Comparable<UmfeldDatenSensorDatum>{
+public class AusfallUFDSDatum
+implements Comparable<AusfallUFDSDatum>{
 	
 	/**
 	 * der Roh-Datum eines Umfelddatensensors
@@ -50,7 +50,7 @@ implements Comparable<UmfeldDatenSensorDatum>{
 	 * @param resultat ein Datum eines Umfelddatensensors.<br><b>ACHTUNG:</b>
 	 * Das Datum darf nicht <code>null</code> sein und muss Daten besitzen<br>
 	 */
-	protected UmfeldDatenSensorDatum(final ResultData resultat) {
+	protected AusfallUFDSDatum(final ResultData resultat) {
 		if(resultat == null){
 			throw new NullPointerException("Roh-Datum ist <<null>>"); //$NON-NLS-1$
 		}
@@ -78,8 +78,8 @@ implements Comparable<UmfeldDatenSensorDatum>{
 	public boolean equals(Object obj) {
 		boolean ergebnis = false;
 		
-		if(obj != null && obj instanceof UmfeldDatenSensorDatum){
-			UmfeldDatenSensorDatum that = (UmfeldDatenSensorDatum)obj;
+		if(obj != null && obj instanceof AusfallUFDSDatum){
+			AusfallUFDSDatum that = (AusfallUFDSDatum)obj;
 			ergebnis = this.getDatum().getObject().equals(that.getDatum().getObject());
 		}
 		
@@ -90,7 +90,7 @@ implements Comparable<UmfeldDatenSensorDatum>{
 	/**
 	 * {@inheritDoc}
 	 */
-	public int compareTo(UmfeldDatenSensorDatum that) {
+	public int compareTo(AusfallUFDSDatum that) {
 		return new Long(this.getDatum().getObject().getId()).compareTo(
 						that.getDatum().getObject().getId());
 	}

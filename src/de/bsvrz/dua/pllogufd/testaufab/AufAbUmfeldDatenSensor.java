@@ -34,7 +34,8 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
-import de.bsvrz.dua.pllogufd.AtgUmfeldDatenSensorWert;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
+import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
@@ -50,12 +51,6 @@ public class AufAbUmfeldDatenSensor
 extends AbstraktUmfeldDatenSensor{
 
 	/**
-	 * Länge des Präfixes innnerhalb der Typ-Pid bis zum
-	 * eigentlichen Namen des Umfelddatensensors
-	 */
-	private static final int PRAEFIX_LEN = "typ.ufds".length(); //$NON-NLS-1$
-	
-	/**
 	 * aktuelle Parameter für die Anstieg-Abfall-Kontrolle dieses Umfelddatensensors
 	 */
 	private UniversalAtgUfdsAnstiegAbstiegKontrolle parameter = null;
@@ -63,7 +58,7 @@ extends AbstraktUmfeldDatenSensor{
 	/**
 	 * letztes für diesen Umfelddatensesor empfangenes Datum
 	 */
-	private AtgUmfeldDatenSensorWert letzterWert = null;
+	private UmfeldDatenSensorDatum letzterWert = null;
 
 	
 	/**
@@ -88,8 +83,8 @@ extends AbstraktUmfeldDatenSensor{
 
 		Collection<AttributeGroup> parameterAtgs = new TreeSet<AttributeGroup>();
 		
-		final String ufdTyp = this.objekt.getType().getPid().substring(PRAEFIX_LEN);
-		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + ufdTyp; //$NON-NLS-1$
+		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + //$NON-NLS-1$
+						UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();
 				
 		AttributeGroup atg = VERWALTUNG.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
@@ -117,28 +112,28 @@ extends AbstraktUmfeldDatenSensor{
 		Data copy = null;
 
 		if(resultat != null && resultat.getData() != null){
-			AtgUmfeldDatenSensorWert wert = new AtgUmfeldDatenSensorWert(resultat);
+			UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(resultat);
 
 			if(this.letzterWert != null && 
-			   !this.letzterWert.isFehlerhaft() &&
-			   !this.letzterWert.isFehlerhaftBzwNichtErmittelbar() &&  
-			   !this.letzterWert.isNichtErmittelbar() && 
+			   !this.letzterWert.getWert().isFehlerhaft() &&
+			   !this.letzterWert.getWert().isFehlerhaftBzwNichtErmittelbar() &&  
+			   !this.letzterWert.getWert().isNichtErmittelbar() && 
 			    this.letzterWert.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA){
 				
-				if(!wert.isFehlerhaft() &&
-				   !wert.isFehlerhaftBzwNichtErmittelbar() &&  
-				   !wert.isNichtErmittelbar() && 
+				if(!wert.getWert().isFehlerhaft() &&
+				   !wert.getWert().isFehlerhaftBzwNichtErmittelbar() &&  
+				   !wert.getWert().isNichtErmittelbar() && 
 					wert.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA){
 
 					if(this.parameter != null){
 						synchronized (this.parameter) {
 							if(this.parameter.isSinnvoll()){
 								boolean fehler = 
-									Math.abs(wert.getWert() - this.letzterWert.getWert()) > this.parameter.getMaxDiff();
+									Math.abs(wert.getWert().getWert() - this.letzterWert.getWert().getWert()) > this.parameter.getMaxDiff();
 								if(fehler){
-									AtgUmfeldDatenSensorWert neuerWert = new AtgUmfeldDatenSensorWert(resultat);
+									UmfeldDatenSensorDatum neuerWert = new UmfeldDatenSensorDatum(resultat);
 									neuerWert.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-									neuerWert.setFehlerhaft();
+									neuerWert.getWert().setFehlerhaftAn();
 									copy = neuerWert.getDatum();
 								}
 							}							
