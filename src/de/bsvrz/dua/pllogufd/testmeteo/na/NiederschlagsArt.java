@@ -26,31 +26,40 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo.na;
 
-import stauma.dav.clientside.ResultData;
-import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
-import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
-import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
+import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoMessstelle;
+import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoSubModul;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
+import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
+ * Das Submodul Niederschlagsart.
  *  
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
  */
-public class NiederschlagsArt extends AbstraktBearbeitungsKnotenAdapter {
+public class NiederschlagsArt
+extends AbstraktMeteoSubModul {
 
-	public void aktualisiereDaten(ResultData[] resultate) {
-		// TODO Automatisch erstellter Methoden-Stub
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public AbstraktMeteoMessstelle getMessStelleVonSensor(SystemObject ufdsObjekt) {
+		return NiederschlagsArtMessstelle.getMessStelleVonSensor(ufdsObjekt);
 	}
 
-	public ModulTyp getModulTyp() {
-		// TODO Automatisch erstellter Methoden-Stub
-		return null;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void initialisiere(IVerwaltung dieVerwaltung)
+	throws DUAInitialisierungsException {
+		super.initialisiere(dieVerwaltung);
+		NiederschlagsArtMessstelle.initialisiere(dieVerwaltung);
 	}
 
-	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
-		// TODO Automatisch erstellter Methoden-Stub
-
-	}
 
 }
