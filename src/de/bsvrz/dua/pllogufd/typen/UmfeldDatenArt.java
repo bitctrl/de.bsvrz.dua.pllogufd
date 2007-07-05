@@ -44,7 +44,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
  */
-public class UmfeldDatenArt{
+public class UmfeldDatenArt
+implements Comparable<UmfeldDatenArt>{
 	
 	/**
 	 * Debug-Logger
@@ -141,7 +142,7 @@ public class UmfeldDatenArt{
 	/**
 	 * <code>typ.ufdsWasserFilmDicke</code>
 	 */
-	public static UmfeldDatenArt WDF;	
+	public static UmfeldDatenArt WFD;	
 	
 	/**
 	 * <code>typ.ufdsWindRichtung</code>
@@ -237,7 +238,7 @@ public class UmfeldDatenArt{
 		TT1 = new UmfeldDatenArt(datenModell.getType("typ.ufdsTemperaturInTiefe1"), "TT1");  //$NON-NLS-1$//$NON-NLS-2$	
 		TT2 = new UmfeldDatenArt(datenModell.getType("typ.ufdsTemperaturInTiefe2"), "TT2");  //$NON-NLS-1$//$NON-NLS-2$	
 		TT3 = new UmfeldDatenArt(datenModell.getType("typ.ufdsTemperaturInTiefe3"), "TT3");  //$NON-NLS-1$//$NON-NLS-2$	
-		WDF = new UmfeldDatenArt(datenModell.getType("typ.ufdsWasserFilmDicke"), "WDF");  //$NON-NLS-1$//$NON-NLS-2$	
+		WFD = new UmfeldDatenArt(datenModell.getType("typ.ufdsWasserFilmDicke"), "WFD");  //$NON-NLS-1$//$NON-NLS-2$	
 		WR = new UmfeldDatenArt(datenModell.getType("typ.ufdsWindRichtung"), "WR");  //$NON-NLS-1$//$NON-NLS-2$	
 		FBZ = new UmfeldDatenArt(datenModell.getType("typ.ufdsFahrBahnOberFlächenZustand"), "FBZ");  //$NON-NLS-1$//$NON-NLS-2$	
 		LD = new UmfeldDatenArt(datenModell.getType("typ.ufdsLuftDruck"), "LD");  //$NON-NLS-1$//$NON-NLS-2$	
@@ -261,7 +262,7 @@ public class UmfeldDatenArt{
 		TYP_AUF_ART.put(TT1.getTyp(), TT1);
 		TYP_AUF_ART.put(TT2.getTyp(), TT2);
 		TYP_AUF_ART.put(TT3.getTyp(), TT3);
-		TYP_AUF_ART.put(WDF.getTyp(), WDF);
+		TYP_AUF_ART.put(WFD.getTyp(), WFD);
 		TYP_AUF_ART.put(WR.getTyp(), WR);
 		TYP_AUF_ART.put(FBZ.getTyp(), FBZ);
 		TYP_AUF_ART.put(LD.getTyp(), LD);
@@ -339,6 +340,14 @@ public class UmfeldDatenArt{
 		
 		return gleich;
 	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int compareTo(UmfeldDatenArt that) {
+		return new Long(this.getTyp().getId()).compareTo(that.getTyp().getId());
+	}
 
 
 	/**
@@ -348,6 +357,6 @@ public class UmfeldDatenArt{
 	public String toString() {
 		return this.name + " (" + this.abkuerzung + //$NON-NLS-1$ 
 					")\n" + this.typ; //$NON-NLS-1$
-	}	
+	}
 	
 }
