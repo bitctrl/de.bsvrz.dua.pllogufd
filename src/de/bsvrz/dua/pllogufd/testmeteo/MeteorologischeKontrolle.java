@@ -27,10 +27,17 @@
 package de.bsvrz.dua.pllogufd.testmeteo;
 
 import stauma.dav.clientside.ResultData;
+import de.bsvrz.dua.pllogufd.testmeteo.na.NiederschlagsArt;
+import de.bsvrz.dua.pllogufd.testmeteo.ni.NiederschlagsIntensitaet;
+import de.bsvrz.dua.pllogufd.testmeteo.pub.Publikation;
+import de.bsvrz.dua.pllogufd.testmeteo.sw.Sichtweite;
+import de.bsvrz.dua.pllogufd.testmeteo.wfd.WasserfilmDicke;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
+import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
  * Diese Klasse hat die Aufgabe vergleichbare oder meteorologisch sich
@@ -38,13 +45,40 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
  * in den vorangegangenen Einzelprüfungen nicht als Implausibel gekennzeichnet
  * wurden. Wird ein Messwert über die Meteorologische Kontrolle als nicht
  * plausibel erkannt, so wird der entsprechende Wert auf Fehlerhaft
- * und Implausibel gesetzt
- *  
+ * und Implausibel gesetzt.
+ *   
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
  */
-public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter {
+public class MeteorologischeKontrolle
+extends AbstraktBearbeitungsKnotenAdapter {
+	
+	/**
+	 * Submodul Niederschlagsart (NS)
+	 */
+	private NiederschlagsArt ns = new NiederschlagsArt();
+	
+	/**
+	 * Submodul Niederschlagsintensität (NI)
+	 */
+	private NiederschlagsIntensitaet ni = new NiederschlagsIntensitaet();
+	
+	/**
+	 * Submodul Wasserfilmdicke (WFD)
+	 */
+	private WasserfilmDicke wfd = new WasserfilmDicke();
 
+	/**
+	 * Submodul Sichtweite (SW)
+	 */
+	private Sichtweite sw = new Sichtweite();
+	
+	/**
+	 * Submodul Publikation
+	 */
+	private Publikation pub = null;
+	
+	
 	/**
 	 * Standardkonstruktor
 	 * 
@@ -53,24 +87,54 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	 * Instanz des Moduls Pl-Prüfung formal
 	 */
 	public MeteorologischeKontrolle(final IStandardAspekte stdAspekte){
-		if(stdAspekte != null){
-			this.standardAspekte = stdAspekte;
-		}
+		this.pub = new Publikation(stdAspekte);
 	}
 	
-	public void aktualisiereDaten(ResultData[] resultate) {
-		// TODO Automatisch erstellter Methoden-Stub
-
+		
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void initialisiere(IVerwaltung dieVerwaltung)
+	throws DUAInitialisierungsException {
+		super.initialisiere(dieVerwaltung);
+		
+		ni.initialisiere(dieVerwaltung);
+		ns.initialisiere(dieVerwaltung);		
+		wfd.initialisiere(dieVerwaltung);
+		sw.initialisiere(dieVerwaltung);
+		pub.initialisiere(dieVerwaltung);
+		
+		ni.setNaechstenBearbeitungsKnoten(ns);
+		ns.setNaechstenBearbeitungsKnoten(wfd);
+		wfd.setNaechstenBearbeitungsKnoten(sw);
+		sw.setNaechstenBearbeitungsKnoten(pub);
+		pub.setNaechstenBearbeitungsKnoten(this.knoten);
+		pub.setPublikation(true);
 	}
 
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void aktualisiereDaten(ResultData[] resultate) {
+		this.ni.aktualisiereDaten(resultate);
+	}
+
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	public ModulTyp getModulTyp() {
-		// TODO Automatisch erstellter Methoden-Stub
 		return null;
 	}
+	
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
-		// TODO Automatisch erstellter Methoden-Stub
-
+		// hier wird nicht publiziert (sondern im Submodul Publikation)
 	}
 
 }

@@ -46,6 +46,11 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 public abstract class AbstraktMeteoUmfeldDatenSensor 
 extends AbstraktUmfeldDatenSensor{
 
+	/**
+	 * wurden schon einmal Parameter empfangen
+	 */
+	protected boolean parameterInitialisiert = false;
+	
 	
 	/**
 	 * {@inheritDoc}
@@ -85,4 +90,13 @@ extends AbstraktUmfeldDatenSensor{
 		return parameterAtgs;
 	}
 	
+	
+	/**
+	 * Erfragt, ob schon einmal Parameter empfangen wurden
+	 * 
+	 * @return ob schon einmal Parameter empfangen wurden
+	 */
+	public final boolean isInitialisiert(){
+		return this.parameterInitialisiert;
+	}
 }
