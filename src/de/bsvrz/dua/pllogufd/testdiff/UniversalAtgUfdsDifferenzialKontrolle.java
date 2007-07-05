@@ -28,6 +28,7 @@ package de.bsvrz.dua.pllogufd.testdiff;
 
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.AtgDatenObjekt;
@@ -53,7 +54,7 @@ extends AtgDatenObjekt{
 	 * Grenzwert, der eingehalten werden muss, damit Differenzialkontrolle
 	 * durchgeführt werden darf 
 	 */
-	private long grenz = -1;
+	private UmfeldDatenSensorWert grenz = null;
 	
 	/**
 	 * maximal zulässige Zeitdauer der Ergebniskonstanz
@@ -80,7 +81,8 @@ extends AtgDatenObjekt{
 		if(oparatorValue != null){
 			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue.intValue());
 		}
-		this.grenz = parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue(); //$NON-NLS-1$
+		this.grenz = new UmfeldDatenSensorWert(UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject()));
+		this.grenz.setWert(parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue()); //$NON-NLS-1$
 		this.maxZeit = parameter.getData().getTimeValue(datenArt.getAbkuerzung() + "maxZeit").getMillis(); //$NON-NLS-1$
 	}
 	
@@ -104,7 +106,7 @@ extends AtgDatenObjekt{
 	 * @return grenz der Grenzwert, der eingehalten werden muss, damit Differenzialkontrolle
 	 * durchgeführt werden darf
 	 */
-	public final long getGrenz() {
+	public final UmfeldDatenSensorWert getGrenz() {
 		return this.grenz;
 	}
 

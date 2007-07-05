@@ -121,22 +121,31 @@ extends AbstraktUmfeldDatenSensor{
 				this.wert.aktualisiere(aktuellerWert, T);
 
 				synchronized (this.parameter) {
-					boolean vergleichDurchfuehren = false;
-					if(this.parameter.getOpertator() != null){
-						vergleichDurchfuehren = this.parameter.getOpertator().vergleiche(
-								aktuellerWert, this.parameter.getGrenz());
-					}else{
-						vergleichDurchfuehren = aktuellerWert <= this.parameter.getGrenz();
-					}
-
-					if(vergleichDurchfuehren){
-						if(this.wert.getWertIstKonstantSeit() > this.parameter.getMaxZeit()){
-							copy = VERWALTUNG.getVerbindung().createData(resultat.getDataDescription().getAttributeGroup());
-							data.getItem(wert.getName()).getUnscaledValue("Wert").set(DUAKonstanten.FEHLERHAFT); //$NON-NLS-1$			
-							data.getItem(wert.getName()).getItem("Status").getItem("MessWertErsetzung").   //$NON-NLS-1$//$NON-NLS-2$
-							getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$									
+					if(!this.parameter.getGrenz().isFehlerhaft() && 
+					   !this.parameter.getGrenz().isFehlerhaftBzwNichtErmittelbar() &&
+					   !this.parameter.getGrenz().isNichtErmittelbar()){
+						boolean vergleichDurchfuehren = false;
+						if(this.parameter.getOpertator() != null){
+							vergleichDurchfuehren = this.parameter.getOpertator().vergleiche(
+									aktuellerWert, this.parameter.getGrenz().getWert());
+						}else{
+							vergleichDurchfuehren = aktuellerWert <= this.parameter.getGrenz().getWert();
 						}
-					}
+	
+						if(vergleichDurchfuehren){
+							if(this.wert.getWertIstKonstantSeit() > this.parameter.getMaxZeit()){
+								copy = VERWALTUNG.getVerbindung().createData(resultat.getDataDescription().getAttributeGroup());
+								data.getItem(wert.getName()).getUnscaledValue("Wert").set(DUAKonstanten.FEHLERHAFT); //$NON-NLS-1$			
+								data.getItem(wert.getName()).getItem("Status").getItem("MessWertErsetzung").   //$NON-NLS-1$//$NON-NLS-2$
+								getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$									
+							}
+						}
+					}else{
+						LOGGER.warning("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
+								this.objekt + " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
+								UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getAbkuerzung() + 
+								"Grenz=" + this.parameter.getGrenz()); //$NON-NLS-1$
+					}					
 				}
 			}else{
 				LOGGER.warning("Fuer Umfelddatensensor " + this +  //$NON-NLS-1$
