@@ -36,7 +36,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
-public class UmfeldDatenSensorWert{
+public class UmfeldDatenSensorWert
+implements Comparable<UmfeldDatenSensorWert>{
 
 	/**
 	 * der Wert an sich
@@ -107,7 +108,7 @@ public class UmfeldDatenSensorWert{
 		   datenArt.equals(UmfeldDatenArt.RLF) ||
 		   datenArt.equals(UmfeldDatenArt.SH) ||
 		   datenArt.equals(UmfeldDatenArt.SW) ||
-		   datenArt.equals(UmfeldDatenArt.WDF) ||
+		   datenArt.equals(UmfeldDatenArt.WFD) ||
 		   datenArt.equals(UmfeldDatenArt.WR) ||
 		   datenArt.equals(UmfeldDatenArt.FBZ) ||
 		   datenArt.equals(UmfeldDatenArt.LD) ||
@@ -179,6 +180,7 @@ public class UmfeldDatenSensorWert{
 	}
 
 
+	
 	/**
 	 * Setzt das Flag <code>fehlerhaft</code> an
 	 */
@@ -196,6 +198,7 @@ public class UmfeldDatenSensorWert{
 		return this.fehlerhaft;
 	}
 
+	
 	
 	/**
 	 * Setzt das Flag <code>nicht ermittelbar/fehlerhaft</code> an
@@ -217,6 +220,7 @@ public class UmfeldDatenSensorWert{
 	}
 
 	
+	
 	/**
 	 * Setzt das Flag <code>nicht ermittelbar</code> an
 	 */
@@ -234,6 +238,16 @@ public class UmfeldDatenSensorWert{
 		return this.nichtErmittelbar;
 	}
 
+	
+	/**
+	 * Erfragt, ob dieser Wert wirkliche Daten enthält (im Gegensatz zu blos Statuswerten
+	 * )
+	 * @return ob dieser Wert wirkliche Daten enthält (im Gegensatz zu blos Statuswerten)
+	 */
+	public final boolean isOk(){
+		return !(this.nichtErmittelbar || this.fehlerhaft || this.fehlerhaftBzwNichtErmittelbar);
+	}
+	
 	
 	/**
 	 * {@inheritDoc}
@@ -269,6 +283,17 @@ public class UmfeldDatenSensorWert{
 		}
 		
 		return gleich;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int compareTo(UmfeldDatenSensorWert that) {
+		if(that == null){
+			throw new NullPointerException("Vergleichswert ist <<null>>"); //$NON-NLS-1$
+		}
+		return new Long(this.getWert()).compareTo(that.getWert());
 	}
 
 }

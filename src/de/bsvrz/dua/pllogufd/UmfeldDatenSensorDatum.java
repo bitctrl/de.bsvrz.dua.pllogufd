@@ -26,6 +26,8 @@
 
 package de.bsvrz.dua.pllogufd;
 
+import java.util.Date;
+
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
@@ -39,6 +41,11 @@ import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
  */
 public class UmfeldDatenSensorDatum {
 
+	/**
+	 * das empfangene Originaldatum
+	 */
+	private ResultData originalDatum = null;
+	
 	/**
 	 * die Art des Umfelddatums
 	 */
@@ -58,7 +65,7 @@ public class UmfeldDatenSensorDatum {
 	 * der eigentliche Wert des Umfelddatensensors (ohne Plausibilisierungs-Informationen)
 	 */
 	private UmfeldDatenSensorWert wert = null;
-	
+		
 	
 	/**
 	 * Standardkonstruktor
@@ -73,6 +80,7 @@ public class UmfeldDatenSensorDatum {
 			throw new NullPointerException("Datensatz enthält keine Daten"); //$NON-NLS-1$")
 		}
 		
+		this.originalDatum = resultat;
 		this.datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(resultat.getObject());
 		
 		if(datenArt == null){
@@ -89,13 +97,55 @@ public class UmfeldDatenSensorDatum {
 
 	
 	/**
-	 * Erstellt eine Kopie des hier verarbeiteten Datums
+	 * Erfragt ein <code>ResultData</code>-Objekt, mit dem Datensatz, wie er sich 
+	 * jetzt gerade in diesem Objekt befindet
+	 * 
+	 * @return ein <code>ResultData</code>-Objekt, das mit den aktuellen Daten dieses
+	 * Objekts korrespondiert
+	 */
+	public final ResultData getVeraendertesOriginalDatum(){
+		ResultData resultat = this.originalDatum;
+		
+		if(this.copy){
+			resultat = new ResultData(this.originalDatum.getObject(),
+									  this.originalDatum.getDataDescription(),
+									  this.originalDatum.getDataTime(), this.datum);
+		}
+		
+		return resultat;		
+	}
+	
+	
+	/**
+	 * Erfragt, ob dieses Datum verändert wurde
+	 * 
+	 * @return ob dieses Datum verändert wurde
+	 */
+	public final boolean isVeraendert(){
+		return this.copy;
+	}
+	
+	
+	/**
+	 * Erstellt eine Kopie des hier verarbeiteten Datums (wenn dies nicht
+	 * schon vorher passiert ist)
 	 */
 	private final void erstelleKopie(){
 		if(!this.copy){
 			this.copy = true;
 			this.datum = this.datum.createModifiableCopy();
 		}
+	}
+	
+	
+	/**
+	 * Erfragt das originale <code>ResultData</code>, mit dem diese
+	 * Instanz initialisiert wurde
+	 * 
+	 * @return das originale <code>ResultData</code>
+	 */
+	public final ResultData getOriginalDatum(){
+		return this.originalDatum;
 	}
 	
 
@@ -166,6 +216,16 @@ public class UmfeldDatenSensorDatum {
 	public final UmfeldDatenSensorWert getWert() {
 		return this.wert;
 	}
+	
+	
+	/**
+	 * Erfragt die Datenzeit dieses Datums
+	 * 
+	 * @return die Datenzeit dieses Datums
+	 */
+	public final long getDatenZeit(){
+		return this.originalDatum.getDataTime();
+	}
 
 
 	/**
@@ -179,6 +239,22 @@ public class UmfeldDatenSensorDatum {
 			this.datum.getItem(this.datenArt.getName()).getUnscaledValue("Wert").set(this.wert.getWert()); //$NON-NLS-1$
 		}
 		return this.datum;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		String s = this.datenArt.toString();
+		
+		s += "\nKopiert: " + (copy?"ja":"nein"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		s += "\nDatum: " + this.datum; //$NON-NLS-1$
+		s += "\nDatenzeit: " + new Date(this.getDatenZeit()); //$NON-NLS-1$
+		s += "\nWert: " + this.wert;	//$NON-NLS-1$
+			
+		return s;
 	}
 
 }
