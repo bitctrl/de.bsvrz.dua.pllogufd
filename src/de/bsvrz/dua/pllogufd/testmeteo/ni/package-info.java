@@ -1,6 +1,6 @@
 /**
- * Klassen für Submodul Niederschlagsintensität der Komponente
- * Meteorologische Kontrolle der SWE Pl-Prüfung logisch UFD
+ * Klassen für Submodul Niederschlagsintensität der Komponente Meteorologische
+ * Kontrolle innerhalb des Moduls Pl-Prüfung logisch UFD
  */
 
 package de.bsvrz.dua.pllogufd.testmeteo.ni;
