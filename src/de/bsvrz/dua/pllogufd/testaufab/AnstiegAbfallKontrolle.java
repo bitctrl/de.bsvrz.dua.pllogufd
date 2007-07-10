@@ -28,8 +28,8 @@ package de.bsvrz.dua.pllogufd.testaufab;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
@@ -63,7 +63,7 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	 * Informationen
 	 */
 	private Map<SystemObject, AufAbUmfeldDatenSensor> sensoren = 
-								new TreeMap<SystemObject, AufAbUmfeldDatenSensor>();
+								new HashMap<SystemObject, AufAbUmfeldDatenSensor>();
 	
 	
 	

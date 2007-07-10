@@ -102,20 +102,26 @@ extends AbstractDavZustand{
 	public final boolean vergleiche(final long wert1, final long wert2){
 		boolean ergebnis = false;
 		
-		switch(this.getCode()){
-		case 0: ergebnis = false;
-		break;
-		case 1: ergebnis = true;
-		break;
-		case 2: ergebnis = wert1 < wert2;
-		break;
-		case 3: ergebnis = wert1 <= wert2;
-		break;
-		case 4: ergebnis = wert1 == wert2;
-		break;
-		case 5: ergebnis = wert1 >= wert2;
-		break;
-		case 6: ergebnis = wert1 > wert2;	
+		if(this.equals(BEDINGUNG_IMMER_FALSCH)){
+			ergebnis = false;
+		}else
+		if(this.equals(BEDINGUNG_IMMER_WAHR)){
+			ergebnis = true;
+		}else
+		if(this.equals(KLEINER)){
+			ergebnis = wert1 < wert2;
+		}else
+		if(this.equals(KLEINER_GLEICH)){
+			ergebnis = wert1 <= wert2;
+		}else
+		if(this.equals(GLEICH)){
+			ergebnis = wert1 == wert2;
+		}else
+		if(this.equals(GROESSER_GLEICH)){
+			ergebnis = wert1 >= wert2;	
+		}else
+		if(this.equals(GROESSER)){
+			ergebnis = wert1 > wert2;
 		}
 		
 		return ergebnis;

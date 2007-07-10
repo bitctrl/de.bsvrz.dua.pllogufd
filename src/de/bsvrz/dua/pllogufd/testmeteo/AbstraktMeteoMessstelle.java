@@ -27,7 +27,7 @@
 package de.bsvrz.dua.pllogufd.testmeteo;
 
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
@@ -62,7 +62,7 @@ extends AbstractSystemObjekt{
 	 * die Systemobjekte aller Umfelddatensensoren, die an dieser Messstelle
 	 * konfiguriert sind (und in diesem Submodul betrachtet werden)
 	 */
-	protected Collection<SystemObject> sensorenAnMessStelle = new TreeSet<SystemObject>();
+	protected Collection<SystemObject> sensorenAnMessStelle = new HashSet<SystemObject>();
 	
 	
 	/**

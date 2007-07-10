@@ -27,13 +27,14 @@
 package de.bsvrz.dua.pllogufd.testdiff;
 
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
@@ -82,7 +83,7 @@ extends AbstraktUmfeldDatenSensor{
 					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
-		Collection<AttributeGroup> parameterAtgs = new TreeSet<AttributeGroup>();
+		Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 		
 		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt. //$NON-NLS-1$
 										getUmfeldDatenArtVon(this.objekt).getName();
@@ -116,6 +117,7 @@ extends AbstraktUmfeldDatenSensor{
 			Data data = resultat.getData();
 
 			if(this.parameter != null){
+				
 				final long aktuellerWert = data.getItem(this.wert.getName()).getUnscaledValue("Wert").longValue(); //$NON-NLS-1$
 				final long T = data.getTimeValue("T").getMillis(); //$NON-NLS-1$
 				this.wert.aktualisiere(aktuellerWert, T);
@@ -134,10 +136,10 @@ extends AbstraktUmfeldDatenSensor{
 	
 						if(vergleichDurchfuehren){
 							if(this.wert.getWertIstKonstantSeit() > this.parameter.getMaxZeit()){
-								copy = VERWALTUNG.getVerbindung().createData(resultat.getDataDescription().getAttributeGroup());
-								data.getItem(wert.getName()).getUnscaledValue("Wert").set(DUAKonstanten.FEHLERHAFT); //$NON-NLS-1$			
-								data.getItem(wert.getName()).getItem("Status").getItem("MessWertErsetzung").   //$NON-NLS-1$//$NON-NLS-2$
-								getUnscaledValue("Implausibel").set(DUAKonstanten.JA); //$NON-NLS-1$									
+								UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
+								datum.getWert().setFehlerhaftAn();
+								datum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+								copy = datum.getDatum();
 							}
 						}
 					}else{

@@ -26,9 +26,8 @@
 
 package de.bsvrz.dua.pllogufd.typen;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import stauma.dav.clientside.ClientDavInterface;
 import stauma.dav.configuration.interfaces.DataModel;
@@ -39,13 +38,17 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 
 /**
  * Umfelddatenart. Verbindet alle notwendigen Informationen (Name, Abkürzung) eines
- * Umfelddaten-Systemobjekttyps mit dem Systemobjekttyp selbst
+ * Umfelddaten-Systemobjekttyps mit dem Systemobjekttyp selbst. Diese Klasse 
+ * muss statisch instanziiert werden, bevor irgendeine Methode daraus das erste 
+ * Mal benutzt werden kann.<br>
+ * z.B.:<br>
+ * Typ: typ.ufdsFahrBahnFeuchte --> Name: FahrBahnFeuchte --> Abk: FBF   
+ * 
  *  
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
  */
-public class UmfeldDatenArt
-implements Comparable<UmfeldDatenArt>{
+public class UmfeldDatenArt{
 	
 	/**
 	 * Debug-Logger
@@ -56,8 +59,7 @@ implements Comparable<UmfeldDatenArt>{
 	 * Mapt den Systemobjekttyp eines Umfelddatensensors auf die
 	 * Informationen zu seinem Namen und seiner Abkürzung
 	 */
-	private static Map<SystemObjectType, UmfeldDatenArt> TYP_AUF_ART = 
-		Collections.synchronizedMap(new TreeMap<SystemObjectType, UmfeldDatenArt>());
+	private static Map<SystemObjectType, UmfeldDatenArt> TYP_AUF_ART = new HashMap<SystemObjectType, UmfeldDatenArt>();
 	
 	/**
 	 * <code>typ.ufdsFahrBahnFeuchte</code>
@@ -201,9 +203,7 @@ implements Comparable<UmfeldDatenArt>{
 		UmfeldDatenArt umfeldDatenArt = null;
 		
 		if(objekt != null){
-			synchronized (TYP_AUF_ART) {
-				umfeldDatenArt = TYP_AUF_ART.get(objekt);	
-			}			
+			umfeldDatenArt = TYP_AUF_ART.get(objekt.getType());	
 		}else{
 			LOGGER.error("Übergebenes Systemobjekt ist <<null>>"); //$NON-NLS-1$
 		}
@@ -340,14 +340,6 @@ implements Comparable<UmfeldDatenArt>{
 		
 		return gleich;
 	}
-	
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public int compareTo(UmfeldDatenArt that) {
-		return new Long(this.getTyp().getId()).compareTo(that.getTyp().getId());
-	}
 
 
 	/**
@@ -356,7 +348,7 @@ implements Comparable<UmfeldDatenArt>{
 	@Override
 	public String toString() {
 		return this.name + " (" + this.abkuerzung + //$NON-NLS-1$ 
-					")\n" + this.typ; //$NON-NLS-1$
+					") Typ: " + this.typ; //$NON-NLS-1$
 	}
 	
 }

@@ -41,11 +41,10 @@ import stauma.dav.clientside.ReceiveOptions;
 import stauma.dav.clientside.ReceiverRole;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
-import sys.funclib.InvalidArgumentException;
 import sys.funclib.debug.Debug;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.IKontrollProzessListener;
 import de.bsvrz.dua.pllogufd.KontrollProzess;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
@@ -121,51 +120,41 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
+	public synchronized void aktualisiereDaten(ResultData[] resultate) {
 		if(resultate != null){
 			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){					
+				if(resultat != null && resultat.getData() != null){
 					this.bereinigeKontrollZeitpunkte(resultat);
 					
-					long kontrollZeitpunkt = this.getKontrollZeitpunktVon(resultat);					
+					long kontrollZeitpunkt = this.getKontrollZeitpunktVon(resultat);
 					if(kontrollZeitpunkt > 0){
-						synchronized (this.kontrollZeitpunkte) {
-							Collection<AusfallUFDSDatum> kontrollObjekte =
+						Collection<AusfallUFDSDatum> kontrollObjekte =
 								this.kontrollZeitpunkte.get(kontrollZeitpunkt);
 							
-							/**
-							 * Kontrolldatum bestimmten
-							 */
-							AusfallUFDSDatum neuesKontrollObjekt = new AusfallUFDSDatum(resultat);							
-							if(kontrollObjekte != null){
-								synchronized (kontrollObjekte) {
-									kontrollObjekte.add(neuesKontrollObjekt);
-								}
-							}else{
-								synchronized (this) {
-									kontrollObjekte = new TreeSet<AusfallUFDSDatum>();
-									kontrollObjekte.add(neuesKontrollObjekt);
-									this.kontrollZeitpunkte.put(new Long(kontrollZeitpunkt), kontrollObjekte);
-								}
-							}
-						}							
+						/**
+						 * Kontrolldatum bestimmten
+						 */
+						AusfallUFDSDatum neuesKontrollObjekt = new AusfallUFDSDatum(resultat);							
+						if(kontrollObjekte != null){
+							kontrollObjekte.add(neuesKontrollObjekt);
+						}else{
+							kontrollObjekte = new TreeSet<AusfallUFDSDatum>();
+							kontrollObjekte.add(neuesKontrollObjekt);
+							this.kontrollZeitpunkte.put(new Long(kontrollZeitpunkt), kontrollObjekte);
+						}
 					}
 
-					synchronized (this.kontrollZeitpunkte) {
-						long fruehesterKontrollZeitpunkt = -1;
+					long fruehesterKontrollZeitpunkt = -1;
 
+					if(!this.kontrollZeitpunkte.isEmpty()){
 						Long dummy = this.kontrollZeitpunkte.firstKey();
 						if(dummy != null){
 							fruehesterKontrollZeitpunkt = dummy.longValue();
 						}
 
-						if(fruehesterKontrollZeitpunkt > 0){
-							try {
-								this.kontrollProzess.setNaechstenAufrufZeitpunkt(
-										fruehesterKontrollZeitpunkt, this.kontrollZeitpunkte.get(new Long(fruehesterKontrollZeitpunkt)));
-							} catch (InvalidArgumentException e) {
-								LOGGER.error(Konstante.LEERSTRING, e);
-							}	
+						if(fruehesterKontrollZeitpunkt > 0){								
+							this.kontrollProzess.setNaechstenAufrufZeitpunkt(
+									fruehesterKontrollZeitpunkt, this.kontrollZeitpunkte.get(new Long(fruehesterKontrollZeitpunkt)));
 						}
 					}
 				}
@@ -187,6 +176,7 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 	 */
 	@SuppressWarnings("null")
 	private final void bereinigeKontrollZeitpunkte(final ResultData resultat){
+		
 		/**
 		 * Berechne den wahrscheinlichsten Zeitpunkt, für den hier noch auf 
 		 * ein Datum dieses Objektes gewartet wird 
@@ -194,39 +184,43 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 		final long maxZeitVerzug = this.getMaxZeitVerzug(resultat.getObject());
 		final UmfeldDatenSensorDatum rohWert = new UmfeldDatenSensorDatum(resultat);
 		final Long letzterErwarteterZeitpunkt = resultat.getDataTime() + rohWert.getT() + maxZeitVerzug;
+		
+		Collection<AusfallUFDSDatum> kontrollObjekte = 
+			this.kontrollZeitpunkte.get(letzterErwarteterZeitpunkt);
 
-		synchronized (this.kontrollZeitpunkte) {
-			Collection<AusfallUFDSDatum> kontrollObjekte = 
-						this.kontrollZeitpunkte.get(letzterErwarteterZeitpunkt);
-			
-			AusfallUFDSDatum datum = new AusfallUFDSDatum(resultat);
-			if(kontrollObjekte != null){
+		AusfallUFDSDatum datum = new AusfallUFDSDatum(resultat);
+
+		/**
+		 * Gibt es einen Kontrollzeitpunkt, für den das Objekt, des empfangenen Datums
+		 * eingeplant sein müsste
+		 */
+		if(kontrollObjekte != null){
+			if(kontrollObjekte.remove(datum)){
+				if(kontrollObjekte.isEmpty()){
+					this.kontrollZeitpunkte.remove(letzterErwarteterZeitpunkt);
+				}
+			}else{
+				kontrollObjekte = null;
+			}
+		}
+
+		if(kontrollObjekte == null){
+			Long gefundenInKontrollZeitpunkt = new Long(-1);
+			for(Long kontrollZeitpunkt:this.kontrollZeitpunkte.keySet()){
+				kontrollObjekte = this.kontrollZeitpunkte.get(kontrollZeitpunkt);
 				if(kontrollObjekte.remove(datum)){
-					if(kontrollObjekte.isEmpty()){
-						this.kontrollZeitpunkte.remove(letzterErwarteterZeitpunkt);
-					}
-				}else{
-					kontrollObjekte = null;
+					gefundenInKontrollZeitpunkt = kontrollZeitpunkt;
+					break;
 				}
 			}
-			if(kontrollObjekte == null){
-				Long gefundenInKontrollZeitpunkt = new Long(-1);
-				for(Long kontrollZeitpunkt:this.kontrollZeitpunkte.keySet()){
-					kontrollObjekte = this.kontrollZeitpunkte.get(kontrollZeitpunkt);
-					if(kontrollObjekte.remove(datum)){
-						gefundenInKontrollZeitpunkt = kontrollZeitpunkt;
-						break;
-					}
-				}
-				
-				if(gefundenInKontrollZeitpunkt >= 0){
-					if(kontrollObjekte.isEmpty()){
-						this.kontrollZeitpunkte.remove(gefundenInKontrollZeitpunkt);
-					}					
-				}else{
-					LOGGER.warning("Datum " + datum + " konnte nicht aus" + //$NON-NLS-1$ //$NON-NLS-2$
-							" Kontrollwarteschlange gelöscht werden"); //$NON-NLS-1$
-				}
+
+			if(gefundenInKontrollZeitpunkt >= 0){
+				if(kontrollObjekte.isEmpty()){
+					this.kontrollZeitpunkte.remove(gefundenInKontrollZeitpunkt);
+				}					
+			}else{
+				LOGGER.warning("Datum " + datum + " konnte nicht aus" + //$NON-NLS-1$ //$NON-NLS-2$
+				" Kontrollwarteschlange gelöscht werden"); //$NON-NLS-1$
 			}
 		}
 	}
@@ -245,7 +239,7 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 		if(obj != null){
 			synchronized (this.sensorWertErfassungVerzug) {
 				Long dummy = this.sensorWertErfassungVerzug.get(obj);
-				if(dummy != null && dummy >= 0){
+				if(dummy != null && dummy > 0){
 					maxZeitVerzug = dummy;
 				}
 			}
@@ -267,13 +261,14 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 				UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(sensorInformation.getDatum());
 				wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
 				wert.getWert().setNichtErmittelbarAn();
-			
-				long zeitStempel = sensorInformation.getDatum().getDataTime() + 
-							sensorInformation.getDatum().getData().getTimeValue("T").getMillis(); //$NON-NLS-1$
+
+				long zeitStempel = wert.getDatenZeit() + wert.getT();
+
 				ResultData resultat = new ResultData(sensorInformation.getDatum().getObject(), 
 						sensorInformation.getDatum().getDataDescription(), zeitStempel, wert.getDatum());
+
 				zuSendendeAusfallDatenMenge.add(resultat);
-			}						
+			}
 			
 			zuSendendeAusfallDaten = zuSendendeAusfallDatenMenge.toArray(new ResultData[0]);
 		}
@@ -305,10 +300,6 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 		if(maxZeitVerzug >= 0){
 			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(empfangenesResultat);
 			kontrollZeitpunkt = empfangenesResultat.getDataTime() + 2 * datum.getT() + maxZeitVerzug;
-			if(kontrollZeitpunkt < System.currentTimeMillis() + 100){
-				kontrollZeitpunkt = -1;
-				LOGGER.error("Kontrollzeitpunkt liegt zu nah in der Zukunft:\n" + empfangenesResultat); //$NON-NLS-1$
-			}
 		}else{
 			LOGGER.warning("Es wurden noch keine (sinnvollen) Parameter empfangen: " //$NON-NLS-1$ 
 					+ empfangenesResultat.getObject());

@@ -28,8 +28,8 @@ package de.bsvrz.dua.pllogufd.testdiff;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
@@ -60,7 +60,7 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	 * Informationen
 	 */
 	private Map<SystemObject, DiffUmfeldDatenSensor> sensoren =
-						new TreeMap<SystemObject, DiffUmfeldDatenSensor>();
+						new HashMap<SystemObject, DiffUmfeldDatenSensor>();
 	
 	
 	/**

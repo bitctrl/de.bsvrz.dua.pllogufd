@@ -28,10 +28,10 @@ package de.bsvrz.dua.pllogufd.testmeteo.sw;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.ConfigurationObject;
@@ -60,7 +60,7 @@ extends AbstraktMeteoMessstelle{
 	/**
 	 * Im Submodul Sichtweiten betrachtete Datenarten
 	 */
-	private static Collection<UmfeldDatenArt> DATEN_ARTEN = new TreeSet<UmfeldDatenArt>();
+	private static Collection<UmfeldDatenArt> DATEN_ARTEN = new HashSet<UmfeldDatenArt>();
 	static{
 		DATEN_ARTEN.add(UmfeldDatenArt.SW);
 		DATEN_ARTEN.add(UmfeldDatenArt.NS);
@@ -72,7 +72,7 @@ extends AbstraktMeteoMessstelle{
 	 * Instanz dieser Klasse
 	 */
 	private static Map<SystemObject, SichtweitenMessstelle> UFDS_AUF_UFDMS = new
-		TreeMap<SystemObject, SichtweitenMessstelle>();
+		HashMap<SystemObject, SichtweitenMessstelle>();
 			
 	/**
 	 * letztes Scihtweite-Datum

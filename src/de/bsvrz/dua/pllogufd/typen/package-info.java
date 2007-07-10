@@ -1,5 +1,5 @@
 /**
- * Klassen für Verwaltungsmodul der SWE Pl-Prüfung logisch UFD
+ * Klassen für Typen innderhalb der SWE Pl-Prüfung logisch UFD
  */
 
 package de.bsvrz.dua.pllogufd.typen;

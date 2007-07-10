@@ -99,18 +99,21 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 		
-		ni.initialisiere(dieVerwaltung);
-		ns.initialisiere(dieVerwaltung);		
-		wfd.initialisiere(dieVerwaltung);
-		sw.initialisiere(dieVerwaltung);
-		pub.initialisiere(dieVerwaltung);
-		
 		ni.setNaechstenBearbeitungsKnoten(ns);
+		ni.initialisiere(dieVerwaltung);
+		
 		ns.setNaechstenBearbeitungsKnoten(wfd);
+		ns.initialisiere(dieVerwaltung);
+		
 		wfd.setNaechstenBearbeitungsKnoten(sw);
+		wfd.initialisiere(dieVerwaltung);
+		
 		sw.setNaechstenBearbeitungsKnoten(pub);
+		sw.initialisiere(dieVerwaltung);
+		
 		pub.setNaechstenBearbeitungsKnoten(this.knoten);
 		pub.setPublikation(true);
+		pub.initialisiere(dieVerwaltung);
 	}
 
 

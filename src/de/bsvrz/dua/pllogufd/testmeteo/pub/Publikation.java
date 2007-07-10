@@ -91,7 +91,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 		if(this.publizieren){
 			if(resultate != null){
 				for(ResultData resultat:resultate){
-					if(resultat != null && resultat.getData() != null){
+					if(resultat != null && resultat.getData() != null){ 
 						ResultData publikationsDatum = 
 							iDfsMod.getPublikationsDatum(resultat,
 								resultat.getData(), standardAspekte.getStandardAspekt(resultat));

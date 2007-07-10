@@ -88,11 +88,10 @@ public class UmfeldDatenSensorDatum {
 					resultat);
 		}
 		
+		this.datum = resultat.getData();
 		this.wert = new UmfeldDatenSensorWert(datenArt);
 		this.wert.setWert(this.datum.getItem(this.datenArt.getName()).getUnscaledValue("Wert").longValue()); //$NON-NLS-1$
-		this.wert.setVeraendert(false);
-		
-		this.datum = resultat.getData();
+		this.wert.setVeraendert(false);		
 	}
 
 	
@@ -156,6 +155,17 @@ public class UmfeldDatenSensorDatum {
 	 */
 	public final long getT(){
 		return this.datum.getTimeValue("T").getMillis(); //$NON-NLS-1$
+	}
+	
+	
+	/**
+	 * Setzt das Erfassungsintervall dieses Datums
+	 * 
+	 * @param das Erfassungsintervall dieses Datums
+	 */
+	public final void setT(final long t){
+		this.erstelleKopie();
+		this.datum.getTimeValue("T").setMillis(t); //$NON-NLS-1$
 	}
 	
 	

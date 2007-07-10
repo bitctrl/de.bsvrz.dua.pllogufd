@@ -27,7 +27,7 @@
 package de.bsvrz.dua.pllogufd.testmeteo;
 
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
@@ -72,7 +72,7 @@ extends AbstraktUmfeldDatenSensor{
 					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
-		Collection<AttributeGroup> parameterAtgs = new TreeSet<AttributeGroup>();
+		Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 		
 		final String atgPid = "atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 						UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();

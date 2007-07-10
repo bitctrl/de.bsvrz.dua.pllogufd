@@ -33,16 +33,25 @@ import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import sys.funclib.InvalidArgumentException;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+
+import sys.funclib.debug.Debug;
 
 /**
  * Instanzen dieser Klasse rufen zu bestimmten Zeitpunkten all ihre
- * Beobachter auf. Der Zeitpunkt kann dabei während der Laufzeit verändert werden
+ * Beobachter auf und teilen diesen dann eine bestimmte Information
+ * des generischen Typs <code>T</code> mit. Der Zeitpunkt sowie die
+ * Information können dabei während der Laufzeit verändert werden
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  */
 public class KontrollProzess<T> {
+	
+	/**
+	 * Debug-Logger
+	 */
+	private static final Debug LOGGER = Debug.getLogger();
 	
 	/**
 	 * Es dürfen nur Aufrufzeitpunkte jenseits dieses Zeitfensters in der
@@ -90,26 +99,37 @@ public class KontrollProzess<T> {
 	
 	/**
 	 * Setzt den nächsten Zeitpunkt, zu dem dieser Prozess seine Beobachter
-	 * informiert
+	 * informiert<br>
+	 * <b>Achtung:</b> Wenn der nächste Aufrufzeitpunkt weniger als <code>
+	 * SICHERHEITS_ZEITFENSTER</code> ms in der Zukunft liegt, wird der
+	 * Aufruf in <code>SICHERHEITS_ZEITFENSTER</code> ms durchgeführt. 
 	 * 
 	 * @param zeitpunktInMillis nächster Zeitpunkt, zu dem dieser Prozess
 	 * seine Beobachter informiert
-	 * @throws InvalidArgumentException wenn der übergebene Zeitpunkt weniger 
-	 * als <code>SICHERHEITS_ZEITFENSTER</code> ms in der Zukunft liegt
 	 */
-	public final void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis)
-	throws InvalidArgumentException{
-		if(zeitpunktInMillis < System.currentTimeMillis() + SICHERHEITS_ZEITFENSTER){
-			throw new InvalidArgumentException("Übergebener Zeitpunkt ist nicht einplanbar, da" + //$NON-NLS-1$
-					" er weniger als " + SICHERHEITS_ZEITFENSTER + "ms in der Zukunft liegt"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		synchronized (this) {
-			if(this.naechsterAufrufZeitpunkt != zeitpunktInMillis){
-				this.naechsterAufrufZeitpunkt = zeitpunktInMillis;
+	public final synchronized void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis){
+		if(this.naechsterAufrufZeitpunkt != zeitpunktInMillis){
+			long zeitpunktInMillisIntern = zeitpunktInMillis;
+			if(zeitpunktInMillis < System.currentTimeMillis() + SICHERHEITS_ZEITFENSTER){
+				zeitpunktInMillisIntern = System.currentTimeMillis() + SICHERHEITS_ZEITFENSTER;
+			}
+
+			if(this.naechsterAufrufZeitpunkt != zeitpunktInMillisIntern){
+				if(zeitpunktInMillis != zeitpunktInMillisIntern){
+					LOGGER.warning("Der eingeplante Kontrollzeitpunkt wird um " +  //$NON-NLS-1$
+							(zeitpunktInMillisIntern - zeitpunktInMillis) + "ms nach hinten verlegt\n" +  //$NON-NLS-1$
+							"Alt: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.naechsterAufrufZeitpunkt)) + //$NON-NLS-1$
+							"\nNeu: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(zeitpunktInMillisIntern)));	 //$NON-NLS-1$
+				}else{
+					LOGGER.info("Der eingeplante Kontrollzeitpunkt wird verändert\n" + //$NON-NLS-1$
+							"Alt: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.naechsterAufrufZeitpunkt)) + //$NON-NLS-1$
+							"\nNeu: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(zeitpunktInMillisIntern))); //$NON-NLS-1$
+				}
+				this.naechsterAufrufZeitpunkt = zeitpunktInMillisIntern;
 				this.prozess.cancel();
 				this.prozess = new Prozess();
-				timer.schedule(this.prozess, new Date(this.naechsterAufrufZeitpunkt));		
-			}			
+				timer.schedule(this.prozess, new Date(this.naechsterAufrufZeitpunkt));
+			}
 		}
 	}
 
@@ -125,14 +145,11 @@ public class KontrollProzess<T> {
 	 * seine Beobachter informiert
 	 * @param information ein Objekt mit einer bestimmten Information, das beim nächsten
 	 * Aufrufzeitpunkt an alle Beobachterobjekte weitergeleitet wird
-	 * @throws InvalidArgumentException wenn der übergebene Zeitpunkt weniger 
-	 * als <code>SICHERHEITS_ZEITFENSTER</code> ms in der Zukunft liegt
 	 */
 	public final void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis, 
-												  final T information)
-	throws InvalidArgumentException{
+												  final T information){
 		synchronized (this) {
-			this.aktuelleInformation = information;	
+			this.aktuelleInformation = information;
 		}		
 		this.setNaechstenAufrufZeitpunkt(zeitpunktInMillis);
 	}
