@@ -238,34 +238,39 @@ extends AbstraktMeteoMessstelle{
 	 */
 	@Override
 	protected void bringeDatumInPosition(ResultData umfeldDatum) {
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-		
-		if(datenArt != null){
-			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
-			if(datenArt.equals(UmfeldDatenArt.NI)){
-				this.letztesUfdNIDatum = datum;
-			}else
-			if(datenArt.equals(UmfeldDatenArt.FBZ)){
-				this.letztesUfdFBZDatum = datum;
-			}else
-			if(datenArt.equals(UmfeldDatenArt.RLF)){
-				this.letztesUfdRLFDatum = datum;
-				if(datum.getWert().isOk() &&
-				   this.parameterSensor.isInitialisiert() && 
-				   this.parameterSensor.getWFDgrenzNassRLF().isOk() &&
-				   datum.getWert().getWert() < this.parameterSensor.getWFDgrenzNassRLF().getWert()){
-					this.rlfUnterWfdgrenzNassFuerMS += datum.getT();
-				}else{
-					this.rlfUnterWfdgrenzNassFuerMS = 0;
+		if(umfeldDatum.getData() != null){
+			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
+			
+			if(datenArt != null){
+				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
+				
+				LOGGER.info("Speichere: " + datum); //$NON-NLS-1$
+				
+				if(datenArt.equals(UmfeldDatenArt.NI)){
+					this.letztesUfdNIDatum = datum;
+				}else
+				if(datenArt.equals(UmfeldDatenArt.FBZ)){
+					this.letztesUfdFBZDatum = datum;
+				}else
+				if(datenArt.equals(UmfeldDatenArt.RLF)){
+					this.letztesUfdRLFDatum = datum;
+					if(datum.getWert().isOk() &&
+					   this.parameterSensor.isInitialisiert() && 
+					   this.parameterSensor.getWFDgrenzNassRLF().isOk() &&
+					   datum.getWert().getWert() < this.parameterSensor.getWFDgrenzNassRLF().getWert()){
+						this.rlfUnterWfdgrenzNassFuerMS += datum.getT();
+					}else{
+						this.rlfUnterWfdgrenzNassFuerMS = 0;
+					}
+				}else
+				if(datenArt.equals(UmfeldDatenArt.WFD)){
+					this.letztesUfdWFDDatum = datum;
 				}
-			}else
-			if(datenArt.equals(UmfeldDatenArt.WFD)){
-				this.letztesUfdWFDDatum = datum;
+			}else{
+				LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
-		}else{
-			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
-	}
+	}		
 
 
 	/**
@@ -277,15 +282,19 @@ extends AbstraktMeteoMessstelle{
 		
 		if(this.letztesUfdNIDatum != null){
 			aktuelleWerte.add(this.letztesUfdNIDatum.getVeraendertesOriginalDatum());
+			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdNIDatum);
 		}
 		if(this.letztesUfdFBZDatum != null){
 			aktuelleWerte.add(this.letztesUfdFBZDatum.getVeraendertesOriginalDatum());
+			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdFBZDatum);
 		}
 		if(this.letztesUfdWFDDatum != null){
 			aktuelleWerte.add(this.letztesUfdWFDDatum.getVeraendertesOriginalDatum());
+			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdWFDDatum);
 		}
 		if(this.letztesUfdRLFDatum != null){
 			aktuelleWerte.add(this.letztesUfdRLFDatum.getVeraendertesOriginalDatum());
+			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdRLFDatum);
 		}
 		
 		return aktuelleWerte.toArray(new ResultData[0]);
@@ -296,28 +305,28 @@ extends AbstraktMeteoMessstelle{
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean isBereitsDatumInPosition(ResultData umfeldDatum) {
-		boolean bereitsDatumInPosition = false;
+	protected UmfeldDatenSensorDatum getDatumBereitsInPosition(ResultData umfeldDatum) {
+		UmfeldDatenSensorDatum datumInPosition = null;
 		
 		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if(datenArt != null){
 			if(datenArt.equals(UmfeldDatenArt.NI)){
-				bereitsDatumInPosition = this.letztesUfdNIDatum != null;
+				datumInPosition = this.letztesUfdNIDatum;
 			}else
 			if(datenArt.equals(UmfeldDatenArt.FBZ)){
-				bereitsDatumInPosition = this.letztesUfdFBZDatum != null;
+				datumInPosition = this.letztesUfdFBZDatum;
 			}else
 			if(datenArt.equals(UmfeldDatenArt.RLF)){
-				bereitsDatumInPosition = this.letztesUfdRLFDatum != null;
+				datumInPosition = this.letztesUfdRLFDatum;
 			}else
 			if(datenArt.equals(UmfeldDatenArt.WFD)){
-				bereitsDatumInPosition = this.letztesUfdWFDDatum != null;
+				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		}else{
 			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 		
-		return bereitsDatumInPosition;
+		return datumInPosition;
 	}
 
 
@@ -330,7 +339,8 @@ extends AbstraktMeteoMessstelle{
 		
 		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if(datenArt != null){
-			relevant = DATEN_ARTEN.contains(datenArt);
+			relevant = DATEN_ARTEN.contains(datenArt) &&
+					   this.letzterBearbeiteterZeitStempel != umfeldDatum.getDataTime();
 		}else{
 			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}

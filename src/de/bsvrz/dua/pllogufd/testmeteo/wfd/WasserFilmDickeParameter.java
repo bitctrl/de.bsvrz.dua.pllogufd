@@ -101,7 +101,7 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 				if(resultat != null && resultat.getData() != null){
 					synchronized (this) {
 						this.wfdGrenzNassRLF.setWert(resultat.getData().getUnscaledValue("WFDgrenzNassRLF").longValue()); //$NON-NLS-1$
-						this.wfdMinNassRLF = resultat.getData().getTimeValue("WFDminNassRLF").getMillis(); //$NON-NLS-1$						
+						this.wfdMinNassRLF = resultat.getData().getTimeValue("WDFminNassRLF").getMillis(); //$NON-NLS-1$						
 					}
 					this.parameterInitialisiert = true;
 				}

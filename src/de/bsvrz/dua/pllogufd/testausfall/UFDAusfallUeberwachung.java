@@ -29,6 +29,7 @@ package de.bsvrz.dua.pllogufd.testausfall;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -70,7 +71,7 @@ import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
  */
 public class UFDAusfallUeberwachung
 extends AbstraktBearbeitungsKnotenAdapter 
-implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
+implements IKontrollProzessListener<Long>,
 		   ClientReceiverInterface{
 	
 	/**
@@ -95,7 +96,7 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 	/**
 	 * interner Kontrollprozess
 	 */
-	private KontrollProzess<Collection<AusfallUFDSDatum>> kontrollProzess = null;
+	private KontrollProzess<Long> kontrollProzess = null;
 	
 		
 	/**
@@ -105,7 +106,7 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 	public void initialisiere(IVerwaltung dieVerwaltung)
 	throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-		this.kontrollProzess = new KontrollProzess<Collection<AusfallUFDSDatum>>();
+		this.kontrollProzess = new KontrollProzess<Long>();
 		this.kontrollProzess.addListener(this);
 		
 		DataDescription parameterBeschreibung = new DataDescription(
@@ -124,6 +125,7 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 		if(resultate != null){
 			for(ResultData resultat:resultate){
 				if(resultat != null && resultat.getData() != null){
+					
 					this.bereinigeKontrollZeitpunkte(resultat);
 					
 					long kontrollZeitpunkt = this.getKontrollZeitpunktVon(resultat);
@@ -145,17 +147,18 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 					}
 
 					long fruehesterKontrollZeitpunkt = -1;
-
+											
 					if(!this.kontrollZeitpunkte.isEmpty()){
-						Long dummy = this.kontrollZeitpunkte.firstKey();
-						if(dummy != null){
-							fruehesterKontrollZeitpunkt = dummy.longValue();
+						fruehesterKontrollZeitpunkt = this.kontrollZeitpunkte.firstKey().longValue();
+						
+						if(fruehesterKontrollZeitpunkt > 0){
+							this.kontrollProzess.setNaechstenAufrufZeitpunkt(fruehesterKontrollZeitpunkt,
+																			 new Long(fruehesterKontrollZeitpunkt));
+						}else{
+							LOGGER.warning("Der momentan aktuellste Kontrollzeitpunkt ist <= 0"); //$NON-NLS-1$
 						}
-
-						if(fruehesterKontrollZeitpunkt > 0){								
-							this.kontrollProzess.setNaechstenAufrufZeitpunkt(
-									fruehesterKontrollZeitpunkt, this.kontrollZeitpunkte.get(new Long(fruehesterKontrollZeitpunkt)));
-						}
+					}else{
+						LOGGER.warning("Die Menge der Kontrollzeitpunkte ist leer"); //$NON-NLS-1$
 					}
 				}
 			}
@@ -181,13 +184,13 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 		 * Berechne den wahrscheinlichsten Zeitpunkt, für den hier noch auf 
 		 * ein Datum dieses Objektes gewartet wird 
 		 */
-		final long maxZeitVerzug = this.getMaxZeitVerzug(resultat.getObject());
-		final UmfeldDatenSensorDatum rohWert = new UmfeldDatenSensorDatum(resultat);
-		final Long letzterErwarteterZeitpunkt = resultat.getDataTime() + rohWert.getT() + maxZeitVerzug;
+		final Long letzterErwarteterZeitpunkt = resultat.getDataTime() + 
+												new UmfeldDatenSensorDatum(resultat).getT() +
+												this.getMaxZeitVerzug(resultat.getObject());
 		
 		Collection<AusfallUFDSDatum> kontrollObjekte = 
 			this.kontrollZeitpunkte.get(letzterErwarteterZeitpunkt);
-
+		
 		AusfallUFDSDatum datum = new AusfallUFDSDatum(resultat);
 
 		/**
@@ -252,34 +255,38 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 	/**
 	 * {@inheritDoc}
 	 */
-	public void trigger(Collection<AusfallUFDSDatum> information) {
-		ResultData[] zuSendendeAusfallDaten = null;
+	public void trigger(Long kontrollZeitpunkt) {
+		List<ResultData> zuSendendeAusfallDatenMenge = new ArrayList<ResultData>();
 		
-		synchronized (this) {
-			List<ResultData> zuSendendeAusfallDatenMenge = new ArrayList<ResultData>();
-			for(AusfallUFDSDatum sensorInformation:information){
-				UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(sensorInformation.getDatum());
-				wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
-				wert.getWert().setNichtErmittelbarAn();
+		synchronized (this.kontrollZeitpunkte) {
+			Collection<AusfallUFDSDatum> ausfallDaten = this.kontrollZeitpunkte.get(kontrollZeitpunkt);
+			if(ausfallDaten != null){
+				for(AusfallUFDSDatum ausfallDatum:ausfallDaten){				
+					UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(ausfallDatum.getDatum());
+					wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
+					wert.getWert().setNichtErmittelbarAn();
 
-				long zeitStempel = wert.getDatenZeit() + wert.getT();
+					long zeitStempel = wert.getDatenZeit() + wert.getT();
 
-				ResultData resultat = new ResultData(sensorInformation.getDatum().getObject(), 
-						sensorInformation.getDatum().getDataDescription(), zeitStempel, wert.getDatum());
+					ResultData resultat = new ResultData(ausfallDatum.getDatum().getObject(), 
+							ausfallDatum.getDatum().getDataDescription(), zeitStempel, wert.getDatum());
 
-				zuSendendeAusfallDatenMenge.add(resultat);
+					zuSendendeAusfallDatenMenge.add(resultat);
+				}				
+			}else{
+				LOGGER.warning("Der Kontrollzeitpunkt " +  //$NON-NLS-1$
+						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(kontrollZeitpunkt)) + 
+						" wurde inzwischen entfernt"); //$NON-NLS-1$
 			}
-			
-			zuSendendeAusfallDaten = zuSendendeAusfallDatenMenge.toArray(new ResultData[0]);
 		}
 		
 		/**
-		 * Sende die ausgefallenen Daten an mich selbst, 
-		 * um die Liste der Ausfallzeitpunkte zu aktualisieren
+		 * Sende die ausgefallenen Daten an mich selbst, um
+		 * die Liste der Ausfallzeitpunkte zu aktualisieren
 		 */
-		if(zuSendendeAusfallDaten != null){
-			this.aktualisiereDaten(zuSendendeAusfallDaten);
-		}
+		if(zuSendendeAusfallDatenMenge.size() > 0){
+			this.aktualisiereDaten(zuSendendeAusfallDatenMenge.toArray(new ResultData[0]));
+		}		
 	}
 
 	
@@ -340,5 +347,4 @@ implements IKontrollProzessListener<Collection<AusfallUFDSDatum>>,
 	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
-
 }

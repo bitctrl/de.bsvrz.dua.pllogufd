@@ -43,7 +43,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
  */
 public abstract class AbstraktMeteoSubModul 
 extends AbstraktBearbeitungsKnotenAdapter{
-
+	
 	
 	/**
 	 * Erfragt die Umfelddaten-Messstelle an der ein bestimmter Sensor konfiguriert ist
@@ -56,14 +56,26 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	public abstract AbstraktMeteoMessstelle getMessStelleVonSensor(final SystemObject ufdsObjekt);
 	
 
+	static int i = 0;
+	
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
+	public void aktualisiereDaten(ResultData[] resultate) {		
 		if(resultate != null){
+						
 			List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
 			for(ResultData resultat:resultate){
 				if(resultat != null){
+
+//					if(resultat.getData() != null && this.getClass().getSimpleName().startsWith("NiederschlagsArt")){ //$NON-NLS-1$
+//						System.out.println("---");
+//						Debug.getLogger().error(resultat.toString());
+//						if(++i == 3){
+//							System.out.println();
+//						}
+//					}
+
 					AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat.getObject());
 					if(messstelle != null){
 						ResultData[] ergebnisse = messstelle.aktualisiereDaten(resultat);

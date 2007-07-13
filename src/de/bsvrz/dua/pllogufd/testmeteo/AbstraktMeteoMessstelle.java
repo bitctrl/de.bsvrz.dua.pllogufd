@@ -26,13 +26,17 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.modell.AbstractSystemObjekt;
 import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjekt;
@@ -64,6 +68,13 @@ extends AbstractSystemObjekt{
 	 */
 	protected Collection<SystemObject> sensorenAnMessStelle = new HashSet<SystemObject>();
 	
+	/**
+	 * letzter Zeitstempel, für den Daten aus dieser Messstelle wieder freigegeben wurden
+	 * d.h. insbesondere, der Zeitstempel, für den bereits versucht wurde alle Regeln
+	 * abzuarbeiten
+	 */
+	protected long letzterBearbeiteterZeitStempel = -1;
+	
 	
 	/**
 	 * {@inheritDoc}
@@ -91,7 +102,10 @@ extends AbstractSystemObjekt{
 	 * werden muss)
 	 *  
 	 * @param umfeldDatum ein Umfelddatum
-	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird
+	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird <b>und</b> ob das
+	 * übergebene Umfelddatum nicht schon vorher verarbeitet worden ist (Kontrolle
+	 * des Zeitstempel, da die Ausfallkontrolle ein Datum geschickt haben kann, dass
+	 * jetzt tatsächlich noch nachkommt)
 	 */
 	protected abstract boolean isDatenArtRelevantFuerSubModul(final ResultData umfeldDatum);
 	
@@ -139,13 +153,14 @@ extends AbstractSystemObjekt{
 	
 	/**
 	 * Erfragt, ob für einen bestimmten Umfelddatensensor bereits ein Datum im lokalen 
-	 * Puffer steht 
+	 * Puffer steht und gibt dieses zurück. Dabei wird nicht überprüft, ob das eingetroffene
+	 * Datum überhaupt Daten enthält.
 	 * 
 	 * @param umfeldDatum ein Datum eines bestimmten Umfelddatensensors
-	 * @return ob für einen bestimmten Umfelddatensensor bereits ein Datum im lokalen 
-	 * Puffer steht
+	 * @return das für einen bestimmten Umfelddatensensor bereits im lokalen 
+	 * Puffer stehende Datum oder <code>null</code> wenn noch keins im Puffer steht
 	 */
-	protected abstract boolean isBereitsDatumInPosition(final ResultData umfeldDatum);
+	protected abstract UmfeldDatenSensorDatum getDatumBereitsInPosition(final ResultData umfeldDatum);
 	
 	
 	/**
@@ -155,6 +170,22 @@ extends AbstractSystemObjekt{
 	 */
 	protected abstract void initialisiereMessStelle()
 	throws DUAInitialisierungsException;
+	
+	
+	/**
+	 * Setzt den letzten Zeitstempel, für den Daten aus dieser Messstelle wieder freigegeben
+	 * wurden d.h. insbesondere, der Zeitstempel, für den bereits versucht wurde alle Regeln
+	 * abzuarbeiten 
+	 * 
+	 * @param datum letzter Zeitstempel, für den Daten aus dieser Messstelle wieder 
+	 * freigegeben wurden d.h. insbesondere, der Zeitstempel, für den bereits versucht
+	 * wurde alle Regeln abzuarbeiten 
+	 */
+	protected final void setLetztenBerabeitetenZeitstempel(UmfeldDatenSensorDatum datum){
+		if(datum != null){
+			this.letzterBearbeiteterZeitStempel = datum.getDatenZeit();
+		}
+	}
 	
 	
 	/**
@@ -169,32 +200,77 @@ extends AbstractSystemObjekt{
 		ResultData[] ergebnisse = null;
 		
 		if(umfeldDatum != null){
-			if(this.isDatenArtRelevantFuerSubModul(umfeldDatum)){
-				if(this.isBereitsDatumInPosition(umfeldDatum)){
-					/**
-					 * Es kann hier davon ausgegangen werden, dass das Intervall,
-					 * für das noch Daten im Lokalen Puffer stehen abgelaufen ist
-					 */
-					ergebnisse = this.berechneAlleRegeln();
-					this.loescheAlleWerte();
-					this.bringeDatumInPosition(umfeldDatum);
+			synchronized (this) {
+				
+				LOGGER.info(this.getClass().getSimpleName() + " IN: " + umfeldDatum.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
+						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(umfeldDatum.getDataTime())));
+				
+				if(this.isDatenArtRelevantFuerSubModul(umfeldDatum)){
+					if(umfeldDatum.getData() == null){
+						/**
+						 * Keine Daten oder keine Quelle heißt hier FLUSH
+						 */
+						Collection<ResultData> ergebnisListe = new ArrayList<ResultData>();
+						for(ResultData berechnungsErgebnis:this.berechneAlleRegeln())ergebnisListe.add(berechnungsErgebnis);
+						ergebnisListe.add(umfeldDatum);
+						ergebnisse = ergebnisListe.toArray(new ResultData[0]);						
+						this.loescheAlleWerte();
+						this.bringeDatumInPosition(umfeldDatum);
+					}else{
+						UmfeldDatenSensorDatum datumInPosition = this.getDatumBereitsInPosition(umfeldDatum);
+						if(datumInPosition != null){
+							if(datumInPosition.getDatenZeit() != umfeldDatum.getDataTime()){					
+								/**
+								 * Es kann hier davon ausgegangen werden, dass das Intervall,
+								 * für das noch Daten im Lokalen Puffer stehen abgelaufen ist,
+								 * da ein neues Datum (oder keine Quelle, oder...) eingetroffen 
+								 * ist
+								 */
+								ergebnisse = this.berechneAlleRegeln();
+								this.loescheAlleWerte();
+								this.bringeDatumInPosition(umfeldDatum);
+							}else{
+								/**
+								 * Hier muss davon ausgegangen werden, dass die Ausfallkontrolle
+								 * ein Datum erzeugt hat, dass dann doch noch gekommen ist, während
+								 * aber noch nicht alle Daten zur Berechnung aller Regeln vorliegen
+								 * Dieses Datum wird in das Modul eingepflegt und das bereits bestehende
+								 * freigegeben
+								 */
+								ergebnisse = new ResultData[]{ datumInPosition.getOriginalDatum() };
+								this.bringeDatumInPosition(umfeldDatum);
+							}
+						}else{
+							/**
+							 * Es kann hier davon ausgegangen werden, dass noch nicht alle 
+							 * Daten für das aktuelle Intevall da sind.
+							 */
+							this.bringeDatumInPosition(umfeldDatum);
+							if(this.sindAlleWerteFuerIntervallDa()){
+								ergebnisse = this.berechneAlleRegeln();
+								this.loescheAlleWerte();
+							}
+						}
+					}
 				}else{
 					/**
-					 * Es kann hier davon ausgegangen werden, dass noch nicht alle 
-					 * Daten für das aktuelle Intevall da sind.
+					 * Das Datum interessiert hier nicht und wird 
+					 * direkt zurückgegeben
 					 */
-					this.bringeDatumInPosition(umfeldDatum);
-					if(this.sindAlleWerteFuerIntervallDa()){
-						ergebnisse = this.berechneAlleRegeln();
-						this.loescheAlleWerte();
-					}
+					ergebnisse = new ResultData[]{ umfeldDatum }; 
 				}
-			}else{
-				/**
-				 * Das Datum interessiert hier nicht und wird 
-				 * direkt zurückgegeben
-				 */
-				ergebnisse = new ResultData[]{ umfeldDatum }; 
+				
+				String log = this.getClass().getSimpleName() + " OUT: "; //$NON-NLS-1$
+				if(ergebnisse != null && ergebnisse.length != 0){
+					for(ResultData ergebnis:ergebnisse){
+						log += "\n  " + ergebnis.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
+						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ergebnis.getDataTime()));
+					}
+				}else{
+					log += "nichts"; //$NON-NLS-1$
+				}
+				LOGGER.info(log);
+				
 			}
 		}
 		

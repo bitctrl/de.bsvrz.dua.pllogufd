@@ -33,9 +33,8 @@ import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
-
 import sys.funclib.debug.Debug;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
  * Instanzen dieser Klasse rufen zu bestimmten Zeitpunkten all ihre
@@ -52,12 +51,6 @@ public class KontrollProzess<T> {
 	 * Debug-Logger
 	 */
 	private static final Debug LOGGER = Debug.getLogger();
-	
-	/**
-	 * Es dürfen nur Aufrufzeitpunkte jenseits dieses Zeitfensters in der
-	 * Zukunft eingeplant werden
-	 */
-	private static final long SICHERHEITS_ZEITFENSTER = 50;
 
 	/**
 	 * der Timer, der den Prozess steuert
@@ -100,36 +93,22 @@ public class KontrollProzess<T> {
 	/**
 	 * Setzt den nächsten Zeitpunkt, zu dem dieser Prozess seine Beobachter
 	 * informiert<br>
-	 * <b>Achtung:</b> Wenn der nächste Aufrufzeitpunkt weniger als <code>
-	 * SICHERHEITS_ZEITFENSTER</code> ms in der Zukunft liegt, wird der
-	 * Aufruf in <code>SICHERHEITS_ZEITFENSTER</code> ms durchgeführt. 
+	 * <b>Achtung:</b> Wenn der nächste Aufrufzeitpunkt in der Vergangenheit
+	 * liegt, wird er sofort ausgeführt. 
 	 * 
 	 * @param zeitpunktInMillis nächster Zeitpunkt, zu dem dieser Prozess
 	 * seine Beobachter informiert
 	 */
 	public final synchronized void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis){
 		if(this.naechsterAufrufZeitpunkt != zeitpunktInMillis){
-			long zeitpunktInMillisIntern = zeitpunktInMillis;
-			if(zeitpunktInMillis < System.currentTimeMillis() + SICHERHEITS_ZEITFENSTER){
-				zeitpunktInMillisIntern = System.currentTimeMillis() + SICHERHEITS_ZEITFENSTER;
-			}
-
-			if(this.naechsterAufrufZeitpunkt != zeitpunktInMillisIntern){
-				if(zeitpunktInMillis != zeitpunktInMillisIntern){
-					LOGGER.warning("Der eingeplante Kontrollzeitpunkt wird um " +  //$NON-NLS-1$
-							(zeitpunktInMillisIntern - zeitpunktInMillis) + "ms nach hinten verlegt\n" +  //$NON-NLS-1$
-							"Alt: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.naechsterAufrufZeitpunkt)) + //$NON-NLS-1$
-							"\nNeu: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(zeitpunktInMillisIntern)));	 //$NON-NLS-1$
-				}else{
-					LOGGER.info("Der eingeplante Kontrollzeitpunkt wird verändert\n" + //$NON-NLS-1$
-							"Alt: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.naechsterAufrufZeitpunkt)) + //$NON-NLS-1$
-							"\nNeu: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(zeitpunktInMillisIntern))); //$NON-NLS-1$
-				}
-				this.naechsterAufrufZeitpunkt = zeitpunktInMillisIntern;
-				this.prozess.cancel();
-				this.prozess = new Prozess();
-				timer.schedule(this.prozess, new Date(this.naechsterAufrufZeitpunkt));
-			}
+			LOGGER.info("Der eingeplante Kontrollzeitpunkt wird verändert" + //$NON-NLS-1$
+						"\nAlt: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(this.naechsterAufrufZeitpunkt)) + //$NON-NLS-1$
+						"\nNeu: " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(zeitpunktInMillis))); //$NON-NLS-1$
+			this.naechsterAufrufZeitpunkt = zeitpunktInMillis;
+			this.prozess.cancel();
+			this.timer.purge();
+			this.prozess = new Prozess();
+			timer.schedule(this.prozess, new Date(this.naechsterAufrufZeitpunkt));
 		}
 	}
 
@@ -138,7 +117,7 @@ public class KontrollProzess<T> {
 	 * Setzt den nächsten Zeitpunkt, zu dem dieser Prozess seine Beobachter
 	 * informiert und übergibt eine Information, die zu diesem Zeitpunkt 
 	 * an alle Beobachter weitergereicht werden soll. Sollte dieser Zeitpunkt identisch
-	 * mit dem bsilang eingeplanten Zeitpunkt sein, so werden nur die Informationen
+	 * mit dem bislang eingeplanten Zeitpunkt sein, so werden nur die Informationen
 	 * angepasst 
 	 * 
 	 * @param zeitpunktInMillis nächster Zeitpunkt, zu dem dieser Prozess
@@ -146,11 +125,9 @@ public class KontrollProzess<T> {
 	 * @param information ein Objekt mit einer bestimmten Information, das beim nächsten
 	 * Aufrufzeitpunkt an alle Beobachterobjekte weitergeleitet wird
 	 */
-	public final void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis, 
+	public final synchronized void setNaechstenAufrufZeitpunkt(final long zeitpunktInMillis, 
 												  final T information){
-		synchronized (this) {
-			this.aktuelleInformation = information;
-		}		
+		this.aktuelleInformation = information;			
 		this.setNaechstenAufrufZeitpunkt(zeitpunktInMillis);
 	}
 	
@@ -234,11 +211,11 @@ public class KontrollProzess<T> {
 		 */
 		@Override
 		public void run() {
-			synchronized (KontrollProzess.this) {
+			synchronized (KontrollProzess.this.listenerMenge) {
 				for(IKontrollProzessListener<T> listener:KontrollProzess.this.listenerMenge){
 					listener.trigger(KontrollProzess.this.aktuelleInformation);
 				}
-			}			
+			}
 		}
 		
 	}
