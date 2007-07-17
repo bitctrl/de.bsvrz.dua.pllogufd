@@ -114,12 +114,11 @@ extends AbstraktUmfeldDatenSensor{
 		Data copy = null;
 
 		if(resultat != null && resultat.getData() != null){
-			Data data = resultat.getData();
-
 			if(this.parameter != null){
 				
-				final long aktuellerWert = data.getItem(this.wert.getName()).getUnscaledValue("Wert").longValue(); //$NON-NLS-1$
-				final long T = data.getTimeValue("T").getMillis(); //$NON-NLS-1$
+				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat); 
+				final long aktuellerWert = datum.getWert().getWert();
+				final long T = datum.getT();
 				this.wert.aktualisiere(aktuellerWert, T);
 
 				synchronized (this.parameter) {
@@ -129,14 +128,14 @@ extends AbstraktUmfeldDatenSensor{
 						boolean vergleichDurchfuehren = false;
 						if(this.parameter.getOpertator() != null){
 							vergleichDurchfuehren = this.parameter.getOpertator().vergleiche(
-									aktuellerWert, this.parameter.getGrenz().getWert());
+									aktuellerWert, this.parameter.getGrenz().getWert()) && datum.getWert().isOk();
+							
 						}else{
 							vergleichDurchfuehren = aktuellerWert <= this.parameter.getGrenz().getWert();
 						}
 	
 						if(vergleichDurchfuehren){
 							if(this.wert.getWertIstKonstantSeit() > this.parameter.getMaxZeit()){
-								UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
 								datum.getWert().setFehlerhaftAn();
 								datum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 								copy = datum.getDatum();

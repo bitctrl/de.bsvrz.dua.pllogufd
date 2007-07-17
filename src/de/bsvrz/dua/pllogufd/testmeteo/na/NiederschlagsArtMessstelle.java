@@ -394,7 +394,8 @@ extends AbstraktMeteoMessstelle{
 				   this.parameterSensor.getNsGrenzLT().isOk()){
 					if(this.letztesUfdLTDatum.getWert().getWert() < this.parameterSensor.getNsGrenzLT().getWert()){
 						this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-						this.letztesUfdNSDatum.getWert().setFehlerhaftAn();	
+						this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
+						LOGGER.info("[NS.R1]Daten geändert:\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 					}
 				}
 			}
@@ -420,6 +421,8 @@ extends AbstraktMeteoMessstelle{
 				this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
 				this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
+				LOGGER.info("[NS.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
+						"\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 			}
 		}	
 	}
@@ -448,6 +451,7 @@ extends AbstraktMeteoMessstelle{
 				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getNsGrenzTrockenRLF().getWert()){
 					this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
+					LOGGER.info("[NS.R3]Daten geändert:\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 				}				
 			}
 		}		

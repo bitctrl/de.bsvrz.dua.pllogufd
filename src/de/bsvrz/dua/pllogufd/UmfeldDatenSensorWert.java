@@ -88,13 +88,39 @@ implements Comparable<UmfeldDatenSensorWert>{
 	
 	
 	/**
+	 * Erfragt die Skalierung dieses Wertes
+	 * 
+	 * @return die Skalierung dieses Wertes
+	 */
+	private final double getWertSkalierung(){
+		double skalierung = 1;
+		
+		if(datenArt.equals(UmfeldDatenArt.TT1) ||
+		   datenArt.equals(UmfeldDatenArt.TT2) ||
+		   datenArt.equals(UmfeldDatenArt.TT3) ||
+		   datenArt.equals(UmfeldDatenArt.TPT) ||
+		   datenArt.equals(UmfeldDatenArt.LT) ||
+		   datenArt.equals(UmfeldDatenArt.GT) ||
+		   datenArt.equals(UmfeldDatenArt.FBT) ||
+		   datenArt.equals(UmfeldDatenArt.NI) ||
+		   datenArt.equals(UmfeldDatenArt.NM) ||
+		   datenArt.equals(UmfeldDatenArt.WFD) ||
+		   datenArt.equals(UmfeldDatenArt.WGM) ||
+		   datenArt.equals(UmfeldDatenArt.WGS)){
+			skalierung = 0.1;
+		}
+		
+		return skalierung;
+	}
+	
+	
+	/**
 	 * Erfragt den Offset für den Wertestatus dieses UF-Datums in Bezug auf
 	 * die normalen Werte:<br>
 	 * - <code>nicht ermittelbar = -1</code><br>
 	 * - <code>fehlerhaft = -2</code>, oder<br>
 	 * - <code>nicht ermittelbar/fehlerhaft = -3</code><br>
 	 * 
-	 * @param ufdName die Datenart des Umfelddatensensors
 	 * @return der Offset
 	 */
 	private final long getWertStatusOffset(){
@@ -179,7 +205,27 @@ implements Comparable<UmfeldDatenSensorWert>{
 		this.nichtErmittelbar = this.wert == getWertStatusOffset() + DUAKonstanten.NICHT_ERMITTELBAR;
 	}
 
-
+	
+	/**
+	 * Setzt den Wert
+	 * 
+	 * @param wert festzulegender Wert
+	 */
+	public final void setSkaliertenWert(double wert) {
+		double skalierung = this.getWertSkalierung();
+		this.setWert((long)(skalierung / wert));
+	}
+	
+	
+	/**
+	 * Erfragt den Wert
+	 * 
+	 * @return wert der Wert
+	 */
+	public final double getSkaliertenWert() {
+		return this.getWert() * this.getWertSkalierung();
+	}
+	
 	
 	/**
 	 * Setzt das Flag <code>fehlerhaft</code> an

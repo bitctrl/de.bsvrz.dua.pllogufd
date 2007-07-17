@@ -98,22 +98,18 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	public void initialisiere(IVerwaltung dieVerwaltung)
 	throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-
-//		wfd.setNaechstenBearbeitungsKnoten(pub);
-//		wfd.initialisiere(dieVerwaltung);
-
 		
-//		ni.setNaechstenBearbeitungsKnoten(ns);
-//		ni.initialisiere(dieVerwaltung);
-//		
-//		ns.setNaechstenBearbeitungsKnoten(wfd);
-//		ns.initialisiere(dieVerwaltung);
-//		
-//		wfd.setNaechstenBearbeitungsKnoten(sw);
-//		wfd.initialisiere(dieVerwaltung);
-//		
-//		sw.setNaechstenBearbeitungsKnoten(pub);
-//		sw.initialisiere(dieVerwaltung);
+		ni.setNaechstenBearbeitungsKnoten(ns);
+		ni.initialisiere(dieVerwaltung);
+		
+		ns.setNaechstenBearbeitungsKnoten(wfd);
+		ns.initialisiere(dieVerwaltung);
+		
+		wfd.setNaechstenBearbeitungsKnoten(sw);
+		wfd.initialisiere(dieVerwaltung);
+		
+		sw.setNaechstenBearbeitungsKnoten(pub);
+		sw.initialisiere(dieVerwaltung);
 		
 		pub.setNaechstenBearbeitungsKnoten(this.knoten);
 		pub.setPublikation(true);
@@ -125,8 +121,8 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	 * {@inheritDoc}
 	 */
 	public void aktualisiereDaten(ResultData[] resultate) {
-		//this.ni.aktualisiereDaten(resultate);
-		this.pub.aktualisiereDaten(resultate);
+		this.ni.aktualisiereDaten(resultate);
+		//this.pub.aktualisiereDaten(resultate);
 	}
 
 	
