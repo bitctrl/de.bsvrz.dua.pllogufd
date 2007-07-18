@@ -94,7 +94,7 @@ extends AbstraktMeteoMessstelle{
 	 * zählt die Millisekunden, die sich die relative Luftfeuchte
 	 * schon unterhalb von <code>WFDgrenzNassRLF</code> befindet
 	 */
-	private long rlfUnterWfdgrenzNassFuerMS = 0;
+	private long rlfUeberWfdgrenzNassFuerMS = 0;
 
 	/**
 	 * letztes Datum der Wasserfilmdicke
@@ -257,10 +257,10 @@ extends AbstraktMeteoMessstelle{
 					if(datum.getWert().isOk() &&
 					   this.parameterSensor.isInitialisiert() && 
 					   this.parameterSensor.getWFDgrenzNassRLF().isOk() &&
-					   datum.getWert().getWert() < this.parameterSensor.getWFDgrenzNassRLF().getWert()){
-						this.rlfUnterWfdgrenzNassFuerMS += datum.getT();
+					   datum.getWert().getWert() > this.parameterSensor.getWFDgrenzNassRLF().getWert()){
+						this.rlfUeberWfdgrenzNassFuerMS += datum.getT();
 					}else{
-						this.rlfUnterWfdgrenzNassFuerMS = 0;
+						this.rlfUeberWfdgrenzNassFuerMS = 0;
 					}
 				}else
 				if(datenArt.equals(UmfeldDatenArt.WFD)){
@@ -407,16 +407,14 @@ extends AbstraktMeteoMessstelle{
 		   this.letztesUfdWFDDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
 			if(this.parameterSensor.isInitialisiert() &&
-					
-			   this.parameterSensor.getEXTRA().isOk() &&
-			   
+			   this.parameterSensor.getWFDgrenzNassNI().isOk() &&
 			   this.parameterSensor.getWFDgrenzNassRLF().isOk()){
-				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getEXTRA().getWert() &&
+				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getWFDgrenzNassNI().getWert() &&
 				   this.letztesUfdWFDDatum.getWert().getWert() == 0 &&
-				   this.rlfUnterWfdgrenzNassFuerMS > this.parameterSensor.getWFDminNassRLF()){
+				   this.rlfUeberWfdgrenzNassFuerMS > this.parameterSensor.getWFDminNassRLF()){
 					this.letztesUfdWFDDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
-					LOGGER.info("[WFD.R1]Daten geändert:\n" + this.letztesUfdWFDDatum.toString()); //$NON-NLS-1$
+					LOGGER.fine("[WFD.R1]Daten geändert:\n" + this.letztesUfdWFDDatum.toString()); //$NON-NLS-1$
 				}				
 			}
 		}		
@@ -440,7 +438,7 @@ extends AbstraktMeteoMessstelle{
 				this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
 				this.letztesUfdFBZDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
-				LOGGER.info("[WFD.R2]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
+				LOGGER.fine("[WFD.R2]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
 						"\n" + this.letztesUfdFBZDatum.toString()); //$NON-NLS-1$
 			}
 		}
@@ -464,7 +462,7 @@ extends AbstraktMeteoMessstelle{
 				this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
 				this.letztesUfdFBZDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
-				LOGGER.info("[WFD.R3]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
+				LOGGER.fine("[WFD.R3]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
 						"\n" + this.letztesUfdFBZDatum.toString()); //$NON-NLS-1$
 			}
 		}

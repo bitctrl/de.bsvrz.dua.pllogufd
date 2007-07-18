@@ -49,6 +49,11 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 	private UmfeldDatenSensorWert niGrenzNassRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.RLF);
 	
 	/**
+	 * Überhalb dieses Wertes wird angenommen, dass Niederschlag herrscht
+	 */
+	private UmfeldDatenSensorWert niGrenzNassNI = new UmfeldDatenSensorWert(UmfeldDatenArt.NI);
+	
+	/**
 	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF < NIgrenzTrockenRLF, dann NI
 	 * implausibel
 	 */
@@ -85,6 +90,16 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.niGrenzNassRLF;
 	}
 
+	
+	/**
+	 * Erfragt <code>NIGrenzNassNI<code>
+	 * 
+	 * @return NIGrenzNassNI
+	 */
+	public final synchronized UmfeldDatenSensorWert getNIGrenzNassNI() {
+		return this.niGrenzNassNI;
+	}
+
 
 	/**
 	 * Erfragt <code>NIminNI<code>
@@ -114,15 +129,6 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 	public final long getNIminTrockenRLF() {
 		return this.niMinTrockenRLF;
 	}
-
-	
-	/**
-	 * TODO
-	 * @return
-	 */
-	public final synchronized UmfeldDatenSensorWert getEXTRA(){
-		return new UmfeldDatenSensorWert(UmfeldDatenArt.FBF);
-	}
 	
 
 	/**
@@ -134,6 +140,7 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 				if(resultat != null && resultat.getData() != null){
 					synchronized (this) {
 						this.niGrenzNassRLF.setWert(resultat.getData().getUnscaledValue("NIgrenzNassRLF").longValue()); //$NON-NLS-1$
+						this.niGrenzNassNI.setWert(resultat.getData().getUnscaledValue("NIgrenzNassNI").longValue()); //$NON-NLS-1$
 						this.niMinNI.setWert(resultat.getData().getUnscaledValue("NIminNI").longValue()); //$NON-NLS-1$
 						this.niGrenzTrockenRLF.setWert(resultat.getData().getUnscaledValue("NIgrenzTrockenRLF").longValue()); //$NON-NLS-1$
 						this.niMinTrockenRLF = resultat.getData().getTimeValue("NIminTrockenRLF").getMillis(); //$NON-NLS-1$						

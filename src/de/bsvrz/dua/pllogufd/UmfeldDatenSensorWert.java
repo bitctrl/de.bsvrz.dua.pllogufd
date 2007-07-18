@@ -213,7 +213,7 @@ implements Comparable<UmfeldDatenSensorWert>{
 	 */
 	public final void setSkaliertenWert(double wert) {
 		double skalierung = this.getWertSkalierung();
-		this.setWert((long)(skalierung / wert));
+		this.setWert((long)(wert / skalierung));
 	}
 	
 	

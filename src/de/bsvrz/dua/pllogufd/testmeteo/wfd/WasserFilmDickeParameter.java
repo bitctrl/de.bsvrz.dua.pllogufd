@@ -49,6 +49,11 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 	private UmfeldDatenSensorWert wfdGrenzNassRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.WFD);
 	
 	/**
+	 * NI-Grenze überhalb der sicher von Niederschlag ausgegangen werden kann
+	 */
+	private UmfeldDatenSensorWert wfdGrenzNassNI = new UmfeldDatenSensorWert(UmfeldDatenArt.NI);
+	
+	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum > WDFminNassRLF, dann WFD implausibel
 	 */
 	private long wfdMinNassRLF = -1;
@@ -72,6 +77,16 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.wfdGrenzNassRLF;
 	}
 
+	
+	/**
+	 * Erfragt <code>WFDgrenzNassNI<code>
+	 * 
+	 * @return WFDgrenzNassNI
+	 */
+	public final synchronized UmfeldDatenSensorWert getWFDgrenzNassNI() {
+		return this.wfdGrenzNassNI;
+	}
+
 
 	/**
 	 * Erfragt <code>WFDminNassRLF<code>
@@ -82,15 +97,6 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.wfdMinNassRLF;
 	}
 
-	
-	/**
-	 * TODO
-	 * @return
-	 */
-	public final synchronized UmfeldDatenSensorWert getEXTRA(){
-		return new UmfeldDatenSensorWert(UmfeldDatenArt.FBF);
-	}
-	
 
 	/**
 	 * {@inheritDoc}
@@ -101,7 +107,8 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 				if(resultat != null && resultat.getData() != null){
 					synchronized (this) {
 						this.wfdGrenzNassRLF.setWert(resultat.getData().getUnscaledValue("WFDgrenzNassRLF").longValue()); //$NON-NLS-1$
-						this.wfdMinNassRLF = resultat.getData().getTimeValue("WDFminNassRLF").getMillis(); //$NON-NLS-1$						
+						this.wfdMinNassRLF = resultat.getData().getTimeValue("WDFminNassRLF").getMillis(); //$NON-NLS-1$		
+						this.wfdGrenzNassNI.setWert(resultat.getData().getUnscaledValue("WFDgrenzNassNI").longValue()); //$NON-NLS-1$
 					}
 					this.parameterInitialisiert = true;
 				}

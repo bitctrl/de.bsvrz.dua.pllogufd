@@ -379,7 +379,7 @@ extends AbstraktMeteoMessstelle{
 				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getSWgrenzTrockenRLF().getWert()){
 					this.letztesUfdSWDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdSWDatum.getWert().setFehlerhaftAn();
-					LOGGER.info("[SW.R1]Daten geändert:\n" + this.letztesUfdSWDatum.toString()); //$NON-NLS-1$
+					LOGGER.fine("[SW.R1]Daten geändert:\n" + this.letztesUfdSWDatum.toString()); //$NON-NLS-1$
 				}				
 			}
 		}		

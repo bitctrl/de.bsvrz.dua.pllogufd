@@ -406,7 +406,7 @@ extends AbstraktMeteoMessstelle{
 				this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
 				this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
-				LOGGER.info("[NI.R1]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
+				LOGGER.fine("[NI.R1]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
 						"\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 			}
 		}
@@ -437,7 +437,7 @@ extends AbstraktMeteoMessstelle{
 				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getNIGrenzTrockenRLF().getWert()){
 					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					LOGGER.info("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+					LOGGER.fine("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
 				}				
 			}
 		}		
@@ -460,17 +460,15 @@ extends AbstraktMeteoMessstelle{
 		   this.letztesUfdWFDDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
 			if(this.parameterSensor.isInitialisiert() &&
-					
-			   this.parameterSensor.getEXTRA().isOk() &&
-			   
+			   this.parameterSensor.getNIGrenzNassNI().isOk() &&			   
 			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
 			   this.letztesUfdRLFDatum.getWert().isOk()){
-				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getEXTRA().getWert() &&
+				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIGrenzNassNI().getWert() &&
 				   this.letztesUfdWFDDatum.getWert().getWert() == 0 &&
 				   this.rlfUnterNIgrenzTrockenFuerMS > this.parameterSensor.getNIminTrockenRLF()){
 					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					LOGGER.info("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+					LOGGER.fine("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
 				}				
 			}
 		}		
