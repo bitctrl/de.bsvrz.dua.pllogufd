@@ -1,5 +1,6 @@
 package de.bsvrz.dua.pllogufd.testausfall;
 
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -158,7 +159,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Anzahl der Intervalle, die der Test der Ausfallüberwachung laufen soll
 	 */
-	private static final long TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 1000000;
+	private static final long TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 1000;
 	
 	
 	/**

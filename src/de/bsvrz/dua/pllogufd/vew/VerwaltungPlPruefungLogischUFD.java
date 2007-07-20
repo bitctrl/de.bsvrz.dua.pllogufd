@@ -35,7 +35,6 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.application.StandardApplicationRunner;
-import sys.funclib.debug.Debug;
 import de.bsvrz.dua.plformal.plformal.PlPruefungFormal;
 import de.bsvrz.dua.pllogufd.plformal.PlFormUFDStandardAspekteVersorger;
 import de.bsvrz.dua.pllogufd.testaufab.AnstiegAbfallKontrolle;
@@ -69,11 +68,6 @@ import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
  */
 public class VerwaltungPlPruefungLogischUFD
 extends AbstraktVerwaltungsAdapter {
-
-	/**
-	 * Debug-Logger
-	 */
-	protected static final Debug LOGGER = Debug.getLogger();
 	
 	/**
 	 * Modul Pl-Prüfung formal 

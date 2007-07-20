@@ -247,7 +247,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Anzahl der Intervalle, die der Test der Ausfallüberwachung laufen soll
 	 */
-	private static final int TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 10000;
+	private static final int TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 10;
 	
 	
 	/**
