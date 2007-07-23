@@ -28,6 +28,7 @@ package de.bsvrz.dua.pllogufd.testmeteo;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
@@ -299,8 +300,12 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				if(resultat != null && resultat.getData() != null){
 					UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(resultat);
 					boolean implausibel = ufdDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.JA;
-					this.ergebnisIst.put(resultat.getObject(), 
-							new MeteoErgebnis(resultat.getObject(), resultat.getDataTime(), implausibel));
+					MeteoErgebnis ergebnis = new MeteoErgebnis(resultat.getObject(), resultat.getDataTime(), implausibel);
+					this.ergebnisIst.put(resultat.getObject(), ergebnis);
+					
+					if(DEBUG){
+						System.out.println(TestUtensilien.jzt() + ", Empfange: " + ergebnis); //$NON-NLS-1$
+					}
 				}
 			}
 		}

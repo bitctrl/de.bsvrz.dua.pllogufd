@@ -13,4 +13,6 @@ Export-Package: de.bsvrz.dua.pllogufd,
  de.bsvrz.dua.pllogufd.testmeteo,
  de.bsvrz.dua.pllogufd.typen,
  de.bsvrz.dua.pllogufd.vew
-Require-Bundle: de.bsvrz.dua.guete
+Require-Bundle: de.bitctrl.dav.daf,
+ de.bsvrz.dua.plformal,
+ de.bitctrl.sys.funclib
