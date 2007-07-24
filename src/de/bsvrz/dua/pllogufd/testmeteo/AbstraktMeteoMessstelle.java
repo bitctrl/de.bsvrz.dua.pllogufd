@@ -266,6 +266,7 @@ extends AbstractSystemObjekt{
 					ergebnisse = new ResultData[]{ umfeldDatum }; 
 				}
 				
+				
 				String log = this.getClass().getSimpleName() + " OUT: "; //$NON-NLS-1$
 				if(ergebnisse != null && ergebnisse.length != 0){
 					for(ResultData ergebnis:ergebnisse){

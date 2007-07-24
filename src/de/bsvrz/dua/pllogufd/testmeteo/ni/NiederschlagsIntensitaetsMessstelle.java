@@ -234,8 +234,8 @@ extends AbstraktMeteoMessstelle{
 		 */		
 		//regel1();
 		
-		regel2();
-		regel3();
+//		regel2();
+//		regel3();
 		return this.getAlleAktuellenWerte();
 	}
 
