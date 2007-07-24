@@ -63,7 +63,7 @@ extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel1</code> aus {@link SichtweitenMessstelle}
 	 */
-	@Test
+	//@Test
 	public final void testRegel1(){
 
 		/**

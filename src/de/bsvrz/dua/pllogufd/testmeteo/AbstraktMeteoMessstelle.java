@@ -35,6 +35,7 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
 import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
+import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
@@ -97,17 +98,13 @@ extends AbstractSystemObjekt{
 	
 	
 	/**
-	 * Erfragt, ob ein Umfelddatum in diesem Submodul innerhalb der Meteorologischen
-	 * Kontrolle verarbeitet wird (also insbesondere, ob es hier zwischengespeichert
-	 * werden muss)
-	 *  
-	 * @param umfeldDatum ein Umfelddatum
-	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird <b>und</b> ob das
-	 * übergebene Umfelddatum nicht schon vorher verarbeitet worden ist (Kontrolle
-	 * des Zeitstempel, da die Ausfallkontrolle ein Datum geschickt haben kann, dass
-	 * jetzt tatsächlich noch nachkommt)
+	 * Erfragt die Menge der in dieser Umfelddatenmessstelle verarbeiteten 
+	 * Datenarten
+	 * 
+	 * @return die Menge der in dieser Umfelddatenmessstelle verarbeiteten 
+	 * Datenarten
 	 */
-	protected abstract boolean isDatenArtRelevantFuerSubModul(final ResultData umfeldDatum);
+	protected abstract Collection<UmfeldDatenArt> getDatenArten();
 	
 	
 	/**
@@ -207,29 +204,32 @@ extends AbstractSystemObjekt{
 				
 				if(this.isDatenArtRelevantFuerSubModul(umfeldDatum)){
 					if(umfeldDatum.getData() == null){
+						
 						/**
-						 * Keine Daten oder keine Quelle heißt hier FLUSH
+						 * Keine Daten oder keine Quelle heißt hier: Mache FLUSH
+						 * und leitet den übergebenen Datensatz sofort weiter
 						 */
 						Collection<ResultData> ergebnisListe = new ArrayList<ResultData>();
 						for(ResultData berechnungsErgebnis:this.berechneAlleRegeln())ergebnisListe.add(berechnungsErgebnis);
 						ergebnisListe.add(umfeldDatum);
 						ergebnisse = ergebnisListe.toArray(new ResultData[0]);						
 						this.loescheAlleWerte();
-						this.bringeDatumInPosition(umfeldDatum);
+						
 					}else{
 						UmfeldDatenSensorDatum datumInPosition = this.getDatumBereitsInPosition(umfeldDatum);
 						if(datumInPosition != null){
-							if(datumInPosition.getDatenZeit() != umfeldDatum.getDataTime()){					
+							if(datumInPosition.getDatenZeit() < umfeldDatum.getDataTime()){					
 								/**
 								 * Es kann hier davon ausgegangen werden, dass das Intervall,
 								 * für das noch Daten im Lokalen Puffer stehen abgelaufen ist,
-								 * da ein neues Datum (oder keine Quelle, oder...) eingetroffen 
+								 * da ein neues Datum mit echt jüngerem Zeitstempel eingetroffen
 								 * ist
 								 */
 								ergebnisse = this.berechneAlleRegeln();
 								this.loescheAlleWerte();
 								this.bringeDatumInPosition(umfeldDatum);
-							}else{
+							}else
+							if(datumInPosition.getDatenZeit() == umfeldDatum.getDataTime()){
 								/**
 								 * Hier muss davon ausgegangen werden, dass die Ausfallkontrolle
 								 * ein Datum erzeugt hat, dass dann doch noch gekommen ist, während
@@ -239,6 +239,12 @@ extends AbstractSystemObjekt{
 								 */
 								ergebnisse = new ResultData[]{ datumInPosition.getOriginalDatum() };
 								this.bringeDatumInPosition(umfeldDatum);
+							}else{
+								/**
+								 * Das eingetroffene Datum ist echt älter als alles was im 
+								 * lokalen Puffer steht. Ignoriere es und gebe es einfach weiter
+								 */
+								ergebnisse = new ResultData[]{ umfeldDatum };
 							}
 						}else{
 							/**
@@ -276,7 +282,35 @@ extends AbstractSystemObjekt{
 		
 		return ergebnisse;
 	}
+	
+	
+	/**
+	 * Erfragt, ob ein Umfelddatum in diesem Submodul innerhalb der Meteorologischen
+	 * Kontrolle verarbeitet wird (also insbesondere, ob es hier zwischengespeichert
+	 * werden muss)
+	 *  
+	 * @param umfeldDatum ein Umfelddatum
+	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird <b>und</b> ob das
+	 * übergebene Umfelddatum nicht schon vorher verarbeitet worden ist (Kontrolle
+	 * des Zeitstempel, da die Ausfallkontrolle ein Datum geschickt haben kann, dass
+	 * jetzt tatsächlich noch nachkommt)
+	 */
+	private final boolean isDatenArtRelevantFuerSubModul(final ResultData umfeldDatum){
+		boolean relevant = false;
 		
+		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		if(datenArt != null){
+			relevant = this.getDatenArten().contains(datenArt);
+			
+//			relevant = this.getDatenArten().contains(datenArt) && 
+//					   this.letzterBearbeiteterZeitStempel != umfeldDatum.getDataTime();
+		}else{
+			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+		}
+		
+		return relevant;
+	}
+	
 	
 	/**
 	 * Erfragt die Systemobjekte aller Umfelddatensensoren, die an dieser Messstelle

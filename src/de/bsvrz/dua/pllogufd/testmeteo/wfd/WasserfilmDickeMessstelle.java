@@ -226,9 +226,9 @@ extends AbstraktMeteoMessstelle{
 	 */
 	@Override
 	protected ResultData[] berechneAlleRegeln() {
-		regel1();
-		regel2();
-		regel3();
+//		regel1();
+//		regel2();
+//		regel3();
 		return this.getAlleAktuellenWerte();
 	}
 
@@ -329,23 +329,13 @@ extends AbstraktMeteoMessstelle{
 		return datumInPosition;
 	}
 
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean isDatenArtRelevantFuerSubModul(ResultData umfeldDatum) {
-		boolean relevant = false;
-		
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-		if(datenArt != null){
-			relevant = DATEN_ARTEN.contains(datenArt) &&
-					   this.letzterBearbeiteterZeitStempel != umfeldDatum.getDataTime();
-		}else{
-			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
-		}
-		
-		return relevant;
+	protected Collection<UmfeldDatenArt> getDatenArten() {
+		return DATEN_ARTEN;
 	}
 
 

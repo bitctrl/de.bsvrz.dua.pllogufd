@@ -257,6 +257,8 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	public void testUFDAusfallUeberwachung()
 	throws Exception{
 						
+		Pause.warte(Konstante.MINUTE_IN_MS * 2);
+		
 		/**
 		 * Test-Schleife
 		 */
@@ -266,7 +268,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 			 * Warte bis zum Anfang der nächsten Minute
 			 */
 			final long start = TestUtensilien.getBeginNaechsterMinute();
-			Pause.warte(start - System.currentTimeMillis() + 100);
+			DAVTest.warteBis(start + 20);
 			
 			this.ergebnisUeberpruefen();
 			

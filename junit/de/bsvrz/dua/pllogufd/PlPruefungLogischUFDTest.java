@@ -231,7 +231,7 @@ implements ClientSenderInterface{
 			DAV = DAVTest.getDav();
 			UmfeldDatenArt.initialisiere(DAV);
 
-			
+//			
 //			SENSOREN.add(ni1 = DAV.getDataModel().getObject("AAA.pllogufd.NI.1")); //$NON-NLS-1$
 //			SENSOREN.add(fbz1 = DAV.getDataModel().getObject("AAA.pllogufd.FBZ.1")); //$NON-NLS-1$
 //			SENSOREN.add(ns1 = DAV.getDataModel().getObject("AAA.pllogufd.NS.1")); //$NON-NLS-1$

@@ -226,7 +226,14 @@ extends AbstraktMeteoMessstelle{
 	 */
 	@Override
 	protected ResultData[] berechneAlleRegeln() {
-		regel1();
+		/**
+		 * Gerhard Kappich (19.07.2007)
+		 * Bei der Prüfung ist mir aufgefallen, dass die 2. Regel zur Niederschlagsart der 1. Regel
+		 * zur Niederschlagsintensität entspricht und somit die Regel zur Niederschlagsintensität
+		 * wegfallen kann
+		 */		
+		//regel1();
+		
 		regel2();
 		regel3();
 		return this.getAlleAktuellenWerte();
@@ -334,18 +341,8 @@ extends AbstraktMeteoMessstelle{
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean isDatenArtRelevantFuerSubModul(ResultData umfeldDatum) {
-		boolean relevant = false;
-		
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-		if(datenArt != null){
-			relevant = DATEN_ARTEN.contains(datenArt) && 
-			   		   this.letzterBearbeiteterZeitStempel != umfeldDatum.getDataTime();
-		}else{
-			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
-		}
-		
-		return relevant;
+	protected Collection<UmfeldDatenArt> getDatenArten() {
+		return DATEN_ARTEN;
 	}
 
 
@@ -389,28 +386,28 @@ extends AbstraktMeteoMessstelle{
 	 * Die Regeln aus SE-02.00.00.00.00-AFo-3.4
 	 */
 	
-	/**
-	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NI > 0) <b>und</b> (NS == kein Niederschlag) <b>dann</b> (NS=implausibel, NI=implausibel)</code>
-	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
-	 */
-	private final void regel1(){
-		if(this.letztesUfdNIDatum != null &&
-		   this.letztesUfdNSDatum != null &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
-		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
-			if(this.letztesUfdNIDatum.getWert().getWert() > 0 && 
-			   this.letztesUfdNSDatum.getWert().getWert() == 0){
-				this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-				this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-				this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
-				LOGGER.fine("[NI.R1]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
-						"\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
-			}
-		}
-	}
+//	/**
+//	 * Folgende Regel wird abgearbeitet:<br>
+//	 * <code><b>Wenn</b> (NI > 0) <b>und</b> (NS == kein Niederschlag) <b>dann</b> (NS=implausibel, NI=implausibel)</code>
+//	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
+//	 */
+//	private final void regel1(){
+//		if(this.letztesUfdNIDatum != null &&
+//		   this.letztesUfdNSDatum != null &&
+//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
+//		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+//		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
+//			if(this.letztesUfdNIDatum.getWert().getWert() > 0 && 
+//			   this.letztesUfdNSDatum.getWert().getWert() == 0){
+//				this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+//				this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
+//				this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+//				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
+//				LOGGER.fine("[NI.R1]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
+//						"\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
+//			}
+//		}
+//	}
 	
 	
 	/**
@@ -420,27 +417,27 @@ extends AbstraktMeteoMessstelle{
 	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
 	 */
 	private final void regel2(){
-		if(this.letztesUfdNIDatum != null &&
-		   this.letztesUfdNSDatum != null &&
-		   this.letztesUfdRLFDatum != null &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
-		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
-			if(this.parameterSensor.isInitialisiert() &&
-			   this.parameterSensor.getNIminNI().isOk() &&
-			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
-			   this.letztesUfdRLFDatum.getWert().isOk()){
-				if(this.letztesUfdNSDatum.getWert().getWert() == 0 &&
-				   this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIminNI().getWert() &&
-				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getNIGrenzTrockenRLF().getWert()){
-					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					LOGGER.fine("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
-				}				
-			}
-		}		
+//		if(this.letztesUfdNIDatum != null &&
+//		   this.letztesUfdNSDatum != null &&
+//		   this.letztesUfdRLFDatum != null &&
+//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
+//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
+//		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+//		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+//		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
+//			if(this.parameterSensor.isInitialisiert() &&
+//			   this.parameterSensor.getNIminNI().isOk() &&
+//			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
+//			   this.letztesUfdRLFDatum.getWert().isOk()){
+//				if(this.letztesUfdNSDatum.getWert().getWert() == 0 &&
+//				   this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIminNI().getWert() &&
+//				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getNIGrenzTrockenRLF().getWert()){
+//					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+//					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
+//					LOGGER.fine("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+//				}				
+//			}
+//		}		
 	}
 	
 	
@@ -451,27 +448,27 @@ extends AbstraktMeteoMessstelle{
 	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
 	 */
 	private final void regel3(){
-		if(this.letztesUfdNIDatum != null &&
-		   this.letztesUfdWFDDatum != null &&
-		   this.letztesUfdRLFDatum != null &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdWFDDatum.getDatenZeit() &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
-		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-		   this.letztesUfdWFDDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
-			if(this.parameterSensor.isInitialisiert() &&
-			   this.parameterSensor.getNIGrenzNassNI().isOk() &&			   
-			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
-			   this.letztesUfdRLFDatum.getWert().isOk()){
-				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIGrenzNassNI().getWert() &&
-				   this.letztesUfdWFDDatum.getWert().getWert() == 0 &&
-				   this.rlfUnterNIgrenzTrockenFuerMS > this.parameterSensor.getNIminTrockenRLF()){
-					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					LOGGER.fine("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
-				}				
-			}
-		}		
+//		if(this.letztesUfdNIDatum != null &&
+//		   this.letztesUfdWFDDatum != null &&
+//		   this.letztesUfdRLFDatum != null &&
+//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdWFDDatum.getDatenZeit() &&
+//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
+//		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+//		   this.letztesUfdWFDDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+//		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
+//			if(this.parameterSensor.isInitialisiert() &&
+//			   this.parameterSensor.getNIGrenzNassNI().isOk() &&			   
+//			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
+//			   this.letztesUfdRLFDatum.getWert().isOk()){
+//				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIGrenzNassNI().getWert() &&
+//				   this.letztesUfdWFDDatum.getWert().getWert() == 0 &&
+//				   this.rlfUnterNIgrenzTrockenFuerMS > this.parameterSensor.getNIminTrockenRLF()){
+//					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+//					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
+//					LOGGER.fine("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+//				}				
+//			}
+//		}		
 	}
 	
 }

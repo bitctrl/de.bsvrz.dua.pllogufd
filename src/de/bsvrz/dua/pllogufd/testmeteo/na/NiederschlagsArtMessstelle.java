@@ -320,25 +320,6 @@ extends AbstraktMeteoMessstelle{
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean isDatenArtRelevantFuerSubModul(ResultData umfeldDatum) {
-		boolean relevant = false;
-		
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-		if(datenArt != null){
-			relevant = DATEN_ARTEN.contains(datenArt) && 
-					   this.letzterBearbeiteterZeitStempel != umfeldDatum.getDataTime();
-		}else{
-			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
-		}
-		
-		return relevant;
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	protected void loescheAlleWerte() {
 		this.letztesUfdNIDatum = null; 
 		this.letztesUfdNSDatum = null;
@@ -370,7 +351,15 @@ extends AbstraktMeteoMessstelle{
 		return alleWerteFuerIntervallDa;
 	}
 
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Collection<UmfeldDatenArt> getDatenArten() {
+		return DATEN_ARTEN;
+	}
+
 	
 	/**
 	 * Die Regeln aus SE-02.00.00.00.00-AFo-3.4
@@ -456,5 +445,4 @@ extends AbstraktMeteoMessstelle{
 			}
 		}		
 	}
-
 }

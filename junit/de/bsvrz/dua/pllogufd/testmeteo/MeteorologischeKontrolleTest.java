@@ -331,7 +331,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 			this.sendeDatum(sensor, wert.getWert(), intervall);
 		}
 		
-		return intervall + PlPruefungLogischUFDTest.STANDARD_T * 4;
+		return intervall + PlPruefungLogischUFDTest.STANDARD_T * 5;
 	}
 	
 }

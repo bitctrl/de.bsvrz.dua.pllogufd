@@ -59,7 +59,7 @@ extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel1</code> aus {@link WasserfilmDickeMessstelle}
 	 */
-	@Test
+	//@Test
 	public final void testRegel1(){
 
 		long rlfStart = MeteoKonst.WFDgrenzNassRLF + 4;
@@ -331,7 +331,7 @@ extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel3</code> aus {@link WasserfilmDickeMessstelle}
 	 */
-	@Test
+	//@Test
 	public final void testRegel3(){
 		
 		/**
@@ -377,7 +377,7 @@ extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel2</code> aus {@link WasserfilmDickeMessstelle}
 	 */
-	@Test
+	//@Test
 	public final void testRegel2(){
 		
 		/**

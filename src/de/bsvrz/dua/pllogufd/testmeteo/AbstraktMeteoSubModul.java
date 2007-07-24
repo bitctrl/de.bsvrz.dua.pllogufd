@@ -79,7 +79,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 					AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat.getObject());
 					if(messstelle != null){
 						ResultData[] ergebnisse = messstelle.aktualisiereDaten(resultat);
-						if(ergebnisse != null){
+						if(ergebnisse != null && ergebnisse.length > 0){
 							for(ResultData ergebnis:ergebnisse){
 								weiterzuleitendeResultate.add(ergebnis);
 							}

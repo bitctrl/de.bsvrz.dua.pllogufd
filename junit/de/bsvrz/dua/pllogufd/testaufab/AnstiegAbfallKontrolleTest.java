@@ -132,7 +132,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		 * Setzte die Parameter für die Differenzialkontrolle auf harmlose Werte
 		 */
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, 500);
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, 1000);
 			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
 				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Konstante.STUNDE_IN_MS);
 			}
@@ -198,8 +198,11 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		kal.setTimeInMillis(System.currentTimeMillis());
 		kal.set(Calendar.MILLISECOND, 0);
 		final long zeitStempel = kal.getTimeInMillis();
-		aktuellesIntervall = zeitStempel + 4 * PlPruefungLogischUFDTest.STANDARD_T;
+		aktuellesIntervall = zeitStempel + 5 * PlPruefungLogischUFDTest.STANDARD_T ;
 		
+		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
+		}		
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
@@ -210,12 +213,36 @@ implements ClientSenderInterface, ClientReceiverInterface{
 					    datum.getOriginalDatum().getDataDescription(), 
 					    zeitStempel, datum.getDatum());
 			
-			System.out.println("Sende initial: " +  //$NON-NLS-1$
+			System.out.println(TestUtensilien.jzt() + " Sende initial: " +  //$NON-NLS-1$
 					DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
 					datum.getOriginalDatum().getObject());
 			
 			PlPruefungLogischUFDTest.SENDER.sende(sendeDatum);
 		}
+
+		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, 1000);
+		}
+		DAVTest.warteBis(zeitStempel + 2*PlPruefungLogischUFDTest.STANDARD_T + 50);
+		
+		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+			ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
+			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
+			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
+			datum.getWert().setFehlerhaftAn();
+			
+			ResultData sendeDatum = new ResultData(datum.getOriginalDatum().getObject(),
+					    datum.getOriginalDatum().getDataDescription(), 
+					    zeitStempel + PlPruefungLogischUFDTest.STANDARD_T, datum.getDatum());
+			
+			System.out.println(TestUtensilien.jzt() + " Sende initial: " +  //$NON-NLS-1$
+					DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
+					datum.getOriginalDatum().getObject());
+			
+			PlPruefungLogischUFDTest.SENDER.sende(sendeDatum);
+		}
+
+		
 		
 		
 		/**
