@@ -28,14 +28,21 @@ package de.bsvrz.dua.pllogufd.testmeteo.na;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Test;
 
+import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.DAVTest;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
+import de.bsvrz.dua.pllogufd.TestUtensilien;
+import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoErgebnis;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
+import de.bsvrz.sys.funclib.bitctrl.app.Pause;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Überprüfung des Submoduls NiederschlagsArt aus der Komponente Meteorologische Kontrolle.
@@ -191,6 +198,22 @@ extends MeteorologischeKontrolleTest{
 	
 		this.sendeDaten(nsSensoren, 0, zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(niSensoren, 1, zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
+		
+		for(SystemObject sensor:rlfSensoren){
+			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(TestUtensilien.getExterneErfassungDatum(sensor));
+			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
+			datum.getWert().setFehlerhaftAn();
+			datum.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
+			ResultData resultat = new ResultData(sensor, datum.getOriginalDatum().getDataDescription(), 
+					zeitStempel - PlPruefungLogischUFDTest.STANDARD_T, datum.getDatum());
+			try {
+				PlPruefungLogischUFDTest.SENDER.sende(resultat);
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOGGER.error(Konstante.LEERSTRING, e);
+			}
+		}
+		
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T / 20 * 18);
 		for(SystemObject nsSensor:this.nsSensoren){
 			MeteoErgebnis ist = this.ergebnisIst.get(nsSensor);
@@ -207,6 +230,22 @@ extends MeteorologischeKontrolleTest{
 	
 		this.sendeDaten(nsSensoren, 0, zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(niSensoren, 0, zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
+		
+		for(SystemObject sensor:rlfSensoren){
+			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(TestUtensilien.getExterneErfassungDatum(sensor));
+			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
+			datum.getWert().setFehlerhaftAn();
+			datum.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
+			ResultData resultat = new ResultData(sensor, datum.getOriginalDatum().getDataDescription(), 
+					zeitStempel - PlPruefungLogischUFDTest.STANDARD_T, datum.getDatum());
+			try {
+				PlPruefungLogischUFDTest.SENDER.sende(resultat);
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOGGER.error(Konstante.LEERSTRING, e);
+			}
+		}
+		
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T / 20 * 18);
 		for(SystemObject nsSensor:this.nsSensoren){
 			MeteoErgebnis ist = this.ergebnisIst.get(nsSensor);
@@ -216,4 +255,21 @@ extends MeteorologischeKontrolleTest{
 		}
 
 	}
+	
+	
+	/**
+	 * Schaltet die Ausfallüberwachung wieder aus und wartet fünf Sekunden
+	 */
+	@After
+	public void after() throws Exception {		
+		/**
+		 * Ausfallüberwachung für alle Sensoren ausschalten
+		 */
+		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
+		}		
+		
+		Pause.warte(5 * Konstante.SEKUNDE_IN_MS);
+	}
+
 }

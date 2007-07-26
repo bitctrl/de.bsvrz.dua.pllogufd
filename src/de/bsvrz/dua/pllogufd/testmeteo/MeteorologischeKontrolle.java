@@ -98,15 +98,6 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	public void initialisiere(IVerwaltung dieVerwaltung)
 	throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-
-//		ni.setNaechstenBearbeitungsKnoten(ns);
-//		ni.initialisiere(dieVerwaltung);
-//		
-//		ns.setNaechstenBearbeitungsKnoten(wfd);
-//		ns.initialisiere(dieVerwaltung);
-//
-//		wfd.setNaechstenBearbeitungsKnoten(pub);
-//		wfd.initialisiere(dieVerwaltung);
 		
 		ni.setNaechstenBearbeitungsKnoten(ns);
 		ni.initialisiere(dieVerwaltung);

@@ -25,15 +25,6 @@
  */
 package de.bsvrz.dua.pllogufd.testmeteo.sw;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.DAVTest;
-import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
-import de.bsvrz.dua.pllogufd.testmeteo.MeteoErgebnis;
-import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
 
 /**

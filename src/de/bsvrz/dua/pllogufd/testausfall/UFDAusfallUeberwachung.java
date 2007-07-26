@@ -43,14 +43,14 @@ import stauma.dav.clientside.ReceiverRole;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
-import de.bsvrz.dua.pllogufd.IKontrollProzessListener;
-import de.bsvrz.dua.pllogufd.KontrollProzess;
 import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.KontrollProzess;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
+import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IKontrollProzessListener;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 

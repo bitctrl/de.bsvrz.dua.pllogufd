@@ -234,8 +234,8 @@ extends AbstraktMeteoMessstelle{
 		 */		
 		//regel1();
 		
-//		regel2();
-//		regel3();
+		regel2();
+		regel3();
 		return this.getAlleAktuellenWerte();
 	}
 
@@ -417,27 +417,27 @@ extends AbstraktMeteoMessstelle{
 	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
 	 */
 	private final void regel2(){
-//		if(this.letztesUfdNIDatum != null &&
-//		   this.letztesUfdNSDatum != null &&
-//		   this.letztesUfdRLFDatum != null &&
-//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
-//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
-//		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-//		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-//		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
-//			if(this.parameterSensor.isInitialisiert() &&
-//			   this.parameterSensor.getNIminNI().isOk() &&
-//			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
-//			   this.letztesUfdRLFDatum.getWert().isOk()){
-//				if(this.letztesUfdNSDatum.getWert().getWert() == 0 &&
-//				   this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIminNI().getWert() &&
-//				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getNIGrenzTrockenRLF().getWert()){
-//					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-//					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-//					LOGGER.fine("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
-//				}				
-//			}
-//		}		
+		if(this.letztesUfdNIDatum != null &&
+		   this.letztesUfdNSDatum != null &&
+		   this.letztesUfdRLFDatum != null &&
+		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
+		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
+		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
+			if(this.parameterSensor.isInitialisiert() &&
+			   this.parameterSensor.getNIminNI().isOk() &&
+			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
+			   this.letztesUfdRLFDatum.getWert().isOk()){
+				if(this.letztesUfdNSDatum.getWert().getWert() == 0 &&
+				   this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIminNI().getWert() &&
+				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getNIGrenzTrockenRLF().getWert()){
+					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
+					LOGGER.fine("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+				}				
+			}
+		}		
 	}
 	
 	
@@ -448,27 +448,27 @@ extends AbstraktMeteoMessstelle{
 	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
 	 */
 	private final void regel3(){
-//		if(this.letztesUfdNIDatum != null &&
-//		   this.letztesUfdWFDDatum != null &&
-//		   this.letztesUfdRLFDatum != null &&
-//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdWFDDatum.getDatenZeit() &&
-//		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
-//		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-//		   this.letztesUfdWFDDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-//		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
-//			if(this.parameterSensor.isInitialisiert() &&
-//			   this.parameterSensor.getNIGrenzNassNI().isOk() &&			   
-//			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
-//			   this.letztesUfdRLFDatum.getWert().isOk()){
-//				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIGrenzNassNI().getWert() &&
-//				   this.letztesUfdWFDDatum.getWert().getWert() == 0 &&
-//				   this.rlfUnterNIgrenzTrockenFuerMS > this.parameterSensor.getNIminTrockenRLF()){
-//					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-//					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-//					LOGGER.fine("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
-//				}				
-//			}
-//		}		
+		if(this.letztesUfdNIDatum != null &&
+		   this.letztesUfdWFDDatum != null &&
+		   this.letztesUfdRLFDatum != null &&
+		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdWFDDatum.getDatenZeit() &&
+		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
+		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+		   this.letztesUfdWFDDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
+			if(this.parameterSensor.isInitialisiert() &&
+			   this.parameterSensor.getNIGrenzNassNI().isOk() &&			   
+			   this.parameterSensor.getNIGrenzTrockenRLF().isOk() &&
+			   this.letztesUfdRLFDatum.getWert().isOk()){
+				if(this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor.getNIGrenzNassNI().getWert() &&
+				   this.letztesUfdWFDDatum.getWert().getWert() == 0 &&
+				   this.rlfUnterNIgrenzTrockenFuerMS > this.parameterSensor.getNIminTrockenRLF()){
+					this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
+					LOGGER.fine("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+				}				
+			}
+		}		
 	}
 	
 }

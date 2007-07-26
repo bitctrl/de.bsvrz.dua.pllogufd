@@ -110,13 +110,15 @@ public class TestUtensilien {
 		return new ResultData(sensor, datenBeschreibung, System.currentTimeMillis(), datum);
 	}	
 	
+	
 	/**
 	 * Erfragt die aktuelle Zeit
 	 * 
 	 * @return die aktuelle Zeit
 	 */
 	public static final String jzt(){
-		return "(NOW:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "(NOW:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$ 
+						+ ")"; //$NON-NLS-1$
 	}
 
 }

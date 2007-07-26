@@ -17,13 +17,13 @@ import stauma.dav.clientside.ReceiveOptions;
 import stauma.dav.clientside.ReceiverRole;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.DAVTest;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
 import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 
 public class MeinTest
 implements ClientSenderInterface, ClientReceiverInterface{
@@ -71,7 +71,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.dav = DAVTest.getDav();
+		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
 		PlPruefungLogischUFDTest.initialisiere();
 		
 		/**
@@ -159,7 +159,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Anzahl der Intervalle, die der Test der Ausfallüberwachung laufen soll
 	 */
-	private static final long TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 1000;
+	private static final long TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 30;
 	
 	
 	/**

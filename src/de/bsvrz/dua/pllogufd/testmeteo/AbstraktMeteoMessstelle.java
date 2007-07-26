@@ -199,6 +199,10 @@ extends AbstractSystemObjekt{
 		if(umfeldDatum != null){
 			synchronized (this) {
 				
+				String zusatzInfo = this.getClass().getSimpleName() + ", Zur Zeit gespeichert: "; //$NON-NLS-1$
+				for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
+				LOGGER.info(zusatzInfo);
+				
 				LOGGER.info(this.getClass().getSimpleName() + " IN: " + umfeldDatum.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
 						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(umfeldDatum.getDataTime())));
 				
@@ -221,7 +225,7 @@ extends AbstractSystemObjekt{
 							if(datumInPosition.getDatenZeit() < umfeldDatum.getDataTime()){					
 								/**
 								 * Es kann hier davon ausgegangen werden, dass das Intervall,
-								 * für das noch Daten im Lokalen Puffer stehen abgelaufen ist,
+								 * für das noch Daten im lokalen Puffer stehen abgelaufen ist,
 								 * da ein neues Datum mit echt jüngerem Zeitstempel eingetroffen
 								 * ist
 								 */
@@ -266,6 +270,10 @@ extends AbstractSystemObjekt{
 					ergebnisse = new ResultData[]{ umfeldDatum }; 
 				}
 				
+				
+				zusatzInfo = this.getClass().getSimpleName() + ", Jetzt gespeichert: "; //$NON-NLS-1$
+				for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
+				LOGGER.info(zusatzInfo);
 				
 				String log = this.getClass().getSimpleName() + " OUT: "; //$NON-NLS-1$
 				if(ergebnisse != null && ergebnisse.length != 0){

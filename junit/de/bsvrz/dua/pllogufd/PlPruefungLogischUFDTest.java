@@ -45,6 +45,7 @@ import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
+import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
@@ -55,6 +56,16 @@ import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
  */
 public class PlPruefungLogischUFDTest
 implements ClientSenderInterface{
+	
+	/**
+	 * Verbindungsdaten
+	 */
+	public static final String[] CON_DATA = new String[] {
+			"-datenverteiler=192.168.1.191:8083", //$NON-NLS-1$ 
+			"-benutzer=Tester", //$NON-NLS-1$
+			"-authentifizierung=c:\\passwd1", //$NON-NLS-1$
+			"-debugLevelStdErrText=INFO", //$NON-NLS-1$
+			"-debugLevelFileText=INFO" }; //$NON-NLS-1$
 	
 	/**
 	 * Standardintervalllänge für die meisten Tests (1s)
@@ -228,7 +239,7 @@ implements ClientSenderInterface{
 	public static final void initialisiere()
 	throws Exception {
 		if(DAV == null){
-			DAV = DAVTest.getDav();
+			DAV = DAVTest.getDav(CON_DATA);
 			UmfeldDatenArt.initialisiere(DAV);
 
 //			

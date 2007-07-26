@@ -397,12 +397,43 @@ extends AbstraktMeteoMessstelle{
 	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI > 0) <b>dann</b> (NI=implausibel, NS=implausibel)</code>
 	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
 	 */
-	private final void regel2(){
+	@SuppressWarnings("unused")
+	@Deprecated
+	private final void regel2Alt(){
 		if(this.letztesUfdNIDatum != null &&
 		   this.letztesUfdNSDatum != null &&
 		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
 		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
+			
+			if(this.letztesUfdNSDatum.getWert().getWert() == 0 && 
+			   this.letztesUfdNIDatum.getWert().getWert() > 0){
+				this.letztesUfdNIDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+				this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
+				this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
+				LOGGER.fine("[NS.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
+						"\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
+			}
+		}	
+	}
+
+	
+	/**
+ 	 * Folgende Regel wird abgearbeitet:<br>
+	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI > 0) <b>und</b> RLF == <code>nicht erfasst</code> 
+	 * <b>dann</b> (NI=implausibel, NS=implausibel)</code>
+	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
+	 */
+	private final void regel2(){
+		if(this.letztesUfdNIDatum != null &&
+		   this.letztesUfdNSDatum != null &&
+		   this.letztesUfdRLFDatum != null &&
+		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
+		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
+		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
+		   this.letztesUfdRLFDatum.getStatusErfassungNichtErfasst() == DUAKonstanten.JA){
 			
 			if(this.letztesUfdNSDatum.getWert().getWert() == 0 && 
 			   this.letztesUfdNIDatum.getWert().getWert() > 0){

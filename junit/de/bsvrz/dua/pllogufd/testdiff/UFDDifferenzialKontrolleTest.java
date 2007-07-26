@@ -47,12 +47,12 @@ import stauma.dav.clientside.ReceiveOptions;
 import stauma.dav.clientside.ReceiverRole;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.DAVTest;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
 import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 
 /**
  * Test des Moduls Differenzialkontrolle<br>
@@ -105,9 +105,9 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * {@inheritDoc}
 	 */
-	@Before
+	//@Before
 	public void setUp() throws Exception {
-		this.dav = DAVTest.getDav();
+		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
 		PlPruefungLogischUFDTest.initialisiere();
 		PlPruefungLogischUFDTest.SENDER.setMeteoKontrolle(false);
 		
@@ -218,7 +218,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * der eigentliche Test
 	 */
-	@Test
+	//@Test
 	public void testUFDDifferenzialKontrolle()
 	throws Exception{
 		

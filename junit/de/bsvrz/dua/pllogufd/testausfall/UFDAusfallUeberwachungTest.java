@@ -27,15 +27,17 @@
 package de.bsvrz.dua.pllogufd.testausfall;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import stauma.dav.clientside.ClientDavInterface;
 import stauma.dav.clientside.ClientReceiverInterface;
@@ -45,13 +47,13 @@ import stauma.dav.clientside.ReceiveOptions;
 import stauma.dav.clientside.ReceiverRole;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.DAVTest;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
 import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
@@ -139,26 +141,11 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * {@inheritDoc}
 	 */
-	@Before
+	//@Before
 	public void setUp() throws Exception {
-		this.dav = DAVTest.getDav();
+		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
 		PlPruefungLogischUFDTest.initialisiere();
-		
-		/**
-		 * Parameter setzen auf 3s (für Sensoren xxx1), 4s (für Sensoren xxx2) und 6s (für Sensoren xxx3)
-		 */
-		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			if(sensor.getPid().endsWith("1")){ //$NON-NLS-1$
-				PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, MAX_VERZUG_1);
-			}else
-			if(sensor.getPid().endsWith("2")){ //$NON-NLS-1$
-				PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, MAX_VERZUG_2);
-			}else
-			if(sensor.getPid().endsWith("3")){ //$NON-NLS-1$
-				PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, MAX_VERZUG_3);
-			}
-		}		
-				
+						
 		/**
 		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch UFD kommen
 		 */
@@ -179,9 +166,57 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		
 		
 		/**
+		 * Ausfallüberwachung für alle Sensoren ausschalten
+		 */
+		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
+		}		
+
+		/**
+		 * Sende jetzt drei Datensätze, die nicht überprüft werden
+		 */
+		long ersteDatenZeit = TestUtensilien.getBeginAktuellerSekunde() + 3 * Konstante.SEKUNDE_IN_MS;
+		Pause.warte(5 * Konstante.SEKUNDE_IN_MS);
+		for(int i = 0; i<3; i++){
+			for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+				ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
+				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
+				datum.setT(Konstante.STUNDE_IN_MS);
+				resultat.setDataTime(ersteDatenZeit + (i * Konstante.SEKUNDE_IN_MS));
+				PlPruefungLogischUFDTest.SENDER.sende(resultat);
+			}
+			Pause.warte(Konstante.SEKUNDE_IN_MS);
+		}		
+		
+		/**
+		 * Ausfallüberwachung für alle Sensoren ausschalten
+		 * Parameter setzen auf 3s (für Sensoren xxx1), 4s (für Sensoren xxx2) und 6s (für Sensoren xxx3)
+		 */
+		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+			if(sensor.getPid().endsWith("1")){ //$NON-NLS-1$
+				PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, MAX_VERZUG_1);
+			}else
+			if(sensor.getPid().endsWith("2")){ //$NON-NLS-1$
+				PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, MAX_VERZUG_2);
+			}else
+			if(sensor.getPid().endsWith("3")){ //$NON-NLS-1$
+				PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, MAX_VERZUG_3);
+			}
+		}		
+
+		/**
+		 * Warte jetzt wenigstens bis zum Beginn der übernächsten Minute
+		 */
+		GregorianCalendar kal = new GregorianCalendar();
+		kal.setTimeInMillis(System.currentTimeMillis());
+		kal.add(Calendar.MINUTE, 2);
+		kal.set(Calendar.SECOND, 2);
+		DAVTest.warteBis(kal.getTimeInMillis());
+		
+		/**
 		 * Sende initiale Daten für alle Sensoren mit dem Datenzeitstempel der vergangenen Minute
 		 */
-		long ersteDatenZeit = TestUtensilien.getBeginNaechsterMinute() - Konstante.MINUTE_IN_MS * 2;
+		ersteDatenZeit = TestUtensilien.getBeginNaechsterMinute() - Konstante.MINUTE_IN_MS * 2;
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 			resultat.setDataTime(ersteDatenZeit);
@@ -253,7 +288,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * der eigentliche Test
 	 */
-	@Test
+	//@Test
 	public void testUFDAusfallUeberwachung()
 	throws Exception{
 						
@@ -331,6 +366,23 @@ implements ClientSenderInterface, ClientReceiverInterface{
 			}			
 		}		
 	}
+	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	//@After
+	public void after() throws Exception {		
+		/**
+		 * Ausfallüberwachung für alle Sensoren ausschalten
+		 */
+		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
+		}		
+		
+		Pause.warte(2 * Konstante.MINUTE_IN_MS);
+	}
+
 
 
 	/**

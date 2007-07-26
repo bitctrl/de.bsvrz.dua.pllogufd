@@ -68,14 +68,6 @@ extends AbstraktBearbeitungsKnotenAdapter{
 			for(ResultData resultat:resultate){
 				if(resultat != null){
 
-//					if(resultat.getData() != null && this.getClass().getSimpleName().startsWith("NiederschlagsArt")){ //$NON-NLS-1$
-//						System.out.println("---");
-//						Debug.getLogger().error(resultat.toString());
-//						if(++i == 3){
-//							System.out.println();
-//						}
-//					}
-
 					AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat.getObject());
 					if(messstelle != null){
 						ResultData[] ergebnisse = messstelle.aktualisiereDaten(resultat);

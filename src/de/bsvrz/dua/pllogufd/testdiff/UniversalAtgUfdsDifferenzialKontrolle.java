@@ -31,7 +31,7 @@ import stauma.dav.clientside.ResultData;
 import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
-import de.bsvrz.sys.funclib.bitctrl.dua.AtgDatenObjekt;
+import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
 
 /**
  * Klasse zum Auslesen von Parametersätzen der Attributgruppen
@@ -41,7 +41,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.AtgDatenObjekt;
  *
  */
 public class UniversalAtgUfdsDifferenzialKontrolle 
-extends AtgDatenObjekt{
+extends AllgemeinerDatenContainer{
 	
 	/**
 	 * zu verwendender Operator zum Vergleich des Messwerts mit dem Grenzwert,
