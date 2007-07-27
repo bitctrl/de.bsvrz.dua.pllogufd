@@ -43,9 +43,10 @@ import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
@@ -184,7 +185,7 @@ implements ClientSenderInterface{
 						(short)0);
 			DAV.subscribeSender(this, sensor, datenBeschreibung, SenderRole.source());
 		}
-		
+				
 		/**
 		 * Anmelden zum Senden von Parameter für die Meteorologische Kontrolle
 		 */
@@ -225,6 +226,18 @@ implements ClientSenderInterface{
 					(short)0);
 			DAV.subscribeSender(this, sensor, paraDifferenzialkontrolle, SenderRole.sender());			
 		}
+		
+		/**
+		 * Anmeldung auf alle Parameter der Anstieg-Abfall-Kontrolle
+		 */
+		for(SystemObject sensor:SENSOREN){
+			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			DataDescription paraAnstiegAbfallKontrolle = new DataDescription(
+					DAV.getDataModel().getAttributeGroup("atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
+					DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+					(short)0);
+			DAV.subscribeSender(this, sensor, paraAnstiegAbfallKontrolle, SenderRole.sender());			
+		}
 
 		/**
 		 * Warte bis Anmeldung sicher durch ist
@@ -242,7 +255,6 @@ implements ClientSenderInterface{
 			DAV = DAVTest.getDav(CON_DATA);
 			UmfeldDatenArt.initialisiere(DAV);
 
-//			
 //			SENSOREN.add(ni1 = DAV.getDataModel().getObject("AAA.pllogufd.NI.1")); //$NON-NLS-1$
 //			SENSOREN.add(fbz1 = DAV.getDataModel().getObject("AAA.pllogufd.FBZ.1")); //$NON-NLS-1$
 //			SENSOREN.add(ns1 = DAV.getDataModel().getObject("AAA.pllogufd.NS.1")); //$NON-NLS-1$
@@ -337,7 +349,7 @@ implements ClientSenderInterface{
 	
 	
 	/**
-	 * Setzt alle Parameter der Meteorologischen Kontrolle an bzw. aus 
+	 * Setzt alle (Standard-)Parameter der Meteorologischen Kontrolle an bzw. aus 
 	 *
 	 * @param an Standardparameter anschalten?
 	 */
@@ -601,6 +613,37 @@ implements ClientSenderInterface{
 				DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
 				(short)0);
 		ResultData parameterSatz = new ResultData(sensor, paraDifferenzialkontrolle, System.currentTimeMillis(), datum);
+		try {
+			DAV.sendData(parameterSatz);
+		} catch (DataNotSubscribedException e) {
+			e.printStackTrace();
+			LOGGER.error(Konstante.LEERSTRING, e);
+		} catch (SendSubscriptionNotConfirmed e) {
+			e.printStackTrace();
+			LOGGER.error(Konstante.LEERSTRING, e);
+		}
+	}
+	
+
+	/**
+	 * Setzt die Parameter eines Umfelddatensensors für die Anstieg-Abfall-Kontrolle
+	 * 
+	 * @param sensor der Sensor
+	 * @param maxDiff die maximale Differenz zwischen zwei Werten
+	 */
+	public final void setAnAbPara(SystemObject sensor, long maxDiff){
+		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+
+		Data datum = DAV.createData(DAV.getDataModel().getAttributeGroup(
+					"atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName())); //$NON-NLS-1$
+			
+		datum.getUnscaledValue(datenArt.getAbkuerzung() + "maxDiff").set(maxDiff); //$NON-NLS-1$
+			
+		DataDescription paraAnstiegAbfallKontrolle = new DataDescription(
+				DAV.getDataModel().getAttributeGroup("atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
+				DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+					(short)0);
+		ResultData parameterSatz = new ResultData(sensor, paraAnstiegAbfallKontrolle, System.currentTimeMillis(), datum);
 		try {
 			DAV.sendData(parameterSatz);
 		} catch (DataNotSubscribedException e) {

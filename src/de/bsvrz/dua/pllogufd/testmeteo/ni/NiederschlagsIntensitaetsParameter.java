@@ -26,11 +26,11 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo.ni;
 
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoUmfeldDatenSensor;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 
@@ -143,12 +143,27 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 						this.niGrenzNassNI.setWert(resultat.getData().getUnscaledValue("NIgrenzNassNI").longValue()); //$NON-NLS-1$
 						this.niMinNI.setWert(resultat.getData().getUnscaledValue("NIminNI").longValue()); //$NON-NLS-1$
 						this.niGrenzTrockenRLF.setWert(resultat.getData().getUnscaledValue("NIgrenzTrockenRLF").longValue()); //$NON-NLS-1$
-						this.niMinTrockenRLF = resultat.getData().getTimeValue("NIminTrockenRLF").getMillis(); //$NON-NLS-1$						
+						this.niMinTrockenRLF = resultat.getData().getTimeValue("NIminTrockenRLF").getMillis(); //$NON-NLS-1$
+						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this);
 					}
 					this.parameterInitialisiert = true;
 				}
 			}
 		}
 	}
+
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "niGrenzNassRLF = " + niGrenzNassRLF + //$NON-NLS-1$
+				"\nniGrenzNassNI = " + niGrenzNassNI +//$NON-NLS-1$
+				"\nniMinNI = " + niMinNI + //$NON-NLS-1$
+				"\nniGrenzTrockenRLF = " + niGrenzTrockenRLF + //$NON-NLS-1$
+				"\nniMinTrockenRLF = " + niMinTrockenRLF;//$NON-NLS-1$
+	}	
 
 }

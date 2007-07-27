@@ -37,12 +37,12 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.ConfigurationObject;
 import stauma.dav.configuration.interfaces.ObjectSet;
 import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoMessstelle;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
  * Analogon zur <code>NiederschlagsArtsTabelle</code> aus der Feinspezifikation mit
@@ -260,7 +260,7 @@ extends AbstraktMeteoMessstelle{
 					this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 				}
 			}else{
-				LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+				LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
 		
@@ -338,7 +338,7 @@ extends AbstraktMeteoMessstelle{
 				datumInPosition = this.letztesUfdLTDatum;
 			}
 		}else{
-			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+			LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 		
 		return datumInPosition;
@@ -378,7 +378,6 @@ extends AbstraktMeteoMessstelle{
 	private final void regel1(){
 		if(this.letztesUfdLTDatum != null &&
 		   this.letztesUfdNSDatum != null &&
-		   this.letztesUfdLTDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
 		   this.letztesUfdLTDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdLTDatum.getWert().isOk()){
@@ -434,8 +433,6 @@ extends AbstraktMeteoMessstelle{
 		if(this.letztesUfdNIDatum != null &&
 		   this.letztesUfdNSDatum != null &&
 		   this.letztesUfdRLFDatum != null &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
 		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdRLFDatum.getStatusErfassungNichtErfasst() == DUAKonstanten.JA){
@@ -463,8 +460,6 @@ extends AbstraktMeteoMessstelle{
 		if(this.letztesUfdNIDatum != null &&
 		   this.letztesUfdNSDatum != null &&
 		   this.letztesUfdRLFDatum != null &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdNSDatum.getDatenZeit() &&
-		   this.letztesUfdNIDatum.getDatenZeit() == this.letztesUfdRLFDatum.getDatenZeit() &&
 		   this.letztesUfdNIDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
 		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){

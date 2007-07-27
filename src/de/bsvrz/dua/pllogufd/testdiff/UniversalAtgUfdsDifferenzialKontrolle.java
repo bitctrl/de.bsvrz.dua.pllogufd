@@ -28,10 +28,10 @@ package de.bsvrz.dua.pllogufd.testdiff;
 
 import stauma.dav.clientside.Data;
 import stauma.dav.clientside.ResultData;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
  * Klasse zum Auslesen von Parametersätzen der Attributgruppen

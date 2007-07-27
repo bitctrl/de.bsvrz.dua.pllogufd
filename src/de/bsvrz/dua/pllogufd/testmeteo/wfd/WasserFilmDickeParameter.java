@@ -28,11 +28,11 @@ package de.bsvrz.dua.pllogufd.testmeteo.wfd;
 
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoUmfeldDatenSensor;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
  * Parameter für die meteorologische Kontrolle "Wasserfilmdicke"
@@ -109,11 +109,24 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 						this.wfdGrenzNassRLF.setWert(resultat.getData().getUnscaledValue("WFDgrenzNassRLF").longValue()); //$NON-NLS-1$
 						this.wfdMinNassRLF = resultat.getData().getTimeValue("WDFminNassRLF").getMillis(); //$NON-NLS-1$		
 						this.wfdGrenzNassNI.setWert(resultat.getData().getUnscaledValue("WFDgrenzNassNI").longValue()); //$NON-NLS-1$
+						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this);
 					}
 					this.parameterInitialisiert = true;
 				}
 			}
 		}
 	}
+
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "swGrenzTrockenRLF = " + wfdGrenzNassRLF + //$NON-NLS-1$
+				"\nswGrenzSW = " + wfdMinNassRLF + //$NON-NLS-1$
+				"\nwfdGrenzNassNI = " + wfdGrenzNassNI;//$NON-NLS-1$
+	}	
 
 }

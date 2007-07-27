@@ -34,11 +34,11 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.AttributeGroup;
 import stauma.dav.configuration.interfaces.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
  * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten
@@ -161,6 +161,8 @@ extends AbstraktUmfeldDatenSensor{
 				if(resultat != null && resultat.getData() != null){
 					synchronized (this) {
 						this.parameter = new UniversalAtgUfdsAnstiegAbstiegKontrolle(resultat);
+						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this.parameter);
 					}
 				}
 			}

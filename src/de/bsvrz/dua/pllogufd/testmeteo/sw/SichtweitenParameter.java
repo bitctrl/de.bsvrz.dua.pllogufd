@@ -26,11 +26,11 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo.sw;
 
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoUmfeldDatenSensor;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 
@@ -95,11 +95,23 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 					synchronized (this) {
 						this.swGrenzTrockenRLF.setWert(resultat.getData().getUnscaledValue("SWgrenzTrockenRLF").longValue()); //$NON-NLS-1$
 						this.swGrenzSW.setWert(resultat.getData().getUnscaledValue("SWgrenzSW").longValue()); //$NON-NLS-1$
+						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this);
 					}
 					this.parameterInitialisiert = true;
 				}
 			}
 		}
 	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "swGrenzTrockenRLF = " + swGrenzTrockenRLF + //$NON-NLS-1$
+				"\nswGrenzSW = " + swGrenzSW;//$NON-NLS-1$
+	}	
 
 }

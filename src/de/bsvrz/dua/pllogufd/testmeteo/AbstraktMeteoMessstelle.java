@@ -34,11 +34,11 @@ import java.util.HashSet;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.modell.AbstractSystemObjekt;
 import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjekt;
 import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
@@ -52,6 +52,11 @@ import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
  */
 public abstract class AbstraktMeteoMessstelle 
 extends AbstractSystemObjekt{
+	
+	/**
+	 * Nur für Debugging-Zwecke
+	 */
+	private static final boolean DEBUG = false;
 	
 	/**
 	 * Debug-Logger
@@ -107,8 +112,8 @@ extends AbstractSystemObjekt{
 	
 	/**
 	 * Arbeitet <b>alle</b> Regeln der Reihe nach ab, so die Voraussetzungen zur
-	 * Abarbeitung gegeben sind. Die Ergebnisse überschreiben die Variablen mit
-	 * den originalen Werten (lokaler Puffer).
+	 * Abarbeitung der jeweiligen Regel gegeben sind. Die Ergebnisse überschreiben
+	 * die Variablen mit den originalen Werten (lokaler Puffer).
 	 * 
 	 * @return das Ergebnis des Aufrufs der Methode <code>getAlleAktuellenWerte()</code>
 	 */
@@ -117,7 +122,7 @@ extends AbstractSystemObjekt{
 	
 	/**
 	 * Erfragt, ob alle Werte, die zur Abarbeitung <b>aller</b> Regeln dieses Submoduls
-	 * notwendig sind vorliegen <b>und alle</b> für das selbe Intervall gelten.
+	 * notwendig sind vorliegen
 	 *  
 	 * @return ob <b>alle</b> Werte für <b>ein</b> Intervall vorliegen
 	 */
@@ -125,7 +130,11 @@ extends AbstractSystemObjekt{
 	
 	
 	/**
-	 * Schreibt ein angekommenes Datum in die Member-Variable in die es gehört
+	 * Schreibt ein angekommenes Datum in die Member-Variable in die es gehört, so der aktuelle
+	 * lokale Puffer entweder leer ist, oder der Datenzeitstempel des übergebenen Datums mit den
+	 * Zeitstempeln der bereits gespeicherten Daten übereinstimmt.<br>
+	 * <b>Die heißt insbesondere, dass mit dieser Methode nur Daten in das Modul gespeichert 
+	 * werden können, die den gleichen Zeitstempel haben</b>
 	 * 
 	 * @param umfeldDatum ein Umfelddatum
 	 * @return ob das Umfelddatum in seine Member-Variable gespeichert werden konnte<br> 
@@ -171,8 +180,9 @@ extends AbstractSystemObjekt{
 
 	
 	/**
+	 * Erfragt, ob der lokale Puffer dieses Moduls leer ist.
 	 * 
-	 * @return
+	 * @return ob der lokale Puffer dieses Moduls leer ist
 	 */
 	protected abstract boolean isPufferLeer();
 	
@@ -190,15 +200,20 @@ extends AbstractSystemObjekt{
 		
 		if(umfeldDatum != null){
 			synchronized (this) {
+
 				
 				/** Debug **/
-				String zusatzInfo = this.getClass().getSimpleName() + ", Zur Zeit gespeichert: "; //$NON-NLS-1$
-				for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
-				LOGGER.info(zusatzInfo);
-				
-				LOGGER.info(this.getClass().getSimpleName() + " IN: " + umfeldDatum.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
-						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(umfeldDatum.getDataTime())) + "\n" + umfeldDatum); //$NON-NLS-1$
+				if(DEBUG){
+					String zusatzInfo = this.getClass().getSimpleName() + ", Zur Zeit gespeichert: "; //$NON-NLS-1$
+					for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
+					LOGGER.info(zusatzInfo);
+					
+					LOGGER.info(this.getClass().getSimpleName() + " IN: " + umfeldDatum.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
+							DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(umfeldDatum.getDataTime()))
+							+ "\n" + umfeldDatum); //$NON-NLS-1$
+					}
 				/** Debug **/
+				
 				
 				if(this.isDatenArtRelevantFuerSubModul(umfeldDatum)){
 					if(umfeldDatum.getData() == null){
@@ -215,13 +230,15 @@ extends AbstractSystemObjekt{
 						
 					}else{
 						if(this.isNeuesIntervall(umfeldDatum)){
-							
-							LOGGER.info("------------- Neues Intervall --------------");
-							
+								
 							ergebnisse = this.berechneAlleRegeln();
 							this.loescheAlleWerte();
 							if(!this.bringeDatumInPosition(umfeldDatum)){
-								throw new RuntimeException("Hallo"); //$NON-NLS-1$
+								LOGGER.warning("Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
+								ArrayList<ResultData> ergebnisseDummy = new ArrayList<ResultData>();
+								for(ResultData ergebnis:ergebnisse)ergebnisseDummy.add(ergebnis);
+								ergebnisseDummy.add(umfeldDatum);
+								ergebnisse = ergebnisseDummy.toArray(new ResultData[0]);
 							}
 							
 						}else{							
@@ -234,16 +251,14 @@ extends AbstractSystemObjekt{
 								if(this.sindAlleWerteFuerIntervallDa()){
 									ergebnisse = this.berechneAlleRegeln();
 									this.loescheAlleWerte();
-									LOGGER.info("------------- alle Werte berechnet --------------");
-								}else{
-									LOGGER.info("------------- noch nicht alle Da --------------");
 								}
 							}else{
 								/**
 								 * Datum konnte nicht in Position gebracht werden
 								 */
 								ergebnisse = new ResultData[]{ umfeldDatum };
-								throw new RuntimeException("Hallo2");
+								LOGGER.warning("Datum konnte nicht in Position gebracht werden:\n" +  //$NON-NLS-1$
+										umfeldDatum);
 							}
 						}
 					}
@@ -257,25 +272,28 @@ extends AbstractSystemObjekt{
 				
 				
 				/** Debug **/
-				zusatzInfo = this.getClass().getSimpleName() + ", Jetzt gespeichert: "; //$NON-NLS-1$
-				for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
-				LOGGER.info(zusatzInfo);
-				
-				String log = this.getClass().getSimpleName() + " OUT: "; //$NON-NLS-1$
-				if(ergebnisse != null && ergebnisse.length != 0){
-					for(ResultData ergebnis:ergebnisse){
-						log += "\n  " + ergebnis.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
-						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ergebnis.getDataTime()));
+				if(DEBUG){
+					String zusatzInfo = this.getClass().getSimpleName() + ", Jetzt gespeichert: "; //$NON-NLS-1$
+					for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
+					LOGGER.info(zusatzInfo);
+					
+					String log = this.getClass().getSimpleName() + " OUT: "; //$NON-NLS-1$
+					if(ergebnisse != null && ergebnisse.length != 0){
+						for(ResultData ergebnis:ergebnisse){
+							log += "\n  " + ergebnis.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
+							DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ergebnis.getDataTime()));
+						}
+						log += "\n"; //$NON-NLS-1$
+						for(ResultData ergebnis:ergebnisse){
+							log += "\n  " + ergebnis; //$NON-NLS-1$
+						}
+					}else{
+						log += "nichts"; //$NON-NLS-1$
 					}
-					log += "\n"; //$NON-NLS-1$
-					for(ResultData ergebnis:ergebnisse){
-						log += "\n  " + ergebnis; //$NON-NLS-1$
-					}
-				}else{
-					log += "nichts"; //$NON-NLS-1$
+					LOGGER.info(log);
 				}
-				LOGGER.info(log);
 				/** Debug **/
+				
 				
 			}
 		}
@@ -298,15 +316,18 @@ extends AbstractSystemObjekt{
 	 */
 	private final boolean isNeuesIntervall(ResultData umfeldDatum){
 		return this.getDatumBereitsInPosition(umfeldDatum) != null && 
-			   this.aktuellerZeitstempel <= umfeldDatum.getDataTime();
+			   this.aktuellerZeitstempel < umfeldDatum.getDataTime();
 	}	
 	
 	
 	/**
 	 * Erfragt, ob ein übergebenes Umfelddatum in diesem Modul speicherbar ist.<br>
 	 * Ein Datum ist dann speicherbar, wenn <code>aktuellerZeitstempel == -1</code>
-	 * oder <code>aktuellerZeitstempel <= umfeldDatum.getDataTime()</code> oder
-	 * der lokale Speicher an sich leer ist
+	 * oder <code>aktuellerZeitstempel == umfeldDatum.getDataTime()</code> oder
+	 * der lokale Speicher an sich leer ist.<br>
+	 * Ein Datum wird also nur als im Modul speicherbar erachtet (und dann gespeichert),
+	 * wenn noch keine Daten im Modul gespeichert sind, oder die Daten im Modul zeitlich
+	 * zum übergebenen Datum passen.
 	 * 
 	 * @param umfeldDatum ein Umfelddatum (muss <code>!= null</code> sein)
 	 * @return ob ein übergebenes Umfelddatum in diesem Modul speicherbar ist
@@ -333,7 +354,7 @@ extends AbstractSystemObjekt{
 		if(datenArt != null){
 			relevant = this.getDatenArten().contains(datenArt);
 		}else{
-			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+			LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 		
 		return relevant;

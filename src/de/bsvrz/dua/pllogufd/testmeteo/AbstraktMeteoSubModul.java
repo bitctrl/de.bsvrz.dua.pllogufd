@@ -55,8 +55,6 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	 */
 	public abstract AbstraktMeteoMessstelle getMessStelleVonSensor(final SystemObject ufdsObjekt);
 	
-
-	static int i = 0;
 	
 	/**
 	 * {@inheritDoc}

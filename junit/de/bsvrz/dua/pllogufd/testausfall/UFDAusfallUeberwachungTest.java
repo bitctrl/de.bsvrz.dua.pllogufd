@@ -36,8 +36,8 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import stauma.dav.clientside.ClientDavInterface;
 import stauma.dav.clientside.ClientReceiverInterface;
@@ -49,11 +49,11 @@ import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
@@ -87,6 +87,11 @@ import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
  */
 public class UFDAusfallUeberwachungTest 
 implements ClientSenderInterface, ClientReceiverInterface{
+	
+	/**
+	 * Debugging Ausgaben anzeigen?
+	 */
+	private static final boolean DEBUG = false;
 
 	/**
 	 * Die Daten werden im Abstand von <code>ABSTAND + Random.nextInt(ABSTAND)</code> versendet
@@ -107,17 +112,17 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx1
 	 */
-	private static final long MAX_VERZUG_1 = 3000L;
+	private static final long MAX_VERZUG_1 = 5000L;
 	
 	/**
 	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx2
 	 */
-	private static final long MAX_VERZUG_2 = 4000L;
+	private static final long MAX_VERZUG_2 = 10000L;
 	
 	/**
 	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx3
 	 */
-	private static final long MAX_VERZUG_3 = 6000L;
+	private static final long MAX_VERZUG_3 = 12000L;
 	
 	/**
 	 * Datenverteiler-Verbindung
@@ -141,10 +146,11 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * {@inheritDoc}
 	 */
-	//@Before
+	@Before
 	public void setUp() throws Exception {
 		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
 		PlPruefungLogischUFDTest.initialisiere();
+		PlPruefungLogischUFDTest.SENDER.setMeteoKontrolle(false);
 						
 		/**
 		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch UFD kommen
@@ -190,7 +196,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		
 		/**
 		 * Ausfallüberwachung für alle Sensoren ausschalten
-		 * Parameter setzen auf 3s (für Sensoren xxx1), 4s (für Sensoren xxx2) und 6s (für Sensoren xxx3)
+		 * Parameter setzen auf 5s (für Sensoren xxx1), 10s (für Sensoren xxx2) und 12s (für Sensoren xxx3)
 		 */
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			if(sensor.getPid().endsWith("1")){ //$NON-NLS-1$
@@ -239,7 +245,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				Collection<Ergebnis> istErgebnisse = this.ergebnisIst.get(sensor);
 				Ergebnis erfolgsErgebnis = null;
 				if(istErgebnisse == null){
-					System.out.println("NULL: " + sensor); //$NON-NLS-1$
+					if(DEBUG)System.out.println("NULL: " + sensor); //$NON-NLS-1$
 				}else{
 					for(Ergebnis istErgebnis:istErgebnisse){
 						if(istErgebnis.equals(this.ergebnisSoll.get(sensor))){
@@ -288,7 +294,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * der eigentliche Test
 	 */
-	//@Test
+	@Test
 	public void testUFDAusfallUeberwachung()
 	throws Exception{
 						
@@ -360,7 +366,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 								nichtErfasst);
 				
 				this.ergebnisSoll.put(sensor, erwartetesErgebnis);
-				System.out.println(jetzt() + "Sende: " + erwartetesErgebnis);  //$NON-NLS-1$
+				System.out.println(TestUtensilien.jzt() + ", Sende: " + erwartetesErgebnis);  //$NON-NLS-1$
 				
 				Pause.warte(ABSTAND + DAVTest.R.nextInt(ABSTAND));
 			}			
@@ -422,20 +428,12 @@ implements ClientSenderInterface, ClientReceiverInterface{
 						ergebnisseBisJetzt.add(ergebnisIstFuerSensor);
 					}
 					
-					System.out.println(jetzt() + ", Empfange: " + ergebnisIstFuerSensor); //$NON-NLS-1$
+					if(DEBUG){
+						System.out.println(TestUtensilien.jzt() + ", Empfange: " + ergebnisIstFuerSensor); //$NON-NLS-1$
+					}
 				}
 			}
 		}
-	}
-	
-	
-	/**
-	 * Erfragt die aktuelle Zeit als String
-	 * 
-	 * @return die aktuelle Zeit als String
-	 */
-	private final String jetzt(){
-		return "(JETZT:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	

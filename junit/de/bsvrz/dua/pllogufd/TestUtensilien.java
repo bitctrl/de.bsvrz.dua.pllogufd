@@ -34,8 +34,8 @@ import stauma.dav.clientside.Data;
 import stauma.dav.clientside.DataDescription;
 import stauma.dav.clientside.ResultData;
 import stauma.dav.configuration.interfaces.SystemObject;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
  * Einige Utensilien für die Tests der SWE 4.3
@@ -117,7 +117,7 @@ public class TestUtensilien {
 	 * @return die aktuelle Zeit
 	 */
 	public static final String jzt(){
-		return "(NOW:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$ 
+		return "(JETZT:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$ 
 						+ ")"; //$NON-NLS-1$
 	}
 

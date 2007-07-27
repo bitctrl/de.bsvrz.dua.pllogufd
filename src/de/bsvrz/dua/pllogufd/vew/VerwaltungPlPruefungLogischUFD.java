@@ -41,13 +41,13 @@ import de.bsvrz.dua.pllogufd.testaufab.AnstiegAbfallKontrolle;
 import de.bsvrz.dua.pllogufd.testausfall.UFDAusfallUeberwachung;
 import de.bsvrz.dua.pllogufd.testdiff.UFDDifferenzialKontrolle;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolle;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**

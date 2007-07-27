@@ -29,6 +29,7 @@ package de.bsvrz.dua.pllogufd.testmeteo;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -44,12 +45,12 @@ import stauma.dav.configuration.interfaces.SystemObject;
 import sys.funclib.debug.Debug;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorDatum;
-import de.bsvrz.dua.pllogufd.UmfeldDatenSensorWert;
-import de.bsvrz.dua.pllogufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
@@ -129,6 +130,12 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	protected SortedSet<SystemObject> fbzSensoren = new TreeSet<SystemObject>(C);
 	
 	/**
+	 * alle Sensoren, für die innerhalb dieses Tests nur Werte mit dem
+	 * Status "fehlerhaft" gesendet werden müssen, um das Ergebnis nicht zu beeinflussen
+	 */
+	protected HashSet<SystemObject> restSensoren = new HashSet<SystemObject>();
+	
+	/**
 	 * letzter Ist-Ergebnis-Wert von einem Sensor
 	 */
 	protected Map<SystemObject, MeteoErgebnis> ergebnisIst = new HashMap<SystemObject, MeteoErgebnis>();
@@ -146,13 +153,17 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		PlPruefungLogischUFDTest.SENDER.setMeteoKontrolle(true);
 		
 		/**
-		 * Setzte Ausfallüberwachung für alle Sensoren auf 500ms und
+		 * Setzte Ausfallüberwachung für alle Sensoren AUS
 		 * Differentialkontrolle auf einen harmlosen Wert
+		 * Anstieg-Abfall-Kontrolle aus
 		 */
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, 1000L);
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
 			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
 				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Konstante.STUNDE_IN_MS);
+			}
+			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
+				PlPruefungLogischUFDTest.SENDER.setAnAbPara(sensor, 5);
 			}
 		}
 										
@@ -253,6 +264,22 @@ implements ClientSenderInterface, ClientReceiverInterface{
 			this.sendeDatum(sensor, wert, datenZeitStempel);
 		}
 	}
+
+	
+	/**
+	 * Sendet einen Sensorwert mit der Kennzeichnung <code>fehlerhaft</code>
+	 * 
+	 * @param sensor eine Menge von Umfelddatensensoren
+	 * @param datenZeitStempel der Datenzeitstempel
+	 */
+	public final void sendeFehlerhaftDaten(final Collection<SystemObject> sensoren, long datenZeitStempel){
+		for(SystemObject sensor:sensoren){
+			UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
+			wert.setFehlerhaftAn();
+			this.sendeDatum(sensor, wert.getWert(), datenZeitStempel);
+		}
+	}
+
 	
 	
 	/**
@@ -267,12 +294,13 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 		datum.getWert().setWert(wert);
 		ResultData resultat = new ResultData(sensor, datum.getOriginalDatum().getDataDescription(), datenZeitStempel, datum.getDatum());
+		if(DEBUG)System.out.println(TestUtensilien.jzt() + ", Sende: " + resultat); //$NON-NLS-1$
 		try {
 			PlPruefungLogischUFDTest.SENDER.sende(resultat);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error(Konstante.LEERSTRING, e);
-		}			
+		}
 	}
 
 	
@@ -312,9 +340,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	
 	
 	/**
-	 * Schaltet die Ausfallüberwachung erst aus, dann wieder ein und sendet einen 
-	 * initialen Wert. Dann wartet die Methode, bis die Ausfallüberwachung sicher
-	 * mindestens 2 nicht erfasste Werte gesendet hat. und 
+	 * Senset ein fehlerhaftes Datum und wartet dann fünf intervalle (Reset)
 	 * 
 	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher 
 	 * ein Wert vorliegt, der <code>nicht erfasst</code> ist 
@@ -325,7 +351,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
 			wert.setFehlerhaftAn();
-			this.sendeDatum(sensor, wert.getWert(), intervall );
+			this.sendeDatum(sensor, wert.getWert(), intervall);
 		}
 
 		return intervall + PlPruefungLogischUFDTest.STANDARD_T * 5;
