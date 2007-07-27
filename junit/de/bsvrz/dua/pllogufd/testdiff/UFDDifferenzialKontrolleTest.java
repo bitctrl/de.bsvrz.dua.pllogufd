@@ -65,6 +65,11 @@ public class UFDDifferenzialKontrolleTest
 implements ClientSenderInterface, ClientReceiverInterface{
 	
 	/**
+	 * Debugging-Ausgaben?
+	 */
+	private static final boolean DEBUG = false;
+	
+	/**
 	 * standardm‰ﬂige maximal zul‰ssige Ergebniskonstanz in Intervallen 
 	 */
 	private static final long STANDARD_MAX_INTERVALLE = 3;
@@ -175,9 +180,11 @@ implements ClientSenderInterface, ClientReceiverInterface{
 					    datum.getOriginalDatum().getDataDescription(), 
 					    zeitStempel, datum.getDatum());
 			
-			System.out.println("Sende initial: " +  //$NON-NLS-1$
-					DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
-					datum.getOriginalDatum().getObject());
+			if(DEBUG){
+				System.out.println("Sende initial: " +  //$NON-NLS-1$
+						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
+						datum.getOriginalDatum().getObject());
+			}
 			
 			PlPruefungLogischUFDTest.SENDER.sende(sendeDatum);
 		}
@@ -368,10 +375,12 @@ implements ClientSenderInterface, ClientReceiverInterface{
 					this.ergebnisIst.put(resultat.getObject(), implausibelUndFehlerhaft);
 					this.ergebnisEingetroffen.put(resultat.getObject(), resultat);
 					
-					System.out.println(TestUtensilien.jzt() + ", Empfange: " +  //$NON-NLS-1$
-							DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(resultat.getDataTime())) + ", " + //$NON-NLS-1$
-							resultat.getObject() + ", T: " + ufdDatum.getT() + ", impl: " + //$NON-NLS-1$ //$NON-NLS-2$ 
-							(implausibelUndFehlerhaft?"ja":"nein")); //$NON-NLS-1$ //$NON-NLS-2$
+					if(DEBUG){
+						System.out.println(TestUtensilien.jzt() + ", Empfange: " +  //$NON-NLS-1$
+								DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(resultat.getDataTime())) + ", " + //$NON-NLS-1$
+								resultat.getObject() + ", T: " + ufdDatum.getT() + ", impl: " + //$NON-NLS-1$ //$NON-NLS-2$ 
+								(implausibelUndFehlerhaft?"ja":"nein")); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 				}
 			}
 		}

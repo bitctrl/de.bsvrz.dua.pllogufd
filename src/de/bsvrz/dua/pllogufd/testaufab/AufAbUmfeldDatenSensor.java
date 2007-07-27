@@ -139,7 +139,7 @@ extends AbstraktUmfeldDatenSensor{
 							}							
 						}
 					}else{
-						LOGGER.warning("Fuer Umfelddatensensor " + this +  //$NON-NLS-1$
+						LOGGER.fine("Fuer Umfelddatensensor " + this +  //$NON-NLS-1$
 						" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
 					}
 				}

@@ -69,7 +69,7 @@ implements ClientSenderInterface{
 			"-debugLevelFileText=INFO" }; //$NON-NLS-1$
 	
 	/**
-	 * Standardintervalllänge für die meisten Tests (1s)
+	 * Standardintervalllänge der Testdaten für die meisten Tests (2s)
 	 */
 	public static final long STANDARD_T = 2000L;
 	

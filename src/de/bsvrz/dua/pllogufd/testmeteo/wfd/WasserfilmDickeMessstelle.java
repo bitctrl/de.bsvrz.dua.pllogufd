@@ -243,38 +243,42 @@ extends AbstraktMeteoMessstelle{
 		if(umfeldDatum.getData() != null){
 			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
 			
-			if(datenArt != null && this.isDatumSpeicherbar(umfeldDatum)){
-				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
-
-				erfolgreich = true;
-				if(datenArt.equals(UmfeldDatenArt.NI)){
-					this.letztesUfdNIDatum = datum;
-				}else
-				if(datenArt.equals(UmfeldDatenArt.FBZ)){
-					this.letztesUfdFBZDatum = datum;
-				}else
-				if(datenArt.equals(UmfeldDatenArt.RLF)){
-					this.letztesUfdRLFDatum = datum;
-					if(datum.getWert().isOk() &&
-					   this.parameterSensor.isInitialisiert() && 
-					   this.parameterSensor.getWFDgrenzNassRLF().isOk() &&
-					   datum.getWert().getWert() > this.parameterSensor.getWFDgrenzNassRLF().getWert()){
-						this.rlfUeberWfdgrenzNassFuerMS += datum.getT();
+			if(datenArt != null){
+				if(this.isDatumSpeicherbar(umfeldDatum)){
+					UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
+	
+					erfolgreich = true;
+					if(datenArt.equals(UmfeldDatenArt.NI)){
+						this.letztesUfdNIDatum = datum;
+					}else
+					if(datenArt.equals(UmfeldDatenArt.FBZ)){
+						this.letztesUfdFBZDatum = datum;
+					}else
+					if(datenArt.equals(UmfeldDatenArt.RLF)){
+						this.letztesUfdRLFDatum = datum;
+						if(datum.getWert().isOk() &&
+						   this.parameterSensor.isInitialisiert() && 
+						   this.parameterSensor.getWFDgrenzNassRLF().isOk() &&
+						   datum.getWert().getWert() > this.parameterSensor.getWFDgrenzNassRLF().getWert()){
+							this.rlfUeberWfdgrenzNassFuerMS += datum.getT();
+						}else{
+							this.rlfUeberWfdgrenzNassFuerMS = 0;
+						}
+					}else
+					if(datenArt.equals(UmfeldDatenArt.WFD)){
+						this.letztesUfdWFDDatum = datum;
 					}else{
-						this.rlfUeberWfdgrenzNassFuerMS = 0;
+						erfolgreich = false;
 					}
-				}else
-				if(datenArt.equals(UmfeldDatenArt.WFD)){
-					this.letztesUfdWFDDatum = datum;
+					
+					if(erfolgreich){
+						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
+					}
 				}else{
-					erfolgreich = false;
-				}
-				
-				if(erfolgreich){
-					this.aktuellerZeitstempel = umfeldDatum.getDataTime();
+					LOGGER.warning(this.getClass().getSimpleName() + ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			}else{
-				LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+				LOGGER.warning(this.getClass().getSimpleName() + ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
 		
@@ -373,7 +377,7 @@ extends AbstraktMeteoMessstelle{
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		}else{
-			LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+			LOGGER.warning(this.getClass().getSimpleName() + ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 		
 		return datumInPosition;

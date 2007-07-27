@@ -142,14 +142,14 @@ extends AbstraktUmfeldDatenSensor{
 							}
 						}
 					}else{
-						LOGGER.warning("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
+						LOGGER.fine("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
 								this.objekt + " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
 								UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getAbkuerzung() + 
 								"Grenz=" + this.parameter.getGrenz()); //$NON-NLS-1$
 					}					
 				}
 			}else{
-				LOGGER.warning("Fuer Umfelddatensensor " + this +  //$NON-NLS-1$
+				LOGGER.fine("Fuer Umfelddatensensor " + this +  //$NON-NLS-1$
 				" wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
 			}
 		}

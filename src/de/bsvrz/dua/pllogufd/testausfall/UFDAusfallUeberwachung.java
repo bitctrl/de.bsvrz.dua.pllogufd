@@ -252,7 +252,7 @@ implements IKontrollProzessListener<Long>,
 					this.kontrollZeitpunkte.remove(gefundenInKontrollZeitpunkt);
 				}					
 			}else{
-				LOGGER.warning("Datum " + datum + " konnte nicht aus" + //$NON-NLS-1$ //$NON-NLS-2$
+				LOGGER.info("Datum " + datum + " konnte nicht aus" + //$NON-NLS-1$ //$NON-NLS-2$
 				" Kontrollwarteschlange gelöscht werden"); //$NON-NLS-1$
 			}
 		}
@@ -338,7 +338,7 @@ implements IKontrollProzessListener<Long>,
 			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(empfangenesResultat);
 			kontrollZeitpunkt = empfangenesResultat.getDataTime() + 2 * datum.getT() + maxZeitVerzug;
 		}else{
-			LOGGER.warning("Es wurden noch keine (sinnvollen) Parameter empfangen: " //$NON-NLS-1$ 
+			LOGGER.fine("Es wurden noch keine (sinnvollen) Parameter empfangen: " //$NON-NLS-1$ 
 					+ empfangenesResultat.getObject());
 		}
 

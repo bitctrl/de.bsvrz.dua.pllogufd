@@ -227,29 +227,33 @@ extends AbstraktMeteoMessstelle{
 		boolean erfolgreich = false;
 		
 		if(umfeldDatum.getData() != null){
-			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-			
-			if(datenArt != null && this.isDatumSpeicherbar(umfeldDatum)){
-				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
-
-				erfolgreich = true;
-				if(datenArt.equals(UmfeldDatenArt.SW)){
-					this.letztesUfdSWDatum = datum;
-				}else
-				if(datenArt.equals(UmfeldDatenArt.NS)){
-					this.letztesUfdNSDatum = datum;
-				}else
-				if(datenArt.equals(UmfeldDatenArt.RLF)){
-					this.letztesUfdRLFDatum = datum;
-				}else{
-					erfolgreich = false;
-				}
+			if(this.isDatumSpeicherbar(umfeldDatum)){
+				UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
 				
-				if(erfolgreich){
-					this.aktuellerZeitstempel = umfeldDatum.getDataTime();
+				if(datenArt != null && this.isDatumSpeicherbar(umfeldDatum)){
+					UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
+	
+					erfolgreich = true;
+					if(datenArt.equals(UmfeldDatenArt.SW)){
+						this.letztesUfdSWDatum = datum;
+					}else
+					if(datenArt.equals(UmfeldDatenArt.NS)){
+						this.letztesUfdNSDatum = datum;
+					}else
+					if(datenArt.equals(UmfeldDatenArt.RLF)){
+						this.letztesUfdRLFDatum = datum;
+					}else{
+						erfolgreich = false;
+					}
+					
+					if(erfolgreich){
+						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
+					}
+				}else{
+					LOGGER.warning(this.getClass().getSimpleName() + ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			}else{
-				LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+				LOGGER.warning(this.getClass().getSimpleName() + ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
 		
@@ -339,7 +343,7 @@ extends AbstraktMeteoMessstelle{
 				datumInPosition = this.letztesUfdRLFDatum;
 			}
 		}else{
-			LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+			LOGGER.warning(this.getClass().getSimpleName() + ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 		
 		return datumInPosition;

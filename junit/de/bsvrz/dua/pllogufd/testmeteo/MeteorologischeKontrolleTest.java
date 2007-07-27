@@ -67,7 +67,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Debug-Ausgaben über Standardausgabe
 	 */
-	protected static final boolean DEBUG = true;
+	protected static final boolean DEBUG = false;
 
 	/**
 	 * Sollen die <code>Assert</code>-Statements ausgeführt werden?
