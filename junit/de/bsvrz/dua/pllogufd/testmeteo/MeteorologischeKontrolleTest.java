@@ -150,7 +150,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		 * Differentialkontrolle auf einen harmlosen Wert
 		 */
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, 500L);
+			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, 1000L);
 			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
 				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Konstante.STUNDE_IN_MS);
 			}
@@ -303,7 +303,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 					this.ergebnisIst.put(resultat.getObject(), ergebnis);
 					
 					if(DEBUG){
-						System.out.println(TestUtensilien.jzt() + ", Empfange: " + ergebnis); //$NON-NLS-1$
+						System.out.println(TestUtensilien.jzt() + ", Empfange(" + ergebnis + "): " + resultat); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
@@ -312,11 +312,9 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	
 	
 	/**
-	 * Schreibt für alle Sensoren eine Reihe von Werten im Intervall 
-	 * <code>PlPruefungLogischUFDTest.STANDARD_T</code> und gibt dann
-	 * den Zeitstempel des dritten Wertes zurück. Eigentlich wird nur ein
-	 * Wert geschrieben und dieser dann über die Ausfallkontrolle 
-	 * "verlängert" 
+	 * Schaltet die Ausfallüberwachung erst aus, dann wieder ein und sendet einen 
+	 * initialen Wert. Dann wartet die Methode, bis die Ausfallüberwachung sicher
+	 * mindestens 2 nicht erfasste Werte gesendet hat. und 
 	 * 
 	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher 
 	 * ein Wert vorliegt, der <code>nicht erfasst</code> ist 
@@ -327,9 +325,9 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
 			wert.setFehlerhaftAn();
-			this.sendeDatum(sensor, wert.getWert(), intervall);
+			this.sendeDatum(sensor, wert.getWert(), intervall );
 		}
-		
+
 		return intervall + PlPruefungLogischUFDTest.STANDARD_T * 5;
 	}
 	

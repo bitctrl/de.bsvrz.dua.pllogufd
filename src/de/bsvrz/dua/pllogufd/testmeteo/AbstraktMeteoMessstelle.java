@@ -70,11 +70,9 @@ extends AbstractSystemObjekt{
 	protected Collection<SystemObject> sensorenAnMessStelle = new HashSet<SystemObject>();
 	
 	/**
-	 * letzter Zeitstempel, für den Daten aus dieser Messstelle wieder freigegeben wurden
-	 * d.h. insbesondere, der Zeitstempel, für den bereits versucht wurde alle Regeln
-	 * abzuarbeiten
+	 * der Zeitstempel aller im Moment gespeicherten Werte
 	 */
-	protected long letzterBearbeiteterZeitStempel = -1;
+	protected long aktuellerZeitstempel = -1;
 	
 	
 	/**
@@ -130,8 +128,11 @@ extends AbstractSystemObjekt{
 	 * Schreibt ein angekommenes Datum in die Member-Variable in die es gehört
 	 * 
 	 * @param umfeldDatum ein Umfelddatum
+	 * @return ob das Umfelddatum in seine Member-Variable gespeichert werden konnte<br> 
+	 * <b>Ein Datum kann nicht gespeichert werden, wenn sein Zeitstempel vom Zeitstempel aller 
+	 * anderen gespeicherten Werte differiert.</b>
 	 */
-	protected abstract void bringeDatumInPosition(final ResultData umfeldDatum);
+	protected abstract boolean bringeDatumInPosition(final ResultData umfeldDatum);
 	
 	
 	/**
@@ -149,18 +150,6 @@ extends AbstractSystemObjekt{
 	
 	
 	/**
-	 * Erfragt, ob für einen bestimmten Umfelddatensensor bereits ein Datum im lokalen 
-	 * Puffer steht und gibt dieses zurück. Dabei wird nicht überprüft, ob das eingetroffene
-	 * Datum überhaupt Daten enthält.
-	 * 
-	 * @param umfeldDatum ein Datum eines bestimmten Umfelddatensensors
-	 * @return das für einen bestimmten Umfelddatensensor bereits im lokalen 
-	 * Puffer stehende Datum oder <code>null</code> wenn noch keins im Puffer steht
-	 */
-	protected abstract UmfeldDatenSensorDatum getDatumBereitsInPosition(final ResultData umfeldDatum);
-	
-	
-	/**
 	 * Initialisiert eine Messstelle diesen Typs (Parameteranmeldungen usw.)
 	 * 
 	 * @throws DUAInitialisierungsException wenn die Initialisierung fehlgeschlagen ist 
@@ -170,19 +159,22 @@ extends AbstractSystemObjekt{
 	
 	
 	/**
-	 * Setzt den letzten Zeitstempel, für den Daten aus dieser Messstelle wieder freigegeben
-	 * wurden d.h. insbesondere, der Zeitstempel, für den bereits versucht wurde alle Regeln
-	 * abzuarbeiten 
+	 * Erfragt, ob für einen bestimmten Umfelddatensensor bereits ein Datum im lokalen 
+	 * Puffer steht und gibt dieses zurück. Dabei wird nicht überprüft, ob das eingetroffene
+	 * Datum überhaupt Daten enthält.
 	 * 
-	 * @param datum letzter Zeitstempel, für den Daten aus dieser Messstelle wieder 
-	 * freigegeben wurden d.h. insbesondere, der Zeitstempel, für den bereits versucht
-	 * wurde alle Regeln abzuarbeiten 
+	 * @param umfeldDatum ein Datum eines bestimmten Umfelddatensensors
+	 * @return das für einen bestimmten Umfelddatensensor bereits im lokalen 
+	 * Puffer stehende Datum oder <code>null</code> wenn noch keins im Puffer steht
 	 */
-	protected final void setLetztenBerabeitetenZeitstempel(UmfeldDatenSensorDatum datum){
-		if(datum != null){
-			this.letzterBearbeiteterZeitStempel = datum.getDatenZeit();
-		}
-	}
+	protected abstract UmfeldDatenSensorDatum getDatumBereitsInPosition(final ResultData umfeldDatum);
+
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected abstract boolean isPufferLeer();
 	
 	
 	/**
@@ -199,12 +191,14 @@ extends AbstractSystemObjekt{
 		if(umfeldDatum != null){
 			synchronized (this) {
 				
+				/** Debug **/
 				String zusatzInfo = this.getClass().getSimpleName() + ", Zur Zeit gespeichert: "; //$NON-NLS-1$
 				for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
 				LOGGER.info(zusatzInfo);
 				
 				LOGGER.info(this.getClass().getSimpleName() + " IN: " + umfeldDatum.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
-						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(umfeldDatum.getDataTime())));
+						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(umfeldDatum.getDataTime())) + "\n" + umfeldDatum); //$NON-NLS-1$
+				/** Debug **/
 				
 				if(this.isDatenArtRelevantFuerSubModul(umfeldDatum)){
 					if(umfeldDatum.getData() == null){
@@ -220,45 +214,36 @@ extends AbstractSystemObjekt{
 						this.loescheAlleWerte();
 						
 					}else{
-						UmfeldDatenSensorDatum datumInPosition = this.getDatumBereitsInPosition(umfeldDatum);
-						if(datumInPosition != null){
-							if(datumInPosition.getDatenZeit() < umfeldDatum.getDataTime()){					
-								/**
-								 * Es kann hier davon ausgegangen werden, dass das Intervall,
-								 * für das noch Daten im lokalen Puffer stehen abgelaufen ist,
-								 * da ein neues Datum mit echt jüngerem Zeitstempel eingetroffen
-								 * ist
-								 */
-								ergebnisse = this.berechneAlleRegeln();
-								this.loescheAlleWerte();
-								this.bringeDatumInPosition(umfeldDatum);
-							}else
-							if(datumInPosition.getDatenZeit() == umfeldDatum.getDataTime()){
-								/**
-								 * Hier muss davon ausgegangen werden, dass die Ausfallkontrolle
-								 * ein Datum erzeugt hat, dass dann doch noch gekommen ist, während
-								 * aber noch nicht alle Daten zur Berechnung aller Regeln vorliegen
-								 * Dieses Datum wird in das Modul eingepflegt und das bereits bestehende
-								 * freigegeben
-								 */
-								ergebnisse = new ResultData[]{ datumInPosition.getOriginalDatum() };
-								this.bringeDatumInPosition(umfeldDatum);
-							}else{
-								/**
-								 * Das eingetroffene Datum ist echt älter als alles was im 
-								 * lokalen Puffer steht. Ignoriere es und gebe es einfach weiter
-								 */
-								ergebnisse = new ResultData[]{ umfeldDatum };
+						if(this.isNeuesIntervall(umfeldDatum)){
+							
+							LOGGER.info("------------- Neues Intervall --------------");
+							
+							ergebnisse = this.berechneAlleRegeln();
+							this.loescheAlleWerte();
+							if(!this.bringeDatumInPosition(umfeldDatum)){
+								throw new RuntimeException("Hallo"); //$NON-NLS-1$
 							}
-						}else{
+							
+						}else{							
 							/**
 							 * Es kann hier davon ausgegangen werden, dass noch nicht alle 
-							 * Daten für das aktuelle Intevall da sind.
+							 * Daten für das aktuelle Intevall da sind. Es fehlt mindestens
+							 * noch das gerade angekommene Datum.
 							 */
-							this.bringeDatumInPosition(umfeldDatum);
-							if(this.sindAlleWerteFuerIntervallDa()){
-								ergebnisse = this.berechneAlleRegeln();
-								this.loescheAlleWerte();
+							if(this.bringeDatumInPosition(umfeldDatum)){							
+								if(this.sindAlleWerteFuerIntervallDa()){
+									ergebnisse = this.berechneAlleRegeln();
+									this.loescheAlleWerte();
+									LOGGER.info("------------- alle Werte berechnet --------------");
+								}else{
+									LOGGER.info("------------- noch nicht alle Da --------------");
+								}
+							}else{
+								/**
+								 * Datum konnte nicht in Position gebracht werden
+								 */
+								ergebnisse = new ResultData[]{ umfeldDatum };
+								throw new RuntimeException("Hallo2");
 							}
 						}
 					}
@@ -271,6 +256,7 @@ extends AbstractSystemObjekt{
 				}
 				
 				
+				/** Debug **/
 				zusatzInfo = this.getClass().getSimpleName() + ", Jetzt gespeichert: "; //$NON-NLS-1$
 				for(ResultData resu:this.getAlleAktuellenWerte())zusatzInfo += "\n" + resu; //$NON-NLS-1$
 				LOGGER.info(zusatzInfo);
@@ -281,10 +267,15 @@ extends AbstractSystemObjekt{
 						log += "\n  " + ergebnis.getObject() + ", " +  //$NON-NLS-1$ //$NON-NLS-2$
 						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ergebnis.getDataTime()));
 					}
+					log += "\n"; //$NON-NLS-1$
+					for(ResultData ergebnis:ergebnisse){
+						log += "\n  " + ergebnis; //$NON-NLS-1$
+					}
 				}else{
 					log += "nichts"; //$NON-NLS-1$
 				}
 				LOGGER.info(log);
+				/** Debug **/
 				
 			}
 		}
@@ -294,15 +285,46 @@ extends AbstractSystemObjekt{
 	
 	
 	/**
+	 * Erfragt, ob das empfangene Umfelddatum zu einem neuen Intervall
+	 * gehört.<br>
+	 * Dies ist der Fall, wenn der Zeitstempel des gerade empfangenen
+	 * Umfelddatums echt größer als <code>aktuellerZeitstempel</code> 
+	 * ist und in der für das Datum vorgesehenen Member-Variable bereits
+	 * ein Datum steht
+	 * 
+	 * @param umfeldDatum ein Umfelddatum (muss <code>!= null</code> sein)
+	 * @return ob das empfangene Umfelddatum zu einem neuen Intervall
+	 * gehört
+	 */
+	private final boolean isNeuesIntervall(ResultData umfeldDatum){
+		return this.getDatumBereitsInPosition(umfeldDatum) != null && 
+			   this.aktuellerZeitstempel <= umfeldDatum.getDataTime();
+	}	
+	
+	
+	/**
+	 * Erfragt, ob ein übergebenes Umfelddatum in diesem Modul speicherbar ist.<br>
+	 * Ein Datum ist dann speicherbar, wenn <code>aktuellerZeitstempel == -1</code>
+	 * oder <code>aktuellerZeitstempel <= umfeldDatum.getDataTime()</code> oder
+	 * der lokale Speicher an sich leer ist
+	 * 
+	 * @param umfeldDatum ein Umfelddatum (muss <code>!= null</code> sein)
+	 * @return ob ein übergebenes Umfelddatum in diesem Modul speicherbar ist
+	 */
+	protected final boolean isDatumSpeicherbar(ResultData umfeldDatum){
+		return this.aktuellerZeitstempel == -1 ||
+			   this.aktuellerZeitstempel == umfeldDatum.getDataTime() ||
+			   this.isPufferLeer();
+	}
+	
+	
+	/**
 	 * Erfragt, ob ein Umfelddatum in diesem Submodul innerhalb der Meteorologischen
 	 * Kontrolle verarbeitet wird (also insbesondere, ob es hier zwischengespeichert
 	 * werden muss)
 	 *  
 	 * @param umfeldDatum ein Umfelddatum
-	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird <b>und</b> ob das
-	 * übergebene Umfelddatum nicht schon vorher verarbeitet worden ist (Kontrolle
-	 * des Zeitstempel, da die Ausfallkontrolle ein Datum geschickt haben kann, dass
-	 * jetzt tatsächlich noch nachkommt)
+	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird
 	 */
 	private final boolean isDatenArtRelevantFuerSubModul(final ResultData umfeldDatum){
 		boolean relevant = false;
@@ -310,9 +332,6 @@ extends AbstractSystemObjekt{
 		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if(datenArt != null){
 			relevant = this.getDatenArten().contains(datenArt);
-			
-//			relevant = this.getDatenArten().contains(datenArt) && 
-//					   this.letzterBearbeiteterZeitStempel != umfeldDatum.getDataTime();
 		}else{
 			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}

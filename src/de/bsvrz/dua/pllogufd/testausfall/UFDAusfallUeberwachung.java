@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -98,6 +99,13 @@ implements IKontrollProzessListener<Long>,
 	 */
 	private KontrollProzess<Long> kontrollProzess = null;
 	
+	/**
+	 * speichert pro Umfelddatensensor die letzte empfangene Datenzeit
+	 */
+	private Map<SystemObject, Long> letzteEmpfangeneDatenZeitProSensor = new HashMap<SystemObject, Long>(); 
+	
+	
+	
 		
 	/**
 	 * {@inheritDoc}
@@ -115,6 +123,10 @@ implements IKontrollProzessListener<Long>,
 				(short)0);
 		dieVerwaltung.getVerbindung().subscribeReceiver(this, dieVerwaltung.getSystemObjekte(),
 				parameterBeschreibung, ReceiveOptions.normal(), ReceiverRole.receiver());
+		
+		for(SystemObject sensor:verwaltung.getSystemObjekte()){
+			this.letzteEmpfangeneDatenZeitProSensor.put(sensor, new Long(-1));
+		}
 	}
 
 
@@ -123,48 +135,66 @@ implements IKontrollProzessListener<Long>,
 	 */
 	public synchronized void aktualisiereDaten(ResultData[] resultate) {
 		if(resultate != null){
+			List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			
 			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
+				if(resultat != null){
 					
-					this.bereinigeKontrollZeitpunkte(resultat);
-					
-					long kontrollZeitpunkt = this.getKontrollZeitpunktVon(resultat);
-					if(kontrollZeitpunkt > 0){
-						Collection<AusfallUFDSDatum> kontrollObjekte =
-								this.kontrollZeitpunkte.get(kontrollZeitpunkt);
-							
+					/**
+					 * Hier werden die Daten herausgefiltert, die von der Ausfallkontrolle
+					 * quasi zu unrecht generiert wurden, da das Datum nur minimal zu spät kam.
+					 */
+					if(this.letzteEmpfangeneDatenZeitProSensor.get(resultat.getObject()) < resultat.getDataTime()){
 						/**
-						 * Kontrolldatum bestimmten
+						 * Zeitstempel ist echt neu!
 						 */
-						AusfallUFDSDatum neuesKontrollObjekt = new AusfallUFDSDatum(resultat);							
-						if(kontrollObjekte != null){
-							kontrollObjekte.add(neuesKontrollObjekt);
-						}else{
-							kontrollObjekte = new TreeSet<AusfallUFDSDatum>();
-							kontrollObjekte.add(neuesKontrollObjekt);
-							this.kontrollZeitpunkte.put(new Long(kontrollZeitpunkt), kontrollObjekte);
-						}
+						weiterzuleitendeResultate.add(resultat);
 					}
-
-					long fruehesterKontrollZeitpunkt = -1;
+					this.letzteEmpfangeneDatenZeitProSensor.put(resultat.getObject(), resultat.getDataTime());
+					
+					
+					if(resultat.getData() != null){
 											
-					if(!this.kontrollZeitpunkte.isEmpty()){
-						fruehesterKontrollZeitpunkt = this.kontrollZeitpunkte.firstKey().longValue();
+						this.bereinigeKontrollZeitpunkte(resultat);
 						
-						if(fruehesterKontrollZeitpunkt > 0){
-							this.kontrollProzess.setNaechstenAufrufZeitpunkt(fruehesterKontrollZeitpunkt,
-																			 new Long(fruehesterKontrollZeitpunkt));
-						}else{
-							LOGGER.warning("Der momentan aktuellste Kontrollzeitpunkt ist <= 0"); //$NON-NLS-1$
+						long kontrollZeitpunkt = this.getKontrollZeitpunktVon(resultat);
+						if(kontrollZeitpunkt > 0){
+							Collection<AusfallUFDSDatum> kontrollObjekte =
+									this.kontrollZeitpunkte.get(kontrollZeitpunkt);
+								
+							/**
+							 * Kontrolldatum bestimmten
+							 */
+							AusfallUFDSDatum neuesKontrollObjekt = new AusfallUFDSDatum(resultat);							
+							if(kontrollObjekte != null){
+								kontrollObjekte.add(neuesKontrollObjekt);
+							}else{
+								kontrollObjekte = new TreeSet<AusfallUFDSDatum>();
+								kontrollObjekte.add(neuesKontrollObjekt);
+								this.kontrollZeitpunkte.put(new Long(kontrollZeitpunkt), kontrollObjekte);
+							}
 						}
-					}else{
-						LOGGER.warning("Die Menge der Kontrollzeitpunkte ist leer"); //$NON-NLS-1$
+	
+						long fruehesterKontrollZeitpunkt = -1;
+												
+						if(!this.kontrollZeitpunkte.isEmpty()){
+							fruehesterKontrollZeitpunkt = this.kontrollZeitpunkte.firstKey().longValue();
+							
+							if(fruehesterKontrollZeitpunkt > 0){
+								this.kontrollProzess.setNaechstenAufrufZeitpunkt(fruehesterKontrollZeitpunkt,
+																				 new Long(fruehesterKontrollZeitpunkt));
+							}else{
+								LOGGER.warning("Der momentan aktuellste Kontrollzeitpunkt ist <= 0"); //$NON-NLS-1$
+							}
+						}else{
+							LOGGER.warning("Die Menge der Kontrollzeitpunkte ist leer"); //$NON-NLS-1$
+						}
 					}
 				}
 			}
 			
-			if(this.knoten != null){
-				this.knoten.aktualisiereDaten(resultate);
+			if(this.knoten != null && !weiterzuleitendeResultate.isEmpty()){
+				this.knoten.aktualisiereDaten(weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}
 	}

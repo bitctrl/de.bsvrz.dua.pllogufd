@@ -71,7 +71,7 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * Submodul Sichtweite (SW)
 	 */
-	private Sichtweite sw = new Sichtweite();
+	private Sichtweite sw = new Sichtweite(); 
 	
 	/**
 	 * Submodul Publikation

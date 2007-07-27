@@ -223,15 +223,16 @@ extends AbstraktMeteoMessstelle{
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void bringeDatumInPosition(ResultData umfeldDatum) {
+	protected boolean bringeDatumInPosition(ResultData umfeldDatum) {
+		boolean erfolgreich = false;
+		
 		if(umfeldDatum.getData() != null){
 			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
 			
-			if(datenArt != null){
+			if(datenArt != null && this.isDatumSpeicherbar(umfeldDatum)){
 				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
-				
-				LOGGER.info("Speichere: " + datum); //$NON-NLS-1$
-				
+
+				erfolgreich = true;
 				if(datenArt.equals(UmfeldDatenArt.SW)){
 					this.letztesUfdSWDatum = datum;
 				}else
@@ -240,11 +241,19 @@ extends AbstraktMeteoMessstelle{
 				}else
 				if(datenArt.equals(UmfeldDatenArt.RLF)){
 					this.letztesUfdRLFDatum = datum;
+				}else{
+					erfolgreich = false;
+				}
+				
+				if(erfolgreich){
+					this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 				}
 			}else{
 				LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
+		
+		return erfolgreich;
 	}
 
 
@@ -257,44 +266,15 @@ extends AbstraktMeteoMessstelle{
 		
 		if(this.letztesUfdSWDatum != null){
 			aktuelleWerte.add(this.letztesUfdSWDatum.getVeraendertesOriginalDatum());
-			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdSWDatum);
 		}
 		if(this.letztesUfdNSDatum != null){
 			aktuelleWerte.add(this.letztesUfdNSDatum.getVeraendertesOriginalDatum());
-			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdNSDatum);
 		}
 		if(this.letztesUfdRLFDatum != null){
 			aktuelleWerte.add(this.letztesUfdRLFDatum.getVeraendertesOriginalDatum());
-			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdRLFDatum);
 		}
 		
 		return aktuelleWerte.toArray(new ResultData[0]);
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected UmfeldDatenSensorDatum getDatumBereitsInPosition(ResultData umfeldDatum) {
-		UmfeldDatenSensorDatum datumInPosition = null;
-		
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-		if(datenArt != null){
-			if(datenArt.equals(UmfeldDatenArt.SW)){
-				datumInPosition = this.letztesUfdSWDatum;
-			}else
-			if(datenArt.equals(UmfeldDatenArt.NS)){
-				datumInPosition = this.letztesUfdNSDatum;
-			}else
-			if(datenArt.equals(UmfeldDatenArt.RLF)){
-				datumInPosition = this.letztesUfdRLFDatum;
-			}
-		}else{
-			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
-		}
-		
-		return datumInPosition;
 	}
 
 
@@ -323,22 +303,48 @@ extends AbstraktMeteoMessstelle{
 	 */
 	@Override
 	protected boolean sindAlleWerteFuerIntervallDa() {
-		boolean alleWerteFuerIntervallDa = false;
-		
-		if(this.letztesUfdSWDatum != null &&
-		   this.letztesUfdNSDatum != null &&
-		   this.letztesUfdRLFDatum != null){
-			
-			final long datenZeit = this.letztesUfdSWDatum.getDatenZeit();
-			if(this.letztesUfdNSDatum.getDatenZeit() == datenZeit &&
-			   this.letztesUfdRLFDatum.getDatenZeit() == datenZeit){
-				alleWerteFuerIntervallDa = true;
-			}
-		}
-		
-		return alleWerteFuerIntervallDa;
+		return this.letztesUfdSWDatum != null &&
+			   this.letztesUfdNSDatum != null &&
+			   this.letztesUfdRLFDatum != null;
 	}
 
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected boolean isPufferLeer() {
+		return this.letztesUfdSWDatum == null &&
+			   this.letztesUfdNSDatum == null &&
+			   this.letztesUfdRLFDatum == null;
+	}
+	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected UmfeldDatenSensorDatum getDatumBereitsInPosition(ResultData umfeldDatum) {
+		UmfeldDatenSensorDatum datumInPosition = null;
+		
+		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		if(datenArt != null){
+			if(datenArt.equals(UmfeldDatenArt.SW)){
+				datumInPosition = this.letztesUfdSWDatum;
+			}else
+			if(datenArt.equals(UmfeldDatenArt.NS)){
+				datumInPosition = this.letztesUfdNSDatum;
+			}else
+			if(datenArt.equals(UmfeldDatenArt.RLF)){
+				datumInPosition = this.letztesUfdRLFDatum;
+			}
+		}else{
+			LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+		}
+		
+		return datumInPosition;
+	}
+	
 	
 	/**
 	 * Die Regeln aus SE-02.00.00.00.00-AFo-3.4

@@ -231,15 +231,16 @@ extends AbstraktMeteoMessstelle{
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void bringeDatumInPosition(ResultData umfeldDatum) {
+	protected boolean bringeDatumInPosition(ResultData umfeldDatum) {
+		boolean erfolgreich = false;
+		
 		if(umfeldDatum.getData() != null){
 			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
 			
-			if(datenArt != null){
+			if(datenArt != null && this.isDatumSpeicherbar(umfeldDatum)){
 				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
-				
-				LOGGER.info("Speichere: " + datum); //$NON-NLS-1$
-				
+
+				erfolgreich = true;
 				if(datenArt.equals(UmfeldDatenArt.NI)){
 					this.letztesUfdNIDatum = datum;
 				}else
@@ -251,11 +252,19 @@ extends AbstraktMeteoMessstelle{
 				}else
 				if(datenArt.equals(UmfeldDatenArt.LT)){
 					this.letztesUfdLTDatum = datum;
+				}else{
+					erfolgreich = false;
+				}
+				
+				if(erfolgreich){
+					this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 				}
 			}else{
 				LOGGER.error("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
+		
+		return erfolgreich;
 	}
 
 
@@ -268,22 +277,42 @@ extends AbstraktMeteoMessstelle{
 		
 		if(this.letztesUfdNIDatum != null){
 			aktuelleWerte.add(this.letztesUfdNIDatum.getVeraendertesOriginalDatum());
-			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdNIDatum);
 		}
 		if(this.letztesUfdNSDatum != null){
 			aktuelleWerte.add(this.letztesUfdNSDatum.getVeraendertesOriginalDatum());
-			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdNSDatum);
 		}
 		if(this.letztesUfdLTDatum != null){
 			aktuelleWerte.add(this.letztesUfdLTDatum.getVeraendertesOriginalDatum());
-			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdLTDatum);
 		}
 		if(this.letztesUfdRLFDatum != null){
 			aktuelleWerte.add(this.letztesUfdRLFDatum.getVeraendertesOriginalDatum());
-			this.setLetztenBerabeitetenZeitstempel(this.letztesUfdRLFDatum);
 		}
 		
 		return aktuelleWerte.toArray(new ResultData[0]);
+	}
+
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected boolean isPufferLeer() {
+		return this.letztesUfdNIDatum == null &&
+			   this.letztesUfdNSDatum == null &&
+			   this.letztesUfdRLFDatum == null &&
+			   this.letztesUfdLTDatum == null;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void loescheAlleWerte() {
+		this.letztesUfdNIDatum = null; 
+		this.letztesUfdNSDatum = null;
+		this.letztesUfdRLFDatum = null;
+		this.letztesUfdLTDatum = null;
 	}
 
 
@@ -314,41 +343,17 @@ extends AbstraktMeteoMessstelle{
 		
 		return datumInPosition;
 	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void loescheAlleWerte() {
-		this.letztesUfdNIDatum = null; 
-		this.letztesUfdNSDatum = null;
-		this.letztesUfdRLFDatum = null;
-		this.letztesUfdLTDatum = null;
-	}
-
+	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean sindAlleWerteFuerIntervallDa() {
-		boolean alleWerteFuerIntervallDa = false;
-		
-		if(this.letztesUfdNIDatum != null &&
-		   this.letztesUfdNSDatum != null &&
-		   this.letztesUfdRLFDatum != null &&
-		   this.letztesUfdLTDatum != null){
-			
-			final long datenZeit = this.letztesUfdNIDatum.getDatenZeit();
-			if(this.letztesUfdNSDatum.getDatenZeit() == datenZeit &&
-			   this.letztesUfdRLFDatum.getDatenZeit() == datenZeit &&
-			   this.letztesUfdLTDatum.getDatenZeit() == datenZeit){
-				alleWerteFuerIntervallDa = true;
-			}
-		}
-		
-		return alleWerteFuerIntervallDa;
+		return this.letztesUfdNIDatum != null &&
+			   this.letztesUfdNSDatum != null &&
+			   this.letztesUfdRLFDatum != null &&
+			   this.letztesUfdLTDatum != null;
 	}
 
 
