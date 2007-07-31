@@ -340,10 +340,10 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	
 	
 	/**
-	 * Senset ein fehlerhaftes Datum und wartet dann fünf intervalle (Reset)
+	 * Senset ein fehlerhaftes Datum und wartet dann fünf Intervalle (Reset)
 	 * 
 	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher 
-	 * ein Wert vorliegt, der <code>nicht erfasst</code> ist 
+	 * schon seit mehreren Intervallen keine Werte mehr vorliegen 
 	 */
 	protected final long getTestBeginnIntervall(){
 		long intervall = TestUtensilien.getBeginAktuellerSekunde();
