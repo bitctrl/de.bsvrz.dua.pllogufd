@@ -45,7 +45,10 @@ public class PlFormUFDStandardAspekteVersorger
 extends StandardAspekteVersorger{
 
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor
+	 * 
+	 * @param verwaltung Verbindung zum Verwaltungsmodul
+	 * @throws DUAInitialisierungsException wenn die Initialisierung fehlschlägt
 	 */
 	public PlFormUFDStandardAspekteVersorger(IVerwaltung verwaltung)
 	throws DUAInitialisierungsException {

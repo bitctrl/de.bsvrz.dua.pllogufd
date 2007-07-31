@@ -255,7 +255,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Sendet einen Sensorwert
 	 * 
-	 * @param sensor eine Menge von Umfelddatensensoren
+	 * @param sensoren eine Menge von Umfelddatensensoren
 	 * @param wert der zu sendende Wert
 	 * @param datenZeitStempel der Datenzeitstempel
 	 */
@@ -269,7 +269,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Sendet einen Sensorwert mit der Kennzeichnung <code>fehlerhaft</code>
 	 * 
-	 * @param sensor eine Menge von Umfelddatensensoren
+	 * @param sensoren eine Menge von Umfelddatensensoren
 	 * @param datenZeitStempel der Datenzeitstempel
 	 */
 	public final void sendeFehlerhaftDaten(final Collection<SystemObject> sensoren, long datenZeitStempel){
@@ -307,7 +307,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	/**
 	 * Sendet einen bzw. mehrere Sensorwert
 	 * 
-	 * @param sensor eine Menge von Umfelddatensensoren
+	 * @param sensoren eine Menge von Umfelddatensensoren
 	 * @param wert der zu sendende Wert
 	 * @param datenZeitStempel der Datenzeitstempel
 	 */

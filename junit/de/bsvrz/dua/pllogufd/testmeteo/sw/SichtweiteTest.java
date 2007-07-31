@@ -52,7 +52,9 @@ extends MeteorologischeKontrolleTest {
 
 	
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor
+	 * 
+	 * @throws Exception leitet die Ausnahmen weiter
 	 */
 	public SichtweiteTest()
 	throws Exception {

@@ -62,7 +62,11 @@ extends AbstraktUmfeldDatenSensor{
 
 	
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor 
+	 * 
+	 * @param verwaltung Verbindung zum Verwaltungsmodul
+	 * @param obj das Sensor-Objekt
+	 * @throws DUAInitialisierungsException wenn die Instaziierung fehlschlägt
 	 */
 	protected AufAbUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
 	throws DUAInitialisierungsException{
@@ -105,7 +109,7 @@ extends AbstraktUmfeldDatenSensor{
 	 * dass das empfangene Datum weder als Implausibel, Fehlerhaft noch Nicht ermittelbar
 	 * gekennzeichnet ist. Das empfangene Datum wird gespeichert 
 	 * 
-	 * @param originalDatum ein Roh-Datum eines Umfelddatensensors
+	 * @param resultat ein Roh-Datum eines Umfelddatensensors
 	 * @return das gekennzeichnete Datum oder <code>null</code> wenn das Datum plausibel ist
 	 */
 	public final Data plausibilisiere(final ResultData resultat){

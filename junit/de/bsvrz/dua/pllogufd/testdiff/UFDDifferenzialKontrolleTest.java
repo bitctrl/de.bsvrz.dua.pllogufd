@@ -108,7 +108,9 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	
 	
 	/**
-	 * {@inheritDoc}
+	 * Vorbereitungen
+	 * 
+	 * @throws Exception wird weitergeleitet
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -252,7 +254,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		 * Zeitdauer nicht ändert, dabei aber die Bedingung für die Differentialkontrolle
 		 * nicht erfüllt
 		 */
-		SystemObject objImmerGleichUndKeineKontrolle = PlPruefungLogischUFDTest.lt1;
+		SystemObject objImmerGleichUndKeineKontrolle = PlPruefungLogischUFDTest.tpt1;
 
 		/**
 		 * Zeile 3=5 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0 [DUA])
@@ -260,7 +262,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		 * nicht ändert und die eventuell vorhandene Bedingung für die Differentialkontrolle
 		 * erfüllt
 		 */
-		SystemObject objImmerGleichUndKontrolle = PlPruefungLogischUFDTest.ni1;
+		SystemObject objImmerGleichUndKontrolle = PlPruefungLogischUFDTest.tpt2;
 		
 		/**
 		 * Zeile 4 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0 [DUA])

@@ -52,8 +52,14 @@ extends AbstraktUmfeldDatenSensor{
 	protected boolean parameterInitialisiert = false;
 	
 	
+
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor
+	 * 
+	 * @param verwaltung Verbindung zum Verwaltungsmodul
+	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
+	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException wird weitergereicht
 	 */
 	protected AbstraktMeteoUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
 	throws DUAInitialisierungsException {

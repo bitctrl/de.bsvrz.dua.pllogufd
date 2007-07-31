@@ -74,18 +74,22 @@ extends AbstractDavZustand{
 
 	
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor
+	 * 
+	 * @param name der Name des Wertes
+	 * @param code der Code des Wertes
 	 */
 	private UfdsVergleichsOperator(String name, int code){
 		super(code, name);
 		WERTE_BEREICH.put(code, this);
 	}
 	
+	
 	/**
 	 * Erfragt den Wert dieses DAV-Enumerationstypen 
 	 * mit dem übergebenen Code
 	 *
-	 * @param der Code des Enumerations-Wertes
+	 * @param code der Code des Enumerations-Wertes
 	 */
 	public static final UfdsVergleichsOperator getZustand(int code){
 		return WERTE_BEREICH.get(code);

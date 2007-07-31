@@ -81,7 +81,10 @@ extends AbstractSystemObjekt{
 	
 	
 	/**
-	 * {@inheritDoc}
+	 * Weist lediglich das Systemobjekt (UFD-Sensor) zu.
+	 * 
+	 * @param obj
+	 *            Das zu kapselnde Systemobjekt
 	 */
 	protected AbstraktMeteoMessstelle(SystemObject obj) {
 		super(obj);

@@ -48,7 +48,7 @@ extends AbstraktBearbeitungsKnotenAdapter{
 	/**
 	 * Erfragt die Umfelddaten-Messstelle an der ein bestimmter Sensor konfiguriert ist
 	 * 
-	 * @param umfeldDatenSensorObj das Systemobjekt eines
+	 * @param ufdsObjekt das Systemobjekt eines
 	 * Umfelddatensensors
 	 * @return die Umfelddaten-Messstelle oder <code>null</code>,
 	 * wenn der Sensor nicht betrachtet wird

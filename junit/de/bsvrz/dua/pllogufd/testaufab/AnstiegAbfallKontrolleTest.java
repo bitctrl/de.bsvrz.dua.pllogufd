@@ -112,7 +112,9 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	
 	
 	/**
-	 * {@inheritDoc}
+	 * Vorbereitungen
+	 * 
+	 * @throws Exception wird weitergeleitet
 	 */
 	@Before
 	public void setUp() throws Exception {

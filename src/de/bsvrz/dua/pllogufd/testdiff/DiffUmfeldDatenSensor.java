@@ -61,9 +61,14 @@ extends AbstraktUmfeldDatenSensor{
 	 */
 	private UniversalAtgUfdsDifferenzialKontrolle parameter = null;
 
-	
+
 	/**
-	 * {@inheritDoc}
+	 * Standardkonstruktor
+	 * 
+	 * @param verwaltung Verbindung zum Verwaltungsmodul
+	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
+	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException wird weitergereicht
 	 */
 	protected DiffUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
 	throws DUAInitialisierungsException{
@@ -107,7 +112,7 @@ extends AbstraktUmfeldDatenSensor{
 	 * Liegt eine Ergebniskonstanz in diesem Zeitfenster vor, so erfolgt eine
 	 * Kennzeichnung der Werte als Implausibel und Fehlerhaft. 
 	 * 
-	 * @param originalDatum ein Roh-Datum eines Umfelddatensensors
+	 * @param resultat ein Roh-Datum eines Umfelddatensensors
 	 * @return das gekennzeichnete Datum oder <code>null</code> wenn das Datum plausibel ist
 	 */
 	public final Data plausibilisiere(final ResultData resultat){

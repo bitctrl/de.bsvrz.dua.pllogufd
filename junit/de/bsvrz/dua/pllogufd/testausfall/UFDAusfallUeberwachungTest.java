@@ -144,7 +144,9 @@ implements ClientSenderInterface, ClientReceiverInterface{
 
 	
 	/**
-	 * {@inheritDoc}
+	 * Vorbereitungen
+	 * 
+	 * @throws Exception wird weitergeleitet
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -371,22 +373,6 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				Pause.warte(ABSTAND + DAVTest.R.nextInt(ABSTAND));
 			}			
 		}		
-	}
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	//@After
-	public void after() throws Exception {		
-		/**
-		 * Ausfallüberwachung für alle Sensoren ausschalten
-		 */
-		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
-		}		
-		
-		Pause.warte(2 * Konstante.MINUTE_IN_MS);
 	}
 
 
