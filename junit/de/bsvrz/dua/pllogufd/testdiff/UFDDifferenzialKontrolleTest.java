@@ -254,7 +254,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		 * Zeitdauer nicht ändert, dabei aber die Bedingung für die Differentialkontrolle
 		 * nicht erfüllt
 		 */
-		SystemObject objImmerGleichUndKeineKontrolle = PlPruefungLogischUFDTest.tpt1;
+		SystemObject objImmerGleichUndKeineKontrolle = PlPruefungLogischUFDTest.hk1;
 
 		/**
 		 * Zeile 3=5 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0 [DUA])
@@ -262,7 +262,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		 * nicht ändert und die eventuell vorhandene Bedingung für die Differentialkontrolle
 		 * erfüllt
 		 */
-		SystemObject objImmerGleichUndKontrolle = PlPruefungLogischUFDTest.tpt2;
+		SystemObject objImmerGleichUndKontrolle = PlPruefungLogischUFDTest.rs1;
 		
 		/**
 		 * Zeile 4 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0 [DUA])
