@@ -29,10 +29,10 @@ package de.bsvrz.dua.pllogufd.testaufab;
 import java.util.Collection;
 import java.util.HashSet;
 
-import stauma.dav.clientside.Data;
-import stauma.dav.clientside.ResultData;
-import stauma.dav.configuration.interfaces.AttributeGroup;
-import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.config.AttributeGroup;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;

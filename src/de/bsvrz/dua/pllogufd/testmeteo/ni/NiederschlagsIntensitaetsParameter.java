@@ -26,13 +26,13 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo.ni;
 
+import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
-import stauma.dav.clientside.ResultData;
-import stauma.dav.configuration.interfaces.SystemObject;
 
 /**
  * Parameter für die meteorologische Kontrolle "Niederschlagsintensität"

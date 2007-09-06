@@ -26,7 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
-import stauma.dav.clientside.ResultData;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dua.pllogufd.testmeteo.na.NiederschlagsArt;
 import de.bsvrz.dua.pllogufd.testmeteo.ni.NiederschlagsIntensitaet;
 import de.bsvrz.dua.pllogufd.testmeteo.pub.Publikation;

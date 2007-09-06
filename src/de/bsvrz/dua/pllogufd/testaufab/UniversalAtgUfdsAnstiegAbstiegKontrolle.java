@@ -26,7 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testaufab;
 
-import stauma.dav.clientside.ResultData;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;

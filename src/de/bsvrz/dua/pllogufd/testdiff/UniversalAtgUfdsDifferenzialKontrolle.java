@@ -26,8 +26,8 @@
 
 package de.bsvrz.dua.pllogufd.testdiff;
 
-import stauma.dav.clientside.Data;
-import stauma.dav.clientside.ResultData;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;

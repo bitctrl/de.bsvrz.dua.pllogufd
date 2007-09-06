@@ -33,10 +33,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import stauma.dav.clientside.ResultData;
-import stauma.dav.configuration.interfaces.ConfigurationObject;
-import stauma.dav.configuration.interfaces.ObjectSet;
-import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.config.ConfigurationObject;
+import de.bsvrz.dav.daf.main.config.ObjectSet;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoMessstelle;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;

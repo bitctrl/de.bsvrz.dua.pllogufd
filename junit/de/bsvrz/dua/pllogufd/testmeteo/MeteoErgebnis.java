@@ -28,7 +28,7 @@ package de.bsvrz.dua.pllogufd.testmeteo;
 
 import java.util.Date;
 
-import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**

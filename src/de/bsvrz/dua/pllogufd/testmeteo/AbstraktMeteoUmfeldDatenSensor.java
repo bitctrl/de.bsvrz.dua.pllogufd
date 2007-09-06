@@ -29,8 +29,8 @@ package de.bsvrz.dua.pllogufd.testmeteo;
 import java.util.Collection;
 import java.util.HashSet;
 
-import stauma.dav.configuration.interfaces.AttributeGroup;
-import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.dav.daf.main.config.AttributeGroup;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;

@@ -28,19 +28,19 @@ package de.bsvrz.dua.pllogufd.vew;
 
 import java.util.Collection;
 
-import stauma.dav.clientside.DataDescription;
-import stauma.dav.clientside.ReceiveOptions;
-import stauma.dav.clientside.ReceiverRole;
-import stauma.dav.clientside.ResultData;
-import stauma.dav.configuration.interfaces.AttributeGroup;
-import stauma.dav.configuration.interfaces.SystemObject;
-import sys.funclib.application.StandardApplicationRunner;
+import de.bsvrz.dav.daf.main.DataDescription;
+import de.bsvrz.dav.daf.main.ReceiveOptions;
+import de.bsvrz.dav.daf.main.ReceiverRole;
+import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.config.AttributeGroup;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.plformal.plformal.PlPruefungFormal;
 import de.bsvrz.dua.pllogufd.plformal.PlFormUFDStandardAspekteVersorger;
 import de.bsvrz.dua.pllogufd.testaufab.AnstiegAbfallKontrolle;
 import de.bsvrz.dua.pllogufd.testausfall.UFDAusfallUeberwachung;
 import de.bsvrz.dua.pllogufd.testdiff.UFDDifferenzialKontrolle;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolle;
+import de.bsvrz.sys.funclib.application.StandardApplicationRunner;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;

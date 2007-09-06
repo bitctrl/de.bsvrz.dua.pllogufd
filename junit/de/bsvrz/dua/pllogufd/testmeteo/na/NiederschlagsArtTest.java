@@ -31,8 +31,8 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
 
-import stauma.dav.clientside.ResultData;
-import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoErgebnis;

@@ -26,7 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo.sw;
 
-import stauma.dav.configuration.interfaces.SystemObject;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoMessstelle;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoSubModul;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;

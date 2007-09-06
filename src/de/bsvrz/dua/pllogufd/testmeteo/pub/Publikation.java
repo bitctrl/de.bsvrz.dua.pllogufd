@@ -29,7 +29,7 @@ package de.bsvrz.dua.pllogufd.testmeteo.pub;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import stauma.dav.clientside.ResultData;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.av.DAVObjektAnmeldung;
