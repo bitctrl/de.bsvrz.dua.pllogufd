@@ -36,9 +36,9 @@ import de.bsvrz.dav.daf.main.ReceiverRole;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 import de.bsvrz.sys.funclib.bitctrl.modell.AbstractSystemObjekt;
 import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjekt;
 import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
@@ -87,7 +87,7 @@ implements Comparable<AbstraktUmfeldDatenSensor>,
 		if(VERWALTUNG == null){
 			VERWALTUNG = verwaltung;
 			ASP_PARAMETER_SOLL = verwaltung.getVerbindung().getDataModel().
-									getAspect(Konstante.DAV_ASP_PARAMETER_SOLL);
+									getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
 		}
 		
 		Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();

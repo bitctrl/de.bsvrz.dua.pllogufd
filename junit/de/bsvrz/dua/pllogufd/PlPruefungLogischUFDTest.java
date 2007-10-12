@@ -43,6 +43,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
+import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -199,7 +200,7 @@ implements ClientSenderInterface{
 				DataDescription parameterBeschreibung = new DataDescription(
 						DAV.getDataModel().getAttributeGroup("atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 								UmfeldDatenArt.getUmfeldDatenArtVon(sensor).getName()),
-								DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+								DAV.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE),
 					    (short)0);
 				DAV.subscribeSender(this, sensor, parameterBeschreibung, SenderRole.sender());
 			}
@@ -210,7 +211,7 @@ implements ClientSenderInterface{
 		 */
 		paraAusfallUeberwachung = new DataDescription(
 				DAV.getDataModel().getAttributeGroup("atg.ufdsAusfall‹berwachung"), //$NON-NLS-1$
-				DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+				DAV.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE),
 				(short)0);
 		DAV.subscribeSender(this, PlPruefungLogischUFDTest.SENSOREN, paraAusfallUeberwachung, SenderRole.sender());
 
@@ -222,7 +223,7 @@ implements ClientSenderInterface{
 			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			DataDescription paraDifferenzialkontrolle = new DataDescription(
 					DAV.getDataModel().getAttributeGroup("atg.ufdsDifferenzialKontrolle" + datenArt.getName()), //$NON-NLS-1$
-					DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+					DAV.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE),
 					(short)0);
 			DAV.subscribeSender(this, sensor, paraDifferenzialkontrolle, SenderRole.sender());			
 		}
@@ -234,7 +235,7 @@ implements ClientSenderInterface{
 			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			DataDescription paraAnstiegAbfallKontrolle = new DataDescription(
 					DAV.getDataModel().getAttributeGroup("atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
-					DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+					DAV.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE),
 					(short)0);
 			DAV.subscribeSender(this, sensor, paraAnstiegAbfallKontrolle, SenderRole.sender());			
 		}
@@ -354,7 +355,7 @@ implements ClientSenderInterface{
 	 * @param an Standardparameter anschalten?
 	 */
 	public final void setMeteoKontrolle(boolean an){
-		Aspect vorgabeAspekt = DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE);	
+		Aspect vorgabeAspekt = DAV.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE);	
 
 		if(an){
 			/**
@@ -610,7 +611,7 @@ implements ClientSenderInterface{
 
 		DataDescription paraDifferenzialkontrolle = new DataDescription(
 				DAV.getDataModel().getAttributeGroup("atg.ufdsDifferenzialKontrolle" + datenArt.getName()), //$NON-NLS-1$
-				DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+				DAV.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE),
 				(short)0);
 		ResultData parameterSatz = new ResultData(sensor, paraDifferenzialkontrolle, System.currentTimeMillis(), datum);
 		try {
@@ -641,7 +642,7 @@ implements ClientSenderInterface{
 			
 		DataDescription paraAnstiegAbfallKontrolle = new DataDescription(
 				DAV.getDataModel().getAttributeGroup("atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
-				DAV.getDataModel().getAspect(Konstante.DAV_ASP_PARAMETER_VORGABE),
+				DAV.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE),
 					(short)0);
 		ResultData parameterSatz = new ResultData(sensor, paraAnstiegAbfallKontrolle, System.currentTimeMillis(), datum);
 		try {
