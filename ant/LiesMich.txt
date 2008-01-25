@@ -31,6 +31,10 @@ Versionsgeschichte
 
   - Umpacketierung
 
+1.2.0
+
+  - Anpassung von Testroutinen
+
 Bemerkungen
 ===========
 
