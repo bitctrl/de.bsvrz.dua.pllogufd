@@ -65,7 +65,7 @@ implements ClientSenderInterface{
 	public static final String[] CON_DATA = new String[] {
 			"-datenverteiler=localhost:8083", //$NON-NLS-1$ 
 			"-benutzer=Tester", //$NON-NLS-1$
-			"-authentifizierung=c:\\passwd", //$NON-NLS-1$
+			"-authentifizierung=passwd", //$NON-NLS-1$
 			"-debugLevelStdErrText=INFO", //$NON-NLS-1$
 			"-debugLevelFileText=INFO" }; //$NON-NLS-1$
 	
@@ -176,7 +176,7 @@ implements ClientSenderInterface{
 	 */
 	public PlPruefungLogischUFDTest()
 	throws Exception{
-		
+				
 		for(SystemObject sensor:SENSOREN){
 			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			
