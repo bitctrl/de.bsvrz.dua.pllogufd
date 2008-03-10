@@ -118,14 +118,16 @@ extends AbstraktMeteoMessstelle{
 			
 			if(sensorMengeAnMessStelle != null){
 				for(SystemObject betrachtetesObjekt:VERWALTUNG.getSystemObjekte()){
-					if(sensorMengeAnMessStelle.getElements().contains(betrachtetesObjekt)){
-						UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(betrachtetesObjekt);
-						if(datenArt == null){
-							throw new DUAInitialisierungsException("Unbekannter Sensor (" +  //$NON-NLS-1$
-									betrachtetesObjekt + ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
-						}else
-						if(DATEN_ARTEN.contains(datenArt)){
-							sensorenAnMessStelle.add(betrachtetesObjekt);	
+					if(betrachtetesObjekt.isValid()){
+						if(sensorMengeAnMessStelle.getElements().contains(betrachtetesObjekt)){
+							UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(betrachtetesObjekt);
+							if(datenArt == null){
+								throw new DUAInitialisierungsException("Unbekannter Sensor (" +  //$NON-NLS-1$
+										betrachtetesObjekt + ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
+							}else
+							if(DATEN_ARTEN.contains(datenArt)){
+								sensorenAnMessStelle.add(betrachtetesObjekt);	
+							}
 						}
 					}
 				}
@@ -154,21 +156,23 @@ extends AbstraktMeteoMessstelle{
 		
 		for(SystemObject ufdmsObj:verwaltung.getVerbindung().getDataModel().
 									getType("typ.umfeldDatenMessStelle").getElements()){ //$NON-NLS-1$
-			NiederschlagsArtMessstelle messStelle = new NiederschlagsArtMessstelle(ufdmsObj);
-			if(messStelle.getSensoren().isEmpty()){
-				LOGGER.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
-						" wird nicht betrachtet"); //$NON-NLS-1$
-			}else{
-				if(messStelle.getSensoren().size() == DATEN_ARTEN.size()){
-					for(SystemObject umfeldDatenSensor:messStelle.getSensoren()){
-						if(UFDS_AUF_UFDMS.get(umfeldDatenSensor) != null){
-							throw new DUAInitialisierungsException("Der Umfelddatensensor " + umfeldDatenSensor + //$NON-NLS-1$
-									" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n" + //$NON-NLS-1$
-									UFDS_AUF_UFDMS.get(umfeldDatenSensor) + " und\n" + messStelle); //$NON-NLS-1$
-						}
-						messStelle.initialisiereMessStelle();
-						UFDS_AUF_UFDMS.put(umfeldDatenSensor, messStelle);
-					}					
+			if(ufdmsObj.isValid()){
+				NiederschlagsArtMessstelle messStelle = new NiederschlagsArtMessstelle(ufdmsObj);
+				if(messStelle.getSensoren().isEmpty()){
+					LOGGER.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
+							" wird nicht betrachtet"); //$NON-NLS-1$
+				}else{
+					if(messStelle.getSensoren().size() == DATEN_ARTEN.size()){
+						for(SystemObject umfeldDatenSensor:messStelle.getSensoren()){
+							if(UFDS_AUF_UFDMS.get(umfeldDatenSensor) != null){
+								throw new DUAInitialisierungsException("Der Umfelddatensensor " + umfeldDatenSensor + //$NON-NLS-1$
+										" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n" + //$NON-NLS-1$
+										UFDS_AUF_UFDMS.get(umfeldDatenSensor) + " und\n" + messStelle); //$NON-NLS-1$
+							}
+							messStelle.initialisiereMessStelle();
+							UFDS_AUF_UFDMS.put(umfeldDatenSensor, messStelle);
+						}					
+					}
 				}
 			}
 		}
