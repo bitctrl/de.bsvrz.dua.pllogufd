@@ -34,6 +34,10 @@ Versionsgeschichte
 1.2.0
 
   - Anpassung von Testroutinen
+  
+1.2.1
+
+  - Bash-Startskript hinzu
 
 Bemerkungen
 ===========
