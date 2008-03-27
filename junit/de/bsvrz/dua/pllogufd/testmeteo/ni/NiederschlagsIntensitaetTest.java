@@ -30,6 +30,8 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
@@ -38,7 +40,6 @@ import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
 import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Überprüfung des Submoduls NiederschlagsIntensität aus der Komponente Meteorologische Kontrolle.
@@ -539,7 +540,7 @@ extends MeteorologischeKontrolleTest {
 			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
 		}		
 		
-		Pause.warte(5 * Konstante.SEKUNDE_IN_MS);
+		Pause.warte(5 * Constants.MILLIS_PER_SECOND);
 	}
 
 }

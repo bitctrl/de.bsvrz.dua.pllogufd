@@ -39,6 +39,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.ClientReceiverInterface;
 import de.bsvrz.dav.daf.main.ClientSenderInterface;
@@ -54,7 +56,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Test des Moduls Ausfallüberwachung.<br>
@@ -183,17 +184,17 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		/**
 		 * Sende jetzt drei Datensätze, die nicht überprüft werden
 		 */
-		long ersteDatenZeit = TestUtensilien.getBeginAktuellerSekunde() + 3 * Konstante.SEKUNDE_IN_MS;
-		Pause.warte(5 * Konstante.SEKUNDE_IN_MS);
+		long ersteDatenZeit = TestUtensilien.getBeginAktuellerSekunde() + 3 * Constants.MILLIS_PER_SECOND;
+		Pause.warte(5 * Constants.MILLIS_PER_SECOND);
 		for(int i = 0; i<3; i++){
 			for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 				ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
-				datum.setT(Konstante.STUNDE_IN_MS);
-				resultat.setDataTime(ersteDatenZeit + (i * Konstante.SEKUNDE_IN_MS));
+				datum.setT(Constants.MILLIS_PER_HOUR);
+				resultat.setDataTime(ersteDatenZeit + (i * Constants.MILLIS_PER_SECOND));
 				PlPruefungLogischUFDTest.SENDER.sende(resultat);
 			}
-			Pause.warte(Konstante.SEKUNDE_IN_MS);
+			Pause.warte(Constants.MILLIS_PER_SECOND);
 		}		
 		
 		/**
@@ -224,7 +225,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		/**
 		 * Sende initiale Daten für alle Sensoren mit dem Datenzeitstempel der vergangenen Minute
 		 */
-		ersteDatenZeit = TestUtensilien.getBeginNaechsterMinute() - Konstante.MINUTE_IN_MS * 2;
+		ersteDatenZeit = TestUtensilien.getBeginNaechsterMinute() - Constants.MILLIS_PER_MINUTE * 2;
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 			resultat.setDataTime(ersteDatenZeit);
@@ -300,7 +301,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	public void testUFDAusfallUeberwachung()
 	throws Exception{
 						
-		Pause.warte(Konstante.MINUTE_IN_MS * 2);
+		Pause.warte(Constants.MILLIS_PER_MINUTE * 2);
 		
 		/**
 		 * Test-Schleife
@@ -331,14 +332,14 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				 * Dieser Wert fällt komplett aus
 				 */
 				if(DAVTest.R.nextInt(AUSFALL) == 0){
-					Ergebnis erwartetesErgebnis = new Ergebnis(sensor, start - Konstante.MINUTE_IN_MS, true);
+					Ergebnis erwartetesErgebnis = new Ergebnis(sensor, start - Constants.MILLIS_PER_MINUTE, true);
 					this.ergebnisSoll.put(sensor, erwartetesErgebnis);
 					System.out.println("Sende nicht: " + erwartetesErgebnis);  //$NON-NLS-1$
 					continue;
 				}
 				
 				ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
-				resultat.setDataTime(start - Konstante.MINUTE_IN_MS);
+				resultat.setDataTime(start - Constants.MILLIS_PER_MINUTE);
 				PlPruefungLogischUFDTest.SENDER.sende(resultat);
 				
 				/**
@@ -364,7 +365,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				}
 
 				Ergebnis erwartetesErgebnis = new Ergebnis(sensor,
-								start - Konstante.MINUTE_IN_MS,
+								start - Constants.MILLIS_PER_MINUTE,
 								nichtErfasst);
 				
 				this.ergebnisSoll.put(sensor, erwartetesErgebnis);

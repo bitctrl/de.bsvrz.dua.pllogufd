@@ -6,7 +6,7 @@ source ../../../skripte-bash/einstellungen.sh
 # SWE-Spezifische Parameter	(überprüfen und anpassen)                          #
 ################################################################################
 
-kb="KonfigurationsBereichsPid="
+kb="-KonfigurationsBereichsPid=kb.duaTestObjekteUFD"
 
 ################################################################################
 # Folgende Parameter müssen überprüft und evtl. angepasst werden               #
@@ -23,7 +23,7 @@ kb="KonfigurationsBereichsPid="
 ################################################################################
 
 # Applikation starten
-java $jvmArgs -jar ../de.bsvrz.dua.abfrpuffer-runtime.jar \
+java $jvmArgs -jar ../de.bsvrz.dua.pllogufd-runtime.jar \
 	$dav1 \
 	$kb \
 	-debugLevelFileText=all \

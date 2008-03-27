@@ -31,6 +31,8 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
@@ -42,7 +44,6 @@ import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Überprüfung des Submoduls NiederschlagsArt aus der Komponente Meteorologische Kontrolle.
@@ -237,7 +238,7 @@ extends MeteorologischeKontrolleTest{
 				PlPruefungLogischUFDTest.SENDER.sende(resultat);
 			} catch (Exception e) {
 				e.printStackTrace();
-				LOGGER.error(Konstante.LEERSTRING, e);
+				LOGGER.error(Constants.EMPTY_STRING, e);
 			}
 		}
 		
@@ -271,7 +272,7 @@ extends MeteorologischeKontrolleTest{
 				PlPruefungLogischUFDTest.SENDER.sende(resultat);
 			} catch (Exception e) {
 				e.printStackTrace();
-				LOGGER.error(Konstante.LEERSTRING, e);
+				LOGGER.error(Constants.EMPTY_STRING, e);
 			}
 		}
 		
@@ -298,7 +299,7 @@ extends MeteorologischeKontrolleTest{
 			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
 		}		
 		
-		Pause.warte(5 * Konstante.SEKUNDE_IN_MS);
+		Pause.warte(5 * Constants.MILLIS_PER_SECOND);
 	}
 
 }

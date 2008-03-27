@@ -29,6 +29,8 @@ package de.bsvrz.dua.pllogufd;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.ClientSenderInterface;
 import de.bsvrz.dav.daf.main.Data;
@@ -47,7 +49,6 @@ import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
@@ -380,7 +381,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -401,7 +402,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -420,7 +421,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -439,7 +440,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}			
 			}
@@ -477,7 +478,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -510,7 +511,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -535,7 +536,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -559,7 +560,7 @@ implements ClientSenderInterface{
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Konstante.LEERSTRING, e);
+						LOGGER.error(Constants.EMPTY_STRING, e);
 					}
 				}			
 			}
@@ -584,10 +585,10 @@ implements ClientSenderInterface{
 			DAV.sendData(parameter);
 		} catch (DataNotSubscribedException e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		} catch (SendSubscriptionNotConfirmed e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		}
 	}
 
@@ -618,10 +619,10 @@ implements ClientSenderInterface{
 			DAV.sendData(parameterSatz);
 		} catch (DataNotSubscribedException e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		} catch (SendSubscriptionNotConfirmed e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		}
 	}
 	
@@ -649,10 +650,10 @@ implements ClientSenderInterface{
 			DAV.sendData(parameterSatz);
 		} catch (DataNotSubscribedException e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		} catch (SendSubscriptionNotConfirmed e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		}
 	}
 

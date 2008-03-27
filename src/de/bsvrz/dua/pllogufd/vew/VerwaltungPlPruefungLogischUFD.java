@@ -28,6 +28,8 @@ package de.bsvrz.dua.pllogufd.vew;
 
 import java.util.Collection;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.ReceiveOptions;
 import de.bsvrz.dav.daf.main.ReceiverRole;
@@ -48,7 +50,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Dieses Modul Verwaltung ist die zentrale Steuereinheit der SWE PL-Prüfung
@@ -105,7 +106,7 @@ extends AbstraktVerwaltungsAdapter {
 		
 		UmfeldDatenArt.initialisiere(this.verbindung);
 		
-		String infoStr = Konstante.LEERSTRING;
+		String infoStr = Constants.EMPTY_STRING;
 		Collection<SystemObject> plLogLveObjekte = DUAUtensilien.getBasisInstanzen(
 				this.verbindung.getDataModel().getType(DUAKonstanten.TYP_UFD_SENSOR),
 				this.verbindung, this.getKonfigurationsBereiche());

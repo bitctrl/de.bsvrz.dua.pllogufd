@@ -39,6 +39,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.ClientReceiverInterface;
 import de.bsvrz.dav.daf.main.ClientSenderInterface;
@@ -54,7 +56,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 
 /**
  * Test des Moduls Anstieg-Abfall-Kontrolle<br>
@@ -139,7 +140,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, 1000);
 			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
-				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Konstante.STUNDE_IN_MS);
+				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Constants.MILLIS_PER_HOUR);
 			}
 		}		
 				

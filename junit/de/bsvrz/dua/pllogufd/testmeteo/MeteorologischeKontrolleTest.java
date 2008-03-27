@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.bitctrl.Constants;
+
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.ClientReceiverInterface;
 import de.bsvrz.dav.daf.main.ClientSenderInterface;
@@ -50,7 +52,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
-import de.bsvrz.sys.funclib.bitctrl.konstante.Konstante;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
@@ -160,7 +161,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
 			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
-				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Konstante.STUNDE_IN_MS);
+				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Constants.MILLIS_PER_HOUR);
 			}
 			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
 				PlPruefungLogischUFDTest.SENDER.setAnAbPara(sensor, 5);
@@ -247,7 +248,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 			PlPruefungLogischUFDTest.SENDER.sende(resultat);
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		}			
 	}
 
@@ -299,7 +300,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 			PlPruefungLogischUFDTest.SENDER.sende(resultat);
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.error(Konstante.LEERSTRING, e);
+			LOGGER.error(Constants.EMPTY_STRING, e);
 		}
 	}
 
