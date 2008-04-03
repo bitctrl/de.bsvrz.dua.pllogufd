@@ -51,7 +51,6 @@ import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
-import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
@@ -171,7 +170,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		/**
 		 * Warte eine Sekunde bis Datenanmeldung durch ist und Parameter da sind
 		 */
-		Pause.warte(1000L);
+
 		
 		
 		/**
@@ -185,7 +184,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		 * Sende jetzt drei Datensätze, die nicht überprüft werden
 		 */
 		long ersteDatenZeit = TestUtensilien.getBeginAktuellerSekunde() + 3 * Constants.MILLIS_PER_SECOND;
-		Pause.warte(5 * Constants.MILLIS_PER_SECOND);
+		try{ Thread.sleep(5 * Constants.MILLIS_PER_SECOND); }catch(InterruptedException ex){}
 		for(int i = 0; i<3; i++){
 			for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
 				ResultData resultat = TestUtensilien.getExterneErfassungDatum(sensor);
@@ -194,7 +193,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				resultat.setDataTime(ersteDatenZeit + (i * Constants.MILLIS_PER_SECOND));
 				PlPruefungLogischUFDTest.SENDER.sende(resultat);
 			}
-			Pause.warte(Constants.MILLIS_PER_SECOND);
+
 		}		
 		
 		/**
@@ -301,7 +300,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	public void testUFDAusfallUeberwachung()
 	throws Exception{
 						
-		Pause.warte(Constants.MILLIS_PER_MINUTE * 2);
+		try{ Thread.sleep(Constants.MILLIS_PER_MINUTE * 2); }catch(InterruptedException ex){}
 		
 		/**
 		 * Test-Schleife
@@ -371,7 +370,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				this.ergebnisSoll.put(sensor, erwartetesErgebnis);
 				System.out.println(TestUtensilien.jzt() + ", Sende: " + erwartetesErgebnis);  //$NON-NLS-1$
 				
-				Pause.warte(ABSTAND + DAVTest.R.nextInt(ABSTAND));
+				try{ Thread.sleep(ABSTAND + DAVTest.R.nextInt(ABSTAND)); }catch(InterruptedException ex){}
 			}			
 		}		
 	}

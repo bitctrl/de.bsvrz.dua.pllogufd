@@ -40,7 +40,6 @@ import de.bsvrz.dua.pllogufd.TestUtensilien;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoErgebnis;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
-import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
@@ -299,7 +298,7 @@ extends MeteorologischeKontrolleTest{
 			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
 		}		
 		
-		Pause.warte(5 * Constants.MILLIS_PER_SECOND);
+		try{ Thread.sleep(5 * Constants.MILLIS_PER_SECOND); }catch(InterruptedException ex){}
 	}
 
 }

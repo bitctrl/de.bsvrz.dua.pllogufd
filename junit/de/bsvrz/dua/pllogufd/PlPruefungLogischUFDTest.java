@@ -44,7 +44,6 @@ import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
-import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
@@ -244,7 +243,7 @@ implements ClientSenderInterface{
 		/**
 		 * Warte bis Anmeldung sicher durch ist
 		 */
-		Pause.warte(1000L);
+		try{ Thread.sleep(1000L); }catch(InterruptedException ex){}
 	}
 	
 	

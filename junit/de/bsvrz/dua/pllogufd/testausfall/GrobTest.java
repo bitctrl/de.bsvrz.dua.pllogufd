@@ -44,7 +44,6 @@ import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
-import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
@@ -111,7 +110,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		/**
 		 * Warte bis Anmeldung sicher durch ist
 		 */
-		Pause.warte(1000L);
+		try{ Thread.sleep(1000L); }catch(InterruptedException ex){}
 		
 		/**
 		 * Parameter setzen auf 10s (für Sensoren xxx1), 15s (für Sensoren xxx2) und 20s (für Sensoren xxx3)
@@ -149,7 +148,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		/**
 		 * Warte eine Sekunde bis Datenanmeldung durch ist
 		 */
-		Pause.warte(1000L);		
+		try{ Thread.sleep(1000L); }catch(InterruptedException ex){}
 	}
 	
 	
@@ -243,7 +242,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 			 * Warte bis zum Anfang des nächsten Intervalls
 			 */
 			while(startAlles > System.currentTimeMillis()){
-				Pause.warte(10);	
+				try{ Thread.sleep(10L); }catch(InterruptedException ex){}	
 			}	
 			
 			if(testZaehler > 1){
@@ -267,7 +266,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 
 			if(testZaehler%2 == 0){
 				if(testZaehler%10 == 0)continue;
-				Pause.warte(DAVTest.R.nextInt(700));
+				try{ Thread.sleep(DAVTest.R.nextInt(700)); }catch(InterruptedException ex){}
 				
 				resultat1 = getExterneErfassungDatum(PlPruefungLogischUFDTest.gt1);
 				resultat1.setDataTime(ersteDatenZeit);
@@ -278,7 +277,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				}				
 				
 				if(testZaehler%7 == 0)continue;
-				Pause.warte(DAVTest.R.nextInt(10));
+				try{ Thread.sleep(DAVTest.R.nextInt(10)); }catch(InterruptedException ex){}
 				resultat2 = getExterneErfassungDatum(PlPruefungLogischUFDTest.gt2);
 				resultat2.setDataTime(ersteDatenZeit);
 				synchronized (this) {
@@ -288,7 +287,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 				}
 			}else{
 				if(testZaehler%13 == 0)continue;
-				Pause.warte(DAVTest.R.nextInt(700));
+				try{ Thread.sleep(DAVTest.R.nextInt(700)); }catch(InterruptedException ex){}
 				resultat2 = getExterneErfassungDatum(PlPruefungLogischUFDTest.gt2);
 				resultat2.setDataTime(ersteDatenZeit);
 				synchronized (this) {
@@ -297,7 +296,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 					System.out.println(ct() + ", Sende: " + resultat2.getObject().getPid() + ", " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(resultat2.getDataTime())));  //$NON-NLS-1$//$NON-NLS-2$
 				}
 				
-				Pause.warte(DAVTest.R.nextInt(5));
+				try{ Thread.sleep(DAVTest.R.nextInt(5)); }catch(InterruptedException ex){}
 				
 				if(testZaehler%9 == 0)continue;
 				resultat1 = getExterneErfassungDatum(PlPruefungLogischUFDTest.gt1);

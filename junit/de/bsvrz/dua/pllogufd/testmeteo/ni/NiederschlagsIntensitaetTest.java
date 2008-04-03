@@ -540,7 +540,7 @@ extends MeteorologischeKontrolleTest {
 			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
 		}		
 		
-		Pause.warte(5 * Constants.MILLIS_PER_SECOND);
+		try{ Thread.sleep(5 * Constants.MILLIS_PER_SECOND); }catch(InterruptedException ex){}
 	}
 
 }

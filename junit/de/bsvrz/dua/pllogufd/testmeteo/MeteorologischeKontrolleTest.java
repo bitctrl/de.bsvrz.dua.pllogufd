@@ -46,7 +46,6 @@ import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
-import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
@@ -212,7 +211,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		/**
 		 * Warte eine Sekunde bis alle Anmeldungen durch sind
 		 */
-		Pause.warte(1000L);
+		try{ Thread.sleep(1000L); }catch(InterruptedException ex){}
 	}
 	
 	

@@ -167,7 +167,7 @@ implements ClientSenderInterface, ClientReceiverInterface{
 		/**
 		 * Warte eine Sekunde bis Datenanmeldungen durch sind
 		 */
-		Pause.warte(1000L);
+		try{ Thread.sleep(1000L); }catch(InterruptedException ex){}
 				
 		
 		/**
