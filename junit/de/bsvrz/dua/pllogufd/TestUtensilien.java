@@ -38,20 +38,28 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Einige Utensilien für die Tests der SWE 4.3
+ * Einige Utensilien für die Tests der SWE 4.3.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ *  @version $Id$
  */
-public class TestUtensilien {
-	
+public final class TestUtensilien {
 
+	
 	/**
-	 * Erfragt den Zeitpunkt des Beginns der nächsten Minute
+	 * Standardkonstruktor.
+	 */
+	private TestUtensilien() {
+		//
+	}
+	
+	/**
+	 * Erfragt den Zeitpunkt des Beginns der nächsten Minute.
 	 * 
 	 * @return den Zeitpunkt des Beginns der nächsten Minute in ms
 	 */
-	public static final long getBeginNaechsterMinute(){
+	public static long getBeginNaechsterMinute() {
 		GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
 		kal.add(Calendar.MINUTE, 1);
@@ -59,66 +67,77 @@ public class TestUtensilien {
 		kal.set(Calendar.MILLISECOND, 0);
 		return kal.getTimeInMillis();
 	}
-	
 
 	/**
-	 * Erfragt den Zeitpunkt des Beginns der aktuellen Sekunde
+	 * Erfragt den Zeitpunkt des Beginns der aktuellen Sekunde.
 	 * 
 	 * @return der Zeitpunkt des Beginns der aktuellen Sekunde
 	 */
-	public static final long getBeginAktuellerSekunde(){
+	public static long getBeginAktuellerSekunde() {
 		GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
 		kal.set(Calendar.MILLISECOND, 0);
 		return kal.getTimeInMillis();
 	}
-	
-	
+
 	/**
-	 * Erzeugt einen Messwert mit der Datenbeschreibung <code>asp.externeErfassung</code>
+	 * Erzeugt einen Messwert mit der Datenbeschreibung
+	 * <code>asp.externeErfassung</code>.
 	 * 
-	 * @param sensor ein Umfelddatensensor, für den ein Messwert erzeugt werden soll
-	 * @return ein (ausgefüllter) Umfelddaten-Messwert der zum übergebenen Systemobjekt passt.
-	 * Alle Pl-Prüfungs-Flags sind auf <code>NEIN</code> gesetzt. Der Daten-Intervall beträgt
-	 * 1 min.
+	 * @param sensor
+	 *            ein Umfelddatensensor, für den ein Messwert erzeugt werden
+	 *            soll
+	 * @return ein (ausgefüllter) Umfelddaten-Messwert der zum übergebenen
+	 *         Systemobjekt passt. Alle Pl-Prüfungs-Flags sind auf
+	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall beträgt 1 min.
 	 */
-	public static final ResultData getExterneErfassungDatum(SystemObject sensor) {
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);		
+	public static ResultData getExterneErfassungDatum(SystemObject sensor) {
+		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 		DataDescription datenBeschreibung = new DataDescription(
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAspect("asp.externeErfassung"), //$NON-NLS-1$
-				(short)0);
-		Data datum = PlPruefungLogischUFDTest.DAV.createData(
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup("atg.ufds" + datenArt.getName())); //$NON-NLS-1$
+				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup(
+						"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+				PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+						"asp.externeErfassung"), //$NON-NLS-1$
+				(short) 0);
+		Data datum = PlPruefungLogischUFDTest.DAV
+				.createData(PlPruefungLogischUFDTest.DAV.getDataModel()
+						.getAttributeGroup("atg.ufds" + datenArt.getName())); //$NON-NLS-1$
 		datum.getTimeValue("T").setMillis(60L * 1000L); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getUnscaledValue("Wert").set(0); //$NON-NLS-1$
-		datum.getItem(datenArt.getName()).getItem("Status").getItem("Erfassung"). //$NON-NLS-1$ //$NON-NLS-2$
+		datum.getItem(datenArt.getName())
+				.getItem("Status").getItem("Erfassung").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("NichtErfasst").set(DUAKonstanten.NEIN); //$NON-NLS-1$
-		datum.getItem(datenArt.getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
+		datum.getItem(datenArt.getName())
+				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("WertMax").set(DUAKonstanten.NEIN); //$NON-NLS-1$
-		datum.getItem(datenArt.getName()).getItem("Status").getItem("PlFormal"). //$NON-NLS-1$ //$NON-NLS-2$
+		datum.getItem(datenArt.getName())
+				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("WertMin").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
-		datum.getItem(datenArt.getName()).getItem("Status").getItem("MessWertErsetzung"). //$NON-NLS-1$ //$NON-NLS-2$
+		datum.getItem(datenArt.getName())
+				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("Implausibel").set(DUAKonstanten.NEIN); //$NON-NLS-1$
-		datum.getItem(datenArt.getName()).getItem("Status").getItem("MessWertErsetzung"). //$NON-NLS-1$ //$NON-NLS-2$
+		datum.getItem(datenArt.getName())
+				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$ //$NON-NLS-2$
 				getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
-		datum.getItem(datenArt.getName()).getItem("Güte").getUnscaledValue("Index").set(10000); //$NON-NLS-1$ //$NON-NLS-2$
-		datum.getItem(datenArt.getName()).getItem("Güte").getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		return new ResultData(sensor, datenBeschreibung, System.currentTimeMillis(), datum);
-	}	
-	
-	
+		datum.getItem(datenArt.getName())
+				.getItem("Güte").getUnscaledValue("Index").set(10000); //$NON-NLS-1$ //$NON-NLS-2$
+		datum.getItem(datenArt.getName())
+				.getItem("Güte").getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$ //$NON-NLS-2$
+
+		return new ResultData(sensor, datenBeschreibung, System
+				.currentTimeMillis(), datum);
+	}
+
 	/**
-	 * Erfragt die aktuelle Zeit
+	 * Erfragt die aktuelle Zeit.
 	 * 
 	 * @return die aktuelle Zeit
 	 */
-	public static final String jzt(){
+	public static String jzt() {
 		return "(JETZT:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$ 
-						+ ")"; //$NON-NLS-1$
+				+ ")"; //$NON-NLS-1$
 	}
 
 }

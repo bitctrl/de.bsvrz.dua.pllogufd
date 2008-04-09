@@ -45,173 +45,184 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
-* Analogon zur <code>SichtweitenTabelle</code> aus der Feinspezifikation mit
-* zugehörigen Funktionalitäten. In dieser Klasse wird je eine Messstelle mit
-* allen Sensoren, die für das Submodul "Sichtweiten" interessant sind betrachtet.
-* Die eigentliche Plausibilisierung wird innerhalb der Super-Klasse <code>{@link AbstraktMeteoMessstelle}</code>
-* über die Methode <code>aktualisiereDaten(..)</code> durchgeführt.
-* 
-* @author BitCtrl Systems GmbH, Thierfelder
-* 
-*/
-public class SichtweitenMessstelle
-extends AbstraktMeteoMessstelle{
+ * Analogon zur <code>SichtweitenTabelle</code> aus der Feinspezifikation mit
+ * zugehörigen Funktionalitäten. In dieser Klasse wird je eine Messstelle mit
+ * allen Sensoren, die für das Submodul "Sichtweiten" interessant sind
+ * betrachtet. Die eigentliche Plausibilisierung wird innerhalb der Super-Klasse
+ * <code>{@link AbstraktMeteoMessstelle}</code> über die Methode
+ * <code>aktualisiereDaten(..)</code> durchgeführt.
+ * 
+ * @author BitCtrl Systems GmbH, Thierfelder
+ * 
+ * @version $Id$
+ */
+public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
-	 * Im Submodul Sichtweiten betrachtete Datenarten
+	 * Im Submodul Sichtweiten betrachtete Datenarten.
 	 */
-	private static Collection<UmfeldDatenArt> DATEN_ARTEN = new HashSet<UmfeldDatenArt>();
-	static{
-		DATEN_ARTEN.add(UmfeldDatenArt.SW);
-		DATEN_ARTEN.add(UmfeldDatenArt.NS);
-		DATEN_ARTEN.add(UmfeldDatenArt.RLF);
+	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
+	static {
+		datenArten.add(UmfeldDatenArt.SW);
+		datenArten.add(UmfeldDatenArt.NS);
+		datenArten.add(UmfeldDatenArt.RLF);
 	}
 
 	/**
-	 * Zuordnung des Systemobjekts eines Umfelddatensensors zu einer
-	 * Instanz dieser Klasse
+	 * Zuordnung des Systemobjekts eines Umfelddatensensors zu einer Instanz
+	 * dieser Klasse.
 	 */
-	private static Map<SystemObject, SichtweitenMessstelle> UFDS_AUF_UFDMS = new
-		HashMap<SystemObject, SichtweitenMessstelle>();
-			
-	/**
-	 * letztes Scihtweite-Datum
-	 */
-	private UmfeldDatenSensorDatum letztesUfdSWDatum = null; 
+	private static Map<SystemObject, SichtweitenMessstelle> ufdsAufUfdMs = new HashMap<SystemObject, SichtweitenMessstelle>();
 
 	/**
-	 * letztes Niederschlagsart-Datum
+	 * letztes Scihtweite-Datum.
+	 */
+	private UmfeldDatenSensorDatum letztesUfdSWDatum = null;
+
+	/**
+	 * letztes Niederschlagsart-Datum.
 	 */
 	private UmfeldDatenSensorDatum letztesUfdNSDatum = null;
-	
+
 	/**
-	 * letztes Datum der relativen Luftfeuchte
+	 * letztes Datum der relativen Luftfeuchte.
 	 */
 	private UmfeldDatenSensorDatum letztesUfdRLFDatum = null;
-		
+
 	/**
-	 * Parameter der Meteorologischen Kontrolle für den 
-	 * Sichtweiten-Sensor
+	 * Parameter der Meteorologischen Kontrolle für den Sichtweiten-Sensor.
 	 */
 	private SichtweitenParameter parameterSensor = null;
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param ufdmsObj das Systemobjekt einer Umfelddaten-Messstelle
-	 * @throws DUAInitialisierungsException wenn die Umfelddaten-Messstelle nicht
-	 * vollständig initialisiert werden konnte (mit allen Sensoren usw.)
+	 * @param ufdmsObj
+	 *            das Systemobjekt einer Umfelddaten-Messstelle
+	 * @throws DUAInitialisierungsException
+	 *             wenn die Umfelddaten-Messstelle nicht vollständig
+	 *             initialisiert werden konnte (mit allen Sensoren usw.)
 	 */
 	private SichtweitenMessstelle(final SystemObject ufdmsObj)
-	throws DUAInitialisierungsException{
+			throws DUAInitialisierungsException {
 		super(ufdmsObj);
-		if(ufdmsObj instanceof ConfigurationObject){
-			ConfigurationObject ufdmsConObj = (ConfigurationObject)ufdmsObj;
-			ObjectSet sensorMengeAnMessStelle = ufdmsConObj.getObjectSet("UmfeldDatenSensoren"); //$NON-NLS-1$
-			
-			if(sensorMengeAnMessStelle != null){
-				for(SystemObject betrachtetesObjekt:VERWALTUNG.getSystemObjekte()){
-					if(betrachtetesObjekt.isValid()){
-						if(sensorMengeAnMessStelle.getElements().contains(betrachtetesObjekt)){
-							UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(betrachtetesObjekt);
-							if(datenArt == null){
-								throw new DUAInitialisierungsException("Unbekannter Sensor (" +  //$NON-NLS-1$
-										betrachtetesObjekt + ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
-							}else
-							if(DATEN_ARTEN.contains(datenArt)){
-								sensorenAnMessStelle.add(betrachtetesObjekt);	
+		if (ufdmsObj instanceof ConfigurationObject) {
+			ConfigurationObject ufdmsConObj = (ConfigurationObject) ufdmsObj;
+			ObjectSet sensorMengeAnMessStelle = ufdmsConObj
+					.getObjectSet("UmfeldDatenSensoren"); //$NON-NLS-1$
+
+			if (sensorMengeAnMessStelle != null) {
+				for (SystemObject betrachtetesObjekt : verwaltung
+						.getSystemObjekte()) {
+					if (betrachtetesObjekt.isValid()) {
+						if (sensorMengeAnMessStelle.getElements().contains(
+								betrachtetesObjekt)) {
+							UmfeldDatenArt datenArt = UmfeldDatenArt
+									.getUmfeldDatenArtVon(betrachtetesObjekt);
+							if (datenArt == null) {
+								throw new DUAInitialisierungsException(
+										"Unbekannter Sensor (" + //$NON-NLS-1$
+												betrachtetesObjekt
+												+ ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
+							} else if (datenArten.contains(datenArt)) {
+								sensorenAnMessStelle.add(betrachtetesObjekt);
 							}
 						}
 					}
 				}
 			}
-		}else{
+		} else {
 			/**
 			 * sollte eigentlich nicht vorkommen
 			 */
-			throw new DUAInitialisierungsException(ufdmsObj +
-					" ist kein Konfigurationsobjekt"); //$NON-NLS-1$
-		}	
+			throw new DUAInitialisierungsException(ufdmsObj
+					+ " ist kein Konfigurationsobjekt"); //$NON-NLS-1$
+		}
 	}
-	
-	
+
 	/**
-	 * Initialisiert die statischen Instanzen dieser Klasse
+	 * Initialisiert die statischen Instanzen dieser Klasse.
 	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @throws DUAInitialisierungsException wenn eine Messstelle nicht instanziiert
-	 * werden konnte oder wenn ein Umfelddatensensor mehreren Messstellen zugeordnet
-	 * ist
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @throws DUAInitialisierungsException
+	 *             wenn eine Messstelle nicht instanziiert werden konnte oder
+	 *             wenn ein Umfelddatensensor mehreren Messstellen zugeordnet
+	 *             ist
 	 */
-	public static final void initialisiere(final IVerwaltung verwaltung)
-	throws DUAInitialisierungsException{
+	public static void initialisiere(final IVerwaltung verwaltung)
+			throws DUAInitialisierungsException {
 		setVerwaltungsModul(verwaltung);
-		
-		for(SystemObject ufdmsObj:verwaltung.getVerbindung().getDataModel().
-									getType("typ.umfeldDatenMessStelle").getElements()){ //$NON-NLS-1$
-			if(ufdmsObj.isValid()){
-				SichtweitenMessstelle messStelle = new SichtweitenMessstelle(ufdmsObj);
-				if(messStelle.getSensoren().isEmpty()){
+
+		for (SystemObject ufdmsObj : verwaltung.getVerbindung().getDataModel()
+				.getType("typ.umfeldDatenMessStelle").getElements()) { //$NON-NLS-1$
+			if (ufdmsObj.isValid()) {
+				SichtweitenMessstelle messStelle = new SichtweitenMessstelle(
+						ufdmsObj);
+				if (messStelle.getSensoren().isEmpty()) {
 					LOGGER.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
 							" wird nicht betrachtet"); //$NON-NLS-1$
-				}else{
-					if(messStelle.getSensoren().size() == DATEN_ARTEN.size()){
-						for(SystemObject umfeldDatenSensor:messStelle.getSensoren()){
-							if(UFDS_AUF_UFDMS.get(umfeldDatenSensor) != null){
-								throw new DUAInitialisierungsException("Der Umfelddatensensor " + umfeldDatenSensor + //$NON-NLS-1$
-										" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n" + //$NON-NLS-1$
-										UFDS_AUF_UFDMS.get(umfeldDatenSensor) + " und\n" + messStelle); //$NON-NLS-1$
+				} else {
+					if (messStelle.getSensoren().size() == datenArten.size()) {
+						for (SystemObject umfeldDatenSensor : messStelle
+								.getSensoren()) {
+							if (ufdsAufUfdMs.get(umfeldDatenSensor) != null) {
+								throw new DUAInitialisierungsException(
+										"Der Umfelddatensensor " + umfeldDatenSensor + //$NON-NLS-1$
+												" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n" //$NON-NLS-1$
+												+
+												ufdsAufUfdMs
+														.get(umfeldDatenSensor)
+												+ " und\n" + messStelle); //$NON-NLS-1$
 							}
 							messStelle.initialisiereMessStelle();
-							UFDS_AUF_UFDMS.put(umfeldDatenSensor, messStelle);
-						}					
+							ufdsAufUfdMs.put(umfeldDatenSensor, messStelle);
+						}
 					}
 				}
 			}
 		}
 	}
-	
-	
+
 	/**
-	 * Erfragt die Umfelddaten-Messstelle (dieses Typs),
-	 * an der ein bestimmter Sensor konfiguriert ist
+	 * Erfragt die Umfelddaten-Messstelle (dieses Typs), an der ein bestimmter
+	 * Sensor konfiguriert ist.
 	 * 
-	 * @param umfeldDatenSensorObj das Systemobjekt eines
-	 * Umfelddatensensors
-	 * @return die Umfelddaten-Messstelle oder <code>null</code>,
-	 * wenn der Sensor nicht betrachtet wird
+	 * @param umfeldDatenSensorObj
+	 *            das Systemobjekt eines Umfelddatensensors
+	 * @return die Umfelddaten-Messstelle oder <code>null</code>, wenn der
+	 *         Sensor nicht betrachtet wird
 	 */
-	public static final SichtweitenMessstelle getMessStelleVonSensor(
-												final SystemObject umfeldDatenSensorObj){
-		return UFDS_AUF_UFDMS.get(umfeldDatenSensorObj);
+	public static SichtweitenMessstelle getMessStelleVonSensor(
+			final SystemObject umfeldDatenSensorObj) {
+		return ufdsAufUfdMs.get(umfeldDatenSensorObj);
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void initialisiereMessStelle()
-	throws DUAInitialisierungsException{
+			throws DUAInitialisierungsException {
 		SystemObject parameterSensorObj = null;
-		
-		for(SystemObject sensor:this.getSensoren()){
-			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			if(datenArt.equals(UmfeldDatenArt.SW)){
+
+		for (SystemObject sensor : this.getSensoren()) {
+			UmfeldDatenArt datenArt = UmfeldDatenArt
+					.getUmfeldDatenArtVon(sensor);
+			if (datenArt.equals(UmfeldDatenArt.SW)) {
 				parameterSensorObj = sensor;
 				break;
 			}
 		}
-		
-		if(parameterSensorObj == null){
-			throw new DUAInitialisierungsException("An Messstelle " + this +  //$NON-NLS-1$
+
+		if (parameterSensorObj == null) {
+			throw new DUAInitialisierungsException("An Messstelle " + this + //$NON-NLS-1$
 					" konnte kein Sensor für Sichtweiten identifiziert werden"); //$NON-NLS-1$
 		}
-		
-		this.parameterSensor = new SichtweitenParameter(VERWALTUNG, parameterSensorObj);
-	}
 
+		this.parameterSensor = new SichtweitenParameter(verwaltung,
+				parameterSensorObj);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -222,48 +233,48 @@ extends AbstraktMeteoMessstelle{
 		return this.getAlleAktuellenWerte();
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean bringeDatumInPosition(ResultData umfeldDatum) {
 		boolean erfolgreich = false;
-		
-		if(umfeldDatum.getData() != null){
-			if(this.isDatumSpeicherbar(umfeldDatum)){
-				UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-				
-				if(datenArt != null && this.isDatumSpeicherbar(umfeldDatum)){
-					UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(umfeldDatum);
-	
+
+		if (umfeldDatum.getData() != null) {
+			if (this.isDatumSpeicherbar(umfeldDatum)) {
+				UmfeldDatenArt datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(umfeldDatum.getObject());
+
+				if (datenArt != null && this.isDatumSpeicherbar(umfeldDatum)) {
+					UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+							umfeldDatum);
+
 					erfolgreich = true;
-					if(datenArt.equals(UmfeldDatenArt.SW)){
+					if (datenArt.equals(UmfeldDatenArt.SW)) {
 						this.letztesUfdSWDatum = datum;
-					}else
-					if(datenArt.equals(UmfeldDatenArt.NS)){
+					} else if (datenArt.equals(UmfeldDatenArt.NS)) {
 						this.letztesUfdNSDatum = datum;
-					}else
-					if(datenArt.equals(UmfeldDatenArt.RLF)){
+					} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
 						this.letztesUfdRLFDatum = datum;
-					}else{
+					} else {
 						erfolgreich = false;
 					}
-					
-					if(erfolgreich){
+
+					if (erfolgreich) {
 						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 					}
-				}else{
-					LOGGER.warning(this.getClass().getSimpleName() + ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
+				} else {
+					LOGGER.warning(this.getClass().getSimpleName()
+							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
-			}else{
-				LOGGER.warning(this.getClass().getSimpleName() + ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+			} else {
+				LOGGER.warning(this.getClass().getSimpleName()
+						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
-		
+
 		return erfolgreich;
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -271,120 +282,123 @@ extends AbstraktMeteoMessstelle{
 	@Override
 	protected ResultData[] getAlleAktuellenWerte() {
 		List<ResultData> aktuelleWerte = new ArrayList<ResultData>();
-		
-		if(this.letztesUfdSWDatum != null){
-			aktuelleWerte.add(this.letztesUfdSWDatum.getVeraendertesOriginalDatum());
+
+		if (this.letztesUfdSWDatum != null) {
+			aktuelleWerte.add(this.letztesUfdSWDatum
+					.getVeraendertesOriginalDatum());
 		}
-		if(this.letztesUfdNSDatum != null){
-			aktuelleWerte.add(this.letztesUfdNSDatum.getVeraendertesOriginalDatum());
+		if (this.letztesUfdNSDatum != null) {
+			aktuelleWerte.add(this.letztesUfdNSDatum
+					.getVeraendertesOriginalDatum());
 		}
-		if(this.letztesUfdRLFDatum != null){
-			aktuelleWerte.add(this.letztesUfdRLFDatum.getVeraendertesOriginalDatum());
+		if (this.letztesUfdRLFDatum != null) {
+			aktuelleWerte.add(this.letztesUfdRLFDatum
+					.getVeraendertesOriginalDatum());
 		}
-		
+
 		return aktuelleWerte.toArray(new ResultData[0]);
 	}
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected Collection<UmfeldDatenArt> getDatenArten() {
-		return DATEN_ARTEN;
+		return datenArten;
 	}
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void loescheAlleWerte() {
-		this.letztesUfdSWDatum = null; 
+		this.letztesUfdSWDatum = null;
 		this.letztesUfdNSDatum = null;
 		this.letztesUfdRLFDatum = null;
 	}
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean sindAlleWerteFuerIntervallDa() {
-		return this.letztesUfdSWDatum != null &&
-			   this.letztesUfdNSDatum != null &&
-			   this.letztesUfdRLFDatum != null;
+		return this.letztesUfdSWDatum != null && this.letztesUfdNSDatum != null
+				&& this.letztesUfdRLFDatum != null;
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isPufferLeer() {
-		return this.letztesUfdSWDatum == null &&
-			   this.letztesUfdNSDatum == null &&
-			   this.letztesUfdRLFDatum == null;
+		return this.letztesUfdSWDatum == null && this.letztesUfdNSDatum == null
+				&& this.letztesUfdRLFDatum == null;
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected UmfeldDatenSensorDatum getDatumBereitsInPosition(ResultData umfeldDatum) {
+	protected UmfeldDatenSensorDatum getDatumBereitsInPosition(
+			ResultData umfeldDatum) {
 		UmfeldDatenSensorDatum datumInPosition = null;
-		
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(umfeldDatum.getObject());
-		if(datenArt != null){
-			if(datenArt.equals(UmfeldDatenArt.SW)){
+
+		UmfeldDatenArt datenArt = UmfeldDatenArt
+				.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		if (datenArt != null) {
+			if (datenArt.equals(UmfeldDatenArt.SW)) {
 				datumInPosition = this.letztesUfdSWDatum;
-			}else
-			if(datenArt.equals(UmfeldDatenArt.NS)){
+			} else if (datenArt.equals(UmfeldDatenArt.NS)) {
 				datumInPosition = this.letztesUfdNSDatum;
-			}else
-			if(datenArt.equals(UmfeldDatenArt.RLF)){
+			} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
 				datumInPosition = this.letztesUfdRLFDatum;
 			}
-		}else{
-			LOGGER.warning(this.getClass().getSimpleName() + ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+		} else {
+			LOGGER.warning(this.getClass().getSimpleName()
+					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
-		
+
 		return datumInPosition;
 	}
-	
-	
+
 	/**
 	 * Die Regeln aus SE-02.00.00.00.00-AFo-3.4
 	 */
-	
+
 	/**
- 	 * Folgende Regel wird abgearbeitet:<br>
+	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (SW <= SWgrenz) <b>und</b> (NS == kein Niederschlag) <b>und</b> (RLF < SWgrenzTrockenRLF)
 	 * <b>dann</b> (SW=implausibel)</code>
-	 * <br>Die Ergebnisse werden zurück in die lokalen Variablen geschrieben  
+	 * <br>. Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
-	private final void regel1(){
-		if(this.letztesUfdSWDatum != null &&
-		   this.letztesUfdNSDatum != null &&
-		   this.letztesUfdRLFDatum != null &&
-		   this.letztesUfdSWDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-		   this.letztesUfdNSDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN &&
-		   this.letztesUfdRLFDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN){
-			if(this.parameterSensor.isInitialisiert() &&
-			   this.parameterSensor.getSWgrenzSW().isOk() &&
-			   this.parameterSensor.getSWgrenzTrockenRLF().isOk() &&
-			   this.letztesUfdRLFDatum.getWert().isOk() &&
-			   this.letztesUfdSWDatum.getWert().isOk()){
-				if(this.letztesUfdSWDatum.getWert().getWert() <= this.parameterSensor.getSWgrenzSW().getWert() &&
-				   this.letztesUfdNSDatum.getWert().getWert() == 0 &&
-				   this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor.getSWgrenzTrockenRLF().getWert()){
-					this.letztesUfdSWDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+	private void regel1() {
+		if (this.letztesUfdSWDatum != null
+				&& this.letztesUfdNSDatum != null
+				&& this.letztesUfdRLFDatum != null
+				&& this.letztesUfdSWDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN
+				&& this.letztesUfdNSDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN
+				&& this.letztesUfdRLFDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN) {
+			if (this.parameterSensor.isInitialisiert()
+					&& this.parameterSensor.getSWgrenzSW().isOk()
+					&& this.parameterSensor.getSWgrenzTrockenRLF().isOk()
+					&& this.letztesUfdRLFDatum.getWert().isOk()
+					&& this.letztesUfdSWDatum.getWert().isOk()) {
+				if (this.letztesUfdSWDatum.getWert().getWert() <= this.parameterSensor
+						.getSWgrenzSW().getWert()
+						&& this.letztesUfdNSDatum.getWert().getWert() == 0
+						&& this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor
+								.getSWgrenzTrockenRLF().getWert()) {
+					this.letztesUfdSWDatum
+							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdSWDatum.getWert().setFehlerhaftAn();
-					LOGGER.fine("[SW.R1]Daten geändert:\n" + this.letztesUfdSWDatum.toString()); //$NON-NLS-1$
-				}				
+					LOGGER
+							.fine("[SW.R1]Daten geändert:\n" + this.letztesUfdSWDatum.toString()); //$NON-NLS-1$
+				}
 			}
-		}		
+		}
 	}
 
 }

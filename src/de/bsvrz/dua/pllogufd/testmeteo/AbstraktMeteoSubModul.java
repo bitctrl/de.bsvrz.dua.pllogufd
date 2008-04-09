@@ -36,60 +36,63 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 
 /**
- * Abstraktes Submodul der Komponente Meteorologischen Kontrolle 
- *  
- * @author BitCtrl Systems GmbH, Thierfelder
+ * Abstraktes Submodul der Komponente Meteorologischen Kontrolle.
  * 
+ * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id$
  */
-public abstract class AbstraktMeteoSubModul 
-extends AbstraktBearbeitungsKnotenAdapter{
-	
-	
+public abstract class AbstraktMeteoSubModul extends
+		AbstraktBearbeitungsKnotenAdapter {
+
 	/**
-	 * Erfragt die Umfelddaten-Messstelle an der ein bestimmter Sensor konfiguriert ist
+	 * Erfragt die Umfelddaten-Messstelle an der ein bestimmter Sensor
+	 * konfiguriert ist.
 	 * 
-	 * @param ufdsObjekt das Systemobjekt eines
-	 * Umfelddatensensors
-	 * @return die Umfelddaten-Messstelle oder <code>null</code>,
-	 * wenn der Sensor nicht betrachtet wird
+	 * @param ufdsObjekt
+	 *            das Systemobjekt eines Umfelddatensensors
+	 * @return die Umfelddaten-Messstelle oder <code>null</code>, wenn der
+	 *         Sensor nicht betrachtet wird
 	 */
-	public abstract AbstraktMeteoMessstelle getMessStelleVonSensor(final SystemObject ufdsObjekt);
-	
-	
+	public abstract AbstraktMeteoMessstelle getMessStelleVonSensor(
+			final SystemObject ufdsObjekt);
+
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {		
-		if(resultate != null){
-						
-			List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
-			for(ResultData resultat:resultate){
-				if(resultat != null){
+	public void aktualisiereDaten(ResultData[] resultate) {
+		if (resultate != null) {
 
-					AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat.getObject());
-					if(messstelle != null){
-						ResultData[] ergebnisse = messstelle.aktualisiereDaten(resultat);
-						if(ergebnisse != null && ergebnisse.length > 0){
-							for(ResultData ergebnis:ergebnisse){
+			List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			for (ResultData resultat : resultate) {
+				if (resultat != null) {
+
+					AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat
+							.getObject());
+					if (messstelle != null) {
+						ResultData[] ergebnisse = messstelle
+								.aktualisiereDaten(resultat);
+						if (ergebnisse != null && ergebnisse.length > 0) {
+							for (ResultData ergebnis : ergebnisse) {
 								weiterzuleitendeResultate.add(ergebnis);
 							}
-						}						
-					}else{
+						}
+					} else {
 						weiterzuleitendeResultate.add(resultat);
 					}
-				}				
+				}
 			}
-			
+
 			/**
 			 * Resultate weitergeben
 			 */
-			if(this.knoten != null && !weiterzuleitendeResultate.isEmpty()){
-				this.knoten.aktualisiereDaten(weiterzuleitendeResultate.toArray(new ResultData[0]));
+			if (this.knoten != null && !weiterzuleitendeResultate.isEmpty()) {
+				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
+						.toArray(new ResultData[0]));
 			}
 		}
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -97,7 +100,6 @@ extends AbstraktBearbeitungsKnotenAdapter{
 		return null;
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */

@@ -35,59 +35,65 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Parameter für die meteorologische Kontrolle "Niederschlagsintensität"
- *  
+ * Parameter für die meteorologische Kontrolle "Niederschlagsintensität".
+ * 
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
+ * @version $Id$
  */
-public class NiederschlagsIntensitaetsParameter
-extends	AbstraktMeteoUmfeldDatenSensor {
-	
-	/**
-	 * Wenn NS= 'Niederschlag' und NI = 0 mm/h und RLF < NIgrenzNassRLF, dann NI implausibel
-	 */
-	private UmfeldDatenSensorWert niGrenzNassRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.RLF);
-	
-	/**
-	 * Überhalb dieses Wertes wird angenommen, dass Niederschlag herrscht
-	 */
-	private UmfeldDatenSensorWert niGrenzNassNI = new UmfeldDatenSensorWert(UmfeldDatenArt.NI);
-	
-	/**
-	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF < NIgrenzTrockenRLF, dann NI
-	 * implausibel
-	 */
-	private UmfeldDatenSensorWert niMinNI = new UmfeldDatenSensorWert(UmfeldDatenArt.NI);
-	
-	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für Zeitraum > NIminTrockenRLF,
-	 * dann NI implausibel
-	 */
-	private UmfeldDatenSensorWert niGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.RLF);
-	
-	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für Zeitraum > NIminTrockenRLF,
-	 * dann NI implausibel
-	 */
-	private long niMinTrockenRLF = -1;
-	
+public class NiederschlagsIntensitaetsParameter extends
+		AbstraktMeteoUmfeldDatenSensor {
 
 	/**
-	 * Standardkonstruktor
-	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
-	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * Wenn NS= 'Niederschlag' und NI = 0 mm/h und RLF < NIgrenzNassRLF, dann NI
+	 * implausibel.
 	 */
-	public NiederschlagsIntensitaetsParameter(IVerwaltung verwaltung, SystemObject obj)
-	throws DUAInitialisierungsException {
+	private UmfeldDatenSensorWert niGrenzNassRLF = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.RLF);
+
+	/**
+	 * Überhalb dieses Wertes wird angenommen, dass Niederschlag herrscht.
+	 */
+	private UmfeldDatenSensorWert niGrenzNassNI = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.NI);
+
+	/**
+	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF < NIgrenzTrockenRLF, dann NI implausibel.
+	 */
+	private UmfeldDatenSensorWert niMinNI = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.NI);
+
+	/**
+	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
+	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
+	 */
+	private UmfeldDatenSensorWert niGrenzTrockenRLF = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.RLF);
+
+	/**
+	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
+	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
+	 */
+	private long niMinTrockenRLF = -1;
+
+	/**
+	 * Standardkonstruktor.
+	 * 
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @param obj
+	 *            das mit dieser Instanz zu assoziierende Systemobjekt (vom Typ
+	 *            <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
+	 */
+	public NiederschlagsIntensitaetsParameter(IVerwaltung verwaltung,
+			SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
 	}
 
-	
 	/**
-	 * Erfragt <code>NIGrenzNassRLF<code>
+	 * Erfragt <code>NIGrenzNassRLF</code>.
 	 * 
 	 * @return NIGrenzNassRLF
 	 */
@@ -95,9 +101,8 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.niGrenzNassRLF;
 	}
 
-	
 	/**
-	 * Erfragt <code>NIGrenzNassNI<code>
+	 * Erfragt <code>NIGrenzNassNI</code>.
 	 * 
 	 * @return NIGrenzNassNI
 	 */
@@ -105,9 +110,8 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.niGrenzNassNI;
 	}
 
-
 	/**
-	 * Erfragt <code>NIminNI<code>
+	 * Erfragt <code>NIminNI</code>.
 	 * 
 	 * @return NIminNI
 	 */
@@ -115,9 +119,8 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.niMinNI;
 	}
 
-
 	/**
-	 * Erfragt <code>NIGrenzTrockenRLF<code>
+	 * Erfragt <code>NIGrenzTrockenRLF</code>.
 	 * 
 	 * @return NIGrenzTrockenRLF
 	 */
@@ -125,32 +128,38 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.niGrenzTrockenRLF;
 	}
 
-
 	/**
-	 * Erfragt <code>NIminTrockenRLF<code>
+	 * Erfragt <code>NIminTrockenRLF</code>.
 	 * 
 	 * @return NIminTrockenRLF
 	 */
 	public final long getNIminTrockenRLF() {
 		return this.niMinTrockenRLF;
 	}
-	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
-		if(resultate != null){
-			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
+		if (resultate != null) {
+			for (ResultData resultat : resultate) {
+				if (resultat != null && resultat.getData() != null) {
 					synchronized (this) {
-						this.niGrenzNassRLF.setWert(resultat.getData().getUnscaledValue("NIgrenzNassRLF").longValue()); //$NON-NLS-1$
-						this.niGrenzNassNI.setWert(resultat.getData().getUnscaledValue("NIgrenzNassNI").longValue()); //$NON-NLS-1$
-						this.niMinNI.setWert(resultat.getData().getUnscaledValue("NIminNI").longValue()); //$NON-NLS-1$
-						this.niGrenzTrockenRLF.setWert(resultat.getData().getUnscaledValue("NIgrenzTrockenRLF").longValue()); //$NON-NLS-1$
-						this.niMinTrockenRLF = resultat.getData().getTimeValue("NIminTrockenRLF").getMillis(); //$NON-NLS-1$
-						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-								+ this);
+						this.niGrenzNassRLF
+								.setWert(resultat.getData().getUnscaledValue(
+										"NIgrenzNassRLF").longValue()); //$NON-NLS-1$
+						this.niGrenzNassNI.setWert(resultat.getData()
+								.getUnscaledValue("NIgrenzNassNI").longValue()); //$NON-NLS-1$
+						this.niMinNI.setWert(resultat.getData()
+								.getUnscaledValue("NIminNI").longValue()); //$NON-NLS-1$
+						this.niGrenzTrockenRLF
+								.setWert(resultat.getData().getUnscaledValue(
+										"NIgrenzTrockenRLF").longValue()); //$NON-NLS-1$
+						this.niMinTrockenRLF = resultat.getData().getTimeValue(
+								"NIminTrockenRLF").getMillis(); //$NON-NLS-1$
+						LOGGER
+								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+										+ this);
 					}
 					this.parameterInitialisiert = true;
 				}
@@ -158,17 +167,16 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		}
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
 		return "niGrenzNassRLF = " + niGrenzNassRLF + //$NON-NLS-1$
-				"\nniGrenzNassNI = " + niGrenzNassNI +//$NON-NLS-1$
+				"\nniGrenzNassNI = " + niGrenzNassNI + //$NON-NLS-1$
 				"\nniMinNI = " + niMinNI + //$NON-NLS-1$
 				"\nniGrenzTrockenRLF = " + niGrenzTrockenRLF + //$NON-NLS-1$
-				"\nniMinTrockenRLF = " + niMinTrockenRLF;//$NON-NLS-1$
-	}	
+				"\nniMinTrockenRLF = " + niMinTrockenRLF; //$NON-NLS-1$
+	}
 
 }

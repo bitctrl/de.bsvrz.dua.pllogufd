@@ -35,113 +35,119 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Parameter für die meteorologische Kontrolle "Niederschlagsart"
- *  
- * @author BitCtrl Systems GmbH, Thierfelder
+ * Parameter für die meteorologische Kontrolle "Niederschlagsart".
  * 
+ * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id$
  */
-public class NiederschlagsArtParameter
-extends AbstraktMeteoUmfeldDatenSensor {
-	
-	/**
-	 * Wenn NS = 'Regen' und LT < NSGrenzLT, dann NS implausibel
-	 */
-	private UmfeldDatenSensorWert nsGrenzLT = new UmfeldDatenSensorWert(UmfeldDatenArt.LT);
-	
-	/**
-	 * Wenn NS = 'Niederschlag' und NI = 0 mm/h und RLF < NSGrenzTrockenRLF,
-	 * dann NS implausibel
-	 */
-	private UmfeldDatenSensorWert nsGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.RLF);
-	
-	/**
-	 * Wenn NS='kein Niederschlag' und NI >NSminNI und RLF>NSGrenzNassRLF,
-	 * dann NS implausibel
-	 */
-	private UmfeldDatenSensorWert nsMinNI = new UmfeldDatenSensorWert(UmfeldDatenArt.NI);
-	
-	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für Zeitraum > NIminTrockenRLF,
-	 * dann NI implausibel
-	 */
-	private UmfeldDatenSensorWert nsGrenzRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.RLF);
-	
+public final class NiederschlagsArtParameter extends AbstraktMeteoUmfeldDatenSensor {
 
 	/**
-	 * Standardkonstruktor
+	 * Wenn NS = 'Regen' und LT < NSGrenzLT, dann NS implausibel.
+	 */
+	private UmfeldDatenSensorWert nsGrenzLT = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.LT);
+
+	/**
+	 * Wenn NS = 'Niederschlag' und NI = 0 mm/h und RLF < NSGrenzTrockenRLF,
+	 * dann NS implausibel.
+	 */
+	private UmfeldDatenSensorWert nsGrenzTrockenRLF = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.RLF);
+
+	/**
+	 * Wenn NS='kein Niederschlag' und NI >NSminNI und RLF>NSGrenzNassRLF, dann
+	 * NS implausibel.
+	 */
+	private UmfeldDatenSensorWert nsMinNI = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.NI);
+
+	/**
+	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
+	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
+	 */
+	private UmfeldDatenSensorWert nsGrenzRLF = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.RLF);
+
+	/**
+	 * Standardkonstruktor.
 	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
-	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @param obj
+	 *            das mit dieser Instanz zu assoziierende Systemobjekt (vom Typ
+	 *            <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
 	 */
 	public NiederschlagsArtParameter(IVerwaltung verwaltung, SystemObject obj)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super(verwaltung, obj);
 	}
 
-	
 	/**
-	 * Erfragt <code>NSGrenzLT<code>
+	 * Erfragt <code>NSGrenzLT</code>.
 	 * 
 	 * @return NSGrenzLT
 	 */
-	public synchronized final UmfeldDatenSensorWert getNsGrenzLT() {
+	public synchronized UmfeldDatenSensorWert getNsGrenzLT() {
 		return this.nsGrenzLT;
 	}
 
-
 	/**
-	 * Erfragt <code>NSGrenzRLF<code>
+	 * Erfragt <code>NSGrenzRLF</code>.
 	 * 
 	 * @return NSGrenzRLF
 	 */
-	public synchronized final UmfeldDatenSensorWert getNsGrenzRLF() {
+	public synchronized UmfeldDatenSensorWert getNsGrenzRLF() {
 		return this.nsGrenzRLF;
 	}
 
-
 	/**
-	 * Erfragt <code>NSGrenzTrockenRLF<code>
+	 * Erfragt <code>NSGrenzTrockenRLF</code>.
 	 * 
 	 * @return NSGrenzTrockenRLF
 	 */
-	public synchronized final UmfeldDatenSensorWert getNsGrenzTrockenRLF() {
+	public synchronized UmfeldDatenSensorWert getNsGrenzTrockenRLF() {
 		return this.nsGrenzTrockenRLF;
 	}
 
-
 	/**
-	 * Erfragt <code>NSminNI<code>
+	 * Erfragt <code>NSminNI</code>.
 	 * 
 	 * @return NSminNI
 	 */
-	public synchronized final UmfeldDatenSensorWert getNsMinNI() {
+	public synchronized UmfeldDatenSensorWert getNsMinNI() {
 		return this.nsMinNI;
 	}
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
-		if(resultate != null){
-			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
-					synchronized(this){
-						this.nsGrenzLT.setWert(resultat.getData().getUnscaledValue("NSGrenzLT").longValue()); //$NON-NLS-1$
-						this.nsGrenzTrockenRLF.setWert(resultat.getData().getUnscaledValue("NSGrenzTrockenRLF").longValue()); //$NON-NLS-1$
-						this.nsMinNI.setWert(resultat.getData().getUnscaledValue("NSminNI").longValue()); //$NON-NLS-1$
-						this.nsGrenzRLF.setWert(resultat.getData().getUnscaledValue("NSGrenzRLF").longValue()); //$NON-NLS-1$
+		if (resultate != null) {
+			for (ResultData resultat : resultate) {
+				if (resultat != null && resultat.getData() != null) {
+					synchronized (this) {
+						this.nsGrenzLT.setWert(resultat.getData()
+								.getUnscaledValue("NSGrenzLT").longValue()); //$NON-NLS-1$
+						this.nsGrenzTrockenRLF
+								.setWert(resultat.getData().getUnscaledValue(
+										"NSGrenzTrockenRLF").longValue()); //$NON-NLS-1$
+						this.nsMinNI.setWert(resultat.getData()
+								.getUnscaledValue("NSminNI").longValue()); //$NON-NLS-1$
+						this.nsGrenzRLF.setWert(resultat.getData()
+								.getUnscaledValue("NSGrenzRLF").longValue()); //$NON-NLS-1$
 					}
 					this.parameterInitialisiert = true;
-					LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-							+ this);
+					LOGGER
+							.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+									+ this);
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -149,9 +155,9 @@ extends AbstraktMeteoUmfeldDatenSensor {
 	@Override
 	public String toString() {
 		return "nsGrenzLT = " + nsGrenzLT + //$NON-NLS-1$
-				"\nnsGrenzTrockenRLF = " + nsGrenzTrockenRLF +//$NON-NLS-1$
+				"\nnsGrenzTrockenRLF = " + nsGrenzTrockenRLF + //$NON-NLS-1$
 				"\nnsMinNI = " + nsMinNI + //$NON-NLS-1$
-				"\nnsGrenzRLF = " + nsGrenzRLF;//$NON-NLS-1$
-	}	
-	
+				"\nnsGrenzRLF = " + nsGrenzRLF; //$NON-NLS-1$
+	}
+
 }

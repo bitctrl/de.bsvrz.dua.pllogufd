@@ -41,100 +41,99 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * In diesem Submodul findet lediglich die Publikation der Daten nach den 
- * Vorgaben der Datenflusssteuerung für das Modul Pl-Prüfung logisch UFD
- * statt 
+ * In diesem Submodul findet lediglich die Publikation der Daten nach den
+ * Vorgaben der Datenflusssteuerung für das Modul Pl-Prüfung logisch UFD statt.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class Publikation
-extends AbstraktBearbeitungsKnotenAdapter{
-	
+public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
+
 	/**
-	 * Parameter zur Datenflusssteuerung für diese
-	 * SWE und dieses Modul
+	 * Parameter zur Datenflusssteuerung für diese SWE und dieses Modul.
 	 */
 	private IDatenFlussSteuerungFuerModul iDfsMod = DFSKonstanten.STANDARD;
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param stdAspekte Informationen zu den Standardpublikationsaspekten für diese
-	 * Instanz des Moduls Pl-Prüfung logisch UFD
+	 * @param stdAspekte
+	 *            Informationen zu den Standardpublikationsaspekten für diese
+	 *            Instanz des Moduls Pl-Prüfung logisch UFD
 	 */
-	public Publikation(final IStandardAspekte stdAspekte){
+	public Publikation(final IStandardAspekte stdAspekte) {
 		this.standardAspekte = stdAspekte;
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-	
-		if(this.publizieren){
-			this.publikationsAnmeldungen.modifiziereObjektAnmeldung(this.standardAspekte.
-					getStandardAnmeldungen(this.verwaltung.getSystemObjekte()));
-		}
-	}		
 
+		if (this.publizieren) {
+			this.publikationsAnmeldungen
+					.modifiziereObjektAnmeldung(this.standardAspekte
+							.getStandardAnmeldungen(this.verwaltung
+									.getSystemObjekte()));
+		}
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void aktualisiereDaten(ResultData[] resultate) {
-		if(this.publizieren){
-			if(resultate != null){
-				for(ResultData resultat:resultate){
-					if(resultat != null && resultat.getData() != null){ 
-						ResultData publikationsDatum = 
-							iDfsMod.getPublikationsDatum(resultat,
-								resultat.getData(), standardAspekte.getStandardAspekt(resultat));
-						if(publikationsDatum != null){
-							this.publikationsAnmeldungen.sende(publikationsDatum);							
-						}			
+		if (this.publizieren) {
+			if (resultate != null) {
+				for (ResultData resultat : resultate) {
+					if (resultat != null && resultat.getData() != null) {
+						ResultData publikationsDatum = iDfsMod
+								.getPublikationsDatum(resultat, resultat
+										.getData(), standardAspekte
+										.getStandardAspekt(resultat));
+						if (publikationsDatum != null) {
+							this.publikationsAnmeldungen
+									.sende(publikationsDatum);
+						}
 					}
 				}
 			}
 		}
 	}
 
-	
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	public ModulTyp getModulTyp() {
 		return ModulTyp.PL_PRUEFUNG_LOGISCH_UFD;
 	}
 
-	
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	public void aktualisierePublikation(IDatenFlussSteuerung iDfs) {
-		this.iDfsMod = iDfs.getDFSFuerModul(this.verwaltung.getSWETyp(),
-				this.getModulTyp());
-		
-		if(this.publizieren){
-			Collection<DAVObjektAnmeldung> anmeldungenStd =
-							new ArrayList<DAVObjektAnmeldung>();
+		this.iDfsMod = iDfs.getDFSFuerModul(this.verwaltung.getSWETyp(), this
+				.getModulTyp());
 
-			if(this.standardAspekte != null){
-				anmeldungenStd = this.standardAspekte.
-									getStandardAnmeldungen(this.verwaltung.getSystemObjekte());
+		if (this.publizieren) {
+			Collection<DAVObjektAnmeldung> anmeldungenStd = new ArrayList<DAVObjektAnmeldung>();
+
+			if (this.standardAspekte != null) {
+				anmeldungenStd = this.standardAspekte
+						.getStandardAnmeldungen(this.verwaltung
+								.getSystemObjekte());
 			}
-			
-			Collection<DAVObjektAnmeldung> anmeldungen = 
-					this.iDfsMod.getDatenAnmeldungen(this.verwaltung.getSystemObjekte(), 
+
+			Collection<DAVObjektAnmeldung> anmeldungen = this.iDfsMod
+					.getDatenAnmeldungen(this.verwaltung.getSystemObjekte(),
 							anmeldungenStd);
-			
-			synchronized(this){
-				this.publikationsAnmeldungen.modifiziereObjektAnmeldung(anmeldungen);
+
+			synchronized (this) {
+				this.publikationsAnmeldungen
+						.modifiziereObjektAnmeldung(anmeldungen);
 			}
 		}
 	}

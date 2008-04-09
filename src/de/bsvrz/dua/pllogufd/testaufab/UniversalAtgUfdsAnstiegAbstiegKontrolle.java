@@ -33,76 +33,78 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
  * Klasse zum Auslesen von Parametersätzen der Attributgruppen
- * <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>
+ * <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
+ * @version $Id$
  */
-public class UniversalAtgUfdsAnstiegAbstiegKontrolle
-extends AllgemeinerDatenContainer{
-		
+public class UniversalAtgUfdsAnstiegAbstiegKontrolle extends
+		AllgemeinerDatenContainer {
+
 	/**
-	 * maximale Differenz zwischen zweier aufeinanderfolgender Messwerte
+	 * maximale Differenz zwischen zweier aufeinanderfolgender Messwerte.
 	 */
 	private long maxDiff = -1;
-	
+
 	/**
 	 * zeigt an, ob der Parameter <code>maxDiff</code> selbst einen semantisch
-	 * sinnvollen Zustand hat<br>
-	 * Also auf keinem der folgenden Zustände steht:<br>
-	 * - <code>nicht ermittelbar</code><br>
-	 * - <code>fehlerhaft</code>, oder<br>
-	 * - <code>nicht ermittelbar/fehlerhaft</code><br>
+	 * sinnvollen Zustand hat<br>.
+	 * Also auf keinem der folgenden Zustände steht:<br> -
+	 * <code>nicht ermittelbar</code><br> - <code>fehlerhaft</code>, oder<br> -
+	 * <code>nicht ermittelbar/fehlerhaft</code><br>
 	 */
 	private boolean sinnvoll = true;
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param parameter ein Parameterdatensatz der Attributgruppe
-	 * <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>
+	 * @param parameter
+	 *            ein Parameterdatensatz der Attributgruppe
+	 *            <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>
 	 */
-	public UniversalAtgUfdsAnstiegAbstiegKontrolle(final ResultData parameter){
-		if(parameter == null){
+	public UniversalAtgUfdsAnstiegAbstiegKontrolle(final ResultData parameter) {
+		if (parameter == null) {
 			throw new NullPointerException("Übergebener Parameter ist <<null>>"); //$NON-NLS-1$
 		}
-		if(parameter.getData() == null){
-			throw new NullPointerException("Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
+		if (parameter.getData() == null) {
+			throw new NullPointerException(
+					"Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
 		}
-		
-		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject());
-		
+
+		final UmfeldDatenArt datenArt = UmfeldDatenArt
+				.getUmfeldDatenArtVon(parameter.getObject());
+
 		UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
-		wert.setWert(parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "maxDiff").longValue()); //$NON-NLS-1$
-		
+		wert.setWert(parameter.getData().getUnscaledValue(
+				datenArt.getAbkuerzung() + "maxDiff").longValue()); //$NON-NLS-1$
+
 		this.maxDiff = wert.getWert();
-			
-		this.sinnvoll = !wert.isFehlerhaft() && !wert.isFehlerhaftBzwNichtErmittelbar() && !wert.isNichtErmittelbar();
+
+		this.sinnvoll = !wert.isFehlerhaft()
+				&& !wert.isFehlerhaftBzwNichtErmittelbar()
+				&& !wert.isNichtErmittelbar();
 	}
-	
-	
+
 	/**
-	 * Erfragt den Vergleichswert für die Anstiegs-Abfall-Kontrolle
+	 * Erfragt den Vergleichswert für die Anstiegs-Abfall-Kontrolle.
 	 * 
 	 * @return der Vergleichswert für die Anstiegs-Abfall-Kontrolle
 	 */
-	public final long getMaxDiff(){
+	public final long getMaxDiff() {
 		return this.maxDiff;
 	}
-	
-	
+
 	/**
 	 * Erfragt, ob der Parameter <code>maxDiff</code> selbst einen semantisch
-	 * sinnvollen Zustand hat<br>
-	 * Also auf keinem der folgenden Zustände steht:<br>
-	 * - <code>nicht ermittelbar</code><br>
-	 * - <code>fehlerhaft</code>, oder<br>
-	 * - <code>nicht ermittelbar/fehlerhaft</code><br>
+	 * sinnvollen Zustand hat<br>.
+	 * Also auf keinem der folgenden Zustände steht:<br> -
+	 * <code>nicht ermittelbar</code><br> - <code>fehlerhaft</code>, oder<br> -
+	 * <code>nicht ermittelbar/fehlerhaft</code><br>
 	 * 
 	 * @return ob der Parameter einen sinnvollen Wert enthält
 	 */
-	public final boolean isSinnvoll(){
+	public final boolean isSinnvoll() {
 		return this.sinnvoll;
 	}
 }

@@ -33,32 +33,32 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * Das Submodul Niederschlagsintensität
- *  
- * @author BitCtrl Systems GmbH, Thierfelder
+ * Das Submodul Niederschlagsintensität.
  * 
+ * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id$
  */
-public class NiederschlagsIntensitaet
-extends AbstraktMeteoSubModul {
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
-	throws DUAInitialisierungsException {
-		super.initialisiere(dieVerwaltung);
-		NiederschlagsIntensitaetsMessstelle.initialisiere(dieVerwaltung);
-	}
-	
+public class NiederschlagsIntensitaet extends AbstraktMeteoSubModul {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AbstraktMeteoMessstelle getMessStelleVonSensor(SystemObject ufdsObjekt) {
-		return NiederschlagsIntensitaetsMessstelle.getMessStelleVonSensor(ufdsObjekt);
+	public void initialisiere(IVerwaltung dieVerwaltung)
+			throws DUAInitialisierungsException {
+		super.initialisiere(dieVerwaltung);
+		NiederschlagsIntensitaetsMessstelle.initialisiere(dieVerwaltung);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public AbstraktMeteoMessstelle getMessStelleVonSensor(
+			SystemObject ufdsObjekt) {
+		return NiederschlagsIntensitaetsMessstelle
+				.getMessStelleVonSensor(ufdsObjekt);
 	}
 
 }

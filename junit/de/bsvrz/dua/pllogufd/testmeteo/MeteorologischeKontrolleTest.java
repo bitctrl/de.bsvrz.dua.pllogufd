@@ -54,18 +54,19 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Super-Klasse für alle Tests der Meteorologischen Kontrolle. Sendet Standardparameter
- * und meldet sich als Empfänger auf alle Umfelddaten unter dem Aspekt
- * <code>asp.plausibilitätsPrüfungLogisch</code> an
+ * Super-Klasse für alle Tests der Meteorologischen Kontrolle. Sendet
+ * Standardparameter und meldet sich als Empfänger auf alle Umfelddaten unter
+ * dem Aspekt <code>asp.plausibilitätsPrüfungLogisch</code> an
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
+ * @version $Id$
  */
-public class MeteorologischeKontrolleTest 
-implements ClientSenderInterface, ClientReceiverInterface{
+public class MeteorologischeKontrolleTest implements ClientSenderInterface,
+		ClientReceiverInterface {
 
 	/**
-	 * Debug-Ausgaben über Standardausgabe
+	 * Debug-Ausgaben über Standardausgabe.
 	 */
 	protected static final boolean DEBUG = false;
 
@@ -73,288 +74,321 @@ implements ClientSenderInterface, ClientReceiverInterface{
 	 * Sollen die <code>Assert</code>-Statements ausgeführt werden?
 	 */
 	protected static final boolean TEST_AN = true;
-	
+
 	/**
-	 * Debug-Logger
+	 * Debug-Logger.
 	 */
 	protected static final Debug LOGGER = Debug.getLogger();
-	
+
 	/**
-	 * Zum Ordnen der Systemobjekte nach ihrem Namen
+	 * Zum Ordnen der Systemobjekte nach ihrem Namen.
 	 */
-	private static final Comparator<SystemObject> C = 
-		new Comparator<SystemObject>(){
-			public int compare(SystemObject so1, SystemObject so2) {
-				return so1.getName().compareTo(so2.getName());
-			}		
-		};
-	
+	private static final Comparator<SystemObject> C = new Comparator<SystemObject>() {
+		public int compare(SystemObject so1, SystemObject so2) {
+			return so1.getName().compareTo(so2.getName());
+		}
+	};
+
 	/**
-	 * Datenverteiler-Verbindung
+	 * Datenverteiler-Verbindung.
 	 */
 	protected ClientDavInterface dav = null;
 
 	/**
-	 * alle NS-Sensoren
+	 * alle NS-Sensoren.
 	 */
 	protected SortedSet<SystemObject> nsSensoren = new TreeSet<SystemObject>(C);
 
 	/**
-	 * alle NI-Sensoren
+	 * alle NI-Sensoren.
 	 */
 	protected SortedSet<SystemObject> niSensoren = new TreeSet<SystemObject>(C);
 
 	/**
-	 * alle LT-Sensoren
+	 * alle LT-Sensoren.
 	 */
 	protected SortedSet<SystemObject> ltSensoren = new TreeSet<SystemObject>(C);
 
 	/**
-	 * alle RLF-Sensoren
+	 * alle RLF-Sensoren.
 	 */
 	protected SortedSet<SystemObject> rlfSensoren = new TreeSet<SystemObject>(C);
 
 	/**
-	 * alle WFD-Sensoren
+	 * alle WFD-Sensoren.
 	 */
 	protected SortedSet<SystemObject> wfdSensoren = new TreeSet<SystemObject>(C);
-	
-	/**
-	 * alle SW-Sensoren
-	 */
-	protected SortedSet<SystemObject> swSensoren = new TreeSet<SystemObject>(C);
-	
-	/**
-	 * alle FBZ-Sensoren
-	 */
-	protected SortedSet<SystemObject> fbzSensoren = new TreeSet<SystemObject>(C);
-	
-	/**
-	 * alle Sensoren, für die innerhalb dieses Tests nur Werte mit dem
-	 * Status "fehlerhaft" gesendet werden müssen, um das Ergebnis nicht zu beeinflussen
-	 */
-	protected HashSet<SystemObject> restSensoren = new HashSet<SystemObject>();
-	
-	/**
-	 * letzter Ist-Ergebnis-Wert von einem Sensor
-	 */
-	protected Map<SystemObject, MeteoErgebnis> ergebnisIst = new HashMap<SystemObject, MeteoErgebnis>();
-	
 
 	/**
-	 * Standardkonstruktor
-	 * 
-	 * @throws Exception leitet die Ausnahmen weiter
+	 * alle SW-Sensoren.
 	 */
-	public MeteorologischeKontrolleTest()
-	throws Exception{
+	protected SortedSet<SystemObject> swSensoren = new TreeSet<SystemObject>(C);
+
+	/**
+	 * alle FBZ-Sensoren.
+	 */
+	protected SortedSet<SystemObject> fbzSensoren = new TreeSet<SystemObject>(C);
+
+	/**
+	 * alle Sensoren, für die innerhalb dieses Tests nur Werte mit dem Status
+	 * "fehlerhaft" gesendet werden müssen, um das Ergebnis nicht zu
+	 * beeinflussen.
+	 */
+	protected HashSet<SystemObject> restSensoren = new HashSet<SystemObject>();
+
+	/**
+	 * letzter Ist-Ergebnis-Wert von einem Sensor.
+	 */
+	protected Map<SystemObject, MeteoErgebnis> ergebnisIst = new HashMap<SystemObject, MeteoErgebnis>();
+
+	/**
+	 * Standardkonstruktor.
+	 * 
+	 * @throws Exception
+	 *             leitet die Ausnahmen weiter
+	 */
+	public MeteorologischeKontrolleTest() throws Exception {
 		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
 		PlPruefungLogischUFDTest.initialisiere();
-		PlPruefungLogischUFDTest.SENDER.setMeteoKontrolle(true);
-		
+		PlPruefungLogischUFDTest.sender.setMeteoKontrolle(true);
+
 		/**
-		 * Setzte Ausfallüberwachung für alle Sensoren AUS
-		 * Differentialkontrolle auf einen harmlosen Wert
-		 * Anstieg-Abfall-Kontrolle aus
+		 * Setzte Ausfallüberwachung für alle Sensoren AUS Differentialkontrolle
+		 * auf einen harmlosen Wert Anstieg-Abfall-Kontrolle aus
 		 */
-		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			PlPruefungLogischUFDTest.SENDER.setMaxAusfallFuerSensor(sensor, -1);
-			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
-				PlPruefungLogischUFDTest.SENDER.setDiffPara(sensor, 5, Constants.MILLIS_PER_HOUR);
+		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
+			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
+					UmfeldDatenArt.FBZ)) {
+				PlPruefungLogischUFDTest.sender.setDiffPara(sensor, 5,
+						Constants.MILLIS_PER_HOUR);
 			}
-			if(!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(UmfeldDatenArt.FBZ)){
-				PlPruefungLogischUFDTest.SENDER.setAnAbPara(sensor, 5);
+			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
+					UmfeldDatenArt.FBZ)) {
+				PlPruefungLogischUFDTest.sender.setAnAbPara(sensor, 5);
 			}
 		}
-										
+
 		/**
-		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch UFD kommen
+		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
+		 * UFD kommen
 		 */
-		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			DataDescription datenBeschreibung = new DataDescription(
-					dav.getDataModel().getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-					dav.getDataModel().getAspect("asp.plausibilitätsPrüfungLogisch"), //$NON-NLS-1$
-					(short)0);
+		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			UmfeldDatenArt datenArt = UmfeldDatenArt
+					.getUmfeldDatenArtVon(sensor);
+			DataDescription datenBeschreibung = new DataDescription(dav
+					.getDataModel().getAttributeGroup(
+							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+					dav.getDataModel().getAspect(
+							"asp.plausibilitätsPrüfungLogisch"), //$NON-NLS-1$
+					(short) 0);
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
-				
+
 		/**
 		 * Initialisiere alle Objektmengen
 		 */
-		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			if(datenArt.equals(UmfeldDatenArt.NI)){
+		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			UmfeldDatenArt datenArt = UmfeldDatenArt
+					.getUmfeldDatenArtVon(sensor);
+			if (datenArt.equals(UmfeldDatenArt.NI)) {
 				this.niSensoren.add(sensor);
 			}
-			if(datenArt.equals(UmfeldDatenArt.NS)){
+			if (datenArt.equals(UmfeldDatenArt.NS)) {
 				this.nsSensoren.add(sensor);
 			}
-			if(datenArt.equals(UmfeldDatenArt.WFD)){
+			if (datenArt.equals(UmfeldDatenArt.WFD)) {
 				this.wfdSensoren.add(sensor);
 			}
-			if(datenArt.equals(UmfeldDatenArt.SW)){
+			if (datenArt.equals(UmfeldDatenArt.SW)) {
 				this.swSensoren.add(sensor);
 			}
-			if(datenArt.equals(UmfeldDatenArt.FBZ)){
+			if (datenArt.equals(UmfeldDatenArt.FBZ)) {
 				this.fbzSensoren.add(sensor);
 			}
-			if(datenArt.equals(UmfeldDatenArt.RLF)){
+			if (datenArt.equals(UmfeldDatenArt.RLF)) {
 				this.rlfSensoren.add(sensor);
 			}
-			if(datenArt.equals(UmfeldDatenArt.LT)){
+			if (datenArt.equals(UmfeldDatenArt.LT)) {
 				this.ltSensoren.add(sensor);
-			}				
+			}
 		}
-		
+
 		/**
 		 * Warte eine Sekunde bis alle Anmeldungen durch sind
 		 */
-		try{ Thread.sleep(1000L); }catch(InterruptedException ex){}
+		try {
+			Thread.sleep(1000L);
+		} catch (InterruptedException ex) {
+			//
+		}
 	}
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void dataRequest(SystemObject object, DataDescription dataDescription, byte state) {
-		// 	
-	}
-	
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isRequestSupported(SystemObject object, DataDescription dataDescription) {
+	public void dataRequest(SystemObject object,
+			DataDescription dataDescription, byte state) {
+		// 	
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isRequestSupported(SystemObject object,
+			DataDescription dataDescription) {
 		return false;
 	}
-	
-	
+
 	/**
-	 * Sendet einen Sensorwert
+	 * Sendet einen Sensorwert.
 	 * 
-	 * @param sensor der Umfelddatensensor
-	 * @param wert der zu sendende Wert
-	 * @param datenZeitStempel der Datenzeitstempel
+	 * @param sensor
+	 *            der Umfelddatensensor
+	 * @param wert
+	 *            der zu sendende Wert
+	 * @param datenZeitStempel
+	 *            der Datenzeitstempel
 	 */
-	public final void sendeDatum(final SystemObject sensor, double wert, long datenZeitStempel){
-		UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(TestUtensilien.getExterneErfassungDatum(sensor));
+	public final void sendeDatum(final SystemObject sensor, double wert,
+			long datenZeitStempel) {
+		UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+				TestUtensilien.getExterneErfassungDatum(sensor));
 		datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 		datum.getWert().setSkaliertenWert(wert);
-		ResultData resultat = new ResultData(sensor, datum.getOriginalDatum().getDataDescription(), datenZeitStempel, datum.getDatum());
+		ResultData resultat = new ResultData(sensor, datum.getOriginalDatum()
+				.getDataDescription(), datenZeitStempel, datum.getDatum());
 		try {
-			PlPruefungLogischUFDTest.SENDER.sende(resultat);
+			PlPruefungLogischUFDTest.sender.sende(resultat);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error(Constants.EMPTY_STRING, e);
-		}			
+		}
 	}
 
-	
 	/**
-	 * Sendet einen Sensorwert
+	 * Sendet einen Sensorwert.
 	 * 
-	 * @param sensoren eine Menge von Umfelddatensensoren
-	 * @param wert der zu sendende Wert
-	 * @param datenZeitStempel der Datenzeitstempel
+	 * @param sensoren
+	 *            eine Menge von Umfelddatensensoren
+	 * @param wert
+	 *            der zu sendende Wert
+	 * @param datenZeitStempel
+	 *            der Datenzeitstempel
 	 */
-	public final void sendeDaten(final Collection<SystemObject> sensoren, double wert, long datenZeitStempel){
-		for(SystemObject sensor:sensoren){
+	public final void sendeDaten(final Collection<SystemObject> sensoren,
+			double wert, long datenZeitStempel) {
+		for (SystemObject sensor : sensoren) {
 			this.sendeDatum(sensor, wert, datenZeitStempel);
 		}
 	}
 
-	
 	/**
-	 * Sendet einen Sensorwert mit der Kennzeichnung <code>fehlerhaft</code>
+	 * Sendet einen Sensorwert mit der Kennzeichnung <code>fehlerhaft</code>.
 	 * 
-	 * @param sensoren eine Menge von Umfelddatensensoren
-	 * @param datenZeitStempel der Datenzeitstempel
+	 * @param sensoren
+	 *            eine Menge von Umfelddatensensoren
+	 * @param datenZeitStempel
+	 *            der Datenzeitstempel
 	 */
-	public final void sendeFehlerhaftDaten(final Collection<SystemObject> sensoren, long datenZeitStempel){
-		for(SystemObject sensor:sensoren){
-			UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
+	public final void sendeFehlerhaftDaten(
+			final Collection<SystemObject> sensoren, long datenZeitStempel) {
+		for (SystemObject sensor : sensoren) {
+			UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
+					UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
 			wert.setFehlerhaftAn();
 			this.sendeDatum(sensor, wert.getWert(), datenZeitStempel);
 		}
 	}
 
-	
-	
 	/**
-	 * Sendet einen Sensorwert
+	 * Sendet einen Sensorwert.
 	 * 
-	 * @param sensor der Umfelddatensensor
-	 * @param wert der zu sendende Wert
-	 * @param datenZeitStempel der Datenzeitstempel
+	 * @param sensor
+	 *            der Umfelddatensensor
+	 * @param wert
+	 *            der zu sendende Wert
+	 * @param datenZeitStempel
+	 *            der Datenzeitstempel
 	 */
-	public final void sendeDatum(final SystemObject sensor, long wert, long datenZeitStempel){
-		UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(TestUtensilien.getExterneErfassungDatum(sensor));
+	public final void sendeDatum(final SystemObject sensor, long wert,
+			long datenZeitStempel) {
+		UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+				TestUtensilien.getExterneErfassungDatum(sensor));
 		datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 		datum.getWert().setWert(wert);
-		ResultData resultat = new ResultData(sensor, datum.getOriginalDatum().getDataDescription(), datenZeitStempel, datum.getDatum());
-		if(DEBUG)System.out.println(TestUtensilien.jzt() + ", Sende: " + resultat); //$NON-NLS-1$
+		ResultData resultat = new ResultData(sensor, datum.getOriginalDatum()
+				.getDataDescription(), datenZeitStempel, datum.getDatum());
+		if (DEBUG) {
+			System.out.println(TestUtensilien.jzt() + ", Sende: " + resultat); //$NON-NLS-1$
+		}
 		try {
-			PlPruefungLogischUFDTest.SENDER.sende(resultat);
+			PlPruefungLogischUFDTest.sender.sende(resultat);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error(Constants.EMPTY_STRING, e);
 		}
 	}
 
-	
 	/**
 	 * Sendet einen bzw. mehrere Sensorwert
 	 * 
-	 * @param sensoren eine Menge von Umfelddatensensoren
-	 * @param wert der zu sendende Wert
-	 * @param datenZeitStempel der Datenzeitstempel
+	 * @param sensoren
+	 *            eine Menge von Umfelddatensensoren
+	 * @param wert
+	 *            der zu sendende Wert
+	 * @param datenZeitStempel
+	 *            der Datenzeitstempel
 	 */
-	public final void sendeDaten(final Collection<SystemObject> sensoren, long wert, long datenZeitStempel){
-		for(SystemObject sensor:sensoren){
+	public final void sendeDaten(final Collection<SystemObject> sensoren,
+			long wert, long datenZeitStempel) {
+		for (SystemObject sensor : sensoren) {
 			this.sendeDatum(sensor, wert, datenZeitStempel);
 		}
 	}
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
-		if(resultate != null){
-			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
-					UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(resultat);
-					boolean implausibel = ufdDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.JA;
-					MeteoErgebnis ergebnis = new MeteoErgebnis(resultat.getObject(), resultat.getDataTime(), implausibel);
+		if (resultate != null) {
+			for (ResultData resultat : resultate) {
+				if (resultat != null && resultat.getData() != null) {
+					UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(
+							resultat);
+					boolean implausibel = ufdDatum
+							.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.JA;
+					MeteoErgebnis ergebnis = new MeteoErgebnis(resultat
+							.getObject(), resultat.getDataTime(), implausibel);
 					this.ergebnisIst.put(resultat.getObject(), ergebnis);
-					
-					if(DEBUG){
-						System.out.println(TestUtensilien.jzt() + ", Empfange(" + ergebnis + "): " + resultat); //$NON-NLS-1$ //$NON-NLS-2$
+
+					if (DEBUG) {
+						System.out.println(TestUtensilien.jzt()
+								+ ", Empfange(" + ergebnis + "): " + resultat); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
 		}
 	}
-	
-	
+
 	/**
-	 * Senset ein fehlerhaftes Datum und wartet dann fünf Intervalle (Reset)
+	 * Senset ein fehlerhaftes Datum und wartet dann fünf Intervalle (Reset).
 	 * 
-	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher 
-	 * schon seit mehreren Intervallen keine Werte mehr vorliegen 
+	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher schon
+	 *         seit mehreren Intervallen keine Werte mehr vorliegen
 	 */
-	protected final long getTestBeginnIntervall(){
+	protected final long getTestBeginnIntervall() {
 		long intervall = TestUtensilien.getBeginAktuellerSekunde();
-		
-		for(SystemObject sensor:PlPruefungLogischUFDTest.SENSOREN){
-			UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
+
+		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
+					UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
 			wert.setFehlerhaftAn();
 			this.sendeDatum(sensor, wert.getWert(), intervall);
 		}
 
 		return intervall + PlPruefungLogischUFDTest.STANDARD_T * 5;
 	}
-	
+
 }

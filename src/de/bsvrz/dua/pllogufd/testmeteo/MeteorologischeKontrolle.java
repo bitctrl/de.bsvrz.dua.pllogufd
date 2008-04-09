@@ -41,81 +41,78 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
  * Diese Klasse hat die Aufgabe vergleichbare oder meteorologisch sich
- * beeinflussende Messgrößen zueinander in Beziehung zu setzen, wenn diese
- * in den vorangegangenen Einzelprüfungen nicht als Implausibel gekennzeichnet
+ * beeinflussende Messgrößen zueinander in Beziehung zu setzen, wenn diese in
+ * den vorangegangenen Einzelprüfungen nicht als Implausibel gekennzeichnet
  * wurden. Wird ein Messwert über die Meteorologische Kontrolle als nicht
- * plausibel erkannt, so wird der entsprechende Wert auf Fehlerhaft
- * und Implausibel gesetzt.
- *   
- * @author BitCtrl Systems GmbH, Thierfelder
+ * plausibel erkannt, so wird der entsprechende Wert auf Fehlerhaft und
+ * Implausibel gesetzt.
  * 
+ * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id$
  */
-public class MeteorologischeKontrolle
-extends AbstraktBearbeitungsKnotenAdapter {
-	
+public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter {
+
 	/**
-	 * Submodul Niederschlagsart (NS)
+	 * Submodul Niederschlagsart (NS).
 	 */
 	private NiederschlagsArt ns = new NiederschlagsArt();
-	
+
 	/**
-	 * Submodul Niederschlagsintensität (NI)
+	 * Submodul Niederschlagsintensität (NI).
 	 */
 	private NiederschlagsIntensitaet ni = new NiederschlagsIntensitaet();
-	
+
 	/**
-	 * Submodul Wasserfilmdicke (WFD)
+	 * Submodul Wasserfilmdicke (WFD).
 	 */
 	private WasserfilmDicke wfd = new WasserfilmDicke();
 
 	/**
-	 * Submodul Sichtweite (SW)
+	 * Submodul Sichtweite (SW).
 	 */
-	private Sichtweite sw = new Sichtweite(); 
-	
+	private Sichtweite sw = new Sichtweite();
+
 	/**
-	 * Submodul Publikation
+	 * Submodul Publikation.
 	 */
 	private Publikation pub = null;
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param stdAspekte Informationen zu den
-	 * Standardpublikationsaspekten für diese
-	 * Instanz des Moduls Pl-Prüfung formal
+	 * @param stdAspekte
+	 *            Informationen zu den Standardpublikationsaspekten für diese
+	 *            Instanz des Moduls Pl-Prüfung formal
 	 */
-	public MeteorologischeKontrolle(final IStandardAspekte stdAspekte){
+	public MeteorologischeKontrolle(final IStandardAspekte stdAspekte) {
 		this.pub = new Publikation(stdAspekte);
 	}
-	
-		
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-		
+
 		ni.setNaechstenBearbeitungsKnoten(ns);
 		ni.initialisiere(dieVerwaltung);
-		
+
 		ns.setNaechstenBearbeitungsKnoten(wfd);
 		ns.initialisiere(dieVerwaltung);
-		
+
 		wfd.setNaechstenBearbeitungsKnoten(sw);
 		wfd.initialisiere(dieVerwaltung);
-		
+
 		sw.setNaechstenBearbeitungsKnoten(pub);
 		sw.initialisiere(dieVerwaltung);
-		
+
 		pub.setNaechstenBearbeitungsKnoten(this.knoten);
 		pub.setPublikation(true);
 		pub.initialisiere(dieVerwaltung);
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -124,14 +121,12 @@ extends AbstraktBearbeitungsKnotenAdapter {
 		this.ni.aktualisiereDaten(resultate);
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	public ModulTyp getModulTyp() {
 		return null;
 	}
-	
 
 	/**
 	 * {@inheritDoc}

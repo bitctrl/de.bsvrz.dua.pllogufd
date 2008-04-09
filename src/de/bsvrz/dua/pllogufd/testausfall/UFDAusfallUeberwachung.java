@@ -39,59 +39,60 @@ import de.bsvrz.sys.funclib.bitctrl.dua.testausfall.AbstraktAusfallUeberwachung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 
 /**
- * Das Modul Ausfallüberwachung meldet sich auf alle Parameter an und führt
- * mit allen über die Methode aktualisiereDaten(ResultData[] arg0) übergebenen Daten
+ * Das Modul Ausfallüberwachung meldet sich auf alle Parameter an und führt mit
+ * allen über die Methode aktualisiereDaten(ResultData[] arg0) übergebenen Daten
  * eine Prüfung durch. Die Prüfung überwacht, ob ein Messwert nach Ablauf des
- * dafür vorgesehenen Intervalls übertragen wurde. Der erwartete Meldungszeitpunkt
- * für einen zyklisch gelieferten Messwert ergibt sich aus dem Intervallbeginn 
- * zuzüglich der Erfassungsintervalldauer. Ein nicht übertragener Messwert
- * wird intern als Datensatz mit dem erwarteten Intervallbeginn angelegt, 
- * wobei die Messwerte jeweils auf den Status Nicht erfasst gesetzt werden. 
- * Nach der Prüfung werden die Daten dann an den nächsten Bearbeitungsknoten
- * weitergereicht.
+ * dafür vorgesehenen Intervalls übertragen wurde. Der erwartete
+ * Meldungszeitpunkt für einen zyklisch gelieferten Messwert ergibt sich aus dem
+ * Intervallbeginn zuzüglich der Erfassungsintervalldauer. Ein nicht
+ * übertragener Messwert wird intern als Datensatz mit dem erwarteten
+ * Intervallbeginn angelegt, wobei die Messwerte jeweils auf den Status Nicht
+ * erfasst gesetzt werden. Nach der Prüfung werden die Daten dann an den
+ * nächsten Bearbeitungsknoten weitergereicht.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ *  @version $Id$
  */
-public class UFDAusfallUeberwachung
-extends AbstraktAusfallUeberwachung 
-implements ClientReceiverInterface{
-			
-		
+public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
+		implements ClientReceiverInterface {
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void initialisiere(IVerwaltung dieVerwaltung)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-		
+
 		DataDescription parameterBeschreibung = new DataDescription(
-				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
-				dieVerwaltung.getVerbindung().getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL),
-				(short)0);
-		dieVerwaltung.getVerbindung().subscribeReceiver(this, dieVerwaltung.getSystemObjekte(),
-				parameterBeschreibung, ReceiveOptions.normal(), ReceiverRole.receiver());		
+				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup(
+						"atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
+				dieVerwaltung.getVerbindung().getDataModel().getAspect(
+						DaVKonstanten.ASP_PARAMETER_SOLL), (short) 0);
+		dieVerwaltung.getVerbindung().subscribeReceiver(this,
+				dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
+				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected ResultData getAusfallDatumVon(ResultData originalResultat) {
-		UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(originalResultat);
+		UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(
+				originalResultat);
 		wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
 		wert.getWert().setNichtErmittelbarAn();
 
 		long zeitStempel = wert.getDatenZeit() + wert.getT();
 
-		ResultData resultat = new ResultData(originalResultat.getObject(), 
-				originalResultat.getDataDescription(), zeitStempel, wert.getDatum());
+		ResultData resultat = new ResultData(originalResultat.getObject(),
+				originalResultat.getDataDescription(), zeitStempel, wert
+						.getDatum());
 
 		return resultat;
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -102,19 +103,22 @@ implements ClientReceiverInterface{
 		return datum.getT();
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
-		if(resultate != null){
-			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
+		if (resultate != null) {
+			for (ResultData resultat : resultate) {
+				if (resultat != null && resultat.getData() != null) {
 					synchronized (this.objektWertErfassungVerzug) {
-						this.objektWertErfassungVerzug.put(resultat.getObject(), 
-								new Long(resultat.getData().getTimeValue("maxZeitVerzug").getMillis())); //$NON-NLS-1$
-						LOGGER.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = " +  //$NON-NLS-1$ //$NON-NLS-2$
-								resultat.getData().getTimeValue("maxZeitVerzug").getMillis() + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+						this.objektWertErfassungVerzug.put(
+								resultat.getObject(), new Long(
+										resultat.getData().getTimeValue(
+												"maxZeitVerzug").getMillis())); //$NON-NLS-1$
+						LOGGER
+								.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = " + //$NON-NLS-1$ //$NON-NLS-2$
+										resultat.getData().getTimeValue(
+												"maxZeitVerzug").getMillis() + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}

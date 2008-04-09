@@ -33,31 +33,30 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * Das Submodul Wasserfilmdicke 
+ * Das Submodul Wasserfilmdicke.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
+ * @version $Id$
  */
-public class WasserfilmDicke
-extends AbstraktMeteoSubModul {
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
-	throws DUAInitialisierungsException {
-		super.initialisiere(dieVerwaltung);
-		WasserfilmDickeMessstelle.initialisiere(dieVerwaltung);
-	}
-	
+public class WasserfilmDicke extends AbstraktMeteoSubModul {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AbstraktMeteoMessstelle getMessStelleVonSensor(SystemObject ufdsObjekt) {
+	public void initialisiere(IVerwaltung dieVerwaltung)
+			throws DUAInitialisierungsException {
+		super.initialisiere(dieVerwaltung);
+		WasserfilmDickeMessstelle.initialisiere(dieVerwaltung);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public AbstraktMeteoMessstelle getMessStelleVonSensor(
+			SystemObject ufdsObjekt) {
 		return WasserfilmDickeMessstelle.getMessStelleVonSensor(ufdsObjekt);
 	}
 

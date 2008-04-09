@@ -32,45 +32,48 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
- * Ergebnisobjekt eines Tests der Komponente Meteorologische Kontrolle
- *  
+ * Ergebnisobjekt eines Tests der Komponente Meteorologische Kontrolle.
+ * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
+ * @version $Id$
  */
-public class MeteoErgebnis{
-	
+public class MeteoErgebnis {
+
 	/**
-	 * Datenzeitstempel des Ergebnisses
+	 * Datenzeitstempel des Ergebnisses.
 	 */
 	private long zeitStempel = -1;
-	
+
 	/**
-	 * Ist das Ergebnis als Implausibel gekennzeichnet
+	 * Ist das Ergebnis als Implausibel gekennzeichnet.
 	 */
 	private boolean implausibel = false;
-	
+
 	/**
-	 * das Systemobjekt des Umfelddatensensors
+	 * das Systemobjekt des Umfelddatensensors.
 	 */
 	private SystemObject sensor = null;
-	
-	
+
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param sensor das Systemobjekt des Umfelddatensensors
-	 * @param zeitStempel Datenzeitstempel des Ergebnisses
-	 * @param implausibel Ist das Ergebnis als Implausibel gekennzeichnet
+	 * @param sensor
+	 *            das Systemobjekt des Umfelddatensensors
+	 * @param zeitStempel
+	 *            Datenzeitstempel des Ergebnisses
+	 * @param implausibel
+	 *            Ist das Ergebnis als Implausibel gekennzeichnet
 	 */
-	public MeteoErgebnis(final SystemObject sensor, final long zeitStempel, final boolean implausibel){
+	public MeteoErgebnis(final SystemObject sensor, final long zeitStempel,
+			final boolean implausibel) {
 		this.sensor = sensor;
 		this.zeitStempel = zeitStempel;
 		this.implausibel = implausibel;
 	}
 
-
 	/**
-	 * Erfragt ob das Ergebnis als Implausibel gekennzeichnet
+	 * Erfragt ob das Ergebnis als Implausibel gekennzeichnet.
 	 * 
 	 * @return implausibel Ist das Ergebnis als Implausibel gekennzeichnet
 	 */
@@ -78,9 +81,8 @@ public class MeteoErgebnis{
 		return implausibel;
 	}
 
-
 	/**
-	 * Erfragt das Systemobjekt des Umfelddatensensors
+	 * Erfragt das Systemobjekt des Umfelddatensensors.
 	 * 
 	 * @return sensor das Systemobjekt des Umfelddatensensors
 	 */
@@ -88,9 +90,8 @@ public class MeteoErgebnis{
 		return sensor;
 	}
 
-	
 	/**
-	 * Erfragt den Datenzeitstempel des Ergebnisses
+	 * Erfragt den Datenzeitstempel des Ergebnisses.
 	 * 
 	 * @return zeitStempel Datenzeitstempel des Ergebnisses
 	 */
@@ -98,34 +99,31 @@ public class MeteoErgebnis{
 		return zeitStempel;
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		boolean ergebnis = false;
-		
-		if(obj instanceof MeteoErgebnis){
-			MeteoErgebnis that = (MeteoErgebnis)obj;
-			ergebnis = this.getSensor() == that.getSensor() &&
-					   this.getZeitStempel() == that.getZeitStempel() &&
-					   this.isImplausibel() == that.isImplausibel();						 
+
+		if (obj instanceof MeteoErgebnis) {
+			MeteoErgebnis that = (MeteoErgebnis) obj;
+			ergebnis = this.getSensor() == that.getSensor()
+					&& this.getZeitStempel() == that.getZeitStempel()
+					&& this.isImplausibel() == that.isImplausibel();
 		}
-		
+
 		return ergebnis;
 	}
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "Sensor: " + this.sensor.getPid() + ", " + DUAKonstanten.  //$NON-NLS-1$//$NON-NLS-2$
-				NUR_ZEIT_FORMAT_GENAU.format(new Date(this.zeitStempel)) +
-				", impl.: " + (this.implausibel?"ja":"nein");  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+		return "Sensor: " + this.sensor.getPid() + ", " + DUAKonstanten.//$NON-NLS-1$//$NON-NLS-2$
+				NUR_ZEIT_FORMAT_GENAU.format(new Date(this.zeitStempel))
+				+ ", impl.: " + (this.implausibel ? "ja" : "nein"); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 	}
-	
-}
 
+}

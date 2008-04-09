@@ -32,26 +32,27 @@ import de.bsvrz.sys.funclib.bitctrl.dua.StandardAspekteVersorger;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * Diese Klasse repräsentiert die Versorgung des Moduls
- * Pl-Prüfung formal (innerhalb der SWE Pl-Prüfung logisch UFD)
- * mit Standard-Publikationsinformationen (Zuordnung von
- * Objekt-Datenbeschreibung-Kombination zu Standard-
- * Publikationsaspekt).
+ * Diese Klasse repräsentiert die Versorgung des Moduls Pl-Prüfung formal
+ * (innerhalb der SWE Pl-Prüfung logisch UFD) mit
+ * Standard-Publikationsinformationen (Zuordnung von
+ * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class PlFormUFDStandardAspekteVersorger 
-extends StandardAspekteVersorger{
+public class PlFormUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @throws DUAInitialisierungsException wenn die Initialisierung fehlschlägt
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @throws DUAInitialisierungsException
+	 *             wenn die Initialisierung fehlschlägt
 	 */
 	public PlFormUFDStandardAspekteVersorger(IVerwaltung verwaltung)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super(verwaltung);
 	}
 
@@ -59,8 +60,7 @@ extends StandardAspekteVersorger{
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void init()
-	throws DUAInitialisierungsException{
+	protected void init() throws DUAInitialisierungsException {
 
 		this.standardAspekte = new StandardAspekteAdapter(
 				new StandardPublikationsZuordnung[] {
@@ -163,7 +163,7 @@ extends StandardAspekteVersorger{
 								"typ.ufdsWasserFilmDicke", //$NON-NLS-1$
 								"atg.ufdsWasserFilmDicke", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL),									
+								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL),
 						new StandardPublikationsZuordnung(
 								"typ.ufdsWindRichtung", //$NON-NLS-1$
 								"atg.ufdsWindRichtung", //$NON-NLS-1$
@@ -178,9 +178,8 @@ extends StandardAspekteVersorger{
 								"typ.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
 								"atg.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL),						
-				});
-					
-	}	
+								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL), });
+
+	}
 
 }

@@ -33,102 +33,95 @@ import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
 
 /**
  * Über diese Klasse werden alle im DAV-Enumerationstyp
- * <code>att.ufdsVergleichsOperator</code> beschriebenen Werte zur
- * Verfügung gestellt.
+ * <code>att.ufdsVergleichsOperator</code> beschriebenen Werte zur Verfügung
+ * gestellt.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
+ * @version $Id$
  */
-public class UfdsVergleichsOperator
-extends AbstractDavZustand{
+public class UfdsVergleichsOperator extends AbstractDavZustand {
 
 	/**
 	 * Der Wertebereich dieses DAV-Enumerationstypen
 	 */
-	private static Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = 
-						new HashMap<Integer, UfdsVergleichsOperator>();
+	private static Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = new HashMap<Integer, UfdsVergleichsOperator>();
 
 	/**
 	 * Alle wirklichen Enumerationswerte
-	 */	
-	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_FALSCH = 
-		new UfdsVergleichsOperator("BedingungImmerFalsch", 0); //$NON-NLS-1$
-	
-	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_WAHR = 
-		new UfdsVergleichsOperator("BedingungImmerWahr", 1); //$NON-NLS-1$
+	 */
+	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_FALSCH = new UfdsVergleichsOperator(
+			"BedingungImmerFalsch", 0); //$NON-NLS-1$
 
-	public static final UfdsVergleichsOperator KLEINER = 
-		new UfdsVergleichsOperator("kleiner", 2); //$NON-NLS-1$
-	
-	public static final UfdsVergleichsOperator KLEINER_GLEICH = 
-		new UfdsVergleichsOperator("kleinerGleich", 3); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_WAHR = new UfdsVergleichsOperator(
+			"BedingungImmerWahr", 1); //$NON-NLS-1$
 
-	public static final UfdsVergleichsOperator GLEICH = 
-		new UfdsVergleichsOperator("gleich", 4); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator KLEINER = new UfdsVergleichsOperator(
+			"kleiner", 2); //$NON-NLS-1$
 
-	public static final UfdsVergleichsOperator GROESSER_GLEICH = 
-		new UfdsVergleichsOperator("größerGleich", 5); //$NON-NLS-1$
-	
-	public static final UfdsVergleichsOperator GROESSER = 
-		new UfdsVergleichsOperator("größer", 6); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator KLEINER_GLEICH = new UfdsVergleichsOperator(
+			"kleinerGleich", 3); //$NON-NLS-1$
 
-	
+	public static final UfdsVergleichsOperator GLEICH = new UfdsVergleichsOperator(
+			"gleich", 4); //$NON-NLS-1$
+
+	public static final UfdsVergleichsOperator GROESSER_GLEICH = new UfdsVergleichsOperator(
+			"größerGleich", 5); //$NON-NLS-1$
+
+	public static final UfdsVergleichsOperator GROESSER = new UfdsVergleichsOperator(
+			"größer", 6); //$NON-NLS-1$
+
 	/**
 	 * Standardkonstruktor
 	 * 
-	 * @param name der Name des Wertes
-	 * @param code der Code des Wertes
+	 * @param name
+	 *            der Name des Wertes
+	 * @param code
+	 *            der Code des Wertes
 	 */
-	private UfdsVergleichsOperator(String name, int code){
+	private UfdsVergleichsOperator(String name, int code) {
 		super(code, name);
 		WERTE_BEREICH.put(code, this);
 	}
-	
-	
+
 	/**
-	 * Erfragt den Wert dieses DAV-Enumerationstypen 
-	 * mit dem übergebenen Code
-	 *
-	 * @param code der Code des Enumerations-Wertes
+	 * Erfragt den Wert dieses DAV-Enumerationstypen mit dem übergebenen Code
+	 * 
+	 * @param code
+	 *            der Code des Enumerations-Wertes
 	 */
-	public static final UfdsVergleichsOperator getZustand(int code){
+	public static final UfdsVergleichsOperator getZustand(int code) {
 		return WERTE_BEREICH.get(code);
 	}
-	
-	
+
 	/**
 	 * Vergleicht zwei Werte mit diesem Operator miteinander
 	 * 
-	 * @param wert1 Wert Nr.1
-	 * @param wert2 Wert Nr.2
+	 * @param wert1
+	 *            Wert Nr.1
+	 * @param wert2
+	 *            Wert Nr.2
 	 * @return das Vergleichsergebnis
 	 */
-	public final boolean vergleiche(final long wert1, final long wert2){
+	public final boolean vergleiche(final long wert1, final long wert2) {
 		boolean ergebnis = false;
-		
-		if(this.equals(BEDINGUNG_IMMER_FALSCH)){
+
+		if (this.equals(BEDINGUNG_IMMER_FALSCH)) {
 			ergebnis = false;
-		}else
-		if(this.equals(BEDINGUNG_IMMER_WAHR)){
+		} else if (this.equals(BEDINGUNG_IMMER_WAHR)) {
 			ergebnis = true;
-		}else
-		if(this.equals(KLEINER)){
+		} else if (this.equals(KLEINER)) {
 			ergebnis = wert1 < wert2;
-		}else
-		if(this.equals(KLEINER_GLEICH)){
+		} else if (this.equals(KLEINER_GLEICH)) {
 			ergebnis = wert1 <= wert2;
-		}else
-		if(this.equals(GLEICH)){
+		} else if (this.equals(GLEICH)) {
 			ergebnis = wert1 == wert2;
-		}else
-		if(this.equals(GROESSER_GLEICH)){
-			ergebnis = wert1 >= wert2;	
-		}else
-		if(this.equals(GROESSER)){
+		} else if (this.equals(GROESSER_GLEICH)) {
+			ergebnis = wert1 >= wert2;
+		} else if (this.equals(GROESSER)) {
 			ergebnis = wert1 > wert2;
 		}
-		
+
 		return ergebnis;
 	}
 }
-

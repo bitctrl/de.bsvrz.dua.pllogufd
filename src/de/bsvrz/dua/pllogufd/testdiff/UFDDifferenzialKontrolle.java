@@ -41,79 +41,80 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * Das Modul Differenzialkontrolle meldet sich auf alle Parameter an und führt mit
- * allen über die Methode <code>aktualisiereDaten(..)</code> übergebenen Daten eine
- * Prüfung durch. Diese kontrolliert, ob bestimmte Werte innerhalb eines bestimmten
- * Intervalls konstant geblieben sind. Ist dies der Fall, so werden diese als Implausibel
- * und Fehlerhaft gesetzt. Nach der Prüfung werden die Daten an den nächsten
- * Bearbeitungsknoten weitergereicht
+ * Das Modul Differenzialkontrolle meldet sich auf alle Parameter an und führt
+ * mit allen über die Methode <code>aktualisiereDaten(..)</code> übergebenen
+ * Daten eine Prüfung durch. Diese kontrolliert, ob bestimmte Werte innerhalb
+ * eines bestimmten Intervalls konstant geblieben sind. Ist dies der Fall, so
+ * werden diese als Implausibel und Fehlerhaft gesetzt. Nach der Prüfung werden
+ * die Daten an den nächsten Bearbeitungsknoten weitergereicht
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
+ * @version $Id$
  */
-public class UFDDifferenzialKontrolle
-extends AbstraktBearbeitungsKnotenAdapter {
+public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
-	 * Mapt alle Systemobjekte aller erfassten Umfelddatensensoren auf 
+	 * Mapt alle Systemobjekte aller erfassten Umfelddatensensoren auf
 	 * assoziierte Objekte mit allen für die Differentialkontrolle benötigten
-	 * Informationen
+	 * Informationen.
 	 */
-	private Map<SystemObject, DiffUmfeldDatenSensor> sensoren =
-						new HashMap<SystemObject, DiffUmfeldDatenSensor>();
-	
-	
+	private Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<SystemObject, DiffUmfeldDatenSensor>();
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung) throws DUAInitialisierungsException {
+	public void initialisiere(IVerwaltung dieVerwaltung)
+			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-		
-		for(SystemObject obj:dieVerwaltung.getSystemObjekte()){
-			this.sensoren.put(obj, new DiffUmfeldDatenSensor(dieVerwaltung, obj));
+
+		for (SystemObject obj : dieVerwaltung.getSystemObjekte()) {
+			this.sensoren.put(obj,
+					new DiffUmfeldDatenSensor(dieVerwaltung, obj));
 		}
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	public void aktualisiereDaten(ResultData[] resultate) {
-		if(resultate != null){
+		if (resultate != null) {
 			Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
-			
-			for(ResultData resultat:resultate){				
-				if(resultat != null){
-					if(resultat.getData() != null){
+
+			for (ResultData resultat : resultate) {
+				if (resultat != null) {
+					if (resultat.getData() != null) {
 						ResultData resultatNeu = resultat;
-						
-						DiffUmfeldDatenSensor sensor = this.sensoren.get(resultat.getObject());
-						
+
+						DiffUmfeldDatenSensor sensor = this.sensoren
+								.get(resultat.getObject());
+
 						Data data = null;
-						if(sensor != null){
+						if (sensor != null) {
 							data = sensor.plausibilisiere(resultat);
 						}
-						
-						if(data != null){
-							resultatNeu = new ResultData(resultat.getObject(), resultat.getDataDescription(),
-									resultat.getDataTime(), data);							
+
+						if (data != null) {
+							resultatNeu = new ResultData(resultat.getObject(),
+									resultat.getDataDescription(), resultat
+											.getDataTime(), data);
 						}
-						
+
 						weiterzuleitendeResultate.add(resultatNeu);
-					}else{
+					} else {
 						weiterzuleitendeResultate.add(resultat);
-					}					
+					}
 				}
 			}
-			
-			if(this.knoten != null && !weiterzuleitendeResultate.isEmpty()){
-				this.knoten.aktualisiereDaten(weiterzuleitendeResultate.toArray(new ResultData[0]));
+
+			if (this.knoten != null && !weiterzuleitendeResultate.isEmpty()) {
+				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
+						.toArray(new ResultData[0]));
 			}
 		}
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -121,7 +122,6 @@ extends AbstraktBearbeitungsKnotenAdapter {
 		return null;
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */

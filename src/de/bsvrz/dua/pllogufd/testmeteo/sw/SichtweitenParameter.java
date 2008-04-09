@@ -35,43 +35,48 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Parameter für die meteorologische Kontrolle "Sichtweiten"
- *  
+ * Parameter für die meteorologische Kontrolle "Sichtweiten".
+ * 
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
+ * @version $Id$
  */
-public class SichtweitenParameter
-extends	AbstraktMeteoUmfeldDatenSensor {
-		
-	/**
-	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF < SWgrenzTrockenRLF, dann SW implausibel.
-	 * Wenn SW <= SWgrenzSW und NS = Niederschlag' und NI > 0,5 mm/h, dann SW implausibel
-	 */
-	private UmfeldDatenSensorWert swGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.RLF);
-	
-	/**
-	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF < SWgrenzTrockenRLF, dann SW implausibel.
-	 * Wenn SW <= SWgrenzSW und NS = Niederschlag' und NI > 0,5 mm/h, dann SW implausibel. 
-	 */
-	private UmfeldDatenSensorWert swGrenzSW = new UmfeldDatenSensorWert(UmfeldDatenArt.SW);
-		
+public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 
 	/**
-	 * Standardkonstruktor
+	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF <
+	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW <= SWgrenzSW und NS =
+	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel
+	 */
+	private UmfeldDatenSensorWert swGrenzTrockenRLF = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.RLF);
+
+	/**
+	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF <
+	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW <= SWgrenzSW und NS =
+	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel.
+	 */
+	private UmfeldDatenSensorWert swGrenzSW = new UmfeldDatenSensorWert(
+			UmfeldDatenArt.SW);
+
+	/**
+	 * Standardkonstruktor.
 	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
-	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @param obj
+	 *            das mit dieser Instanz zu assoziierende Systemobjekt (vom Typ
+	 *            <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
 	 */
 	public SichtweitenParameter(IVerwaltung verwaltung, SystemObject obj)
-	throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException {
 		super(verwaltung, obj);
 	}
 
-	
 	/**
-	 * Erfragt <code>SWgrenzTrockenRLF<code>
+	 * Erfragt <code>SWgrenzTrockenRLF</code>.
 	 * 
 	 * @return SWgrenzTrockenRLF
 	 */
@@ -79,9 +84,8 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.swGrenzTrockenRLF;
 	}
 
-
 	/**
-	 * Erfragt <code>SWgrenzSW<code>
+	 * Erfragt <code>SWgrenzSW</code>.
 	 * 
 	 * @return SWgrenzSW
 	 */
@@ -89,26 +93,28 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 		return this.swGrenzSW;
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
-		if(resultate != null){
-			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
+		if (resultate != null) {
+			for (ResultData resultat : resultate) {
+				if (resultat != null && resultat.getData() != null) {
 					synchronized (this) {
-						this.swGrenzTrockenRLF.setWert(resultat.getData().getUnscaledValue("SWgrenzTrockenRLF").longValue()); //$NON-NLS-1$
-						this.swGrenzSW.setWert(resultat.getData().getUnscaledValue("SWgrenzSW").longValue()); //$NON-NLS-1$
-						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-								+ this);
+						this.swGrenzTrockenRLF
+								.setWert(resultat.getData().getUnscaledValue(
+										"SWgrenzTrockenRLF").longValue()); //$NON-NLS-1$
+						this.swGrenzSW.setWert(resultat.getData()
+								.getUnscaledValue("SWgrenzSW").longValue()); //$NON-NLS-1$
+						LOGGER
+								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+										+ this);
 					}
 					this.parameterInitialisiert = true;
 				}
 			}
 		}
 	}
-	
 
 	/**
 	 * {@inheritDoc}
@@ -116,7 +122,7 @@ extends	AbstraktMeteoUmfeldDatenSensor {
 	@Override
 	public String toString() {
 		return "swGrenzTrockenRLF = " + swGrenzTrockenRLF + //$NON-NLS-1$
-				"\nswGrenzSW = " + swGrenzSW;//$NON-NLS-1$
-	}	
+				"\nswGrenzSW = " + swGrenzSW; //$NON-NLS-1$
+	}
 
 }

@@ -42,139 +42,160 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten
- * bzgl. der Differenzialkontrolle
+ * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten bzgl. der
+ * Differenzialkontrolle
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
+ * @version $Id$
  */
-public class DiffUmfeldDatenSensor
-extends AbstraktUmfeldDatenSensor{
-	
+public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
+
 	/**
-	 * aktueller Wert mit Historie
+	 * aktueller Wert mit Historie.
 	 */
 	private VariableMitKonstanzZaehler<Long> wert = null;
-	
+
 	/**
-	 * aktuelle Parameter für die Differenzialkontrolle dieses Umfelddatensensors
+	 * aktuelle Parameter für die Differenzialkontrolle dieses
+	 * Umfelddatensensors.
 	 */
 	private UniversalAtgUfdsDifferenzialKontrolle parameter = null;
 
-
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
-	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @param obj
+	 *            das mit dieser Instanz zu assoziierende Systemobjekt (vom Typ
+	 *            <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
 	 */
 	protected DiffUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
-	throws DUAInitialisierungsException{
+			throws DUAInitialisierungsException {
 		super(verwaltung, obj);
-		this.wert = new VariableMitKonstanzZaehler<Long>(UmfeldDatenArt.getUmfeldDatenArtVon(obj).getName());
+		this.wert = new VariableMitKonstanzZaehler<Long>(UmfeldDatenArt
+				.getUmfeldDatenArtVon(obj).getName());
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
-	throws DUAInitialisierungsException{
-		if(this.objekt == null){
-			throw new NullPointerException("Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+			throws DUAInitialisierungsException {
+		if (this.objekt == null) {
+			throw new NullPointerException(
+					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
+							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
 		Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
-		
-		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt. //$NON-NLS-1$
-										getUmfeldDatenArtVon(this.objekt).getName();
-		AttributeGroup atg = VERWALTUNG.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
-		if(atg != null){
+		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt.//$NON-NLS-1$
+				getUmfeldDatenArtVon(this.objekt).getName();
+		AttributeGroup atg = verwaltungsModul.getVerbindung().getDataModel()
+				.getAttributeGroup(atgPid);
+
+		if (atg != null) {
 			parameterAtgs.add(atg);
-		}else{
-			throw new DUAInitialisierungsException("Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-					"Differenzialkontrolle des Objektes " + this.objekt + " bestimmt werden\n" +  //$NON-NLS-1$//$NON-NLS-2$ 
-					"Atg-Name: " + atgPid);  //$NON-NLS-1$
+		} else {
+			throw new DUAInitialisierungsException(
+					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
+							"Differenzialkontrolle des Objektes " + this.objekt//$NON-NLS-1$
+							+ " bestimmt werden\n" + //$NON-NLS-1$ 
+							"Atg-Name: " + atgPid); //$NON-NLS-1$
 		}
-		
+
 		return parameterAtgs;
 	}
-	
-	
+
 	/**
 	 * Für die empfangenen Daten wird geprüft, ob innerhalb eines definierenten
-	 * Zeitraums (parametrierbares Zeitfenster) eine Änderung des Messwerts vorliegt.
-	 * Liegt eine Ergebniskonstanz in diesem Zeitfenster vor, so erfolgt eine
-	 * Kennzeichnung der Werte als Implausibel und Fehlerhaft. 
+	 * Zeitraums (parametrierbares Zeitfenster) eine Änderung des Messwerts
+	 * vorliegt. Liegt eine Ergebniskonstanz in diesem Zeitfenster vor, so
+	 * erfolgt eine Kennzeichnung der Werte als Implausibel und Fehlerhaft.
 	 * 
-	 * @param resultat ein Roh-Datum eines Umfelddatensensors
-	 * @return das gekennzeichnete Datum oder <code>null</code> wenn das Datum plausibel ist
+	 * @param resultat
+	 *            ein Roh-Datum eines Umfelddatensensors
+	 * @return das gekennzeichnete Datum oder <code>null</code> wenn das Datum
+	 *         plausibel ist
 	 */
-	public final Data plausibilisiere(final ResultData resultat){
+	public final Data plausibilisiere(final ResultData resultat) {
 		Data copy = null;
 
-		if(resultat != null && resultat.getData() != null){
-			if(this.parameter != null){
-				
-				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat); 
+		if (resultat != null && resultat.getData() != null) {
+			if (this.parameter != null) {
+
+				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+						resultat);
 				final long aktuellerWert = datum.getWert().getWert();
-				final long T = datum.getT();
-				this.wert.aktualisiere(aktuellerWert, T);
+				final long t = datum.getT();
+				this.wert.aktualisiere(aktuellerWert, t);
 
 				synchronized (this.parameter) {
-					if(!this.parameter.getGrenz().isFehlerhaft() && 
-					   !this.parameter.getGrenz().isFehlerhaftBzwNichtErmittelbar() &&
-					   !this.parameter.getGrenz().isNichtErmittelbar()){
+					if (!this.parameter.getGrenz().isFehlerhaft()
+							&& !this.parameter.getGrenz()
+									.isFehlerhaftBzwNichtErmittelbar()
+							&& !this.parameter.getGrenz().isNichtErmittelbar()) {
 						boolean vergleichDurchfuehren = false;
-						if(this.parameter.getOpertator() != null){
-							vergleichDurchfuehren = this.parameter.getOpertator().vergleiche(
-									aktuellerWert, this.parameter.getGrenz().getWert()) && datum.getWert().isOk();
-							
-						}else{
-							vergleichDurchfuehren = aktuellerWert <= this.parameter.getGrenz().getWert();
+						if (this.parameter.getOpertator() != null) {
+							vergleichDurchfuehren = this.parameter
+									.getOpertator()
+									.vergleiche(aktuellerWert,
+											this.parameter.getGrenz().getWert())
+									&& datum.getWert().isOk();
+
+						} else {
+							vergleichDurchfuehren = aktuellerWert <= this.parameter
+									.getGrenz().getWert();
 						}
-	
-						if(vergleichDurchfuehren){
-							if(this.wert.getWertIstKonstantSeit() > this.parameter.getMaxZeit()){
+
+						if (vergleichDurchfuehren) {
+							if (this.wert.getWertIstKonstantSeit() > this.parameter
+									.getMaxZeit()) {
 								datum.getWert().setFehlerhaftAn();
-								datum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+								datum
+										.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 								copy = datum.getDatum();
 							}
 						}
-					}else{
-						LOGGER.fine("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
-								this.objekt + " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
-								UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getAbkuerzung() + 
-								"Grenz=" + this.parameter.getGrenz()); //$NON-NLS-1$
-					}					
+					} else {
+						LOGGER
+								.fine("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
+										this.objekt
+										+ " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
+										UmfeldDatenArt.getUmfeldDatenArtVon(
+												this.objekt).getAbkuerzung()
+										+ "Grenz=" + this.parameter.getGrenz()); //$NON-NLS-1$
+					}
 				}
-			}else{
-				LOGGER.fine("Fuer Umfelddatensensor " + this +  //$NON-NLS-1$
-				" wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
+			} else {
+				LOGGER
+						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
+								" wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
 			}
 		}
-		
+
 		return copy;
 
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	public void update(ResultData[] resultate) {
-		if(resultate != null){
-			for(ResultData resultat:resultate){
-				if(resultat != null && resultat.getData() != null){
+		if (resultate != null) {
+			for (ResultData resultat : resultate) {
+				if (resultat != null && resultat.getData() != null) {
 					synchronized (this) {
-						this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(resultat);
-						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-								+ this.parameter);
+						this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(
+								resultat);
+						LOGGER
+								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+										+ this.parameter);
 					}
 				}
 			}

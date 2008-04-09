@@ -37,72 +37,76 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Abstrakte Klasse für Umfelddatensensoren, die der Meteorologischen Kontrolle 
- * zugeführt werden
- *  
- * @author BitCtrl Systems GmbH, Thierfelder
+ * Abstrakte Klasse für Umfelddatensensoren, die der Meteorologischen Kontrolle
+ * zugeführt werden.
  * 
+ * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id$
  */
-public abstract class AbstraktMeteoUmfeldDatenSensor 
-extends AbstraktUmfeldDatenSensor{
+public abstract class AbstraktMeteoUmfeldDatenSensor extends
+		AbstraktUmfeldDatenSensor {
 
 	/**
-	 * wurden schon einmal Parameter empfangen
+	 * wurden schon einmal Parameter empfangen.
 	 */
 	protected boolean parameterInitialisiert = false;
-	
-	
 
 	/**
-	 * Standardkonstruktor
+	 * Standardkonstruktor.
 	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
-	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @param obj
+	 *            das mit dieser Instanz zu assoziierende Systemobjekt (vom Typ
+	 *            <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
 	 */
-	protected AbstraktMeteoUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
-	throws DUAInitialisierungsException {
+	protected AbstraktMeteoUmfeldDatenSensor(IVerwaltung verwaltung,
+			SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
 	}
-	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
-	throws DUAInitialisierungsException {
-		if(this.objekt == null){
-			throw new NullPointerException("Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+			throws DUAInitialisierungsException {
+		if (this.objekt == null) {
+			throw new NullPointerException(
+					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
+							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
 		Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
-		
-		final String atgPid = "atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
-						UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();
-				
-		AttributeGroup atg = VERWALTUNG.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
-		if(atg != null){
+		final String atgPid = "atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
+				UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();
+
+		AttributeGroup atg = verwaltungsModul.getVerbindung().getDataModel()
+				.getAttributeGroup(atgPid);
+
+		if (atg != null) {
 			parameterAtgs.add(atg);
-		}else{
-			throw new DUAInitialisierungsException("Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-					"Meteorologische Kontrolle des Objektes " + this.objekt + " bestimmt werden\n" +  //$NON-NLS-1$//$NON-NLS-2$ 
-					"Atg-Name: " + atgPid);  //$NON-NLS-1$
+		} else {
+			throw new DUAInitialisierungsException(
+					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
+							"Meteorologische Kontrolle des Objektes "//$NON-NLS-1$
+							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$ 
+							"Atg-Name: " + atgPid); //$NON-NLS-1$
 		}
-		
+
 		return parameterAtgs;
 	}
-	
-	
+
 	/**
-	 * Erfragt, ob schon einmal Parameter empfangen wurden
+	 * Erfragt, ob schon einmal Parameter empfangen wurden.
 	 * 
 	 * @return ob schon einmal Parameter empfangen wurden
 	 */
-	public final boolean isInitialisiert(){
+	public final boolean isInitialisiert() {
 		return this.parameterInitialisiert;
 	}
 }

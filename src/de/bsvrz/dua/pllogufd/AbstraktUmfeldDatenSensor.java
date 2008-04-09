@@ -45,89 +45,91 @@ import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine
- * Pl-Prüfung logisch UFD anmeldet
+ * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine Pl-Prüfung
+ * logisch UFD anmeldet.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
+ * @version $Id$
  */
-public abstract class AbstraktUmfeldDatenSensor 
-extends AbstractSystemObjekt
-implements Comparable<AbstraktUmfeldDatenSensor>,
-		   ClientReceiverInterface{
+public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
+		implements Comparable<AbstraktUmfeldDatenSensor>,
+		ClientReceiverInterface {
 
 	/**
-	 * Debug-Logger
+	 * Debug-Logger.
 	 */
 	protected static final Debug LOGGER = Debug.getLogger();
-	
-	/**
-	 * <code>asp.parameterSoll</code>
-	 */
-	protected static Aspect ASP_PARAMETER_SOLL = null;
-	
-	/**
-	 * statische Verbindung zum Verwaltungsmodul 
-	 */
-	protected static IVerwaltung VERWALTUNG = null;
-	
-	
-	/**
-	 * Standardkonstruktor
-	 * 
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @param obj das mit dieser Instanz zu assoziierende Systemobjekt 
-	 * (vom Typ <code>typ.umfeldDatenSensor</code>)
-	 * @throws DUAInitialisierungsException wird weitergereicht
-	 */
-	protected AbstraktUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
-	throws DUAInitialisierungsException{
-		super(obj);
-		
-		if(VERWALTUNG == null){
-			VERWALTUNG = verwaltung;
-			ASP_PARAMETER_SOLL = verwaltung.getVerbindung().getDataModel().
-									getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
-		}
-		
-		Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
-		for(AttributeGroup atg:this.getParameterAtgs()){
-			parameterBeschreibungen.add(new DataDescription(atg, ASP_PARAMETER_SOLL, (short)0));
-		}
-		
-		for(DataDescription parameterBeschreibung:parameterBeschreibungen){
-			VERWALTUNG.getVerbindung().subscribeReceiver(this, obj,
-					parameterBeschreibung, ReceiveOptions.normal(), ReceiverRole.receiver());
-		}
-	}
-	
 
 	/**
-	 * Erfragt die Parameter-Attributgruppen, auf die sich dieses
-	 * Objekt anmelden soll
-	 *
+	 * <code>asp.parameterSoll</code>.
+	 */
+	protected static Aspect aspParameterSoll = null;
+
+	/**
+	 * statische Verbindung zum Verwaltungsmodul.
+	 */
+	protected static IVerwaltung verwaltungsModul = null;
+
+	/**
+	 * Standardkonstruktor.
+	 * 
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @param obj
+	 *            das mit dieser Instanz zu assoziierende Systemobjekt (vom Typ
+	 *            <code>typ.umfeldDatenSensor</code>)
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
+	 */
+	protected AbstraktUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
+			throws DUAInitialisierungsException {
+		super(obj);
+
+		if (verwaltungsModul == null) {
+			verwaltungsModul = verwaltung;
+			aspParameterSoll = verwaltung.getVerbindung().getDataModel()
+					.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
+		}
+
+		Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
+		for (AttributeGroup atg : this.getParameterAtgs()) {
+			parameterBeschreibungen.add(new DataDescription(atg,
+					aspParameterSoll, (short) 0));
+		}
+
+		for (DataDescription parameterBeschreibung : parameterBeschreibungen) {
+			verwaltungsModul.getVerbindung().subscribeReceiver(this, obj,
+					parameterBeschreibung, ReceiveOptions.normal(),
+					ReceiverRole.receiver());
+		}
+	}
+
+	/**
+	 * Erfragt die Parameter-Attributgruppen, auf die sich dieses Objekt
+	 * anmelden soll.
+	 * 
 	 * @return eine ggf. leere Menge von Attributgruppen
-	 * @throws DUAInitialisierungsException wenn ein Fehler bei der Bestimmung 
-	 * der Attributgruppen auftritt
+	 * @throws DUAInitialisierungsException
+	 *             wenn ein Fehler bei der Bestimmung der Attributgruppen
+	 *             auftritt
 	 */
 	protected abstract Collection<AttributeGroup> getParameterAtgs()
-	throws DUAInitialisierungsException;
-	
-	
+			throws DUAInitialisierungsException;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public int compareTo(AbstraktUmfeldDatenSensor that) {
-		return new Long(this.getSystemObject().getId()).compareTo(
-												that.getSystemObject().getId());
+		return new Long(this.getSystemObject().getId()).compareTo(that
+				.getSystemObject().getId());
 	}
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public SystemObjektTyp getTyp() {
-		return new SystemObjektTyp(){
+		return new SystemObjektTyp() {
 
 			public Class<? extends SystemObjekt> getKlasse() {
 				return AbstraktUmfeldDatenSensor.class;
@@ -136,8 +138,8 @@ implements Comparable<AbstraktUmfeldDatenSensor>,
 			public String getPid() {
 				return getSystemObject().getType().getPid();
 			}
-			
+
 		};
-	}	
+	}
 
 }
