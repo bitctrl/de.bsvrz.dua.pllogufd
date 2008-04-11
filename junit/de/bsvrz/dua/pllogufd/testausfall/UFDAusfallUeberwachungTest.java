@@ -372,7 +372,7 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 				/**
 				 * Dieser Wert fällt komplett aus
 				 */
-				if (DAVTest.R.nextInt(AUSFALL) == 0) {
+				if (DAVTest.r.nextInt(AUSFALL) == 0) {
 					Ergebnis erwartetesErgebnis = new Ergebnis(sensor, start
 							- Constants.MILLIS_PER_MINUTE, true);
 					this.ergebnisSoll.put(sensor, erwartetesErgebnis);
@@ -418,7 +418,7 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 						+ ", Sende: " + erwartetesErgebnis); //$NON-NLS-1$
 
 				try {
-					Thread.sleep(ABSTAND + DAVTest.R.nextInt(ABSTAND));
+					Thread.sleep(ABSTAND + DAVTest.r.nextInt(ABSTAND));
 				} catch (InterruptedException ex) {
 					//
 				}

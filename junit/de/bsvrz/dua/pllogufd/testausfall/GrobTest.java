@@ -309,7 +309,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 					continue;
 				}
 				try {
-					Thread.sleep(DAVTest.R.nextInt(700));
+					Thread.sleep(DAVTest.r.nextInt(700));
 				} catch (InterruptedException ex) {
 					//
 				}
@@ -328,7 +328,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 					continue;
 				}
 				try {
-					Thread.sleep(DAVTest.R.nextInt(10));
+					Thread.sleep(DAVTest.r.nextInt(10));
 				} catch (InterruptedException ex) {
 					//
 				}
@@ -346,7 +346,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 					continue;
 				}
 				try {
-					Thread.sleep(DAVTest.R.nextInt(700));
+					Thread.sleep(DAVTest.r.nextInt(700));
 				} catch (InterruptedException ex) {
 					//
 				}
@@ -361,7 +361,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 				}
 
 				try {
-					Thread.sleep(DAVTest.R.nextInt(5));
+					Thread.sleep(DAVTest.r.nextInt(5));
 				} catch (InterruptedException ex) {
 					//
 				}

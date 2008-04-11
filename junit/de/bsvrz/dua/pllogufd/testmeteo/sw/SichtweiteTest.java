@@ -84,7 +84,7 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 		DAVTest.warteBis(zeitStempel + 50);
 
 		this.sendeDaten(swSensoren,
-				MeteoKonst.SW_GRENZ_SW - DAVTest.R.nextInt(2), zeitStempel
+				MeteoKonst.SW_GRENZ_SW - DAVTest.r.nextInt(2), zeitStempel
 						- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(nsSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
@@ -110,7 +110,7 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 		DAVTest.warteBis(zeitStempel + 50);
 
 		this.sendeDaten(swSensoren,
-				MeteoKonst.SW_GRENZ_SW - DAVTest.R.nextInt(2), zeitStempel
+				MeteoKonst.SW_GRENZ_SW - DAVTest.r.nextInt(2), zeitStempel
 						- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(nsSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
@@ -137,7 +137,7 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 		DAVTest.warteBis(zeitStempel + 50);
 
 		this.sendeDaten(swSensoren,
-				MeteoKonst.SW_GRENZ_SW - DAVTest.R.nextInt(2), zeitStempel
+				MeteoKonst.SW_GRENZ_SW - DAVTest.r.nextInt(2), zeitStempel
 						- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(nsSensoren, 40, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
