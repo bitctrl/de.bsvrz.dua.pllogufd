@@ -43,6 +43,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Analogon zur <code>NiederschlagsIntensitätsTabelle</code> aus der
@@ -175,7 +176,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 				NiederschlagsIntensitaetsMessstelle messStelle = new NiederschlagsIntensitaetsMessstelle(
 						ufdmsObj);
 				if (messStelle.getSensoren().isEmpty()) {
-					LOGGER.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
+					Debug.getLogger().config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
 							" wird nicht betrachtet"); //$NON-NLS-1$
 				} else {
 					if (messStelle.getSensoren().size() == datenArten.size()) {
@@ -299,11 +300,11 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 					}
 				} else {
-					LOGGER.warning(this.getClass().getSimpleName()
+					Debug.getLogger().warning(this.getClass().getSimpleName()
 							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			} else {
-				LOGGER.warning(this.getClass().getSimpleName()
+				Debug.getLogger().warning(this.getClass().getSimpleName()
 						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
@@ -378,7 +379,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		} else {
-			LOGGER.warning(this.getClass().getSimpleName()
+			Debug.getLogger().warning(this.getClass().getSimpleName()
 					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
@@ -464,7 +465,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 					this.letztesUfdNIDatum
 							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					LOGGER
+					Debug.getLogger()
 							.fine("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
 				}
 			}
@@ -499,7 +500,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 					this.letztesUfdNIDatum
 							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					LOGGER
+					Debug.getLogger()
 							.fine("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
 				}
 			}

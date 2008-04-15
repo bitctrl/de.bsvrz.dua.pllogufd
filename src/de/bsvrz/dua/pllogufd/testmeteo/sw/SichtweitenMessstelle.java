@@ -43,6 +43,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Analogon zur <code>SichtweitenTabelle</code> aus der Feinspezifikation mit
@@ -160,7 +161,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 				SichtweitenMessstelle messStelle = new SichtweitenMessstelle(
 						ufdmsObj);
 				if (messStelle.getSensoren().isEmpty()) {
-					LOGGER.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
+					Debug.getLogger().config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
 							" wird nicht betrachtet"); //$NON-NLS-1$
 				} else {
 					if (messStelle.getSensoren().size() == datenArten.size()) {
@@ -264,11 +265,11 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 					}
 				} else {
-					LOGGER.warning(this.getClass().getSimpleName()
+					Debug.getLogger().warning(this.getClass().getSimpleName()
 							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			} else {
-				LOGGER.warning(this.getClass().getSimpleName()
+				Debug.getLogger().warning(this.getClass().getSimpleName()
 						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
@@ -354,7 +355,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 				datumInPosition = this.letztesUfdRLFDatum;
 			}
 		} else {
-			LOGGER.warning(this.getClass().getSimpleName()
+			Debug.getLogger().warning(this.getClass().getSimpleName()
 					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
@@ -394,7 +395,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 					this.letztesUfdSWDatum
 							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdSWDatum.getWert().setFehlerhaftAn();
-					LOGGER
+					Debug.getLogger()
 							.fine("[SW.R1]Daten geändert:\n" + this.letztesUfdSWDatum.toString()); //$NON-NLS-1$
 				}
 			}

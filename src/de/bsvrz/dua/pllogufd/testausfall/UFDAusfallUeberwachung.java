@@ -37,6 +37,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.testausfall.AbstraktAusfallUeberwachung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Das Modul Ausfallüberwachung meldet sich auf alle Parameter an und führt mit
@@ -115,7 +116,7 @@ public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
 								resultat.getObject(), new Long(
 										resultat.getData().getTimeValue(
 												"maxZeitVerzug").getMillis())); //$NON-NLS-1$
-						LOGGER
+						Debug.getLogger()
 								.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = " + //$NON-NLS-1$ //$NON-NLS-2$
 										resultat.getData().getTimeValue(
 												"maxZeitVerzug").getMillis() + "ms"); //$NON-NLS-1$ //$NON-NLS-2$

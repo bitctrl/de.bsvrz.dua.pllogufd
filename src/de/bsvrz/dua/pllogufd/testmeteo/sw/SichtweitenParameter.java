@@ -33,6 +33,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Parameter für die meteorologische Kontrolle "Sichtweiten".
@@ -106,7 +107,7 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 										"SWgrenzTrockenRLF").longValue()); //$NON-NLS-1$
 						this.swGrenzSW.setWert(resultat.getData()
 								.getUnscaledValue("SWgrenzSW").longValue()); //$NON-NLS-1$
-						LOGGER
+						Debug.getLogger()
 								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
 										+ this);
 					}

@@ -39,6 +39,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten bzgl. der
@@ -156,7 +157,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							}
 						}
 					} else {
-						LOGGER
+						Debug.getLogger()
 								.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
 										" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
 					}
@@ -179,7 +180,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					synchronized (this) {
 						this.parameter = new UniversalAtgUfdsAnstiegAbstiegKontrolle(
 								resultat);
-						LOGGER
+						Debug.getLogger()
 								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
 										+ this.parameter);
 					}

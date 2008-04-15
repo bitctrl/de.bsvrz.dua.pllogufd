@@ -59,11 +59,6 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 	private static final boolean DEBUG = false;
 
 	/**
-	 * Debug-Logger.
-	 */
-	protected static final Debug LOGGER = Debug.getLogger();
-
-	/**
 	 * Verbindung zum Verwaltungsmodul.
 	 */
 	protected static IVerwaltung verwaltung = null;
@@ -215,9 +210,9 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 					for (ResultData resu : this.getAlleAktuellenWerte()) {
 						zusatzInfo += "\n" + resu; //$NON-NLS-1$
 					}
-					LOGGER.info(zusatzInfo);
+					Debug.getLogger().info(zusatzInfo);
 
-					LOGGER.info(this.getClass().getSimpleName()
+					Debug.getLogger().info(this.getClass().getSimpleName()
 							+ " IN: " + umfeldDatum.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
 							DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(
 									umfeldDatum.getDataTime()))
@@ -247,7 +242,7 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 							ergebnisse = this.berechneAlleRegeln();
 							this.loescheAlleWerte();
 							if (!this.bringeDatumInPosition(umfeldDatum)) {
-								LOGGER
+								Debug.getLogger()
 										.warning("Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
 								ArrayList<ResultData> ergebnisseDummy = new ArrayList<ResultData>();
 								for (ResultData ergebnis : ergebnisse) {
@@ -276,7 +271,7 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 								 * werden
 								 */
 								ergebnisse = new ResultData[] { umfeldDatum };
-								LOGGER
+								Debug.getLogger()
 										.warning("Datum konnte nicht in Position gebracht werden:\n" + //$NON-NLS-1$
 												umfeldDatum);
 							}
@@ -297,7 +292,7 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 					for (ResultData resu : this.getAlleAktuellenWerte()) {
 						zusatzInfo += "\n" + resu; //$NON-NLS-1$
 					}
-					LOGGER.info(zusatzInfo);
+					Debug.getLogger().info(zusatzInfo);
 
 					String log = this.getClass().getSimpleName() + " OUT: "; //$NON-NLS-1$
 					if (ergebnisse != null && ergebnisse.length != 0) {
@@ -314,7 +309,7 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 					} else {
 						log += "nichts"; //$NON-NLS-1$
 					}
-					LOGGER.info(log);
+					Debug.getLogger().info(log);
 				}
 				/** Debug * */
 
@@ -377,7 +372,7 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 		if (datenArt != null) {
 			relevant = this.getDatenArten().contains(datenArt);
 		} else {
-			LOGGER.warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+			Debug.getLogger().warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
 		return relevant;

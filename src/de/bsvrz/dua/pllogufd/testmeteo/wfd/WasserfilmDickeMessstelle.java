@@ -43,6 +43,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Analogon zur <code>WasserfilmDickeTabelle</code> aus der Feinspezifikation
@@ -172,7 +173,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				WasserfilmDickeMessstelle messStelle = new WasserfilmDickeMessstelle(
 						ufdmsObj);
 				if (messStelle.getSensoren().isEmpty()) {
-					LOGGER.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
+					Debug.getLogger().config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
 							" wird nicht betrachtet"); //$NON-NLS-1$
 				} else {
 					if (messStelle.getSensoren().size() == datenArten.size()) {
@@ -290,11 +291,11 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 					}
 				} else {
-					LOGGER.warning(this.getClass().getSimpleName()
+					Debug.getLogger().warning(this.getClass().getSimpleName()
 							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			} else {
-				LOGGER.warning(this.getClass().getSimpleName()
+				Debug.getLogger().warning(this.getClass().getSimpleName()
 						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
@@ -391,7 +392,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		} else {
-			LOGGER.warning(this.getClass().getSimpleName()
+			Debug.getLogger().warning(this.getClass().getSimpleName()
 					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
@@ -429,7 +430,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 					this.letztesUfdWFDDatum
 							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
-					LOGGER
+					Debug.getLogger()
 							.fine("[WFD.R1]Daten geändert:\n" + this.letztesUfdWFDDatum.toString()); //$NON-NLS-1$
 				}
 			}
@@ -456,7 +457,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				this.letztesUfdFBZDatum
 						.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
-				LOGGER
+				Debug.getLogger()
 						.fine("[WFD.R2]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
 								"\n" + this.letztesUfdFBZDatum.toString()); //$NON-NLS-1$
 			}
@@ -483,7 +484,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				this.letztesUfdFBZDatum
 						.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
-				LOGGER
+				Debug.getLogger()
 						.fine("[WFD.R3]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
 								"\n" + this.letztesUfdFBZDatum.toString()); //$NON-NLS-1$
 			}

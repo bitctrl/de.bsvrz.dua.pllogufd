@@ -42,7 +42,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.modell.AbstractSystemObjekt;
 import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjekt;
 import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
-import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine Pl-Prüfung
@@ -55,11 +54,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
 public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 		implements Comparable<AbstraktUmfeldDatenSensor>,
 		ClientReceiverInterface {
-
-	/**
-	 * Debug-Logger.
-	 */
-	protected static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * <code>asp.parameterSoll</code>.

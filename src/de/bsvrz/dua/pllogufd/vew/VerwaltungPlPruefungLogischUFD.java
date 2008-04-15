@@ -50,6 +50,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Dieses Modul Verwaltung ist die zentrale Steuereinheit der SWE PL-Prüfung
@@ -113,7 +114,7 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapter {
 		for (SystemObject obj : this.objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
-		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		Debug.getLogger().config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		IStandardAspekte standardAspekte = new PlLogUFDStandardAspekteVersorger(
 				this).getStandardPubInfos();
@@ -200,7 +201,7 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapter {
 					public void uncaughtException(@SuppressWarnings("unused")
 					Thread t, Throwable e) {
 						e.printStackTrace();
-						LOGGER.error("Applikation wird wegen" + //$NON-NLS-1$
+						Debug.getLogger().error("Applikation wird wegen" + //$NON-NLS-1$
 								" unerwartetem Fehler beendet", e); //$NON-NLS-1$
 						Runtime.getRuntime().exit(0);
 					}

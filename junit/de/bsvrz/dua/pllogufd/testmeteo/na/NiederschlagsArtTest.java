@@ -43,6 +43,7 @@ import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Überprüfung des Submoduls NiederschlagsArt aus der Komponente Meteorologische
@@ -297,7 +298,7 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 				PlPruefungLogischUFDTest.sender.sende(resultat);
 			} catch (Exception e) {
 				e.printStackTrace();
-				LOGGER.error(Constants.EMPTY_STRING, e);
+				Debug.getLogger().error(Constants.EMPTY_STRING, e);
 			}
 		}
 
@@ -341,7 +342,7 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 				PlPruefungLogischUFDTest.sender.sende(resultat);
 			} catch (Exception e) {
 				e.printStackTrace();
-				LOGGER.error(Constants.EMPTY_STRING, e);
+				Debug.getLogger().error(Constants.EMPTY_STRING, e);
 			}
 		}
 

@@ -43,6 +43,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Analogon zur <code>NiederschlagsArtsTabelle</code> aus der
@@ -166,7 +167,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 				NiederschlagsArtMessstelle messStelle = new NiederschlagsArtMessstelle(
 						ufdmsObj);
 				if (messStelle.getSensoren().isEmpty()) {
-					LOGGER.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
+					Debug.getLogger().config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
 							" wird nicht betrachtet"); //$NON-NLS-1$
 				} else {
 					if (messStelle.getSensoren().size() == datenArten.size()) {
@@ -274,11 +275,11 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 					}
 				} else {
-					LOGGER.warning(this.getClass().getSimpleName()
+					Debug.getLogger().warning(this.getClass().getSimpleName()
 							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			} else {
-				LOGGER.warning(this.getClass().getSimpleName()
+				Debug.getLogger().warning(this.getClass().getSimpleName()
 						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
@@ -355,7 +356,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 				datumInPosition = this.letztesUfdLTDatum;
 			}
 		} else {
-			LOGGER.warning(this.getClass().getSimpleName()
+			Debug.getLogger().warning(this.getClass().getSimpleName()
 					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
@@ -406,7 +407,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 						this.letztesUfdNSDatum
 								.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 						this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
-						LOGGER
+						Debug.getLogger()
 								.fine("[NS.R1]Daten geändert:\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 					}
 				}
@@ -439,7 +440,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 				this.letztesUfdNSDatum
 						.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
-				LOGGER
+				Debug.getLogger()
 						.fine("[NS.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
 								"\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 			}
@@ -470,7 +471,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 				this.letztesUfdNSDatum
 						.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
-				LOGGER
+				Debug.getLogger()
 						.fine("[NS.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString() + //$NON-NLS-1$ 
 								"\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 			}
@@ -503,7 +504,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 					this.letztesUfdNSDatum
 							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
-					LOGGER
+					Debug.getLogger()
 							.fine("[NS.R3]Daten geändert:\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 				}
 			}

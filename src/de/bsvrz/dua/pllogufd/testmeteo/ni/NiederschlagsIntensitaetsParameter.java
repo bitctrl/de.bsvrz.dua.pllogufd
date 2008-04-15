@@ -33,6 +33,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Parameter für die meteorologische Kontrolle "Niederschlagsintensität".
@@ -157,7 +158,7 @@ public class NiederschlagsIntensitaetsParameter extends
 										"NIgrenzTrockenRLF").longValue()); //$NON-NLS-1$
 						this.niMinTrockenRLF = resultat.getData().getTimeValue(
 								"NIminTrockenRLF").getMillis(); //$NON-NLS-1$
-						LOGGER
+						Debug.getLogger()
 								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
 										+ this);
 					}

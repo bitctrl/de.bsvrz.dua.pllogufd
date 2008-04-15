@@ -40,6 +40,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.VariableMitKonstanzZaehler;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten bzgl. der
@@ -163,7 +164,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							}
 						}
 					} else {
-						LOGGER
+						Debug.getLogger()
 								.fine("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
 										this.objekt
 										+ " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
@@ -173,7 +174,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					}
 				}
 			} else {
-				LOGGER
+				Debug.getLogger()
 						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
 								" wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
 			}
@@ -193,7 +194,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					synchronized (this) {
 						this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(
 								resultat);
-						LOGGER
+						Debug.getLogger()
 								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
 										+ this.parameter);
 					}

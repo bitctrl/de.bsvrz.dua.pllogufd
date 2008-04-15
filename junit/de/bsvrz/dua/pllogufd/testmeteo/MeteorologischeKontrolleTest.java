@@ -76,11 +76,6 @@ public class MeteorologischeKontrolleTest implements ClientSenderInterface,
 	protected static final boolean TEST_AN = true;
 
 	/**
-	 * Debug-Logger.
-	 */
-	protected static final Debug LOGGER = Debug.getLogger();
-
-	/**
 	 * Zum Ordnen der Systemobjekte nach ihrem Namen.
 	 */
 	private static final Comparator<SystemObject> C = new Comparator<SystemObject>() {
@@ -263,7 +258,7 @@ public class MeteorologischeKontrolleTest implements ClientSenderInterface,
 			PlPruefungLogischUFDTest.sender.sende(resultat);
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		}
 	}
 
@@ -327,7 +322,7 @@ public class MeteorologischeKontrolleTest implements ClientSenderInterface,
 			PlPruefungLogischUFDTest.sender.sende(resultat);
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		}
 	}
 

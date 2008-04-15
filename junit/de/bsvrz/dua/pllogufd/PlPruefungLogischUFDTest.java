@@ -75,11 +75,6 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	public static final long STANDARD_T = 2000L;
 
 	/**
-	 * Debug-Logger.
-	 */
-	private static final Debug LOGGER = Debug.getLogger();
-
-	/**
 	 * Sender-Instanz.
 	 */
 	public static PlPruefungLogischUFDTest sender = null;
@@ -471,7 +466,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -499,7 +494,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -523,7 +518,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -546,7 +541,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 			}
@@ -595,7 +590,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -637,7 +632,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -669,7 +664,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 
@@ -699,7 +694,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						DAV.sendData(parameterResultat);
 					} catch (Exception e) {
 						e.printStackTrace();
-						LOGGER.error(Constants.EMPTY_STRING, e);
+						Debug.getLogger().error(Constants.EMPTY_STRING, e);
 					}
 				}
 			}
@@ -726,10 +721,10 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			DAV.sendData(parameter);
 		} catch (DataNotSubscribedException e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		} catch (SendSubscriptionNotConfirmed e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		}
 	}
 
@@ -766,10 +761,10 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			DAV.sendData(parameterSatz);
 		} catch (DataNotSubscribedException e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		} catch (SendSubscriptionNotConfirmed e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		}
 	}
 
@@ -802,10 +797,10 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			DAV.sendData(parameterSatz);
 		} catch (DataNotSubscribedException e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		} catch (SendSubscriptionNotConfirmed e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			Debug.getLogger().error(Constants.EMPTY_STRING, e);
 		}
 	}
 
