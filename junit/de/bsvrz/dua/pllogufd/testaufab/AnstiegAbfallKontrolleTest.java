@@ -140,7 +140,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			if (!datenArt.equals(UmfeldDatenArt.FBZ)) {
+			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				this.untersuchteSensoren.add(sensor);
 			}
 		}
@@ -153,7 +153,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
 					1000);
 			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
-					UmfeldDatenArt.FBZ)) {
+					UmfeldDatenArt.fbz)) {
 				PlPruefungLogischUFDTest.sender.setDiffPara(sensor, 5,
 						Constants.MILLIS_PER_HOUR);
 			}

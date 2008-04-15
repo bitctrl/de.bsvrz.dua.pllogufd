@@ -154,12 +154,12 @@ public class MeteorologischeKontrolleTest implements ClientSenderInterface,
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
 			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
-					UmfeldDatenArt.FBZ)) {
+					UmfeldDatenArt.fbz)) {
 				PlPruefungLogischUFDTest.sender.setDiffPara(sensor, 5,
 						Constants.MILLIS_PER_HOUR);
 			}
 			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
-					UmfeldDatenArt.FBZ)) {
+					UmfeldDatenArt.fbz)) {
 				PlPruefungLogischUFDTest.sender.setAnAbPara(sensor, 5);
 			}
 		}
@@ -187,25 +187,25 @@ public class MeteorologischeKontrolleTest implements ClientSenderInterface,
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			if (datenArt.equals(UmfeldDatenArt.NI)) {
+			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				this.niSensoren.add(sensor);
 			}
-			if (datenArt.equals(UmfeldDatenArt.NS)) {
+			if (datenArt.equals(UmfeldDatenArt.ns)) {
 				this.nsSensoren.add(sensor);
 			}
-			if (datenArt.equals(UmfeldDatenArt.WFD)) {
+			if (datenArt.equals(UmfeldDatenArt.wfd)) {
 				this.wfdSensoren.add(sensor);
 			}
-			if (datenArt.equals(UmfeldDatenArt.SW)) {
+			if (datenArt.equals(UmfeldDatenArt.sw)) {
 				this.swSensoren.add(sensor);
 			}
-			if (datenArt.equals(UmfeldDatenArt.FBZ)) {
+			if (datenArt.equals(UmfeldDatenArt.fbz)) {
 				this.fbzSensoren.add(sensor);
 			}
-			if (datenArt.equals(UmfeldDatenArt.RLF)) {
+			if (datenArt.equals(UmfeldDatenArt.rlf)) {
 				this.rlfSensoren.add(sensor);
 			}
-			if (datenArt.equals(UmfeldDatenArt.LT)) {
+			if (datenArt.equals(UmfeldDatenArt.lt)) {
 				this.ltSensoren.add(sensor);
 			}
 		}

@@ -50,7 +50,7 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel
 	 */
 	private UmfeldDatenSensorWert swGrenzTrockenRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.RLF);
+			UmfeldDatenArt.rlf);
 
 	/**
 	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF <
@@ -58,7 +58,7 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel.
 	 */
 	private UmfeldDatenSensorWert swGrenzSW = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.SW);
+			UmfeldDatenArt.sw);
 
 	/**
 	 * Standardkonstruktor.

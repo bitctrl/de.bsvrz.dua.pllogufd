@@ -50,26 +50,26 @@ public class NiederschlagsIntensitaetsParameter extends
 	 * implausibel.
 	 */
 	private UmfeldDatenSensorWert niGrenzNassRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.RLF);
+			UmfeldDatenArt.rlf);
 
 	/**
 	 * Überhalb dieses Wertes wird angenommen, dass Niederschlag herrscht.
 	 */
 	private UmfeldDatenSensorWert niGrenzNassNI = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.NI);
+			UmfeldDatenArt.ni);
 
 	/**
 	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF < NIgrenzTrockenRLF, dann NI implausibel.
 	 */
 	private UmfeldDatenSensorWert niMinNI = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.NI);
+			UmfeldDatenArt.ni);
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
 	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
 	 */
 	private UmfeldDatenSensorWert niGrenzTrockenRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.RLF);
+			UmfeldDatenArt.rlf);
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für

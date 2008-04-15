@@ -49,13 +49,13 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 * WDFminNassRLF, dann WFD implausibel.
 	 */
 	private UmfeldDatenSensorWert wfdGrenzNassRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.WFD);
+			UmfeldDatenArt.wfd);
 
 	/**
 	 * NI-Grenze überhalb der sicher von Niederschlag ausgegangen werden kann.
 	 */
 	private UmfeldDatenSensorWert wfdGrenzNassNI = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.NI);
+			UmfeldDatenArt.ni);
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum >

@@ -64,9 +64,9 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	 */
 	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
 	static {
-		datenArten.add(UmfeldDatenArt.SW);
-		datenArten.add(UmfeldDatenArt.NS);
-		datenArten.add(UmfeldDatenArt.RLF);
+		datenArten.add(UmfeldDatenArt.sw);
+		datenArten.add(UmfeldDatenArt.ns);
+		datenArten.add(UmfeldDatenArt.rlf);
 	}
 
 	/**
@@ -210,7 +210,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 		for (SystemObject sensor : this.getSensoren()) {
 			UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			if (datenArt.equals(UmfeldDatenArt.SW)) {
+			if (datenArt.equals(UmfeldDatenArt.sw)) {
 				parameterSensorObj = sensor;
 				break;
 			}
@@ -251,11 +251,11 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 							umfeldDatum);
 
 					erfolgreich = true;
-					if (datenArt.equals(UmfeldDatenArt.SW)) {
+					if (datenArt.equals(UmfeldDatenArt.sw)) {
 						this.letztesUfdSWDatum = datum;
-					} else if (datenArt.equals(UmfeldDatenArt.NS)) {
+					} else if (datenArt.equals(UmfeldDatenArt.ns)) {
 						this.letztesUfdNSDatum = datum;
-					} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
+					} else if (datenArt.equals(UmfeldDatenArt.rlf)) {
 						this.letztesUfdRLFDatum = datum;
 					} else {
 						erfolgreich = false;
@@ -347,11 +347,11 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 		UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if (datenArt != null) {
-			if (datenArt.equals(UmfeldDatenArt.SW)) {
+			if (datenArt.equals(UmfeldDatenArt.sw)) {
 				datumInPosition = this.letztesUfdSWDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.NS)) {
+			} else if (datenArt.equals(UmfeldDatenArt.ns)) {
 				datumInPosition = this.letztesUfdNSDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
+			} else if (datenArt.equals(UmfeldDatenArt.rlf)) {
 				datumInPosition = this.letztesUfdRLFDatum;
 			}
 		} else {

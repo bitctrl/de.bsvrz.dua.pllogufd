@@ -64,10 +64,10 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	 */
 	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
 	static {
-		datenArten.add(UmfeldDatenArt.FBZ);
-		datenArten.add(UmfeldDatenArt.NI);
-		datenArten.add(UmfeldDatenArt.WFD);
-		datenArten.add(UmfeldDatenArt.RLF);
+		datenArten.add(UmfeldDatenArt.fbz);
+		datenArten.add(UmfeldDatenArt.ni);
+		datenArten.add(UmfeldDatenArt.wfd);
+		datenArten.add(UmfeldDatenArt.rlf);
 	}
 
 	/**
@@ -222,7 +222,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		for (SystemObject sensor : this.getSensoren()) {
 			UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			if (datenArt.equals(UmfeldDatenArt.WFD)) {
+			if (datenArt.equals(UmfeldDatenArt.wfd)) {
 				parameterSensorObj = sensor;
 				break;
 			}
@@ -265,11 +265,11 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 							umfeldDatum);
 
 					erfolgreich = true;
-					if (datenArt.equals(UmfeldDatenArt.NI)) {
+					if (datenArt.equals(UmfeldDatenArt.ni)) {
 						this.letztesUfdNIDatum = datum;
-					} else if (datenArt.equals(UmfeldDatenArt.FBZ)) {
+					} else if (datenArt.equals(UmfeldDatenArt.fbz)) {
 						this.letztesUfdFBZDatum = datum;
-					} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
+					} else if (datenArt.equals(UmfeldDatenArt.rlf)) {
 						this.letztesUfdRLFDatum = datum;
 						if (datum.getWert().isOk()
 								&& this.parameterSensor.isInitialisiert()
@@ -281,7 +281,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 						} else {
 							this.rlfUeberWfdgrenzNassFuerMS = 0;
 						}
-					} else if (datenArt.equals(UmfeldDatenArt.WFD)) {
+					} else if (datenArt.equals(UmfeldDatenArt.wfd)) {
 						this.letztesUfdWFDDatum = datum;
 					} else {
 						erfolgreich = false;
@@ -382,13 +382,13 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if (datenArt != null) {
-			if (datenArt.equals(UmfeldDatenArt.NI)) {
+			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				datumInPosition = this.letztesUfdNIDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.FBZ)) {
+			} else if (datenArt.equals(UmfeldDatenArt.fbz)) {
 				datumInPosition = this.letztesUfdFBZDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
+			} else if (datenArt.equals(UmfeldDatenArt.rlf)) {
 				datumInPosition = this.letztesUfdRLFDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.WFD)) {
+			} else if (datenArt.equals(UmfeldDatenArt.wfd)) {
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		} else {

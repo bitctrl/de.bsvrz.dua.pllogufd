@@ -66,10 +66,10 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
 	static {
-		datenArten.add(UmfeldDatenArt.NS);
-		datenArten.add(UmfeldDatenArt.NI);
-		datenArten.add(UmfeldDatenArt.WFD);
-		datenArten.add(UmfeldDatenArt.RLF);
+		datenArten.add(UmfeldDatenArt.ns);
+		datenArten.add(UmfeldDatenArt.ni);
+		datenArten.add(UmfeldDatenArt.wfd);
+		datenArten.add(UmfeldDatenArt.rlf);
 	}
 
 	/**
@@ -225,7 +225,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 		for (SystemObject sensor : this.getSensoren()) {
 			UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			if (datenArt.equals(UmfeldDatenArt.NI)) {
+			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				parameterSensorObj = sensor;
 				break;
 			}
@@ -274,11 +274,11 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 							umfeldDatum);
 
 					erfolgreich = true;
-					if (datenArt.equals(UmfeldDatenArt.NI)) {
+					if (datenArt.equals(UmfeldDatenArt.ni)) {
 						this.letztesUfdNIDatum = datum;
-					} else if (datenArt.equals(UmfeldDatenArt.NS)) {
+					} else if (datenArt.equals(UmfeldDatenArt.ns)) {
 						this.letztesUfdNSDatum = datum;
-					} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
+					} else if (datenArt.equals(UmfeldDatenArt.rlf)) {
 						this.letztesUfdRLFDatum = datum;
 						if (datum.getWert().isOk()
 								&& this.parameterSensor.isInitialisiert()
@@ -290,7 +290,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 						} else {
 							this.rlfUnterNIgrenzTrockenFuerMS = 0;
 						}
-					} else if (datenArt.equals(UmfeldDatenArt.WFD)) {
+					} else if (datenArt.equals(UmfeldDatenArt.wfd)) {
 						this.letztesUfdWFDDatum = datum;
 					} else {
 						erfolgreich = false;
@@ -369,13 +369,13 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 		UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if (datenArt != null) {
-			if (datenArt.equals(UmfeldDatenArt.NI)) {
+			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				datumInPosition = this.letztesUfdNIDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.NS)) {
+			} else if (datenArt.equals(UmfeldDatenArt.ns)) {
 				datumInPosition = this.letztesUfdNSDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.RLF)) {
+			} else if (datenArt.equals(UmfeldDatenArt.rlf)) {
 				datumInPosition = this.letztesUfdRLFDatum;
-			} else if (datenArt.equals(UmfeldDatenArt.WFD)) {
+			} else if (datenArt.equals(UmfeldDatenArt.wfd)) {
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		} else {

@@ -48,28 +48,28 @@ public final class NiederschlagsArtParameter extends AbstraktMeteoUmfeldDatenSen
 	 * Wenn NS = 'Regen' und LT < NSGrenzLT, dann NS implausibel.
 	 */
 	private UmfeldDatenSensorWert nsGrenzLT = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.LT);
+			UmfeldDatenArt.lt);
 
 	/**
 	 * Wenn NS = 'Niederschlag' und NI = 0 mm/h und RLF < NSGrenzTrockenRLF,
 	 * dann NS implausibel.
 	 */
 	private UmfeldDatenSensorWert nsGrenzTrockenRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.RLF);
+			UmfeldDatenArt.rlf);
 
 	/**
 	 * Wenn NS='kein Niederschlag' und NI >NSminNI und RLF>NSGrenzNassRLF, dann
 	 * NS implausibel.
 	 */
 	private UmfeldDatenSensorWert nsMinNI = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.NI);
+			UmfeldDatenArt.ni);
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
 	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
 	 */
 	private UmfeldDatenSensorWert nsGrenzRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.RLF);
+			UmfeldDatenArt.rlf);
 
 	/**
 	 * Standardkonstruktor.

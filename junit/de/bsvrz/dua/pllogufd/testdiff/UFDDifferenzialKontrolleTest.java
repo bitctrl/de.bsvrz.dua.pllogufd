@@ -126,7 +126,7 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			if (!datenArt.equals(UmfeldDatenArt.FBZ)) {
+			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				this.untersuchteSensoren.add(sensor);
 			}
 		}

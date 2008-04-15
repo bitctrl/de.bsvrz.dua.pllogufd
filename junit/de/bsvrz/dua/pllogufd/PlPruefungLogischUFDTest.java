@@ -192,10 +192,10 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
 
-			if (datenArt.equals(UmfeldDatenArt.NS)
-					|| datenArt.equals(UmfeldDatenArt.NI)
-					|| datenArt.equals(UmfeldDatenArt.WFD)
-					|| datenArt.equals(UmfeldDatenArt.SW)) {
+			if (datenArt.equals(UmfeldDatenArt.ns)
+					|| datenArt.equals(UmfeldDatenArt.ni)
+					|| datenArt.equals(UmfeldDatenArt.wfd)
+					|| datenArt.equals(UmfeldDatenArt.sw)) {
 				DataDescription parameterBeschreibung = new DataDescription(DAV
 						.getDataModel().getAttributeGroup(
 								"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
@@ -444,7 +444,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				UmfeldDatenArt datenArt = UmfeldDatenArt
 						.getUmfeldDatenArtVon(sensor);
 
-				if (datenArt.equals(UmfeldDatenArt.NS)) {
+				if (datenArt.equals(UmfeldDatenArt.ns)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -470,7 +470,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					}
 				}
 
-				if (datenArt.equals(UmfeldDatenArt.NI)) {
+				if (datenArt.equals(UmfeldDatenArt.ni)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -498,7 +498,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					}
 				}
 
-				if (datenArt.equals(UmfeldDatenArt.WFD)) {
+				if (datenArt.equals(UmfeldDatenArt.wfd)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -522,7 +522,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					}
 				}
 
-				if (datenArt.equals(UmfeldDatenArt.SW)) {
+				if (datenArt.equals(UmfeldDatenArt.sw)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -553,7 +553,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				UmfeldDatenArt datenArt = UmfeldDatenArt
 						.getUmfeldDatenArtVon(sensor);
 
-				if (datenArt.equals(UmfeldDatenArt.NS)) {
+				if (datenArt.equals(UmfeldDatenArt.ns)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -561,25 +561,25 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					Data parameterDatum = DAV.createData(atg);
 
 					UmfeldDatenSensorWert ltWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.LT);
+							UmfeldDatenArt.lt);
 					ltWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NSGrenzLT").set(ltWert.getWert()); //$NON-NLS-1$
 
 					UmfeldDatenSensorWert rlfWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.RLF);
+							UmfeldDatenArt.rlf);
 					rlfWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NSGrenzTrockenRLF").set(rlfWert.getWert()); //$NON-NLS-1$
 
 					UmfeldDatenSensorWert niWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.NI);
+							UmfeldDatenArt.ni);
 					niWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NSminNI").set(niWert.getWert()); //$NON-NLS-1$
 
 					UmfeldDatenSensorWert nsRlfWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.RLF);
+							UmfeldDatenArt.rlf);
 					nsRlfWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NSGrenzRLF").set(nsRlfWert.getWert()); //$NON-NLS-1$
@@ -594,7 +594,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					}
 				}
 
-				if (datenArt.equals(UmfeldDatenArt.NI)) {
+				if (datenArt.equals(UmfeldDatenArt.ni)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -602,23 +602,23 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					Data parameterDatum = DAV.createData(atg);
 
 					UmfeldDatenSensorWert niWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.NI);
+							UmfeldDatenArt.ni);
 					niWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NIgrenzNassNI").set(niWert.getWert()); //$NON-NLS-1$
 
 					UmfeldDatenSensorWert rlfWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.RLF);
+							UmfeldDatenArt.rlf);
 					rlfWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NIgrenzNassRLF").set(rlfWert.getWert()); //$NON-NLS-1$
 
-					niWert = new UmfeldDatenSensorWert(UmfeldDatenArt.NI);
+					niWert = new UmfeldDatenSensorWert(UmfeldDatenArt.ni);
 					niWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NIminNI").set(niWert.getWert()); //$NON-NLS-1$
 
-					rlfWert = new UmfeldDatenSensorWert(UmfeldDatenArt.RLF);
+					rlfWert = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);
 					rlfWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("NIgrenzTrockenRLF").set(rlfWert.getWert()); //$NON-NLS-1$
@@ -636,7 +636,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					}
 				}
 
-				if (datenArt.equals(UmfeldDatenArt.WFD)) {
+				if (datenArt.equals(UmfeldDatenArt.wfd)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -644,13 +644,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					Data parameterDatum = DAV.createData(atg);
 
 					UmfeldDatenSensorWert niWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.NI);
+							UmfeldDatenArt.ni);
 					niWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("WFDgrenzNassNI").set(niWert.getWert()); //$NON-NLS-1$
 
 					UmfeldDatenSensorWert rlfWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.RLF);
+							UmfeldDatenArt.rlf);
 					rlfWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("WFDgrenzNassRLF").set(rlfWert.getWert()); //$NON-NLS-1$
@@ -668,7 +668,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					}
 				}
 
-				if (datenArt.equals(UmfeldDatenArt.SW)) {
+				if (datenArt.equals(UmfeldDatenArt.sw)) {
 					AttributeGroup atg = DAV.getDataModel().getAttributeGroup(
 							"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 									UmfeldDatenArt.getUmfeldDatenArtVon(sensor)
@@ -676,13 +676,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					Data parameterDatum = DAV.createData(atg);
 
 					UmfeldDatenSensorWert rlfWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.RLF);
+							UmfeldDatenArt.rlf);
 					rlfWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("SWgrenzTrockenRLF").set(rlfWert.getWert()); //$NON-NLS-1$
 
 					UmfeldDatenSensorWert swWert = new UmfeldDatenSensorWert(
-							UmfeldDatenArt.RLF);
+							UmfeldDatenArt.rlf);
 					swWert.setFehlerhaftAn();
 					parameterDatum
 							.getUnscaledValue("SWgrenzSW").set(swWert.getWert()); //$NON-NLS-1$
