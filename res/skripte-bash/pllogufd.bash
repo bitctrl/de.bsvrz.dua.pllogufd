@@ -1,12 +1,16 @@
 #!/bin/bash
 
+# In das Verzeichnis des Skripts wechseln, damit relative Pfade funktionieren
+cd `dirname $0`
+
+# Allgemeine Einstellungen
 source ../../../skripte-bash/einstellungen.sh
 
 ################################################################################
 # SWE-Spezifische Parameter	(überprüfen und anpassen)                          #
 ################################################################################
 
-kb="-KonfigurationsBereichsPid=kb.duaTestObjekteUFD"
+kb="kb.UFD_Konfig_A8,kb.UFD_Konfig_B27"
 
 ################################################################################
 # Folgende Parameter müssen überprüft und evtl. angepasst werden               #
@@ -25,9 +29,10 @@ kb="-KonfigurationsBereichsPid=kb.duaTestObjekteUFD"
 # Applikation starten
 java $jvmArgs -jar ../de.bsvrz.dua.pllogufd-runtime.jar \
 	$dav1 \
-	$kb \
-	-debugLevelFileText=all \
-	-debugLevelStdErrText=:error \
-	-debugSetLoggerAndLevel=:none \
-	-debugSetLoggerAndLevel=de.bsvrz.iav:config \
+	-KonfigurationsBereichsPid=$kb \
+	-debugLevelStdErrText=ERROR \
+	-debugLevelFileText=CONFIG \
+	-debugLevelFileXML=OFF \
+	-debugLevelFileExcel=OFF \
+	-debugLevelFileHTML=OFF \
 	&
