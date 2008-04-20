@@ -20,16 +20,17 @@ appname=pllogufd
 ########################
 #     Testroutinen     #
 ########################
-testTexts[$index]="Test des Moduls Anstieg-Abfall-Kontrolle. Der Test implementiert die Vorgaben aus dem Dokument [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25"
-tests[$index]="testaufab.AnstiegAbfallKontrolleTest"
+
+testTexts[$index]="Test des Moduls Differenzialkontrolle. Der Test implementiert die Vorgaben aus dem Dokument [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 24"
+tests[$index]="testdiff.UFDDifferenzialKontrolleTest"
 index=$(($index+1))
 
 testTexts[$index]="Test des Moduls Ausfallüberwachung"
 tests[$index]="testausfall.UFDAusfallUeberwachungTest"
 index=$(($index+1))
 
-testTexts[$index]="Test des Moduls Differenzialkontrolle. Der Test implementiert die Vorgaben aus dem Dokument [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 24"
-tests[$index]="testdiff.UFDDifferenzialKontrolleTest"
+testTexts[$index]="Test des Moduls Anstieg-Abfall-Kontrolle. Der Test implementiert die Vorgaben aus dem Dokument [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25"
+tests[$index]="testaufab.AnstiegAbfallKontrolleTest"
 index=$(($index+1))
 
 testTexts[$index]="Überprüfung des Submoduls NiederschlagsArt aus der Komponente. Meteorologische Kontrolle. Diese Überprüfung richtet sich nach den Vorgaben von [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.26"

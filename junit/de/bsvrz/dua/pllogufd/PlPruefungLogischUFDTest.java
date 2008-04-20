@@ -45,6 +45,8 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -66,9 +68,17 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			"-datenverteiler=localhost:8083", //$NON-NLS-1$ 
 			"-benutzer=Tester", //$NON-NLS-1$
 			"-authentifizierung=passwd", //$NON-NLS-1$
-			"-debugLevelStdErrText=INFO", //$NON-NLS-1$
-			"-debugLevelFileText=INFO" }; //$NON-NLS-1$
-
+			"-debugLevelStdErrText=OFF", //$NON-NLS-1$
+			"-debugLevelFileText=OFF" }; //$NON-NLS-1$
+//	/**
+//	 * Verbindungsdaten.
+//	 */
+//	public static final String[] CON_DATA = new String[] {
+//			"-datenverteiler=10.44.44.10:8083", //$NON-NLS-1$ 
+//			"-benutzer=Tester", //$NON-NLS-1$
+//			"-authentifizierung=c:\\passwd", //$NON-NLS-1$
+//			"-debugLevelStdErrText=INFO", //$NON-NLS-1$
+//			"-debugLevelFileText=OFF" }; //$NON-NLS-1$
 	/**
 	 * Standardintervalllänge der Testdaten für die meisten Tests (2s).
 	 */
@@ -270,6 +280,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	public static final void initialisiere() throws Exception {
 		if (DAV == null) {
 			DAV = DAVTest.getDav(CON_DATA);
+			DUAUtensilien.setAlleParameter(DAV);
 			UmfeldDatenArt.initialisiere(DAV);
 
 			// SENSOREN.add(ni1 =
@@ -486,7 +497,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					parameterDatum
 							.getUnscaledValue("NIgrenzTrockenRLF").set(MeteoKonst.NI_GRENZ_TROCKEN_RLF); //$NON-NLS-1$
 					parameterDatum
-							.getTimeValue("NIminTrockenRLF").setMillis(MeteoKonst.SW_GRENZ_TROCKEN_RLF); //$NON-NLS-1$
+							.getTimeValue("NIminTrockenRLF").setMillis(MeteoKonst.NI_MIN_TROCKEN_RLF); //$NON-NLS-1$
 					ResultData parameterResultat = new ResultData(sensor,
 							new DataDescription(atg, vorgabeAspekt, (short) 0),
 							System.currentTimeMillis(), parameterDatum);

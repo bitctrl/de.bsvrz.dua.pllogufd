@@ -100,7 +100,7 @@ public final class MeteoKonst {
 	/**
 	 * Parameter SWgrenzTrockenRLF.
 	 */
-	public static final long SW_GRENZ_TROCKEN_RLF = 70;
+	public static final long SW_GRENZ_TROCKEN_RLF = 70L;
 
 	/**
 	 * Parameter SWgrenzSW.

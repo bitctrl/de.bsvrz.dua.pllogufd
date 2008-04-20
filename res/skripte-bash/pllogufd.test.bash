@@ -10,7 +10,7 @@ source ../../../skripte-bash/einstellungen.sh
 # SWE-Spezifische Parameter	(überprüfen und anpassen)                          #
 ################################################################################
 
-kb="kb.UFD_Konfig_A8,kb.UFD_Konfig_B27"
+kb="kb.duaTestObjekteUFD"
 
 ################################################################################
 # Folgende Parameter müssen überprüft und evtl. angepasst werden               #

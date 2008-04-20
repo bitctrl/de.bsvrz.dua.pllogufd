@@ -49,16 +49,14 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW <= SWgrenzSW und NS =
 	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel
 	 */
-	private UmfeldDatenSensorWert swGrenzTrockenRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.rlf);
+	private UmfeldDatenSensorWert swGrenzTrockenRLF = null;
 
 	/**
 	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF <
 	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW <= SWgrenzSW und NS =
 	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel.
 	 */
-	private UmfeldDatenSensorWert swGrenzSW = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.sw);
+	private UmfeldDatenSensorWert swGrenzSW = null;
 
 	/**
 	 * Standardkonstruktor.
@@ -74,6 +72,11 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	public SichtweitenParameter(IVerwaltung verwaltung, SystemObject obj)
 			throws DUAInitialisierungsException {
 		super(verwaltung, obj);
+		swGrenzTrockenRLF = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.rlf);
+		swGrenzSW = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.sw);
+		this.init();
 	}
 
 	/**

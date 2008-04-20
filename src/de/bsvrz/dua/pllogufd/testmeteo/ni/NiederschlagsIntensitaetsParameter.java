@@ -49,27 +49,23 @@ public class NiederschlagsIntensitaetsParameter extends
 	 * Wenn NS= 'Niederschlag' und NI = 0 mm/h und RLF < NIgrenzNassRLF, dann NI
 	 * implausibel.
 	 */
-	private UmfeldDatenSensorWert niGrenzNassRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.rlf);
+	private UmfeldDatenSensorWert niGrenzNassRLF;
 
 	/**
 	 * Überhalb dieses Wertes wird angenommen, dass Niederschlag herrscht.
 	 */
-	private UmfeldDatenSensorWert niGrenzNassNI = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.ni);
+	private UmfeldDatenSensorWert niGrenzNassNI;
 
 	/**
 	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF < NIgrenzTrockenRLF, dann NI implausibel.
 	 */
-	private UmfeldDatenSensorWert niMinNI = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.ni);
+	private UmfeldDatenSensorWert niMinNI;
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
 	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
 	 */
-	private UmfeldDatenSensorWert niGrenzTrockenRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.rlf);
+	private UmfeldDatenSensorWert niGrenzTrockenRLF;
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
@@ -91,6 +87,15 @@ public class NiederschlagsIntensitaetsParameter extends
 	public NiederschlagsIntensitaetsParameter(IVerwaltung verwaltung,
 			SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
+		niGrenzNassRLF = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.rlf);
+		niGrenzNassNI = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.ni);
+		niMinNI = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.ni);
+		niGrenzTrockenRLF = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.rlf);
+		this.init();
 	}
 
 	/**

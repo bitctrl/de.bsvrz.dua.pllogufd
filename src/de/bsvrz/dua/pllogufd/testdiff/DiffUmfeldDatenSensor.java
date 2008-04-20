@@ -79,6 +79,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		super(verwaltung, obj);
 		this.wert = new VariableMitKonstanzZaehler<Long>(UmfeldDatenArt
 				.getUmfeldDatenArtVon(obj).getName());
+		this.init();
 	}
 
 	/**

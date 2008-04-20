@@ -51,8 +51,8 @@ import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 import de.bsvrz.dua.pllogufd.TestUtensilien;
-import de.bsvrz.sys.funclib.bitctrl.app.Pause;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -72,7 +72,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	/**
 	 * Debug-Ausgaben?
 	 */
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 
 	/**
 	 * Markierung der einzelnen Messwerte analog Graphik 5-4
@@ -131,6 +131,9 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	@Before
 	public void setUp() throws Exception {
 		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
+
+		DUAUtensilien.setAlleParameter(dav);
+
 		PlPruefungLogischUFDTest.initialisiere();
 		PlPruefungLogischUFDTest.sender.setMeteoKontrolle(false);
 

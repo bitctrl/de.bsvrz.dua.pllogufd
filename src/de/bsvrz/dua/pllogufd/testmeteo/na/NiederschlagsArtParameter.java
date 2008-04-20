@@ -47,29 +47,25 @@ public final class NiederschlagsArtParameter extends AbstraktMeteoUmfeldDatenSen
 	/**
 	 * Wenn NS = 'Regen' und LT < NSGrenzLT, dann NS implausibel.
 	 */
-	private UmfeldDatenSensorWert nsGrenzLT = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.lt);
+	private UmfeldDatenSensorWert nsGrenzLT;
 
 	/**
 	 * Wenn NS = 'Niederschlag' und NI = 0 mm/h und RLF < NSGrenzTrockenRLF,
 	 * dann NS implausibel.
 	 */
-	private UmfeldDatenSensorWert nsGrenzTrockenRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.rlf);
+	private UmfeldDatenSensorWert nsGrenzTrockenRLF;
 
 	/**
 	 * Wenn NS='kein Niederschlag' und NI >NSminNI und RLF>NSGrenzNassRLF, dann
 	 * NS implausibel.
 	 */
-	private UmfeldDatenSensorWert nsMinNI = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.ni);
+	private UmfeldDatenSensorWert nsMinNI;
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
 	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
 	 */
-	private UmfeldDatenSensorWert nsGrenzRLF = new UmfeldDatenSensorWert(
-			UmfeldDatenArt.rlf);
+	private UmfeldDatenSensorWert nsGrenzRLF;
 
 	/**
 	 * Standardkonstruktor.
@@ -85,6 +81,15 @@ public final class NiederschlagsArtParameter extends AbstraktMeteoUmfeldDatenSen
 	public NiederschlagsArtParameter(IVerwaltung verwaltung, SystemObject obj)
 			throws DUAInitialisierungsException {
 		super(verwaltung, obj);
+		nsGrenzLT = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.lt);
+		nsGrenzTrockenRLF = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.rlf);
+		nsMinNI = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.ni);
+		nsGrenzRLF = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.rlf);
+		this.init();
 	}
 
 	/**

@@ -75,6 +75,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	protected AufAbUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
 			throws DUAInitialisierungsException {
 		super(verwaltung, obj);
+		super.init();
 	}
 
 	/**

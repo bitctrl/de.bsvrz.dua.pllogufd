@@ -63,7 +63,7 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 	 *             leitet die Ausnahmen weiter
 	 */
 	public NiederschlagsArtTest() throws Exception {
-		super();
+		super();		
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			if (!this.nsSensoren.contains(sensor)
 					&& !this.ltSensoren.contains(sensor)

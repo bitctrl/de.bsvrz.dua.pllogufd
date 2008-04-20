@@ -85,7 +85,15 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 			aspParameterSoll = verwaltung.getVerbindung().getDataModel()
 					.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
 		}
-
+	}
+	
+	/**
+	 * Fuehrt die Empfangsanmeldung durch.
+	 * 
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
+	 */
+	public void init() throws DUAInitialisierungsException {
 		Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
 		for (AttributeGroup atg : this.getParameterAtgs()) {
 			parameterBeschreibungen.add(new DataDescription(atg,
@@ -93,11 +101,12 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 		}
 
 		for (DataDescription parameterBeschreibung : parameterBeschreibungen) {
-			verwaltungsModul.getVerbindung().subscribeReceiver(this, obj,
-					parameterBeschreibung, ReceiveOptions.normal(),
-					ReceiverRole.receiver());
+			verwaltungsModul.getVerbindung().subscribeReceiver(this,
+					this.objekt, parameterBeschreibung,
+					ReceiveOptions.normal(), ReceiverRole.receiver());
 		}
 	}
+	
 
 	/**
 	 * Erfragt die Parameter-Attributgruppen, auf die sich dieses Objekt
