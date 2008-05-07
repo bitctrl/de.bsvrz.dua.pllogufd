@@ -269,7 +269,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			} else {
-				Debug.getLogger().warning(this.getClass().getSimpleName()
+				Debug.getLogger().info(this.getClass().getSimpleName()
 						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
@@ -355,7 +355,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 				datumInPosition = this.letztesUfdRLFDatum;
 			}
 		} else {
-			Debug.getLogger().warning(this.getClass().getSimpleName()
+			Debug.getLogger().info(this.getClass().getSimpleName()
 					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 

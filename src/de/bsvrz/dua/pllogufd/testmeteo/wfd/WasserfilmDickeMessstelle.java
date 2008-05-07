@@ -294,9 +294,6 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 					Debug.getLogger().warning(this.getClass().getSimpleName()
 							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
-			} else {
-				Debug.getLogger().warning(this.getClass().getSimpleName()
-						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
 
@@ -391,9 +388,6 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 			} else if (datenArt.equals(UmfeldDatenArt.wfd)) {
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
-		} else {
-			Debug.getLogger().warning(this.getClass().getSimpleName()
-					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
 		return datumInPosition;

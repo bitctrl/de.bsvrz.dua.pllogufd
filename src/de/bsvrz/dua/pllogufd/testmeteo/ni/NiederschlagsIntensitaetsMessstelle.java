@@ -1,5 +1,4 @@
 /**
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
  * Copyright (C) 2007 BitCtrl Systems GmbH 
  * 
  * This program is free software; you can redistribute it and/or modify it under
@@ -304,7 +303,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			} else {
-				Debug.getLogger().warning(this.getClass().getSimpleName()
+				Debug.getLogger().info(this.getClass().getSimpleName()
 						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
@@ -379,7 +378,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		} else {
-			Debug.getLogger().warning(this.getClass().getSimpleName()
+			Debug.getLogger().info(this.getClass().getSimpleName()
 					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 

@@ -371,8 +371,6 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 				.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if (datenArt != null) {
 			relevant = this.getDatenArten().contains(datenArt);
-		} else {
-			Debug.getLogger().warning("Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
 		return relevant;
