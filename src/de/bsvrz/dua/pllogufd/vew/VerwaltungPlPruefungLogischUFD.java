@@ -47,6 +47,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapter;
+import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGuete;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -69,7 +70,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
  *
  * @version $Id$
  */
-public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapter {
+public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMitGuete {
 
 	/**
 	 * Modul Pl-Prüfung formal.
@@ -198,6 +199,11 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapter {
 	public static void main(String[] argumente) {
 		StandardApplicationRunner.run(new VerwaltungPlPruefungLogischUFD(),
 				argumente);
+	}
+
+	@Override
+	public double getStandardGueteFaktor() {
+		return 0.9;
 	}
 
 }
