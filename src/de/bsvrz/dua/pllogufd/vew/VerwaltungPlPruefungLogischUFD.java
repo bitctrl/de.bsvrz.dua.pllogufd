@@ -103,6 +103,8 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 	@Override
 	protected void initialisiere() throws DUAInitialisierungsException {
 
+		super.initialisiere();
+		
 		UmfeldDatenArt.initialisiere(this.verbindung);
 
 		String infoStr = Constants.EMPTY_STRING;
