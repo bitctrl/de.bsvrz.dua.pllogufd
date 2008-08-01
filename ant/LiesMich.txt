@@ -23,21 +23,20 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 Versionsgeschichte
 ==================
 
-1.0.0
+1.2.0
 
-  - Erste Auslieferung
+  - Debug: Gueteinitialisierung war fehlerhaft wurde veraendert.
+    Code wurde verschlankt.
 
 1.1.0
 
   - Umpacketierung
 
-1.2.0
+1.0.0
 
-  - Anpassung von Testroutinen
+  - Erste Auslieferung
   
-1.2.1
 
-  - Bash-Startskript hinzu
 
 Bemerkungen
 ===========

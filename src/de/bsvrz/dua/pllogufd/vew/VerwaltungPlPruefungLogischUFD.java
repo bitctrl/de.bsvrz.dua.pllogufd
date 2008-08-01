@@ -203,6 +203,9 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 				argumente);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public double getStandardGueteFaktor() {
 		return 0.9;
