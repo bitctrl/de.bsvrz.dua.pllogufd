@@ -48,12 +48,11 @@ import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
  * logisch UFD anmeldet.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
  * @version $Id$
  */
 public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
-		implements Comparable<AbstraktUmfeldDatenSensor>,
-		ClientReceiverInterface {
+		implements Comparable<SystemObjekt>, ClientReceiverInterface {
 
 	/**
 	 * <code>asp.parameterSoll</code>.
@@ -82,11 +81,47 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 
 		if (verwaltungsModul == null) {
 			verwaltungsModul = verwaltung;
-			aspParameterSoll = verwaltung.getVerbindung().getDataModel()
-					.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
+			aspParameterSoll = verwaltung.getVerbindung().getDataModel().getAspect(
+					DaVKonstanten.ASP_PARAMETER_SOLL);
 		}
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int compareTo(AbstraktUmfeldDatenSensor that) {
+		return new Long(this.getSystemObject().getId()).compareTo(that.getSystemObject().getId());
+	}
+
+	/**
+	 * Erfragt die Parameter-Attributgruppen, auf die sich dieses Objekt
+	 * anmelden soll.
+	 * 
+	 * @return eine ggf. leere Menge von Attributgruppen
+	 * @throws DUAInitialisierungsException
+	 *             wenn ein Fehler bei der Bestimmung der Attributgruppen
+	 *             auftritt
+	 */
+	protected abstract Collection<AttributeGroup> getParameterAtgs()
+			throws DUAInitialisierungsException;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public SystemObjektTyp getTyp() {
+		return new SystemObjektTyp() {
+
+			public Class<? extends SystemObjekt> getKlasse() {
+				return AbstraktUmfeldDatenSensor.class;
+			}
+
+			public String getPid() {
+				return getSystemObject().getType().getPid();
+			}
+
+		};
+	}
+
 	/**
 	 * Fuehrt die Empfangsanmeldung durch.
 	 * 
@@ -105,44 +140,6 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 					this.objekt, parameterBeschreibung,
 					ReceiveOptions.normal(), ReceiverRole.receiver());
 		}
-	}
-	
-
-	/**
-	 * Erfragt die Parameter-Attributgruppen, auf die sich dieses Objekt
-	 * anmelden soll.
-	 * 
-	 * @return eine ggf. leere Menge von Attributgruppen
-	 * @throws DUAInitialisierungsException
-	 *             wenn ein Fehler bei der Bestimmung der Attributgruppen
-	 *             auftritt
-	 */
-	protected abstract Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public int compareTo(AbstraktUmfeldDatenSensor that) {
-		return new Long(this.getSystemObject().getId()).compareTo(that
-				.getSystemObject().getId());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public SystemObjektTyp getTyp() {
-		return new SystemObjektTyp() {
-
-			public Class<? extends SystemObjekt> getKlasse() {
-				return AbstraktUmfeldDatenSensor.class;
-			}
-
-			public String getPid() {
-				return getSystemObject().getType().getPid();
-			}
-
-		};
 	}
 
 }
