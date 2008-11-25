@@ -39,9 +39,6 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
-import de.bsvrz.sys.funclib.bitctrl.modell.AbstractSystemObjekt;
-import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjekt;
-import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
 
 /**
  * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine Pl-Prüfung
@@ -51,8 +48,8 @@ import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
  * 
  * @version $Id$
  */
-public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
-		implements Comparable<SystemObjekt>, ClientReceiverInterface {
+public abstract class AbstraktUmfeldDatenSensor implements
+		ClientReceiverInterface {
 
 	/**
 	 * <code>asp.parameterSoll</code>.
@@ -63,6 +60,11 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 	 * statische Verbindung zum Verwaltungsmodul.
 	 */
 	protected static IVerwaltung verwaltungsModul = null;
+
+	/**
+	 * Systemobjekt.
+	 */
+	protected final SystemObject objekt;
 
 	/**
 	 * Standardkonstruktor.
@@ -77,20 +79,13 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 	 */
 	protected AbstraktUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
 			throws DUAInitialisierungsException {
-		super(obj);
+		this.objekt = obj;
 
 		if (verwaltungsModul == null) {
 			verwaltungsModul = verwaltung;
-			aspParameterSoll = verwaltung.getVerbindung().getDataModel().getAspect(
-					DaVKonstanten.ASP_PARAMETER_SOLL);
+			aspParameterSoll = verwaltung.getVerbindung().getDataModel()
+					.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public int compareTo(AbstraktUmfeldDatenSensor that) {
-		return new Long(this.getSystemObject().getId()).compareTo(that.getSystemObject().getId());
 	}
 
 	/**
@@ -106,23 +101,6 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 			throws DUAInitialisierungsException;
 
 	/**
-	 * {@inheritDoc}
-	 */
-	public SystemObjektTyp getTyp() {
-		return new SystemObjektTyp() {
-
-			public Class<? extends SystemObjekt> getKlasse() {
-				return AbstraktUmfeldDatenSensor.class;
-			}
-
-			public String getPid() {
-				return getSystemObject().getType().getPid();
-			}
-
-		};
-	}
-
-	/**
 	 * Fuehrt die Empfangsanmeldung durch.
 	 * 
 	 * @throws DUAInitialisierungsException
@@ -136,9 +114,9 @@ public abstract class AbstraktUmfeldDatenSensor extends AbstractSystemObjekt
 		}
 
 		for (DataDescription parameterBeschreibung : parameterBeschreibungen) {
-			verwaltungsModul.getVerbindung().subscribeReceiver(this,
-					this.objekt, parameterBeschreibung,
-					ReceiveOptions.normal(), ReceiverRole.receiver());
+			verwaltungsModul.getVerbindung().subscribeReceiver(this, this.objekt,
+					parameterBeschreibung, ReceiveOptions.normal(),
+					ReceiverRole.receiver());
 		}
 	}
 
