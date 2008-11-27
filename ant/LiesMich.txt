@@ -23,6 +23,11 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 Versionsgeschichte
 ==================
 
+1.3.0
+
+  - Debug: Probleme beim Auslesen der Parameter fuer die Differentialkontrolle
+    beseitigt.
+
 1.2.0
 
   - Debug: Gueteinitialisierung war fehlerhaft wurde veraendert.
