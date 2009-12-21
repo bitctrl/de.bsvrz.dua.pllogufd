@@ -38,9 +38,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
-import de.bsvrz.sys.funclib.bitctrl.modell.AbstractSystemObjekt;
-import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjekt;
-import de.bsvrz.sys.funclib.bitctrl.modell.SystemObjektTyp;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
@@ -48,10 +45,10 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Kontrolle durchgeführt werden soll.
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
- *
+ * 
  * @version $Id$
  */
-public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
+public abstract class AbstraktMeteoMessstelle {
 
 	/**
 	 * Nur für Debugging-Zwecke.
@@ -73,6 +70,11 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 	 * der Zeitstempel aller im Moment gespeicherten Werte.
 	 */
 	protected long aktuellerZeitstempel = -1;
+	
+	/**
+	 * das Assoziierte Systemobjekt.
+	 */
+	protected final SystemObject object;
 
 	/**
 	 * Weist lediglich das Systemobjekt (UFD-Sensor) zu.
@@ -81,7 +83,7 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 	 *            Das zu kapselnde Systemobjekt
 	 */
 	protected AbstraktMeteoMessstelle(SystemObject obj) {
-		super(obj);
+		object = obj;
 	}
 
 	/**
@@ -90,8 +92,8 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 	 * @param verwaltung1
 	 *            Verbindung zum Verwaltungsmodul
 	 */
-	protected static final void setVerwaltungsModul(final IVerwaltung 
-			verwaltung1) {
+	protected static final void setVerwaltungsModul(
+			final IVerwaltung verwaltung1) {
 		if (verwaltung == null) {
 			verwaltung = verwaltung1;
 		}
@@ -162,9 +164,13 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 	 * 
 	 * @throws DUAInitialisierungsException
 	 *             wenn die Initialisierung fehlgeschlagen ist
+	 * @throws NoSuchSensorException
+	 *             wenn eine Meteomessstelle, die einer meteorologischen
+	 *             Kontrolle unterworfen werden soll, eine bestimmte
+	 *             Umfelddatenart nicht erfasst.
 	 */
 	protected abstract void initialisiereMessStelle()
-			throws DUAInitialisierungsException;
+			throws DUAInitialisierungsException, NoSuchSensorException;
 
 	/**
 	 * Erfragt, ob für einen bestimmten Umfelddatensensor bereits ein Datum im
@@ -212,11 +218,13 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 					}
 					Debug.getLogger().info(zusatzInfo);
 
-					Debug.getLogger().info(this.getClass().getSimpleName()
-							+ " IN: " + umfeldDatum.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
-							DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(
-									umfeldDatum.getDataTime()))
-							+ "\n" + umfeldDatum); //$NON-NLS-1$
+					Debug.getLogger().info(
+							this.getClass().getSimpleName()
+									+ " IN: " + umfeldDatum.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
+									DUAKonstanten.ZEIT_FORMAT_GENAU
+											.format(new Date(umfeldDatum
+													.getDataTime()))
+									+ "\n" + umfeldDatum); //$NON-NLS-1$
 				}
 				/** Debug * */
 
@@ -242,8 +250,10 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 							ergebnisse = this.berechneAlleRegeln();
 							this.loescheAlleWerte();
 							if (!this.bringeDatumInPosition(umfeldDatum)) {
-								Debug.getLogger()
-										.warning("Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
+								Debug
+										.getLogger()
+										.warning(
+												"Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
 								ArrayList<ResultData> ergebnisseDummy = new ArrayList<ResultData>();
 								for (ResultData ergebnis : ergebnisse) {
 									ergebnisseDummy.add(ergebnis);
@@ -271,9 +281,11 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 								 * werden
 								 */
 								ergebnisse = new ResultData[] { umfeldDatum };
-								Debug.getLogger()
-										.warning("Datum konnte nicht in Position gebracht werden:\n" + //$NON-NLS-1$
-												umfeldDatum);
+								Debug
+										.getLogger()
+										.warning(
+												"Datum konnte nicht in Position gebracht werden:\n" + //$NON-NLS-1$
+														umfeldDatum);
 							}
 						}
 					}
@@ -363,8 +375,7 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 	 *            ein Umfelddatum
 	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird
 	 */
-	private boolean isDatenArtRelevantFuerSubModul(
-			final ResultData umfeldDatum) {
+	private boolean isDatenArtRelevantFuerSubModul(final ResultData umfeldDatum) {
 		boolean relevant = false;
 
 		UmfeldDatenArt datenArt = UmfeldDatenArt
@@ -386,21 +397,22 @@ public abstract class AbstraktMeteoMessstelle extends AbstractSystemObjekt {
 		return this.sensorenAnMessStelle;
 	}
 
+
 	/**
-	 * {@inheritDoc}
+	 * Wird geworfen, wenn eine Meteomessstelle, die einer meteorologischen
+	 * Kontrolle unterworfen werden soll, eine bestimmte Umfelddatenart nicht
+	 * erfasst.
+	 * 
+	 * @author BitCtrl Systems GmbH, Thierfelder
+	 * 
+	 * @version $Id$
 	 */
-	public SystemObjektTyp getTyp() {
-		return new SystemObjektTyp() {
+	protected class NoSuchSensorException extends Exception {
 
-			public Class<? extends SystemObjekt> getKlasse() {
-				return AbstraktMeteoMessstelle.class;
-			}
+		public NoSuchSensorException(String nachricht) {
+			super(nachricht);
+		}
 
-			public String getPid() {
-				return getSystemObject().getType().getPid();
-			}
-
-		};
 	}
 
 }
