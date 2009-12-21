@@ -45,7 +45,6 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
-import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
@@ -61,25 +60,25 @@ import de.bsvrz.sys.funclib.debug.Debug;
  */
 public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 
-//	/**
-//	 * Verbindungsdaten.
-//	 */
-//	public static final String[] CON_DATA = new String[] {
-//			"-datenverteiler=localhost:8083", //$NON-NLS-1$ 
-//			"-benutzer=Tester", //$NON-NLS-1$
-//			"-authentifizierung=passwd", //$NON-NLS-1$
-//			"-debugLevelStdErrText=OFF", //$NON-NLS-1$
-//			"-debugLevelFileText=OFF" }; //$NON-NLS-1$
-	
 	/**
 	 * Verbindungsdaten.
 	 */
 	public static final String[] CON_DATA = new String[] {
 			"-datenverteiler=localhost:8083", //$NON-NLS-1$ 
 			"-benutzer=Tester", //$NON-NLS-1$
-			"-authentifizierung=c:\\passwd", //$NON-NLS-1$
-			"-debugLevelStdErrText=INFO", //$NON-NLS-1$
+			"-authentifizierung=passwd", //$NON-NLS-1$
+			"-debugLevelStdErrText=OFF", //$NON-NLS-1$
 			"-debugLevelFileText=OFF" }; //$NON-NLS-1$
+	
+//	/**
+//	 * Verbindungsdaten.
+//	 */
+//	public static final String[] CON_DATA = new String[] {
+//			"-datenverteiler=localhost:8083", //$NON-NLS-1$ 
+//			"-benutzer=Tester", //$NON-NLS-1$
+//			"-authentifizierung=c:\\passwd", //$NON-NLS-1$
+//			"-debugLevelStdErrText=INFO", //$NON-NLS-1$
+//			"-debugLevelFileText=OFF" }; //$NON-NLS-1$
 	/**
 	 * Standardintervalllänge der Testdaten für die meisten Tests (2s).
 	 */
