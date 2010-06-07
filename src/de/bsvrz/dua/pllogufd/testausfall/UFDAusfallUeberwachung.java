@@ -70,7 +70,7 @@ public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
 				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup(
 						"atg.ufdsAusfall‹berwachung"), //$NON-NLS-1$
 				dieVerwaltung.getVerbindung().getDataModel().getAspect(
-						DaVKonstanten.ASP_PARAMETER_SOLL), (short) 0);
+						DaVKonstanten.ASP_PARAMETER_SOLL));
 		dieVerwaltung.getVerbindung().subscribeReceiver(this,
 				dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());

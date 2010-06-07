@@ -97,8 +97,7 @@ public final class TestUtensilien {
 				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup(
 						"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 				PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
-						"asp.externeErfassung"), //$NON-NLS-1$
-				(short) 0);
+						"asp.externeErfassung")); //$NON-NLS-1$
 		Data datum = PlPruefungLogischUFDTest.DAV
 				.createData(PlPruefungLogischUFDTest.DAV.getDataModel()
 						.getAttributeGroup("atg.ufds" + datenArt.getName())); //$NON-NLS-1$

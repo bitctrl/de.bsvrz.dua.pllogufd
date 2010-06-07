@@ -110,7 +110,7 @@ public abstract class AbstraktUmfeldDatenSensor implements
 		Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
 		for (AttributeGroup atg : this.getParameterAtgs()) {
 			parameterBeschreibungen.add(new DataDescription(atg,
-					aspParameterSoll, (short) 0));
+					aspParameterSoll));
 		}
 
 		for (DataDescription parameterBeschreibung : parameterBeschreibungen) {

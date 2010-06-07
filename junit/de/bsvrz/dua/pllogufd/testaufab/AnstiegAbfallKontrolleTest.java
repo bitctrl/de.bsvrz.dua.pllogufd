@@ -180,8 +180,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 					dav.getDataModel().getAspect(
-							"asp.plausibilitätsPrüfungLogisch"), //$NON-NLS-1$
-					(short) 0);
+							"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}

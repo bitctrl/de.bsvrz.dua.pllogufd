@@ -163,8 +163,7 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 
 					DataDescription datenBeschreibung = new DataDescription(
 							atg, verbindung.getDataModel().getAspect(
-									DUAKonstanten.ASP_EXTERNE_ERFASSUNG),
-							(short) 0);
+									DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
 					this.verbindung.subscribeReceiver(this, obj,
 							datenBeschreibung, ReceiveOptions.delayed(),

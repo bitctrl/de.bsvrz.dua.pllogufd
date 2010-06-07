@@ -189,8 +189,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			DataDescription datenBeschreibung = new DataDescription(DAV
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-					DAV.getDataModel().getAspect("asp.externeErfassung"), //$NON-NLS-1$
-					(short) 0);
+					DAV.getDataModel().getAspect("asp.externeErfassung")); //$NON-NLS-1$
 			DAV.subscribeSender(this, sensor, datenBeschreibung, SenderRole
 					.source());
 		}
@@ -212,7 +211,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 										UmfeldDatenArt.getUmfeldDatenArtVon(
 												sensor).getName()), DAV
 						.getDataModel().getAspect(
-								DaVKonstanten.ASP_PARAMETER_VORGABE), (short) 0);
+								DaVKonstanten.ASP_PARAMETER_VORGABE));
 				DAV.subscribeSender(this, sensor, parameterBeschreibung,
 						SenderRole.sender());
 			}
@@ -224,7 +223,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		paraAusfallUeberwachung = new DataDescription(DAV.getDataModel()
 				.getAttributeGroup("atg.ufdsAusfall‹berwachung"), //$NON-NLS-1$
 				DAV.getDataModel().getAspect(
-						DaVKonstanten.ASP_PARAMETER_VORGABE), (short) 0);
+						DaVKonstanten.ASP_PARAMETER_VORGABE));
 		DAV.subscribeSender(this, PlPruefungLogischUFDTest.SENSOREN,
 				paraAusfallUeberwachung, SenderRole.sender());
 
@@ -240,7 +239,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							.getAttributeGroup(
 									"atg.ufdsDifferenzialKontrolle" + datenArt.getName()), //$NON-NLS-1$
 					DAV.getDataModel().getAspect(
-							DaVKonstanten.ASP_PARAMETER_VORGABE), (short) 0);
+							DaVKonstanten.ASP_PARAMETER_VORGABE));
 			DAV.subscribeSender(this, sensor, paraDifferenzialkontrolle,
 					SenderRole.sender());
 		}
@@ -257,7 +256,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							.getAttributeGroup(
 									"atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
 					DAV.getDataModel().getAspect(
-							DaVKonstanten.ASP_PARAMETER_VORGABE), (short) 0);
+							DaVKonstanten.ASP_PARAMETER_VORGABE));
 			DAV.subscribeSender(this, sensor, paraAnstiegAbfallKontrolle,
 					SenderRole.sender());
 		}
@@ -471,7 +470,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					parameterDatum
 							.getUnscaledValue("NSGrenzRLF").set(MeteoKonst.NS_GRENZ_RLF); //$NON-NLS-1$
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -499,7 +498,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					parameterDatum
 							.getTimeValue("NIminTrockenRLF").setMillis(MeteoKonst.NI_MIN_TROCKEN_RLF); //$NON-NLS-1$
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -523,7 +522,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					parameterDatum
 							.getTimeValue("WDFminNassRLF").setMillis(MeteoKonst.WDF_MIN_NASS_RLF); //$NON-NLS-1$
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -546,7 +545,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							.getUnscaledValue("SWgrenzSW").set(MeteoKonst.SW_GRENZ_SW); //$NON-NLS-1$
 
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -595,7 +594,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					parameterDatum
 							.getUnscaledValue("NSGrenzRLF").set(nsRlfWert.getWert()); //$NON-NLS-1$
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -637,7 +636,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					parameterDatum
 							.getTimeValue("NIminTrockenRLF").setMillis(STANDARD_T * 2); //$NON-NLS-1$
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -669,7 +668,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					parameterDatum
 							.getTimeValue("WDFminNassRLF").setMillis(STANDARD_T * 2); //$NON-NLS-1$
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -699,7 +698,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							.getUnscaledValue("SWgrenzSW").set(swWert.getWert()); //$NON-NLS-1$
 
 					ResultData parameterResultat = new ResultData(sensor,
-							new DataDescription(atg, vorgabeAspekt, (short) 0),
+							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
 						DAV.sendData(parameterResultat);
@@ -765,7 +764,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				.getDataModel().getAttributeGroup(
 						"atg.ufdsDifferenzialKontrolle" + datenArt.getName()), //$NON-NLS-1$
 				DAV.getDataModel().getAspect(
-						DaVKonstanten.ASP_PARAMETER_VORGABE), (short) 0);
+						DaVKonstanten.ASP_PARAMETER_VORGABE));
 		ResultData parameterSatz = new ResultData(sensor,
 				paraDifferenzialkontrolle, System.currentTimeMillis(), datum);
 		try {
@@ -801,7 +800,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				DAV.getDataModel().getAttributeGroup(
 						"atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
 				DAV.getDataModel().getAspect(
-						DaVKonstanten.ASP_PARAMETER_VORGABE), (short) 0);
+						DaVKonstanten.ASP_PARAMETER_VORGABE));
 		ResultData parameterSatz = new ResultData(sensor,
 				paraAnstiegAbfallKontrolle, System.currentTimeMillis(), datum);
 		try {
