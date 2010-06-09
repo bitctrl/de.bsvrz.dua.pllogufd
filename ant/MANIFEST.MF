@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Pl-Prüfung logisch UFD
 Bundle-SymbolicName: de.bsvrz.dua.pllogufd
-Bundle-Version: 1.0.0
+Bundle-Version: 11.3.2
 Bundle-Localization: plugin
 Bundle-Vendor: BitCtrl Systems GmbH
 Export-Package: de.bsvrz.dua.pllogufd,
