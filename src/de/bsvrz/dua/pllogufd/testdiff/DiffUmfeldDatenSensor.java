@@ -39,6 +39,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.VariableMitKonstanzZaehler;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -73,12 +74,19 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 *            <code>typ.umfeldDatenSensor</code>)
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	protected DiffUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
-			throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
-		this.wert = new VariableMitKonstanzZaehler<Long>(UmfeldDatenArt
-				.getUmfeldDatenArtVon(obj).getName());
+		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(obj);
+		if (datenArt == null) {
+			throw new UmfeldDatenSensorUnbekannteDatenartException(
+					"Datenart von Umfelddatensensor " + obj + //$NON-NLS-1$ 
+							" (" + obj.getType()
+							+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
+		}
+		this.wert = new VariableMitKonstanzZaehler<Long>(datenArt.getName());
 		this.init();
 	}
 

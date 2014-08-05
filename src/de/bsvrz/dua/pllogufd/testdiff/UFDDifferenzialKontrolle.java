@@ -39,6 +39,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapte
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Das Modul Differenzialkontrolle meldet sich auf alle Parameter an und führt
@@ -70,8 +72,19 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		super.initialisiere(dieVerwaltung);
 
 		for (SystemObject obj : dieVerwaltung.getSystemObjekte()) {
-			this.sensoren.put(obj,
-					new DiffUmfeldDatenSensor(dieVerwaltung, obj));
+			DiffUmfeldDatenSensor sensor;
+			try {
+				sensor = new DiffUmfeldDatenSensor(dieVerwaltung, obj);
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException ex) {
+				Debug.getLogger()
+						.warning(
+								"UmfeldDatenSensor '"
+										+ obj
+										+ "': wird nicht verarbeitet: "
+										+ ex.getMessage());
+				continue;
+			}
+			this.sensoren.put(obj, sensor);
 		}
 	}
 
