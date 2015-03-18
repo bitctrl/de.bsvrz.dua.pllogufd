@@ -205,12 +205,12 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(sensor);
 		final DataDescription datenBeschreibung = new DataDescription(
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup(
+				PlPruefungLogischUFDTest.dav.getDataModel().getAttributeGroup(
 						"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-						PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+						PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 								"asp.externeErfassung")); //$NON-NLS-1$
-		final Data datum = PlPruefungLogischUFDTest.DAV
-				.createData(PlPruefungLogischUFDTest.DAV.getDataModel()
+		final Data datum = PlPruefungLogischUFDTest.dav
+				.createData(PlPruefungLogischUFDTest.dav.getDataModel()
 						.getAttributeGroup("atg.ufds" + datenArt.getName())); //$NON-NLS-1$
 		datum.getTimeValue("T").setMillis(1L * 1000L); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getUnscaledValue("Wert").set(0); //$NON-NLS-1$

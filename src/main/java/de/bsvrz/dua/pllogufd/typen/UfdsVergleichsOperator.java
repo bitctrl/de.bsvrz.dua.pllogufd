@@ -45,7 +45,7 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 	/**
 	 * Der Wertebereich dieses DAV-Enumerationstypen
 	 */
-	private static Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = new HashMap<Integer, UfdsVergleichsOperator>();
+	private static final Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = new HashMap<Integer, UfdsVergleichsOperator>();
 
 	/**
 	 * Alle wirklichen Enumerationswerte

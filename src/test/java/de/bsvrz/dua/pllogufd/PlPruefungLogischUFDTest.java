@@ -166,17 +166,17 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	/**
 	 * Menge aller im Test betrachteten Sensoren.
 	 */
-	public static List<SystemObject> SENSOREN = new ArrayList<SystemObject>();
+	public static final List<SystemObject> SENSOREN = new ArrayList<SystemObject>();
 
 	/**
 	 * Datenverteiler-Verbindung.
 	 */
-	public static ClientDavInterface DAV = null;
+	public static ClientDavInterface dav;
 
 	/**
 	 * Parameterdatenbeschreibung für die Ausfallüberwachung.
 	 */
-	public static DataDescription paraAusfallUeberwachung = null;
+	public static DataDescription paraAusfallUeberwachung;
 
 	/**
 	 * Standardkonstruktor.
@@ -191,11 +191,11 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					.getUmfeldDatenArtVon(sensor);
 
 			final DataDescription datenBeschreibung = new DataDescription(
-					PlPruefungLogischUFDTest.DAV.getDataModel()
+					PlPruefungLogischUFDTest.dav.getDataModel()
 							.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-							PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+							PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 							"asp.externeErfassung")); //$NON-NLS-1$
-			PlPruefungLogischUFDTest.DAV.subscribeSender(this, sensor,
+			PlPruefungLogischUFDTest.dav.subscribeSender(this, sensor,
 					datenBeschreibung, SenderRole.source());
 		}
 
@@ -211,16 +211,16 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					|| datenArt.equals(UmfeldDatenArt.wfd)
 					|| datenArt.equals(UmfeldDatenArt.sw)) {
 				final DataDescription parameterBeschreibung = new DataDescription(
-						PlPruefungLogischUFDTest.DAV.getDataModel()
+						PlPruefungLogischUFDTest.dav.getDataModel()
 								.getAttributeGroup(
 										"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 												UmfeldDatenArt
 														.getUmfeldDatenArtVon(
 																sensor)
 														.getName()),
-						PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+						PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 														DaVKonstanten.ASP_PARAMETER_VORGABE));
-				PlPruefungLogischUFDTest.DAV.subscribeSender(this, sensor,
+				PlPruefungLogischUFDTest.dav.subscribeSender(this, sensor,
 						parameterBeschreibung, SenderRole.sender());
 			}
 		}
@@ -229,11 +229,11 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		 * Anmeldung auf alle Parameter für die Ausfallkontrolle
 		 */
 		PlPruefungLogischUFDTest.paraAusfallUeberwachung = new DataDescription(
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup(
+				PlPruefungLogischUFDTest.dav.getDataModel().getAttributeGroup(
 						"atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+				PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 						DaVKonstanten.ASP_PARAMETER_VORGABE));
-		PlPruefungLogischUFDTest.DAV.subscribeSender(this,
+		PlPruefungLogischUFDTest.dav.subscribeSender(this,
 				PlPruefungLogischUFDTest.SENSOREN,
 				PlPruefungLogischUFDTest.paraAusfallUeberwachung,
 				SenderRole.sender());
@@ -245,13 +245,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			final UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
 			final DataDescription paraDifferenzialkontrolle = new DataDescription(
-					PlPruefungLogischUFDTest.DAV
+					PlPruefungLogischUFDTest.dav
 					.getDataModel()
 					.getAttributeGroup(
 							"atg.ufdsDifferenzialKontrolle" + datenArt.getName()), //$NON-NLS-1$
-							PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+							PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 									DaVKonstanten.ASP_PARAMETER_VORGABE));
-			PlPruefungLogischUFDTest.DAV.subscribeSender(this, sensor,
+			PlPruefungLogischUFDTest.dav.subscribeSender(this, sensor,
 					paraDifferenzialkontrolle, SenderRole.sender());
 		}
 
@@ -262,13 +262,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			final UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
 			final DataDescription paraAnstiegAbfallKontrolle = new DataDescription(
-					PlPruefungLogischUFDTest.DAV
+					PlPruefungLogischUFDTest.dav
 					.getDataModel()
 					.getAttributeGroup(
 							"atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
-							PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+							PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 									DaVKonstanten.ASP_PARAMETER_VORGABE));
-			PlPruefungLogischUFDTest.DAV.subscribeSender(this, sensor,
+			PlPruefungLogischUFDTest.dav.subscribeSender(this, sensor,
 					paraAnstiegAbfallKontrolle, SenderRole.sender());
 		}
 
@@ -289,11 +289,11 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	 *             wird weitergereicht
 	 */
 	public static final void initialisiere() throws Exception {
-		if (PlPruefungLogischUFDTest.DAV == null) {
-			PlPruefungLogischUFDTest.DAV = DAVTest
+		if (PlPruefungLogischUFDTest.dav == null) {
+			PlPruefungLogischUFDTest.dav = DAVTest
 					.getDav(PlPruefungLogischUFDTest.CON_DATA);
-			DUAUtensilien.setAlleParameter(PlPruefungLogischUFDTest.DAV);
-			UmfeldDatenArt.initialisiere(PlPruefungLogischUFDTest.DAV);
+			DUAUtensilien.setAlleParameter(PlPruefungLogischUFDTest.dav);
+			UmfeldDatenArt.initialisiere(PlPruefungLogischUFDTest.dav);
 
 			// SENSOREN.add(ni1 =
 			// DAV.getDataModel().getObject("AAA.pllogufd.NI.1")); //$NON-NLS-1$
@@ -314,173 +314,173 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			// DAV.getDataModel().getObject("AAA.pllogufd.SW.1")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.ni1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.ni1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.NI.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.ni2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.ni2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.NI.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.ni3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.ni3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.NI.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.fbz1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.fbz1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.FBZ.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.fbz2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.fbz2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.FBZ.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.fbz3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.fbz3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.FBZ.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.ns1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.ns1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.NS.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.ns2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.ns2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.NS.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.ns3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.ns3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.NS.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wfd1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wfd1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WFD.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wfd2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wfd2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WFD.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wfd3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wfd3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WFD.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.lt1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.lt1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.LT.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.lt2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.lt2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.LT.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.lt3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.lt3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.LT.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.rlf1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.rlf1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.RLF.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.rlf2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.rlf2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.RLF.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.rlf3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.rlf3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.RLF.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.sw1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.sw1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.SW.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.sw2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.sw2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.SW.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.sw3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.sw3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.SW.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.hk1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.hk1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.HK.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.hk2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.hk2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.HK.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.hk3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.hk3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.HK.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.fbt1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.fbt1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.FBT.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.fbt2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.fbt2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.FBT.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.fbt3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.fbt3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.FBT.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tt11 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tt11 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TT1.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tt12 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tt12 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TT1.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tt13 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tt13 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TT1.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tt31 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tt31 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TT3.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tt32 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tt32 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TT3.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tt33 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tt33 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TT3.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.rs1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.rs1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.RS.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.rs2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.rs2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.RS.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.rs3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.rs3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.RS.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.gt1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.gt1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.GT.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.gt2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.gt2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.GT.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.gt3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.gt3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.GT.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tpt1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tpt1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TPT.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tpt2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tpt2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TPT.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.tpt3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.tpt3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.TPT.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wgs1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wgs1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WGS.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wgs2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wgs2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WGS.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wgs3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wgs3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WGS.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wgm1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wgm1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WGM.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wgm2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wgm2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WGM.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wgm3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wgm3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WGM.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wr1 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wr1 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WR.1")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wr2 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wr2 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WR.2")); //$NON-NLS-1$
 			PlPruefungLogischUFDTest.SENSOREN
-					.add(PlPruefungLogischUFDTest.wr3 = PlPruefungLogischUFDTest.DAV
+					.add(PlPruefungLogischUFDTest.wr3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WR.3")); //$NON-NLS-1$
 
 			PlPruefungLogischUFDTest.sender = new PlPruefungLogischUFDTest();
@@ -496,7 +496,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	 *             wird weitergereicht
 	 */
 	public final void sende(final ResultData resultat) throws Exception {
-		PlPruefungLogischUFDTest.DAV.sendData(resultat);
+		PlPruefungLogischUFDTest.dav.sendData(resultat);
 	}
 
 	/**
@@ -507,7 +507,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	 *            Standardparameter anschalten?
 	 */
 	public void setMeteoKontrolle(final boolean an) {
-		final Aspect vorgabeAspekt = PlPruefungLogischUFDTest.DAV
+		final Aspect vorgabeAspekt = PlPruefungLogischUFDTest.dav
 				.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE);
 
 		if (an) {
@@ -519,13 +519,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						.getUmfeldDatenArtVon(sensor);
 
 				if (datenArt.equals(UmfeldDatenArt.ns)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					parameterDatum
@@ -540,7 +540,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -549,13 +549,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				}
 
 				if (datenArt.equals(UmfeldDatenArt.ni)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					parameterDatum
@@ -572,7 +572,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -581,13 +581,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				}
 
 				if (datenArt.equals(UmfeldDatenArt.wfd)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					parameterDatum
@@ -600,7 +600,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -609,13 +609,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				}
 
 				if (datenArt.equals(UmfeldDatenArt.sw)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					parameterDatum
@@ -627,7 +627,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -644,13 +644,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 						.getUmfeldDatenArtVon(sensor);
 
 				if (datenArt.equals(UmfeldDatenArt.ns)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					final UmfeldDatenSensorWert ltWert = new UmfeldDatenSensorWert(
@@ -680,7 +680,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -689,13 +689,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				}
 
 				if (datenArt.equals(UmfeldDatenArt.ni)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					UmfeldDatenSensorWert niWert = new UmfeldDatenSensorWert(
@@ -726,7 +726,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -735,13 +735,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				}
 
 				if (datenArt.equals(UmfeldDatenArt.wfd)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					final UmfeldDatenSensorWert niWert = new UmfeldDatenSensorWert(
@@ -762,7 +762,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -771,13 +771,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				}
 
 				if (datenArt.equals(UmfeldDatenArt.sw)) {
-					final AttributeGroup atg = PlPruefungLogischUFDTest.DAV
+					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
 							.getDataModel().getAttributeGroup(
 									"atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 											UmfeldDatenArt
 													.getUmfeldDatenArtVon(
 															sensor).getName());
-					final Data parameterDatum = PlPruefungLogischUFDTest.DAV
+					final Data parameterDatum = PlPruefungLogischUFDTest.dav
 							.createData(atg);
 
 					final UmfeldDatenSensorWert rlfWert = new UmfeldDatenSensorWert(
@@ -796,7 +796,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 							new DataDescription(atg, vorgabeAspekt),
 							System.currentTimeMillis(), parameterDatum);
 					try {
-						PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.dav
 								.sendData(parameterResultat);
 					} catch (final Exception e) {
 						e.printStackTrace();
@@ -817,8 +817,8 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	 */
 	public final void setMaxAusfallFuerSensor(final SystemObject obj,
 			final long verzugInMillis) {
-		final Data parameterData = PlPruefungLogischUFDTest.DAV
-				.createData(PlPruefungLogischUFDTest.DAV.getDataModel()
+		final Data parameterData = PlPruefungLogischUFDTest.dav
+				.createData(PlPruefungLogischUFDTest.dav.getDataModel()
 						.getAttributeGroup("atg.ufdsAusfallÜberwachung")); //$NON-NLS-1$
 		parameterData.getTimeValue("maxZeitVerzug").setMillis(verzugInMillis); //$NON-NLS-1$
 		final ResultData parameter = new ResultData(obj,
@@ -826,7 +826,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				System.currentTimeMillis(), parameterData);
 
 		try {
-			PlPruefungLogischUFDTest.DAV.sendData(parameter);
+			PlPruefungLogischUFDTest.dav.sendData(parameter);
 		} catch (final DataNotSubscribedException e) {
 			e.printStackTrace();
 			LOGGER.error(Constants.EMPTY_STRING, e);
@@ -852,8 +852,8 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			final long zeit) {
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(sensor);
-		final Data datum = PlPruefungLogischUFDTest.DAV
-				.createData(PlPruefungLogischUFDTest.DAV
+		final Data datum = PlPruefungLogischUFDTest.dav
+				.createData(PlPruefungLogischUFDTest.dav
 						.getDataModel()
 						.getAttributeGroup(
 								"atg.ufdsDifferenzialKontrolle" + datenArt.getName())); //$NON-NLS-1$
@@ -863,14 +863,14 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		datum.getTimeValue(datenArt.getAbkuerzung() + "maxZeit").setMillis(zeit); //$NON-NLS-1$
 
 		final DataDescription paraDifferenzialkontrolle = new DataDescription(
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup(
+				PlPruefungLogischUFDTest.dav.getDataModel().getAttributeGroup(
 						"atg.ufdsDifferenzialKontrolle" + datenArt.getName()), //$NON-NLS-1$
-						PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+						PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 								DaVKonstanten.ASP_PARAMETER_VORGABE));
 		final ResultData parameterSatz = new ResultData(sensor,
 				paraDifferenzialkontrolle, System.currentTimeMillis(), datum);
 		try {
-			PlPruefungLogischUFDTest.DAV.sendData(parameterSatz);
+			PlPruefungLogischUFDTest.dav.sendData(parameterSatz);
 		} catch (final DataNotSubscribedException e) {
 			e.printStackTrace();
 			LOGGER.error(Constants.EMPTY_STRING, e);
@@ -893,8 +893,8 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(sensor);
 
-		final Data datum = PlPruefungLogischUFDTest.DAV
-				.createData(PlPruefungLogischUFDTest.DAV
+		final Data datum = PlPruefungLogischUFDTest.dav
+				.createData(PlPruefungLogischUFDTest.dav
 						.getDataModel()
 						.getAttributeGroup(
 								"atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName())); //$NON-NLS-1$
@@ -902,14 +902,14 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		datum.getUnscaledValue(datenArt.getAbkuerzung() + "maxDiff").set(maxDiff); //$NON-NLS-1$
 
 		final DataDescription paraAnstiegAbfallKontrolle = new DataDescription(
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup(
+				PlPruefungLogischUFDTest.dav.getDataModel().getAttributeGroup(
 						"atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName()), //$NON-NLS-1$
-						PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+						PlPruefungLogischUFDTest.dav.getDataModel().getAspect(
 								DaVKonstanten.ASP_PARAMETER_VORGABE));
 		final ResultData parameterSatz = new ResultData(sensor,
 				paraAnstiegAbfallKontrolle, System.currentTimeMillis(), datum);
 		try {
-			PlPruefungLogischUFDTest.DAV.sendData(parameterSatz);
+			PlPruefungLogischUFDTest.dav.sendData(parameterSatz);
 		} catch (final DataNotSubscribedException e) {
 			e.printStackTrace();
 			LOGGER.error(Constants.EMPTY_STRING, e);
