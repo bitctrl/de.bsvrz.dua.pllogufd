@@ -435,6 +435,9 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI > 0) <b>dann</b> (NI=implausibel, NS=implausibel)</code>
 	 * <br>. Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * 
+	 * @deprecated Regel soll nicht mehr verwendet werden
+	 * 
 	 */
 	@SuppressWarnings("unused")
 	@Deprecated

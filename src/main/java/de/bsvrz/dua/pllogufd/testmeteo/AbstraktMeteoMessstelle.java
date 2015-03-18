@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -46,7 +47,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  * 
- * @version $Id$
+ * @version $Id: AbstraktMeteoMessstelle.java 53825 2015-03-18 09:36:42Z peuker
+ *          $
  */
 public abstract class AbstraktMeteoMessstelle {
 
@@ -70,7 +72,7 @@ public abstract class AbstraktMeteoMessstelle {
 	 * der Zeitstempel aller im Moment gespeicherten Werte.
 	 */
 	protected long aktuellerZeitstempel = -1;
-	
+
 	/**
 	 * das Assoziierte Systemobjekt.
 	 */
@@ -109,8 +111,8 @@ public abstract class AbstraktMeteoMessstelle {
 	protected abstract Collection<UmfeldDatenArt> getDatenArten();
 
 	/**
-	 * Arbeitet <b>alle</b> Regeln der Reihe nach ab, so die Voraussetzungen
-	 * zur Abarbeitung der jeweiligen Regel gegeben sind. Die Ergebnisse
+	 * Arbeitet <b>alle</b> Regeln der Reihe nach ab, so die Voraussetzungen zur
+	 * Abarbeitung der jeweiligen Regel gegeben sind. Die Ergebnisse
 	 * überschreiben die Variablen mit den originalen Werten (lokaler Puffer).
 	 * 
 	 * @return das Ergebnis des Aufrufs der Methode
@@ -199,12 +201,15 @@ public abstract class AbstraktMeteoMessstelle {
 	 * 
 	 * @param umfeldDatum
 	 *            ein aktuelles Umfelddatum
-	 * @return die Ergebnisse der Überprüfung bzw. <code>null</code>, wenn
-	 *         das übergebene Umfelddatum nicht zur Berechnung von Werten
-	 *         geführt hat
+	 * @return die Ergebnisse der Überprüfung bzw. <code>null</code>, wenn das
+	 *         übergebene Umfelddatum nicht zur Berechnung von Werten geführt
+	 *         hat
 	 */
 	public final ResultData[] aktualisiereDaten(final ResultData umfeldDatum) {
 		ResultData[] ergebnisse = null;
+
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(
+				DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 
 		if (umfeldDatum != null) {
 			synchronized (this) {
@@ -221,9 +226,8 @@ public abstract class AbstraktMeteoMessstelle {
 					Debug.getLogger().info(
 							this.getClass().getSimpleName()
 									+ " IN: " + umfeldDatum.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
-									DUAKonstanten.ZEIT_FORMAT_GENAU
-											.format(new Date(umfeldDatum
-													.getDataTime()))
+									dateFormat.format(new Date(umfeldDatum
+											.getDataTime()))
 									+ "\n" + umfeldDatum); //$NON-NLS-1$
 				}
 				/** Debug * */
@@ -250,8 +254,7 @@ public abstract class AbstraktMeteoMessstelle {
 							ergebnisse = this.berechneAlleRegeln();
 							this.loescheAlleWerte();
 							if (!this.bringeDatumInPosition(umfeldDatum)) {
-								Debug
-										.getLogger()
+								Debug.getLogger()
 										.warning(
 												"Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
 								ArrayList<ResultData> ergebnisseDummy = new ArrayList<ResultData>();
@@ -281,8 +284,7 @@ public abstract class AbstraktMeteoMessstelle {
 								 * werden
 								 */
 								ergebnisse = new ResultData[] { umfeldDatum };
-								Debug
-										.getLogger()
+								Debug.getLogger()
 										.warning(
 												"Datum konnte nicht in Position gebracht werden:\n" + //$NON-NLS-1$
 														umfeldDatum);
@@ -310,9 +312,8 @@ public abstract class AbstraktMeteoMessstelle {
 					if (ergebnisse != null && ergebnisse.length != 0) {
 						for (ResultData ergebnis : ergebnisse) {
 							log += "\n  " + ergebnis.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
-									DUAKonstanten.ZEIT_FORMAT_GENAU
-											.format(new Date(ergebnis
-													.getDataTime()));
+									dateFormat.format(new Date(ergebnis
+											.getDataTime()));
 						}
 						log += "\n"; //$NON-NLS-1$
 						for (ResultData ergebnis : ergebnisse) {
@@ -334,8 +335,8 @@ public abstract class AbstraktMeteoMessstelle {
 	/**
 	 * Erfragt, ob das empfangene Umfelddatum zu einem neuen Intervall gehört.<br>
 	 * Dies ist der Fall, wenn der Zeitstempel des gerade empfangenen
-	 * Umfelddatums echt größer als <code>aktuellerZeitstempel</code> ist und
-	 * in der für das Datum vorgesehenen Member-Variable bereits ein Datum steht
+	 * Umfelddatums echt größer als <code>aktuellerZeitstempel</code> ist und in
+	 * der für das Datum vorgesehenen Member-Variable bereits ein Datum steht
 	 * 
 	 * @param umfeldDatum
 	 *            ein Umfelddatum (muss <code>!= null</code> sein)
@@ -397,7 +398,6 @@ public abstract class AbstraktMeteoMessstelle {
 		return this.sensorenAnMessStelle;
 	}
 
-
 	/**
 	 * Wird geworfen, wenn eine Meteomessstelle, die einer meteorologischen
 	 * Kontrolle unterworfen werden soll, eine bestimmte Umfelddatenart nicht
@@ -405,7 +405,8 @@ public abstract class AbstraktMeteoMessstelle {
 	 * 
 	 * @author BitCtrl Systems GmbH, Thierfelder
 	 * 
-	 * @version $Id$
+	 * @version $Id: AbstraktMeteoMessstelle.java 53825 2015-03-18 09:36:42Z
+	 *          peuker $
 	 */
 	protected class NoSuchSensorException extends Exception {
 

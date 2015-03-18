@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testausfall;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -34,8 +35,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -92,9 +92,10 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: UFDAusfallUeberwachungTest.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
-@Ignore ("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prüfen")
 public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		ClientReceiverInterface {
 
@@ -162,9 +163,9 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	@Before
 	public void setUp() throws Exception {
 		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
-		
+
 		DUAUtensilien.setAlleParameter(dav);
-		
+
 		PlPruefungLogischUFDTest.initialisiere();
 		PlPruefungLogischUFDTest.sender.setMeteoKontrolle(false);
 
@@ -312,9 +313,8 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 				/**
 				 * JUnit-Test
 				 */
-				Assert
-						.assertTrue(
-								"Felher an Sensor: " + sensor.getPid(), erfolgsErgebnis != null); //$NON-NLS-1$
+				Assert.assertTrue(
+						"Felher an Sensor: " + sensor.getPid(), erfolgsErgebnis != null); //$NON-NLS-1$
 			}
 		}
 
@@ -333,7 +333,8 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	/**
 	 * der eigentliche Test.
 	 * 
-	 * @throws Exception wird weitergereciht
+	 * @throws Exception
+	 *             wird weitergereciht
 	 * 
 	 */
 	@Test
@@ -436,7 +437,7 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	 */
 	public void dataRequest(SystemObject object,
 			DataDescription dataDescription, byte state) {
-		// 		
+		//
 	}
 
 	/**
@@ -516,14 +517,13 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		 * @param datenZeit
 		 *            Datenzeit
 		 * @param nichtErfasst
-		 *            ob das Datum als <code>nicht erfasst</code>
-		 *            gekennzeichnet erwartet wird. <code>null</code> gilt als
-		 *            "egal"<br>
-		 *            <b>Achtung:</b> Die Markierung "egal" wird verwendet,
-		 *            wenn die Zeit, zu der das Datum verschickt wurde und die
-		 *            Zeit, zu der es die Ausfallkontrolle hätte ebenfalls
-		 *            verschicken sollen, innerhalb des Toleranzbereichs <code>ERGEBNIS_TOLERANZ</code>
-		 *            liegen
+		 *            ob das Datum als <code>nicht erfasst</code> gekennzeichnet
+		 *            erwartet wird. <code>null</code> gilt als "egal"<br>
+		 *            <b>Achtung:</b> Die Markierung "egal" wird verwendet, wenn
+		 *            die Zeit, zu der das Datum verschickt wurde und die Zeit,
+		 *            zu der es die Ausfallkontrolle hätte ebenfalls verschicken
+		 *            sollen, innerhalb des Toleranzbereichs
+		 *            <code>ERGEBNIS_TOLERANZ</code> liegen
 		 */
 		public Ergebnis(SystemObject sensor, long datenZeit,
 				Boolean nichtErfasst) {
@@ -533,9 +533,10 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		}
 
 		/**
-		 * Zwei Ergebnisdatensätze gelten als gleich, wenn:<br> - die Sensoren
-		 * identisch sind,<br> - die erwarteten Datenzeiten identisch sind und<br> -
-		 * die Markierungen als <code>nicht erfasst</code> identisch sind (so
+		 * Zwei Ergebnisdatensätze gelten als gleich, wenn:<br>
+		 * - die Sensoren identisch sind,<br>
+		 * - die erwarteten Datenzeiten identisch sind und<br>
+		 * - die Markierungen als <code>nicht erfasst</code> identisch sind (so
 		 * diese nicht als "egal" markiert sind).
 		 * 
 		 * {@inheritDoc}
@@ -563,12 +564,13 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		 */
 		@Override
 		public String toString() {
-			String nichtErfasstStr = (this.nichtErfasst == null ? "egal" : (this.nichtErfasst ? "ja" : "nein")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			final String nichtErfasstStr = (this.nichtErfasst == null ? "egal" : (this.nichtErfasst ? "ja" : "nein")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(
+					DUAKonstanten.NUR_ZEIT_FORMAT_GENAU_STR);
 
-			return "Sensor: " + this.sensor.getPid() + ", Daten: " + //$NON-NLS-1$//$NON-NLS-2$
-					DUAKonstanten.NUR_ZEIT_FORMAT_GENAU.format(new Date(
-							this.datenZeit))
-					+ ", nicht Erfasst: " + nichtErfasstStr; //$NON-NLS-1$
+			return "Sensor: " + this.sensor.getPid() + ", Daten: "
+					+ dateFormat.format(new Date(this.datenZeit))
+					+ ", nicht Erfasst: " + nichtErfasstStr;
 		}
 	}
 }

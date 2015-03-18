@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testausfall;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -274,6 +275,8 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 		// DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(ersteDatenZeit)));
 		// //$NON-NLS-1$
 
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.NUR_ZEIT_FORMAT_GENAU_STR);
+		
 		/**
 		 * Test-Schleife
 		 */
@@ -306,7 +309,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 			System.out
 					.println("\n-------\n" + //$NON-NLS-1$
 							ct()
-							+ ", " + (testZaehler + 1) + ". Datum: " + DUAKonstanten.NUR_ZEIT_FORMAT_GENAU.format(new Date(startAlles))); //$NON-NLS-1$ //$NON-NLS-2$
+							+ ", " + (testZaehler + 1) + ". Datum: " + dateFormat.format(new Date(startAlles))); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (testZaehler % 2 == 0) {
 				if (testZaehler % 10 == 0) {
@@ -325,7 +328,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 					PlPruefungLogischUFDTest.sender.sende(resultat1);
 					System.out
 							.println(ct()
-									+ ", Sende: " + resultat1.getObject().getPid() + ", " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(resultat1.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
+									+ ", Sende: " + resultat1.getObject().getPid() + ", " + dateFormat.format(new Date(resultat1.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
 				}
 
 				if (testZaehler % 7 == 0) {
@@ -343,7 +346,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 					PlPruefungLogischUFDTest.sender.sende(resultat2);
 					System.out
 							.println(ct()
-									+ ", Sende: " + resultat2.getObject().getPid() + ", " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(resultat2.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
+									+ ", Sende: " + resultat2.getObject().getPid() + ", " + dateFormat.format(new Date(resultat2.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
 				}
 			} else {
 				if (testZaehler % 13 == 0) {
@@ -361,7 +364,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 					PlPruefungLogischUFDTest.sender.sende(resultat2);
 					System.out
 							.println(ct()
-									+ ", Sende: " + resultat2.getObject().getPid() + ", " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(resultat2.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
+									+ ", Sende: " + resultat2.getObject().getPid() + ", " + dateFormat.format(new Date(resultat2.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
 				}
 
 				try {
@@ -380,7 +383,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 					PlPruefungLogischUFDTest.sender.sende(resultat1);
 					System.out
 							.println(ct()
-									+ ", Sende: " + resultat1.getObject().getPid() + ", " + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(resultat1.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
+									+ ", Sende: " + resultat1.getObject().getPid() + ", " + dateFormat.format(new Date(resultat1.getDataTime()))); //$NON-NLS-1$//$NON-NLS-2$
 				}
 			}
 
@@ -408,6 +411,8 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 	 */
 	public void update(ResultData[] resultate) {
 		if (resultate != null) {
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+
 			for (ResultData resultat : resultate) {
 				if (resultat != null && resultat.getData() != null) {
 					synchronized (this) {
@@ -427,7 +432,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 							System.out
 									.println(ct()
 											+ ", Empfange: " + resultat.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
-											DUAKonstanten.ZEIT_FORMAT_GENAU
+											dateFormat
 													.format(new Date(resultat
 															.getDataTime()))
 											+ " --> " + implausibel); //$NON-NLS-1$						 
@@ -447,7 +452,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 							System.out
 									.println(ct()
 											+ ", Empfange: " + resultat.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
-											DUAKonstanten.ZEIT_FORMAT_GENAU
+											dateFormat
 													.format(new Date(resultat
 															.getDataTime()))
 											+ " --> " + implausibel); //$NON-NLS-1$	
@@ -464,6 +469,7 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 	 * @return der Aktuellen Zeit
 	 */
 	private String ct() {
-		return "(NOW:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+		return "(NOW:" + dateFormat.format(new Date(System.currentTimeMillis())) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

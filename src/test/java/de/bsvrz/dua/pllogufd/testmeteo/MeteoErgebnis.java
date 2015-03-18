@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.bsvrz.dav.daf.main.config.SystemObject;
@@ -121,9 +122,11 @@ public class MeteoErgebnis {
 	 */
 	@Override
 	public String toString() {
-		return "Sensor: " + this.sensor.getPid() + ", " + DUAKonstanten.//$NON-NLS-1$//$NON-NLS-2$
-				NUR_ZEIT_FORMAT_GENAU.format(new Date(this.zeitStempel))
-				+ ", impl.: " + (this.implausibel ? "ja" : "nein"); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(
+				DUAKonstanten.NUR_ZEIT_FORMAT_GENAU_STR);
+		return "Sensor: " + this.sensor.getPid() + ", "
+				+ dateFormat.format(new Date(this.zeitStempel)) + ", impl.: "
+				+ (this.implausibel ? "ja" : "nein");
 	}
 
 }

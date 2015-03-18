@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testdiff;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -34,8 +35,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -63,9 +63,10 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: UFDDifferenzialKontrolleTest.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
-@Ignore ("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prüfen")
 public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 		ClientReceiverInterface {
 
@@ -90,19 +91,22 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	private ClientDavInterface dav = null;
 
 	/**
-	 * letzter Soll-Ergebnis-Wert von einem Sensor<br> (<code>Implausibel</code>
-	 * und <code>fehlerhaft</code> == <code>true</code>).
+	 * letzter Soll-Ergebnis-Wert von einem Sensor<br>
+	 * (<code>Implausibel</code> und <code>fehlerhaft</code> ==
+	 * <code>true</code>).
 	 */
 	private Map<SystemObject, Boolean> ergebnisSoll = new HashMap<SystemObject, Boolean>();
 
 	/**
-	 * letzter Ist-Ergebnis-Wert von einem Sensor<br> (<code>Implausibel</code>
-	 * und <code>fehlerhaft</code> == <code>true</code>).
+	 * letzter Ist-Ergebnis-Wert von einem Sensor<br>
+	 * (<code>Implausibel</code> und <code>fehlerhaft</code> ==
+	 * <code>true</code>).
 	 */
 	private Map<SystemObject, Boolean> ergebnisIst = new HashMap<SystemObject, Boolean>();
 
 	/**
-	 * letzter für einen Sensor eingetroffener Ergebnisdatensatz (für Debugging).
+	 * letzter für einen Sensor eingetroffener Ergebnisdatensatz (für
+	 * Debugging).
 	 */
 	private Map<SystemObject, ResultData> ergebnisEingetroffen = new HashMap<SystemObject, ResultData>();
 
@@ -120,9 +124,9 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	@Before
 	public void setUp() throws Exception {
 		this.dav = DAVTest.getDav(PlPruefungLogischUFDTest.CON_DATA);
-		
+
 		DUAUtensilien.setAlleParameter(dav);
-		
+
 		PlPruefungLogischUFDTest.initialisiere();
 		PlPruefungLogischUFDTest.sender.setMeteoKontrolle(false);
 
@@ -137,7 +141,7 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 			}
 		}
 
-		/**
+/**
 		 * maximal zulässige Zeitdauer der Ergebniskonstanz auf
 		 * <code>STANDARD_T * STANDARD_MAX_INTERVALLE</code> stellen Eine
 		 * Überprüfung findet nur statt, wenn ein eingetroffener Wert "<" als
@@ -187,9 +191,7 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 		aktuellesIntervall = zeitStempel + 4
 				* PlPruefungLogischUFDTest.STANDARD_T;
 
-		DAVTest
-				.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T
-						+ 10);
+		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T + 10);
 
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			ResultData resultat = TestUtensilien
@@ -204,9 +206,11 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 					datum.getDatum());
 
 			if (DEBUG) {
+				final SimpleDateFormat dateFormat = new SimpleDateFormat(
+						DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 				System.out.println("Sende initial: " + //$NON-NLS-1$
-						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(
-								sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
+						dateFormat.format(new Date(sendeDatum.getDataTime()))
+						+ ", " + //$NON-NLS-1$
 						datum.getOriginalDatum().getObject());
 			}
 
@@ -218,8 +222,8 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	 * Führt den Vergleich aller Ist-Werte mit allen Soll-Werten durch und zeigt
 	 * die Ergebnisse an. Gleichzeitig werden die Ergebnisse über
 	 * <code>JUnit</code> getestet<br>
-	 * <br>.
-	 * Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelöscht
+	 * <br>
+	 * . Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelöscht
 	 */
 	private void ergebnisUeberpruefen() {
 		if (!this.ergebnisIst.isEmpty() && !this.ergebnisSoll.isEmpty()) {
@@ -230,11 +234,10 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 								+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") + ") --> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 								(this.ergebnisSoll.get(sensor) == this.ergebnisIst
 										.get(sensor) ? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
-				Assert
-						.assertEquals(
-								"fehlerhaftes Resultat: " + this.ergebnisEingetroffen.get(sensor), //$NON-NLS-1$
-								this.ergebnisSoll.get(sensor), this.ergebnisIst
-										.get(sensor));
+				Assert.assertEquals(
+						"fehlerhaftes Resultat: " + this.ergebnisEingetroffen.get(sensor), //$NON-NLS-1$
+						this.ergebnisSoll.get(sensor), this.ergebnisIst
+								.get(sensor));
 			}
 		}
 		this.ergebnisIst.clear();
@@ -242,14 +245,16 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	}
 
 	/**
-	 * Anzahl der Intervalle, die der Test der Differenzialkontrolle laufen soll.
+	 * Anzahl der Intervalle, die der Test der Differenzialkontrolle laufen
+	 * soll.
 	 */
 	private static final int TEST_DIFF_KONTROLLE_LAEUFE = 10;
 
 	/**
 	 * der eigentliche Test.
 	 * 
-	 * @throws Exception wird weitergereicht
+	 * @throws Exception
+	 *             wird weitergereicht
 	 */
 	@Test
 	public void testUFDDifferenzialKontrolle() throws Exception {
@@ -358,8 +363,8 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 				}
 				sendeDatum = new ResultData(datum.getOriginalDatum()
 						.getObject(), datum.getOriginalDatum()
-						.getDataDescription(), aktuellesIntervall, datum
-						.getDatum());
+						.getDataDescription(), aktuellesIntervall,
+						datum.getDatum());
 
 				PlPruefungLogischUFDTest.sender.sende(sendeDatum);
 			}
@@ -379,7 +384,7 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	 */
 	public void dataRequest(SystemObject object,
 			DataDescription dataDescription, byte state) {
-		// 		
+		//
 	}
 
 	/**
@@ -395,6 +400,8 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	 */
 	public void update(ResultData[] resultate) {
 		if (resultate != null) {
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(
+					DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 			for (ResultData resultat : resultate) {
 				if (resultat != null && resultat.getData() != null) {
 					UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(
@@ -408,16 +415,14 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 							resultat);
 
 					if (DEBUG) {
-						System.out
-								.println(TestUtensilien.jzt()
-										+ ", Empfange: " + //$NON-NLS-1$
-										DUAKonstanten.ZEIT_FORMAT_GENAU
-												.format(new Date(resultat
-														.getDataTime()))
-										+ ", " + //$NON-NLS-1$
-										resultat.getObject()
-										+ ", T: " + ufdDatum.getT() + ", impl: " + //$NON-NLS-1$ //$NON-NLS-2$ 
-										(implausibelUndFehlerhaft ? "ja" : "nein")); //$NON-NLS-1$ //$NON-NLS-2$
+						System.out.println(TestUtensilien.jzt()
+								+ ", Empfange: " + //$NON-NLS-1$
+								dateFormat.format(new Date(resultat
+										.getDataTime()))
+								+ ", " + //$NON-NLS-1$
+								resultat.getObject()
+								+ ", T: " + ufdDatum.getT() + ", impl: " + //$NON-NLS-1$ //$NON-NLS-2$ 
+								(implausibelUndFehlerhaft ? "ja" : "nein")); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}

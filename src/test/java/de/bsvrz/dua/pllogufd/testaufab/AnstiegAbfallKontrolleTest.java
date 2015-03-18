@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testaufab;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -34,8 +35,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -212,6 +212,9 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
 		}
+		
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+		
 		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			ResultData resultat = TestUtensilien
 					.getExterneErfassungDatum(sensor);
@@ -227,7 +230,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 			if (DEBUG) {
 				System.out.println(TestUtensilien.jzt()
 						+ " Sende initial: " + //$NON-NLS-1$
-						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(
+						dateFormat.format(new Date(
 								sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
 						datum.getOriginalDatum().getObject());
 			}
@@ -258,7 +261,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 			if (DEBUG) {
 				System.out.println(TestUtensilien.jzt()
 						+ " Sende initial: " + //$NON-NLS-1$
-						DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(
+						dateFormat.format(new Date(
 								sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
 						datum.getOriginalDatum().getObject());
 			}
@@ -354,6 +357,8 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 			DAVTest.warteBis(aktuellesIntervall
 					+ PlPruefungLogischUFDTest.STANDARD_T + 50);
 
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+
 			/**
 			 * Produziere Werte, die getestet werden und "unbeschädigt" durch
 			 * die Diff-Prüfung kommen
@@ -388,7 +393,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 				if (DEBUG) {
 					System.out.println(TestUtensilien.jzt()
 							+ ", Sende[" + durchlauf + "]: " + //$NON-NLS-1$ //$NON-NLS-2$
-							DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(
+							dateFormat.format(new Date(
 									sendeDatum.getDataTime()))
 							+ ", " + //$NON-NLS-1$
 							datum.getOriginalDatum().getObject()
@@ -434,6 +439,8 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	 */
 	public void update(ResultData[] resultate) {
 		if (resultate != null) {
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+
 			for (ResultData resultat : resultate) {
 				if (resultat != null && resultat.getData() != null) {
 					UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(
@@ -446,7 +453,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 						System.out
 								.println(TestUtensilien.jzt()
 										+ ", Empfange: " + //$NON-NLS-1$
-										DUAKonstanten.ZEIT_FORMAT_GENAU
+										dateFormat
 												.format(new Date(resultat
 														.getDataTime()))
 										+ ", " + //$NON-NLS-1$

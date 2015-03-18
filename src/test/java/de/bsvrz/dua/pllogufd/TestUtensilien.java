@@ -26,6 +26,7 @@
 
 package de.bsvrz.dua.pllogufd;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -135,7 +136,8 @@ public final class TestUtensilien {
 	 * @return die aktuelle Zeit
 	 */
 	public static String jzt() {
-		return "(JETZT:" + DUAKonstanten.ZEIT_FORMAT_GENAU.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$ 
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+		return "(JETZT:" + dateFormat.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$ 
 				+ ")"; //$NON-NLS-1$
 	}
 

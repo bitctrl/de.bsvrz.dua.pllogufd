@@ -26,7 +26,7 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo.na;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.After;
 import org.junit.Ignore;
