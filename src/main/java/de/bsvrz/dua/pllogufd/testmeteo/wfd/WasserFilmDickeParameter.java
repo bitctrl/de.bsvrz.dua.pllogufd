@@ -37,33 +37,36 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Parameter für die meteorologische Kontrolle "Wasserfilmdicke".
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: WasserFilmDickeParameter.java 53825 2015-03-18 09:36:42Z peuker
+ *          $
  */
 public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 
+	private static final Debug LOGGER = Debug.getLogger();
+
 	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum >
-	 * WDFminNassRLF, dann WFD implausibel.
+	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum
+	 * > WDFminNassRLF, dann WFD implausibel.
 	 */
-	private UmfeldDatenSensorWert wfdGrenzNassRLF;;
+	private final UmfeldDatenSensorWert wfdGrenzNassRLF;;
 
 	/**
 	 * NI-Grenze überhalb der sicher von Niederschlag ausgegangen werden kann.
 	 */
-	private UmfeldDatenSensorWert wfdGrenzNassNI;
+	private final UmfeldDatenSensorWert wfdGrenzNassNI;
 
 	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum >
-	 * WDFminNassRLF, dann WFD implausibel.
+	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum
+	 * > WDFminNassRLF, dann WFD implausibel.
 	 */
 	private long wfdMinNassRLF = -1;
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @param obj
@@ -72,19 +75,17 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 */
-	public WasserFilmDickeParameter(IVerwaltung verwaltung, SystemObject obj)
-			throws DUAInitialisierungsException {
+	public WasserFilmDickeParameter(final IVerwaltung verwaltung,
+			final SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
-		wfdGrenzNassRLF = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.wfd);
-		wfdGrenzNassNI = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.ni);
+		wfdGrenzNassRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.wfd);
+		wfdGrenzNassNI = new UmfeldDatenSensorWert(UmfeldDatenArt.ni);
 		this.init();
 	}
 
 	/**
 	 * Erfragt <code>WFDgrenzNassRLF</code>.
-	 * 
+	 *
 	 * @return WFDgrenzNassRLF
 	 */
 	public final synchronized UmfeldDatenSensorWert getWFDgrenzNassRLF() {
@@ -93,7 +94,7 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 
 	/**
 	 * Erfragt <code>WFDgrenzNassNI</code>..
-	 * 
+	 *
 	 * @return WFDgrenzNassNI
 	 */
 	public final synchronized UmfeldDatenSensorWert getWFDgrenzNassNI() {
@@ -102,7 +103,7 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 
 	/**
 	 * Erfragt <code>WFDminNassRLF</code>.
-	 * 
+	 *
 	 * @return WFDminNassRLF
 	 */
 	public final long getWFDminNassRLF() {
@@ -112,22 +113,25 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
 						this.wfdGrenzNassRLF
-								.setWert(resultat.getData().getUnscaledValue(
-										"WFDgrenzNassRLF").longValue()); //$NON-NLS-1$
-						this.wfdMinNassRLF = resultat.getData().getTimeValue(
-								"WDFminNassRLF").getMillis(); //$NON-NLS-1$		
+						.setWert(resultat
+										.getData()
+										.getUnscaledValue("WFDgrenzNassRLF").longValue()); //$NON-NLS-1$
+						this.wfdMinNassRLF = resultat.getData()
+								.getTimeValue("WDFminNassRLF").getMillis(); //$NON-NLS-1$
 						this.wfdGrenzNassNI
-								.setWert(resultat.getData().getUnscaledValue(
-										"WFDgrenzNassNI").longValue()); //$NON-NLS-1$
-						Debug.getLogger()
-								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-										+ this);
+						.setWert(resultat
+										.getData()
+										.getUnscaledValue("WFDgrenzNassNI").longValue()); //$NON-NLS-1$
+						LOGGER
+						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this);
 					}
 					this.parameterInitialisiert = true;
 				}

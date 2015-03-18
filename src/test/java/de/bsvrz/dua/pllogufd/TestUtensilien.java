@@ -40,28 +40,27 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
  * Einige Utensilien für die Tests der SWE 4.3.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- *  @version $Id$
+ *
+ * @version $Id$
  */
 public final class TestUtensilien {
 
-	
 	/**
 	 * Standardkonstruktor.
 	 */
 	private TestUtensilien() {
 		//
 	}
-	
+
 	/**
 	 * Erfragt den Zeitpunkt des Beginns der nächsten Minute.
-	 * 
+	 *
 	 * @return den Zeitpunkt des Beginns der nächsten Minute in ms
 	 */
 	public static long getBeginNaechsterMinute() {
-		GregorianCalendar kal = new GregorianCalendar();
+		final GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
 		kal.add(Calendar.MINUTE, 1);
 		kal.set(Calendar.SECOND, 0);
@@ -71,11 +70,11 @@ public final class TestUtensilien {
 
 	/**
 	 * Erfragt den Zeitpunkt des Beginns der aktuellen Sekunde.
-	 * 
+	 *
 	 * @return der Zeitpunkt des Beginns der aktuellen Sekunde
 	 */
 	public static long getBeginAktuellerSekunde() {
-		GregorianCalendar kal = new GregorianCalendar();
+		final GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
 		kal.set(Calendar.MILLISECOND, 0);
 		return kal.getTimeInMillis();
@@ -84,7 +83,7 @@ public final class TestUtensilien {
 	/**
 	 * Erzeugt einen Messwert mit der Datenbeschreibung
 	 * <code>asp.externeErfassung</code>.
-	 * 
+	 *
 	 * @param sensor
 	 *            ein Umfelddatensensor, für den ein Messwert erzeugt werden
 	 *            soll
@@ -92,52 +91,54 @@ public final class TestUtensilien {
 	 *         Systemobjekt passt. Alle Pl-Prüfungs-Flags sind auf
 	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall beträgt 1 min.
 	 */
-	public static ResultData getExterneErfassungDatum(SystemObject sensor) {
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-		DataDescription datenBeschreibung = new DataDescription(
+	public static ResultData getExterneErfassungDatum(final SystemObject sensor) {
+		final UmfeldDatenArt datenArt = UmfeldDatenArt
+				.getUmfeldDatenArtVon(sensor);
+		final DataDescription datenBeschreibung = new DataDescription(
 				PlPruefungLogischUFDTest.DAV.getDataModel().getAttributeGroup(
 						"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-				PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
-						"asp.externeErfassung")); //$NON-NLS-1$
-		Data datum = PlPruefungLogischUFDTest.DAV
+						PlPruefungLogischUFDTest.DAV.getDataModel().getAspect(
+								"asp.externeErfassung")); //$NON-NLS-1$
+		final Data datum = PlPruefungLogischUFDTest.DAV
 				.createData(PlPruefungLogischUFDTest.DAV.getDataModel()
 						.getAttributeGroup("atg.ufds" + datenArt.getName())); //$NON-NLS-1$
 		datum.getTimeValue("T").setMillis(60L * 1000L); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getUnscaledValue("Wert").set(0); //$NON-NLS-1$
 		datum.getItem(datenArt.getName())
-				.getItem("Status").getItem("Erfassung").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("NichtErfasst").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.getItem("Status").getItem("Erfassung").//$NON-NLS-1$ //$NON-NLS-2$
+		getUnscaledValue("NichtErfasst").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 		datum.getItem(datenArt.getName())
-				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("WertMax").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
+		getUnscaledValue("WertMax").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 		datum.getItem(datenArt.getName())
-				.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("WertMin").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
+		getUnscaledValue("WertMin").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
 		datum.getItem(datenArt.getName())
-				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("Implausibel").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$ //$NON-NLS-2$
+		getUnscaledValue("Implausibel").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 		datum.getItem(datenArt.getName())
-				.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.getItem("Status").getItem("MessWertErsetzung").//$NON-NLS-1$ //$NON-NLS-2$
+		getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
 		datum.getItem(datenArt.getName())
-				.getItem("Güte").getUnscaledValue("Index").set(10000); //$NON-NLS-1$ //$NON-NLS-2$
+		.getItem("Güte").getUnscaledValue("Index").set(10000); //$NON-NLS-1$ //$NON-NLS-2$
 		datum.getItem(datenArt.getName())
-				.getItem("Güte").getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$ //$NON-NLS-2$
+		.getItem("Güte").getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$ //$NON-NLS-2$
 
-		return new ResultData(sensor, datenBeschreibung, System
-				.currentTimeMillis(), datum);
+		return new ResultData(sensor, datenBeschreibung,
+				System.currentTimeMillis(), datum);
 	}
 
 	/**
 	 * Erfragt die aktuelle Zeit.
-	 * 
+	 *
 	 * @return die aktuelle Zeit
 	 */
 	public static String jzt() {
-		final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
-		return "(JETZT:" + dateFormat.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$ 
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(
+				DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+		return "(JETZT:" + dateFormat.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$
 				+ ")"; //$NON-NLS-1$
 	}
 

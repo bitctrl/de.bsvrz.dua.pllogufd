@@ -46,32 +46,33 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * wurden. Wird ein Messwert über die Meteorologische Kontrolle als nicht
  * plausibel erkannt, so wird der entsprechende Wert auf Fehlerhaft und
  * Implausibel gesetzt.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: MeteorologischeKontrolle.java 53825 2015-03-18 09:36:42Z peuker
+ *          $
  */
 public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Submodul Niederschlagsart (NS).
 	 */
-	private NiederschlagsArt ns = new NiederschlagsArt();
+	private final NiederschlagsArt ns = new NiederschlagsArt();
 
 	/**
 	 * Submodul Niederschlagsintensität (NI).
 	 */
-	private NiederschlagsIntensitaet ni = new NiederschlagsIntensitaet();
+	private final NiederschlagsIntensitaet ni = new NiederschlagsIntensitaet();
 
 	/**
 	 * Submodul Wasserfilmdicke (WFD).
 	 */
-	private WasserfilmDicke wfd = new WasserfilmDicke();
+	private final WasserfilmDicke wfd = new WasserfilmDicke();
 
 	/**
 	 * Submodul Sichtweite (SW).
 	 */
-	private Sichtweite sw = new Sichtweite();
+	private final Sichtweite sw = new Sichtweite();
 
 	/**
 	 * Submodul Publikation.
@@ -80,7 +81,7 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param stdAspekte
 	 *            Informationen zu den Standardpublikationsaspekten für diese
 	 *            Instanz des Moduls Pl-Prüfung formal
@@ -93,7 +94,7 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 
@@ -117,13 +118,15 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
+	@Override
+	public void aktualisiereDaten(final ResultData[] resultate) {
 		this.ni.aktualisiereDaten(resultate);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
@@ -131,7 +134,8 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
+	@Override
+	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert (sondern im Submodul Publikation)
 	}
 

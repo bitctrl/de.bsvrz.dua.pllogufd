@@ -30,9 +30,9 @@ import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
 
 /**
  * Standardwerte für meteorologische Pl-Prüfung.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public final class MeteoKonst {
@@ -106,13 +106,12 @@ public final class MeteoKonst {
 	 * Parameter SWgrenzSW.
 	 */
 	public static final long SW_GRENZ_SW = 500;
-	
-	
+
 	/**
 	 * Standardkonstruktor.
 	 */
 	private MeteoKonst() {
-		
+
 	}
 
 }

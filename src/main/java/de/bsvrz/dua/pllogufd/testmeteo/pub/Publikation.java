@@ -43,9 +43,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 /**
  * In diesem Submodul findet lediglich die Publikation der Daten nach den
  * Vorgaben der Datenflusssteuerung für das Modul Pl-Prüfung logisch UFD statt.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
@@ -57,7 +57,7 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param stdAspekte
 	 *            Informationen zu den Standardpublikationsaspekten für diese
 	 *            Instanz des Moduls Pl-Prüfung logisch UFD
@@ -70,33 +70,34 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 
 		if (this.publizieren) {
 			this.publikationsAnmeldungen
-					.modifiziereObjektAnmeldung(this.standardAspekte
-							.getStandardAnmeldungen(this.verwaltung
-									.getSystemObjekte()));
+			.modifiziereObjektAnmeldung(this.standardAspekte
+					.getStandardAnmeldungen(this.verwaltung
+							.getSystemObjekte()));
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
+	@Override
+	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (this.publizieren) {
 			if (resultate != null) {
-				for (ResultData resultat : resultate) {
-					if (resultat != null/* && resultat.getData() != null*/) {
-						ResultData publikationsDatum = iDfsMod
+				for (final ResultData resultat : resultate) {
+					if (resultat != null/* && resultat.getData() != null */) {
+						final ResultData publikationsDatum = iDfsMod
 								.getPublikationsDatum(resultat, resultat
 										.getData(), standardAspekte
 										.getStandardAspekt(resultat));
 						if (publikationsDatum != null) {
 							this.publikationsAnmeldungen
-									.sende(publikationsDatum);
+							.sende(publikationsDatum);
 						}
 					}
 				}
@@ -107,6 +108,7 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ModulTyp getModulTyp() {
 		return ModulTyp.PL_PRUEFUNG_LOGISCH_UFD;
 	}
@@ -114,9 +116,10 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisierePublikation(IDatenFlussSteuerung iDfs) {
-		this.iDfsMod = iDfs.getDFSFuerModul(this.verwaltung.getSWETyp(), this
-				.getModulTyp());
+	@Override
+	public void aktualisierePublikation(final IDatenFlussSteuerung iDfs) {
+		this.iDfsMod = iDfs.getDFSFuerModul(this.verwaltung.getSWETyp(),
+				this.getModulTyp());
 
 		if (this.publizieren) {
 			Collection<DAVObjektAnmeldung> anmeldungenStd = new ArrayList<DAVObjektAnmeldung>();
@@ -127,13 +130,13 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 								.getSystemObjekte());
 			}
 
-			Collection<DAVObjektAnmeldung> anmeldungen = this.iDfsMod
+			final Collection<DAVObjektAnmeldung> anmeldungen = this.iDfsMod
 					.getDatenAnmeldungen(this.verwaltung.getSystemObjekte(),
 							anmeldungenStd);
 
 			synchronized (this) {
 				this.publikationsAnmeldungen
-						.modifiziereObjektAnmeldung(anmeldungen);
+				.modifiziereObjektAnmeldung(anmeldungen);
 			}
 		}
 	}

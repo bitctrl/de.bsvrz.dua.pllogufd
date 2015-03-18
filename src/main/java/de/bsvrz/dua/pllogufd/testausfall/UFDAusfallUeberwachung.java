@@ -50,27 +50,29 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Intervallbeginn angelegt, wobei die Messwerte jeweils auf den Status Nicht
  * erfasst gesetzt werden. Nach der Prüfung werden die Daten dann an den
  * nächsten Bearbeitungsknoten weitergereicht.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- *  @version $Id$
+ *
+ * @version $Id$
  */
 public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
-		implements ClientReceiverInterface {
+implements ClientReceiverInterface {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 
-		DataDescription parameterBeschreibung = new DataDescription(
-				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup(
-						"atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
-				dieVerwaltung.getVerbindung().getDataModel().getAspect(
-						DaVKonstanten.ASP_PARAMETER_SOLL));
+		final DataDescription parameterBeschreibung = new DataDescription(
+				dieVerwaltung.getVerbindung().getDataModel()
+						.getAttributeGroup("atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
+						dieVerwaltung.getVerbindung().getDataModel()
+						.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dieVerwaltung.getVerbindung().subscribeReceiver(this,
 				dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
@@ -80,17 +82,18 @@ public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected ResultData getAusfallDatumVon(ResultData originalResultat) {
-		UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(
+	protected ResultData getAusfallDatumVon(final ResultData originalResultat) {
+		final UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(
 				originalResultat);
 		wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
 		wert.getWert().setNichtErmittelbarAn();
 
-		long zeitStempel = wert.getDatenZeit() + wert.getT();
+		final long zeitStempel = wert.getDatenZeit() + wert.getT();
 
-		ResultData resultat = new ResultData(originalResultat.getObject(),
-				originalResultat.getDataDescription(), zeitStempel, wert
-						.getDatum());
+		final ResultData resultat = new ResultData(
+				originalResultat.getObject(),
+				originalResultat.getDataDescription(), zeitStempel,
+				wert.getDatum());
 
 		return resultat;
 	}
@@ -99,27 +102,31 @@ public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected long getTVon(ResultData resultat) {
-		UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
+	protected long getTVon(final ResultData resultat) {
+		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+				resultat);
 		return datum.getT();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this.objektWertErfassungVerzug) {
-						this.objektWertErfassungVerzug.put(
-								resultat.getObject(), new Long(
-										resultat.getData().getTimeValue(
-												"maxZeitVerzug").getMillis())); //$NON-NLS-1$
-						Debug.getLogger()
-								.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = " + //$NON-NLS-1$ //$NON-NLS-2$
-										resultat.getData().getTimeValue(
-												"maxZeitVerzug").getMillis() + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+						this.objektWertErfassungVerzug
+								.put(resultat.getObject(),
+										new Long(
+												resultat.getData()
+														.getTimeValue(
+																"maxZeitVerzug").getMillis())); //$NON-NLS-1$
+						LOGGER
+						.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = " + //$NON-NLS-1$ //$NON-NLS-2$
+								resultat.getData()
+												.getTimeValue("maxZeitVerzug").getMillis() + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}

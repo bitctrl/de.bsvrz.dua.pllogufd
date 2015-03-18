@@ -49,39 +49,39 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * eines bestimmten Intervalls konstant geblieben sind. Ist dies der Fall, so
  * werden diese als Implausibel und Fehlerhaft gesetzt. Nach der Prüfung werden
  * die Daten an den nächsten Bearbeitungsknoten weitergereicht
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: UFDDifferenzialKontrolle.java 53825 2015-03-18 09:36:42Z peuker
+ *          $
  */
 public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
+	private static final Debug LOGGER = Debug.getLogger();
 	/**
 	 * Mapt alle Systemobjekte aller erfassten Umfelddatensensoren auf
 	 * assoziierte Objekte mit allen für die Differentialkontrolle benötigten
 	 * Informationen.
 	 */
-	private Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<SystemObject, DiffUmfeldDatenSensor>();
+	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<SystemObject, DiffUmfeldDatenSensor>();
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 
-		for (SystemObject obj : dieVerwaltung.getSystemObjekte()) {
+		for (final SystemObject obj : dieVerwaltung.getSystemObjekte()) {
 			DiffUmfeldDatenSensor sensor;
 			try {
 				sensor = new DiffUmfeldDatenSensor(dieVerwaltung, obj);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException ex) {
-				Debug.getLogger()
-						.warning(
-								"UmfeldDatenSensor '"
-										+ obj
-										+ "': wird nicht verarbeitet: "
-										+ ex.getMessage());
+				LOGGER.warning(
+						"UmfeldDatenSensor '" + obj
+								+ "': wird nicht verarbeitet: "
+								+ ex.getMessage());
 				continue;
 			}
 			this.sensoren.put(obj, sensor);
@@ -91,16 +91,17 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
+	@Override
+	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
-			Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
 
-			for (ResultData resultat : resultate) {
+			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
 					if (resultat.getData() != null) {
 						ResultData resultatNeu = resultat;
 
-						DiffUmfeldDatenSensor sensor = this.sensoren
+						final DiffUmfeldDatenSensor sensor = this.sensoren
 								.get(resultat.getObject());
 
 						Data data = null;
@@ -110,8 +111,8 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 
 						if (data != null) {
 							resultatNeu = new ResultData(resultat.getObject(),
-									resultat.getDataDescription(), resultat
-											.getDataTime(), data);
+									resultat.getDataDescription(),
+									resultat.getDataTime(), data);
 						}
 
 						weiterzuleitendeResultate.add(resultatNeu);
@@ -121,7 +122,7 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 				}
 			}
 
-			if (this.knoten != null && !weiterzuleitendeResultate.isEmpty()) {
+			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
 				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
 						.toArray(new ResultData[0]));
 			}
@@ -131,6 +132,7 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
@@ -138,7 +140,8 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
+	@Override
+	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
 

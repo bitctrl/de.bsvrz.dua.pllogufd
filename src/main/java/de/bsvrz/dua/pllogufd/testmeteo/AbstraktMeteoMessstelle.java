@@ -26,16 +26,13 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
-import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -44,18 +41,15 @@ import de.bsvrz.sys.funclib.debug.Debug;
 /**
  * Abstrakte Klasse für Umfelddatenmessstellen, für die eine meteorologische
  * Kontrolle durchgeführt werden soll.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id: AbstraktMeteoMessstelle.java 53825 2015-03-18 09:36:42Z peuker
  *          $
  */
 public abstract class AbstraktMeteoMessstelle {
 
-	/**
-	 * Nur für Debugging-Zwecke.
-	 */
-	private static final boolean DEBUG = false;
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Verbindung zum Verwaltungsmodul.
@@ -80,31 +74,31 @@ public abstract class AbstraktMeteoMessstelle {
 
 	/**
 	 * Weist lediglich das Systemobjekt (UFD-Sensor) zu.
-	 * 
+	 *
 	 * @param obj
 	 *            Das zu kapselnde Systemobjekt
 	 */
-	protected AbstraktMeteoMessstelle(SystemObject obj) {
+	protected AbstraktMeteoMessstelle(final SystemObject obj) {
 		object = obj;
 	}
 
 	/**
 	 * Setzt die Verbindung zum Verwaltungsmodul.
-	 * 
+	 *
 	 * @param verwaltung1
 	 *            Verbindung zum Verwaltungsmodul
 	 */
 	protected static final void setVerwaltungsModul(
 			final IVerwaltung verwaltung1) {
-		if (verwaltung == null) {
-			verwaltung = verwaltung1;
+		if (AbstraktMeteoMessstelle.verwaltung == null) {
+			AbstraktMeteoMessstelle.verwaltung = verwaltung1;
 		}
 	}
 
 	/**
 	 * Erfragt die Menge der in dieser Umfelddatenmessstelle verarbeiteten
 	 * Datenarten.
-	 * 
+	 *
 	 * @return die Menge der in dieser Umfelddatenmessstelle verarbeiteten
 	 *         Datenarten
 	 */
@@ -114,7 +108,7 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Arbeitet <b>alle</b> Regeln der Reihe nach ab, so die Voraussetzungen zur
 	 * Abarbeitung der jeweiligen Regel gegeben sind. Die Ergebnisse
 	 * überschreiben die Variablen mit den originalen Werten (lokaler Puffer).
-	 * 
+	 *
 	 * @return das Ergebnis des Aufrufs der Methode
 	 *         <code>getAlleAktuellenWerte()</code>.
 	 */
@@ -123,7 +117,7 @@ public abstract class AbstraktMeteoMessstelle {
 	/**
 	 * Erfragt, ob alle Werte, die zur Abarbeitung <b>aller</b> Regeln dieses
 	 * Submoduls notwendig sind vorliegen.
-	 * 
+	 *
 	 * @return ob <b>alle</b> Werte für <b>ein</b> Intervall vorliegen
 	 */
 	protected abstract boolean sindAlleWerteFuerIntervallDa();
@@ -135,7 +129,7 @@ public abstract class AbstraktMeteoMessstelle {
 	 * gespeicherten Daten übereinstimmt.<br>
 	 * <b>Die heißt insbesondere, dass mit dieser Methode nur Daten in das Modul
 	 * gespeichert werden können, die den gleichen Zeitstempel haben</b>
-	 * 
+	 *
 	 * @param umfeldDatum
 	 *            ein Umfelddatum
 	 * @return ob das Umfelddatum in seine Member-Variable gespeichert werden
@@ -155,7 +149,7 @@ public abstract class AbstraktMeteoMessstelle {
 	/**
 	 * Erfragt alle im Moment gespeicherten Member-Variablen als
 	 * <code>ResultData</code>-Objekte.
-	 * 
+	 *
 	 * @return alle im Moment gespeicherten Member-Variablen als
 	 *         <code>ResultData</code>-Objekte
 	 */
@@ -163,7 +157,7 @@ public abstract class AbstraktMeteoMessstelle {
 
 	/**
 	 * Initialisiert eine Messstelle diesen Typs (Parameteranmeldungen usw.).
-	 * 
+	 *
 	 * @throws DUAInitialisierungsException
 	 *             wenn die Initialisierung fehlgeschlagen ist
 	 * @throws NoSuchSensorException
@@ -178,7 +172,7 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Erfragt, ob für einen bestimmten Umfelddatensensor bereits ein Datum im
 	 * lokalen Puffer steht und gibt dieses zurück. Dabei wird nicht überprüft,
 	 * ob das eingetroffene Datum überhaupt Daten enthält.
-	 * 
+	 *
 	 * @param umfeldDatum
 	 *            ein Datum eines bestimmten Umfelddatensensors
 	 * @return das für einen bestimmten Umfelddatensensor bereits im lokalen
@@ -190,7 +184,7 @@ public abstract class AbstraktMeteoMessstelle {
 
 	/**
 	 * Erfragt, ob der lokale Puffer dieses Moduls leer ist.
-	 * 
+	 *
 	 * @return ob der lokale Puffer dieses Moduls leer ist
 	 */
 	protected abstract boolean isPufferLeer();
@@ -198,7 +192,7 @@ public abstract class AbstraktMeteoMessstelle {
 	/**
 	 * Aktualisiert diese Messstelle der meteorologischen Kontrolle mit einem
 	 * neuen Umfelddatum.
-	 * 
+	 *
 	 * @param umfeldDatum
 	 *            ein aktuelles Umfelddatum
 	 * @return die Ergebnisse der Überprüfung bzw. <code>null</code>, wenn das
@@ -208,29 +202,8 @@ public abstract class AbstraktMeteoMessstelle {
 	public final ResultData[] aktualisiereDaten(final ResultData umfeldDatum) {
 		ResultData[] ergebnisse = null;
 
-		final SimpleDateFormat dateFormat = new SimpleDateFormat(
-				DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
-
 		if (umfeldDatum != null) {
 			synchronized (this) {
-
-				/** Debug * */
-				if (DEBUG) {
-					String zusatzInfo = this.getClass().getSimpleName()
-							+ ", Zur Zeit gespeichert: "; //$NON-NLS-1$
-					for (ResultData resu : this.getAlleAktuellenWerte()) {
-						zusatzInfo += "\n" + resu; //$NON-NLS-1$
-					}
-					Debug.getLogger().info(zusatzInfo);
-
-					Debug.getLogger().info(
-							this.getClass().getSimpleName()
-									+ " IN: " + umfeldDatum.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
-									dateFormat.format(new Date(umfeldDatum
-											.getDataTime()))
-									+ "\n" + umfeldDatum); //$NON-NLS-1$
-				}
-				/** Debug * */
 
 				if (this.isDatenArtRelevantFuerSubModul(umfeldDatum)) {
 					if (umfeldDatum.getData() == null) {
@@ -239,8 +212,8 @@ public abstract class AbstraktMeteoMessstelle {
 						 * Keine Daten oder keine Quelle heißt hier: Mache FLUSH
 						 * und leitet den übergebenen Datensatz sofort weiter
 						 */
-						Collection<ResultData> ergebnisListe = new ArrayList<ResultData>();
-						for (ResultData berechnungsErgebnis : this
+						final Collection<ResultData> ergebnisListe = new ArrayList<ResultData>();
+						for (final ResultData berechnungsErgebnis : this
 								.berechneAlleRegeln()) {
 							ergebnisListe.add(berechnungsErgebnis);
 						}
@@ -254,11 +227,11 @@ public abstract class AbstraktMeteoMessstelle {
 							ergebnisse = this.berechneAlleRegeln();
 							this.loescheAlleWerte();
 							if (!this.bringeDatumInPosition(umfeldDatum)) {
-								Debug.getLogger()
-										.warning(
-												"Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
-								ArrayList<ResultData> ergebnisseDummy = new ArrayList<ResultData>();
-								for (ResultData ergebnis : ergebnisse) {
+								LOGGER
+								.warning(
+										"Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
+								final ArrayList<ResultData> ergebnisseDummy = new ArrayList<ResultData>();
+								for (final ResultData ergebnis : ergebnisse) {
 									ergebnisseDummy.add(ergebnis);
 								}
 								ergebnisseDummy.add(umfeldDatum);
@@ -284,10 +257,10 @@ public abstract class AbstraktMeteoMessstelle {
 								 * werden
 								 */
 								ergebnisse = new ResultData[] { umfeldDatum };
-								Debug.getLogger()
-										.warning(
-												"Datum konnte nicht in Position gebracht werden:\n" + //$NON-NLS-1$
-														umfeldDatum);
+								LOGGER
+								.warning(
+										"Datum konnte nicht in Position gebracht werden:\n" + //$NON-NLS-1$
+												umfeldDatum);
 							}
 						}
 					}
@@ -298,34 +271,6 @@ public abstract class AbstraktMeteoMessstelle {
 					 */
 					ergebnisse = new ResultData[] { umfeldDatum };
 				}
-
-				/** Debug * */
-				if (DEBUG) {
-					String zusatzInfo = this.getClass().getSimpleName()
-							+ ", Jetzt gespeichert: "; //$NON-NLS-1$
-					for (ResultData resu : this.getAlleAktuellenWerte()) {
-						zusatzInfo += "\n" + resu; //$NON-NLS-1$
-					}
-					Debug.getLogger().info(zusatzInfo);
-
-					String log = this.getClass().getSimpleName() + " OUT: "; //$NON-NLS-1$
-					if (ergebnisse != null && ergebnisse.length != 0) {
-						for (ResultData ergebnis : ergebnisse) {
-							log += "\n  " + ergebnis.getObject() + ", " + //$NON-NLS-1$ //$NON-NLS-2$
-									dateFormat.format(new Date(ergebnis
-											.getDataTime()));
-						}
-						log += "\n"; //$NON-NLS-1$
-						for (ResultData ergebnis : ergebnisse) {
-							log += "\n  " + ergebnis; //$NON-NLS-1$
-						}
-					} else {
-						log += "nichts"; //$NON-NLS-1$
-					}
-					Debug.getLogger().info(log);
-				}
-				/** Debug * */
-
 			}
 		}
 
@@ -337,14 +282,14 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Dies ist der Fall, wenn der Zeitstempel des gerade empfangenen
 	 * Umfelddatums echt größer als <code>aktuellerZeitstempel</code> ist und in
 	 * der für das Datum vorgesehenen Member-Variable bereits ein Datum steht
-	 * 
+	 *
 	 * @param umfeldDatum
 	 *            ein Umfelddatum (muss <code>!= null</code> sein)
 	 * @return ob das empfangene Umfelddatum zu einem neuen Intervall gehört
 	 */
-	private boolean isNeuesIntervall(ResultData umfeldDatum) {
-		return this.getDatumBereitsInPosition(umfeldDatum) != null
-				&& this.aktuellerZeitstempel < umfeldDatum.getDataTime();
+	private boolean isNeuesIntervall(final ResultData umfeldDatum) {
+		return (this.getDatumBereitsInPosition(umfeldDatum) != null)
+				&& (this.aktuellerZeitstempel < umfeldDatum.getDataTime());
 	}
 
 	/**
@@ -356,14 +301,14 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Ein Datum wird also nur als im Modul speicherbar erachtet (und dann
 	 * gespeichert), wenn noch keine Daten im Modul gespeichert sind, oder die
 	 * Daten im Modul zeitlich zum übergebenen Datum passen.
-	 * 
+	 *
 	 * @param umfeldDatum
 	 *            ein Umfelddatum (muss <code>!= null</code> sein)
 	 * @return ob ein übergebenes Umfelddatum in diesem Modul speicherbar ist
 	 */
-	protected final boolean isDatumSpeicherbar(ResultData umfeldDatum) {
-		return this.aktuellerZeitstempel == -1
-				|| this.aktuellerZeitstempel == umfeldDatum.getDataTime()
+	protected final boolean isDatumSpeicherbar(final ResultData umfeldDatum) {
+		return (this.aktuellerZeitstempel == -1)
+				|| (this.aktuellerZeitstempel == umfeldDatum.getDataTime())
 				|| this.isPufferLeer();
 	}
 
@@ -371,7 +316,7 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Erfragt, ob ein Umfelddatum in diesem Submodul innerhalb der
 	 * Meteorologischen Kontrolle verarbeitet wird (also insbesondere, ob es
 	 * hier zwischengespeichert werden muss).
-	 * 
+	 *
 	 * @param umfeldDatum
 	 *            ein Umfelddatum
 	 * @return ob das Umfelddatum in diesem Submodul verarbeitet wird
@@ -379,7 +324,7 @@ public abstract class AbstraktMeteoMessstelle {
 	private boolean isDatenArtRelevantFuerSubModul(final ResultData umfeldDatum) {
 		boolean relevant = false;
 
-		UmfeldDatenArt datenArt = UmfeldDatenArt
+		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if (datenArt != null) {
 			relevant = this.getDatenArten().contains(datenArt);
@@ -391,7 +336,7 @@ public abstract class AbstraktMeteoMessstelle {
 	/**
 	 * Erfragt die Systemobjekte aller Umfelddatensensoren, die an dieser
 	 * Messstelle konfiguriert sind (und in diesem Submodul betrachtet werden).
-	 * 
+	 *
 	 * @return eine Menge von Umfelddatensensoren (Systemobjekte)
 	 */
 	public Collection<SystemObject> getSensoren() {
@@ -402,15 +347,15 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Wird geworfen, wenn eine Meteomessstelle, die einer meteorologischen
 	 * Kontrolle unterworfen werden soll, eine bestimmte Umfelddatenart nicht
 	 * erfasst.
-	 * 
+	 *
 	 * @author BitCtrl Systems GmbH, Thierfelder
-	 * 
+	 *
 	 * @version $Id: AbstraktMeteoMessstelle.java 53825 2015-03-18 09:36:42Z
 	 *          peuker $
 	 */
 	protected class NoSuchSensorException extends Exception {
 
-		public NoSuchSensorException(String nachricht) {
+		public NoSuchSensorException(final String nachricht) {
 			super(nachricht);
 		}
 

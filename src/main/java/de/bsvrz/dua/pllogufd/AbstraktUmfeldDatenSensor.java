@@ -43,13 +43,14 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 /**
  * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine Pl-Prüfung
  * logisch UFD anmeldet.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: AbstraktUmfeldDatenSensor.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
 public abstract class AbstraktUmfeldDatenSensor implements
-		ClientReceiverInterface {
+ClientReceiverInterface {
 
 	/**
 	 * <code>asp.parameterSoll</code>.
@@ -68,7 +69,7 @@ public abstract class AbstraktUmfeldDatenSensor implements
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @param obj
@@ -77,13 +78,14 @@ public abstract class AbstraktUmfeldDatenSensor implements
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 */
-	protected AbstraktUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
-			throws DUAInitialisierungsException {
+	protected AbstraktUmfeldDatenSensor(final IVerwaltung verwaltung,
+			final SystemObject obj) throws DUAInitialisierungsException {
 		this.objekt = obj;
 
-		if (verwaltungsModul == null) {
-			verwaltungsModul = verwaltung;
-			aspParameterSoll = verwaltung.getVerbindung().getDataModel()
+		if (AbstraktUmfeldDatenSensor.verwaltungsModul == null) {
+			AbstraktUmfeldDatenSensor.verwaltungsModul = verwaltung;
+			AbstraktUmfeldDatenSensor.aspParameterSoll = verwaltung
+					.getVerbindung().getDataModel()
 					.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
 		}
 	}
@@ -91,7 +93,7 @@ public abstract class AbstraktUmfeldDatenSensor implements
 	/**
 	 * Erfragt die Parameter-Attributgruppen, auf die sich dieses Objekt
 	 * anmelden soll.
-	 * 
+	 *
 	 * @return eine ggf. leere Menge von Attributgruppen
 	 * @throws DUAInitialisierungsException
 	 *             wenn ein Fehler bei der Bestimmung der Attributgruppen
@@ -102,21 +104,22 @@ public abstract class AbstraktUmfeldDatenSensor implements
 
 	/**
 	 * Fuehrt die Empfangsanmeldung durch.
-	 * 
+	 *
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 */
 	public void init() throws DUAInitialisierungsException {
-		Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
-		for (AttributeGroup atg : this.getParameterAtgs()) {
+		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
+		for (final AttributeGroup atg : this.getParameterAtgs()) {
 			parameterBeschreibungen.add(new DataDescription(atg,
-					aspParameterSoll));
+					AbstraktUmfeldDatenSensor.aspParameterSoll));
 		}
 
-		for (DataDescription parameterBeschreibung : parameterBeschreibungen) {
-			verwaltungsModul.getVerbindung().subscribeReceiver(this, this.objekt,
-					parameterBeschreibung, ReceiveOptions.normal(),
-					ReceiverRole.receiver());
+		for (final DataDescription parameterBeschreibung : parameterBeschreibungen) {
+			AbstraktUmfeldDatenSensor.verwaltungsModul.getVerbindung()
+					.subscribeReceiver(this, this.objekt,
+							parameterBeschreibung, ReceiveOptions.normal(),
+							ReceiverRole.receiver());
 		}
 	}
 

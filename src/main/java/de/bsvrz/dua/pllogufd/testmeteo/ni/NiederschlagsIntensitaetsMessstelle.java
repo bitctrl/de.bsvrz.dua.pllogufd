@@ -53,23 +53,26 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Plausibilisierung wird innerhalb der Super-Klasse
  * <code>{@link AbstraktMeteoMessstelle}</code> über die Methode
  * <code>aktualisiereDaten(..)</code> durchgeführt.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: NiederschlagsIntensitaetsMessstelle.java 53825 2015-03-18
+ *          09:36:42Z peuker $
  */
 public final class NiederschlagsIntensitaetsMessstelle extends
-		AbstraktMeteoMessstelle {
+AbstraktMeteoMessstelle {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Im Submodul Niederschlagsintensität betrachtete Datenarten.
 	 */
 	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
 	static {
-		datenArten.add(UmfeldDatenArt.ns);
-		datenArten.add(UmfeldDatenArt.ni);
-		datenArten.add(UmfeldDatenArt.wfd);
-		datenArten.add(UmfeldDatenArt.rlf);
+		NiederschlagsIntensitaetsMessstelle.datenArten.add(UmfeldDatenArt.ns);
+		NiederschlagsIntensitaetsMessstelle.datenArten.add(UmfeldDatenArt.ni);
+		NiederschlagsIntensitaetsMessstelle.datenArten.add(UmfeldDatenArt.wfd);
+		NiederschlagsIntensitaetsMessstelle.datenArten.add(UmfeldDatenArt.rlf);
 	}
 
 	/**
@@ -112,7 +115,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param ufdmsObj
 	 *            das Systemobjekt einer Umfelddaten-Messstelle
 	 * @throws DUAInitialisierungsException
@@ -123,24 +126,25 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 			throws DUAInitialisierungsException {
 		super(ufdmsObj);
 		if (ufdmsObj instanceof ConfigurationObject) {
-			ConfigurationObject ufdmsConObj = (ConfigurationObject) ufdmsObj;
-			ObjectSet sensorMengeAnMessStelle = ufdmsConObj
+			final ConfigurationObject ufdmsConObj = (ConfigurationObject) ufdmsObj;
+			final ObjectSet sensorMengeAnMessStelle = ufdmsConObj
 					.getObjectSet("UmfeldDatenSensoren"); //$NON-NLS-1$
 
 			if (sensorMengeAnMessStelle != null) {
-				for (SystemObject betrachtetesObjekt : verwaltung
+				for (final SystemObject betrachtetesObjekt : AbstraktMeteoMessstelle.verwaltung
 						.getSystemObjekte()) {
 					if (betrachtetesObjekt.isValid()) {
 						if (sensorMengeAnMessStelle.getElements().contains(
 								betrachtetesObjekt)) {
-							UmfeldDatenArt datenArt = UmfeldDatenArt
+							final UmfeldDatenArt datenArt = UmfeldDatenArt
 									.getUmfeldDatenArtVon(betrachtetesObjekt);
 							if (datenArt == null) {
 								throw new DUAInitialisierungsException(
 										"Unbekannter Sensor (" + //$NON-NLS-1$
 												betrachtetesObjekt
 												+ ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
-							} else if (datenArten.contains(datenArt)) {
+							} else if (NiederschlagsIntensitaetsMessstelle.datenArten
+									.contains(datenArt)) {
 								sensorenAnMessStelle.add(betrachtetesObjekt);
 							}
 						}
@@ -158,7 +162,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 
 	/**
 	 * Initialisiert die statischen Instanzen dieser Klasse.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @throws DUAInitialisierungsException
@@ -168,39 +172,43 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	public static void initialisiere(final IVerwaltung verwaltung)
 			throws DUAInitialisierungsException {
-		setVerwaltungsModul(verwaltung);
+		AbstraktMeteoMessstelle.setVerwaltungsModul(verwaltung);
 
-		for (SystemObject ufdmsObj : verwaltung.getVerbindung().getDataModel()
+		for (final SystemObject ufdmsObj : verwaltung.getVerbindung()
+				.getDataModel()
 				.getType("typ.umfeldDatenMessStelle").getElements()) { //$NON-NLS-1$
 			if (ufdmsObj.isValid()) {
-				NiederschlagsIntensitaetsMessstelle messStelle = new NiederschlagsIntensitaetsMessstelle(
+				final NiederschlagsIntensitaetsMessstelle messStelle = new NiederschlagsIntensitaetsMessstelle(
 						ufdmsObj);
 				if (messStelle.getSensoren().isEmpty()) {
-					Debug.getLogger().config(
-							"Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
-									" wird nicht betrachtet"); //$NON-NLS-1$
+					LOGGER.config(
+							"Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
+							" wird nicht betrachtet"); //$NON-NLS-1$
 				} else {
-					for (SystemObject umfeldDatenSensor : messStelle
+					for (final SystemObject umfeldDatenSensor : messStelle
 							.getSensoren()) {
-						if (ufdsAufUfdMs.get(umfeldDatenSensor) != null) {
+						if (NiederschlagsIntensitaetsMessstelle.ufdsAufUfdMs
+								.get(umfeldDatenSensor) != null) {
 							throw new DUAInitialisierungsException(
 									"Der Umfelddatensensor " + umfeldDatenSensor + //$NON-NLS-1$
-											" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n" //$NON-NLS-1$
-											+ ufdsAufUfdMs
-													.get(umfeldDatenSensor)
-											+ " und\n" + messStelle); //$NON-NLS-1$
+									" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n" //$NON-NLS-1$
+									+ NiederschlagsIntensitaetsMessstelle.ufdsAufUfdMs
+									.get(umfeldDatenSensor)
+									+ " und\n" + messStelle); //$NON-NLS-1$
 						}
-						ufdsAufUfdMs.put(umfeldDatenSensor, messStelle);
+						NiederschlagsIntensitaetsMessstelle.ufdsAufUfdMs.put(
+								umfeldDatenSensor, messStelle);
 					}
 					try {
 						messStelle.initialisiereMessStelle();
-					} catch (NoSuchSensorException e) {
-						Debug.getLogger().config(
-								"Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$ 
-										" wird nicht betrachtet"); //$NON-NLS-1$
-						for (SystemObject umfeldDatenSensor : messStelle
+					} catch (final NoSuchSensorException e) {
+						LOGGER.config(
+								"Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
+								" wird nicht betrachtet"); //$NON-NLS-1$
+						for (final SystemObject umfeldDatenSensor : messStelle
 								.getSensoren()) {
-							ufdsAufUfdMs.remove(umfeldDatenSensor);
+							NiederschlagsIntensitaetsMessstelle.ufdsAufUfdMs
+									.remove(umfeldDatenSensor);
 						}
 					}
 				}
@@ -211,7 +219,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	/**
 	 * Erfragt die Umfelddaten-Messstelle (dieses Typs), an der ein bestimmter
 	 * Sensor konfiguriert ist.
-	 * 
+	 *
 	 * @param umfeldDatenSensorObj
 	 *            das Systemobjekt eines Umfelddatensensors
 	 * @return die Umfelddaten-Messstelle oder <code>null</code>, wenn der
@@ -219,7 +227,8 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	public static NiederschlagsIntensitaetsMessstelle getMessStelleVonSensor(
 			final SystemObject umfeldDatenSensorObj) {
-		return ufdsAufUfdMs.get(umfeldDatenSensorObj);
+		return NiederschlagsIntensitaetsMessstelle.ufdsAufUfdMs
+				.get(umfeldDatenSensorObj);
 	}
 
 	/**
@@ -230,8 +239,8 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 			throws DUAInitialisierungsException, NoSuchSensorException {
 		SystemObject parameterSensorObj = null;
 
-		for (SystemObject sensor : this.getSensoren()) {
-			UmfeldDatenArt datenArt = UmfeldDatenArt
+		for (final SystemObject sensor : this.getSensoren()) {
+			final UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
 			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				parameterSensorObj = sensor;
@@ -245,7 +254,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 		}
 
 		this.parameterSensor = new NiederschlagsIntensitaetsParameter(
-				verwaltung, parameterSensorObj);
+				AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
 	}
 
 	/**
@@ -269,16 +278,16 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean bringeDatumInPosition(ResultData umfeldDatum) {
+	protected boolean bringeDatumInPosition(final ResultData umfeldDatum) {
 		boolean erfolgreich = false;
 
 		if (umfeldDatum.getData() != null) {
 			if (this.isDatumSpeicherbar(umfeldDatum)) {
-				UmfeldDatenArt datenArt = UmfeldDatenArt
+				final UmfeldDatenArt datenArt = UmfeldDatenArt
 						.getUmfeldDatenArtVon(umfeldDatum.getObject());
 
-				if (datenArt != null && this.isDatumSpeicherbar(umfeldDatum)) {
-					UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+				if ((datenArt != null) && this.isDatumSpeicherbar(umfeldDatum)) {
+					final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 							umfeldDatum);
 
 					erfolgreich = true;
@@ -291,9 +300,9 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 						if (datum.getWert().isOk()
 								&& this.parameterSensor.isInitialisiert()
 								&& this.parameterSensor.getNIGrenzTrockenRLF()
-										.isOk()
-								&& datum.getWert().getWert() < this.parameterSensor
-										.getNIGrenzTrockenRLF().getWert()) {
+								.isOk()
+								&& (datum.getWert().getWert() < this.parameterSensor
+										.getNIGrenzTrockenRLF().getWert())) {
 							this.rlfUnterNIgrenzTrockenFuerMS += datum.getT();
 						} else {
 							this.rlfUnterNIgrenzTrockenFuerMS = 0;
@@ -308,16 +317,15 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 					}
 				} else {
-					Debug
-							.getLogger()
-							.warning(
-									this.getClass().getSimpleName()
-											+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
+					LOGGER
+					.warning(
+							this.getClass().getSimpleName()
+							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
 				}
 			} else {
-				Debug.getLogger().info(
+				LOGGER.info(
 						this.getClass().getSimpleName()
-								+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+						+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 			}
 		}
 
@@ -329,7 +337,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	@Override
 	protected ResultData[] getAlleAktuellenWerte() {
-		List<ResultData> aktuelleWerte = new ArrayList<ResultData>();
+		final List<ResultData> aktuelleWerte = new ArrayList<ResultData>();
 
 		if (this.letztesUfdNIDatum != null) {
 			aktuelleWerte.add(this.letztesUfdNIDatum
@@ -356,7 +364,7 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	@Override
 	protected Collection<UmfeldDatenArt> getDatenArten() {
-		return datenArten;
+		return NiederschlagsIntensitaetsMessstelle.datenArten;
 	}
 
 	/**
@@ -375,10 +383,10 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	@Override
 	protected UmfeldDatenSensorDatum getDatumBereitsInPosition(
-			ResultData umfeldDatum) {
+			final ResultData umfeldDatum) {
 		UmfeldDatenSensorDatum datumInPosition = null;
 
-		UmfeldDatenArt datenArt = UmfeldDatenArt
+		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(umfeldDatum.getObject());
 		if (datenArt != null) {
 			if (datenArt.equals(UmfeldDatenArt.ni)) {
@@ -391,9 +399,9 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 				datumInPosition = this.letztesUfdWFDDatum;
 			}
 		} else {
-			Debug.getLogger().info(
+			LOGGER.info(
 					this.getClass().getSimpleName()
-							+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
+					+ ", Unbekannte Datenart:\n" + umfeldDatum); //$NON-NLS-1$
 		}
 
 		return datumInPosition;
@@ -404,9 +412,10 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	@Override
 	protected boolean sindAlleWerteFuerIntervallDa() {
-		return this.letztesUfdNIDatum != null && this.letztesUfdNSDatum != null
-				&& this.letztesUfdRLFDatum != null
-				&& this.letztesUfdWFDDatum != null;
+		return (this.letztesUfdNIDatum != null)
+				&& (this.letztesUfdNSDatum != null)
+				&& (this.letztesUfdRLFDatum != null)
+				&& (this.letztesUfdWFDDatum != null);
 	}
 
 	/**
@@ -414,9 +423,10 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	 */
 	@Override
 	protected boolean isPufferLeer() {
-		return this.letztesUfdNIDatum == null && this.letztesUfdNSDatum == null
-				&& this.letztesUfdRLFDatum == null
-				&& this.letztesUfdWFDDatum == null;
+		return (this.letztesUfdNIDatum == null)
+				&& (this.letztesUfdNSDatum == null)
+				&& (this.letztesUfdRLFDatum == null)
+				&& (this.letztesUfdWFDDatum == null);
 	}
 
 	/**
@@ -453,35 +463,33 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI > NIminNI) <b>und</b> (RLF < NIgrenzTrockenRLF)
-	 * <b>dann</b> (NI=implausibel)</code>
-	 * <br>. Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * <b>dann</b> (NI=implausibel)</code> <br>
+	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
 	private void regel2() {
-		if (this.letztesUfdNIDatum != null
-				&& this.letztesUfdNSDatum != null
-				&& this.letztesUfdRLFDatum != null
-				&& this.letztesUfdNIDatum
-						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN
-				&& this.letztesUfdNSDatum
-						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN
-				&& this.letztesUfdRLFDatum
-						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN) {
+		if ((this.letztesUfdNIDatum != null)
+				&& (this.letztesUfdNSDatum != null)
+				&& (this.letztesUfdRLFDatum != null)
+				&& (this.letztesUfdNIDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
+						&& (this.letztesUfdNSDatum
+								.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
+								&& (this.letztesUfdRLFDatum
+										.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
 			if (this.parameterSensor.isInitialisiert()
 					&& this.parameterSensor.getNIminNI().isOk()
 					&& this.parameterSensor.getNIGrenzTrockenRLF().isOk()
 					&& this.letztesUfdRLFDatum.getWert().isOk()) {
-				if (this.letztesUfdNSDatum.getWert().getWert() == 0
-						&& this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor
-								.getNIminNI().getWert()
-						&& this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor
-								.getNIGrenzTrockenRLF().getWert()) {
+				if ((this.letztesUfdNSDatum.getWert().getWert() == 0)
+						&& (this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor
+								.getNIminNI().getWert())
+								&& (this.letztesUfdRLFDatum.getWert().getWert() < this.parameterSensor
+										.getNIGrenzTrockenRLF().getWert())) {
 					this.letztesUfdNIDatum
-							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+					.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					Debug
-							.getLogger()
-							.fine(
-									"[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+					LOGGER
+					.fine("[NI.R2]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -490,35 +498,33 @@ public final class NiederschlagsIntensitaetsMessstelle extends
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (NI > 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF > WFDgrenzNassPLF für Zeitraum > WFDminNassRLF)
-	 * <b>dann</b> (NI=implausibel)</code>
-	 * <br>. Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * <b>dann</b> (NI=implausibel)</code> <br>
+	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
 	private void regel3() {
-		if (this.letztesUfdNIDatum != null
-				&& this.letztesUfdWFDDatum != null
-				&& this.letztesUfdRLFDatum != null
-				&& this.letztesUfdNIDatum
-						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN
-				&& this.letztesUfdWFDDatum
-						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN
-				&& this.letztesUfdRLFDatum
-						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN) {
+		if ((this.letztesUfdNIDatum != null)
+				&& (this.letztesUfdWFDDatum != null)
+				&& (this.letztesUfdRLFDatum != null)
+				&& (this.letztesUfdNIDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
+						&& (this.letztesUfdWFDDatum
+								.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
+								&& (this.letztesUfdRLFDatum
+										.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
 			if (this.parameterSensor.isInitialisiert()
 					&& this.parameterSensor.getNIGrenzNassNI().isOk()
 					&& this.parameterSensor.getNIGrenzTrockenRLF().isOk()
 					&& this.letztesUfdRLFDatum.getWert().isOk()) {
-				if (this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor
-						.getNIGrenzNassNI().getWert()
-						&& this.letztesUfdWFDDatum.getWert().getWert() == 0
-						&& this.rlfUnterNIgrenzTrockenFuerMS > this.parameterSensor
-								.getNIminTrockenRLF()) {
+				if ((this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor
+						.getNIGrenzNassNI().getWert())
+						&& (this.letztesUfdWFDDatum.getWert().getWert() == 0)
+						&& (this.rlfUnterNIgrenzTrockenFuerMS > this.parameterSensor
+								.getNIminTrockenRLF())) {
 					this.letztesUfdNIDatum
-							.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+					.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
-					Debug
-							.getLogger()
-							.fine(
-									"[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
+					LOGGER
+					.fine("[NI.R3]Daten geändert:\n" + this.letztesUfdNIDatum.toString()); //$NON-NLS-1$
 				}
 			}
 		}

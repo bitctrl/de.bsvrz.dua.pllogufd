@@ -34,7 +34,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 
 /**
  * Ergebnisobjekt eines Tests der Komponente Meteorologische Kontrolle.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  * @version $Id$
@@ -58,7 +58,7 @@ public class MeteoErgebnis {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param sensor
 	 *            das Systemobjekt des Umfelddatensensors
 	 * @param zeitStempel
@@ -75,7 +75,7 @@ public class MeteoErgebnis {
 
 	/**
 	 * Erfragt ob das Ergebnis als Implausibel gekennzeichnet.
-	 * 
+	 *
 	 * @return implausibel Ist das Ergebnis als Implausibel gekennzeichnet
 	 */
 	public final boolean isImplausibel() {
@@ -84,7 +84,7 @@ public class MeteoErgebnis {
 
 	/**
 	 * Erfragt das Systemobjekt des Umfelddatensensors.
-	 * 
+	 *
 	 * @return sensor das Systemobjekt des Umfelddatensensors
 	 */
 	public final SystemObject getSensor() {
@@ -93,25 +93,22 @@ public class MeteoErgebnis {
 
 	/**
 	 * Erfragt den Datenzeitstempel des Ergebnisses.
-	 * 
+	 *
 	 * @return zeitStempel Datenzeitstempel des Ergebnisses
 	 */
 	public final long getZeitStempel() {
 		return zeitStempel;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		boolean ergebnis = false;
 
 		if (obj instanceof MeteoErgebnis) {
-			MeteoErgebnis that = (MeteoErgebnis) obj;
-			ergebnis = this.getSensor() == that.getSensor()
-					&& this.getZeitStempel() == that.getZeitStempel()
-					&& this.isImplausibel() == that.isImplausibel();
+			final MeteoErgebnis that = (MeteoErgebnis) obj;
+			ergebnis = (this.getSensor() == that.getSensor())
+					&& (this.getZeitStempel() == that.getZeitStempel())
+					&& (this.isImplausibel() == that.isImplausibel());
 		}
 
 		return ergebnis;
@@ -125,8 +122,17 @@ public class MeteoErgebnis {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat(
 				DUAKonstanten.NUR_ZEIT_FORMAT_GENAU_STR);
 		return "Sensor: " + this.sensor.getPid() + ", "
-				+ dateFormat.format(new Date(this.zeitStempel)) + ", impl.: "
-				+ (this.implausibel ? "ja" : "nein");
+		+ dateFormat.format(new Date(this.zeitStempel)) + ", impl.: "
+		+ (this.implausibel ? "ja" : "nein");
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + (implausibel ? 1231 : 1237);
+		result = (prime * result) + ((sensor == null) ? 0 : sensor.hashCode());
+		result = (prime * result) + (int) (zeitStempel ^ (zeitStempel >>> 32));
+		return result;
+	}
 }

@@ -37,35 +37,39 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Parameter für die meteorologische Kontrolle "Niederschlagsintensität".
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: NiederschlagsIntensitaetsParameter.java 53825 2015-03-18
+ *          09:36:42Z peuker $
  */
 public class NiederschlagsIntensitaetsParameter extends
-		AbstraktMeteoUmfeldDatenSensor {
+AbstraktMeteoUmfeldDatenSensor {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Wenn NS= 'Niederschlag' und NI = 0 mm/h und RLF < NIgrenzNassRLF, dann NI
 	 * implausibel.
 	 */
-	private UmfeldDatenSensorWert niGrenzNassRLF;
+	private final UmfeldDatenSensorWert niGrenzNassRLF;
 
 	/**
 	 * Überhalb dieses Wertes wird angenommen, dass Niederschlag herrscht.
 	 */
-	private UmfeldDatenSensorWert niGrenzNassNI;
+	private final UmfeldDatenSensorWert niGrenzNassNI;
 
 	/**
-	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF < NIgrenzTrockenRLF, dann NI implausibel.
+	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF <
+	 * NIgrenzTrockenRLF, dann NI implausibel.
 	 */
-	private UmfeldDatenSensorWert niMinNI;
+	private final UmfeldDatenSensorWert niMinNI;
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
 	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
 	 */
-	private UmfeldDatenSensorWert niGrenzTrockenRLF;
+	private final UmfeldDatenSensorWert niGrenzTrockenRLF;
 
 	/**
 	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
@@ -75,7 +79,7 @@ public class NiederschlagsIntensitaetsParameter extends
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @param obj
@@ -84,23 +88,19 @@ public class NiederschlagsIntensitaetsParameter extends
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 */
-	public NiederschlagsIntensitaetsParameter(IVerwaltung verwaltung,
-			SystemObject obj) throws DUAInitialisierungsException {
+	public NiederschlagsIntensitaetsParameter(final IVerwaltung verwaltung,
+			final SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
-		niGrenzNassRLF = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.rlf);
-		niGrenzNassNI = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.ni);
-		niMinNI = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.ni);
-		niGrenzTrockenRLF = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.rlf);
+		niGrenzNassRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);
+		niGrenzNassNI = new UmfeldDatenSensorWert(UmfeldDatenArt.ni);
+		niMinNI = new UmfeldDatenSensorWert(UmfeldDatenArt.ni);
+		niGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);
 		this.init();
 	}
 
 	/**
 	 * Erfragt <code>NIGrenzNassRLF</code>.
-	 * 
+	 *
 	 * @return NIGrenzNassRLF
 	 */
 	public final synchronized UmfeldDatenSensorWert getNIGrenzNassRLF() {
@@ -109,7 +109,7 @@ public class NiederschlagsIntensitaetsParameter extends
 
 	/**
 	 * Erfragt <code>NIGrenzNassNI</code>.
-	 * 
+	 *
 	 * @return NIGrenzNassNI
 	 */
 	public final synchronized UmfeldDatenSensorWert getNIGrenzNassNI() {
@@ -118,7 +118,7 @@ public class NiederschlagsIntensitaetsParameter extends
 
 	/**
 	 * Erfragt <code>NIminNI</code>.
-	 * 
+	 *
 	 * @return NIminNI
 	 */
 	public final synchronized UmfeldDatenSensorWert getNIminNI() {
@@ -127,7 +127,7 @@ public class NiederschlagsIntensitaetsParameter extends
 
 	/**
 	 * Erfragt <code>NIGrenzTrockenRLF</code>.
-	 * 
+	 *
 	 * @return NIGrenzTrockenRLF
 	 */
 	public final synchronized UmfeldDatenSensorWert getNIGrenzTrockenRLF() {
@@ -136,7 +136,7 @@ public class NiederschlagsIntensitaetsParameter extends
 
 	/**
 	 * Erfragt <code>NIminTrockenRLF</code>.
-	 * 
+	 *
 	 * @return NIminTrockenRLF
 	 */
 	public final long getNIminTrockenRLF() {
@@ -146,26 +146,29 @@ public class NiederschlagsIntensitaetsParameter extends
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
 						this.niGrenzNassRLF
-								.setWert(resultat.getData().getUnscaledValue(
-										"NIgrenzNassRLF").longValue()); //$NON-NLS-1$
+						.setWert(resultat
+										.getData()
+										.getUnscaledValue("NIgrenzNassRLF").longValue()); //$NON-NLS-1$
 						this.niGrenzNassNI.setWert(resultat.getData()
 								.getUnscaledValue("NIgrenzNassNI").longValue()); //$NON-NLS-1$
 						this.niMinNI.setWert(resultat.getData()
 								.getUnscaledValue("NIminNI").longValue()); //$NON-NLS-1$
 						this.niGrenzTrockenRLF
-								.setWert(resultat.getData().getUnscaledValue(
-										"NIgrenzTrockenRLF").longValue()); //$NON-NLS-1$
-						this.niMinTrockenRLF = resultat.getData().getTimeValue(
-								"NIminTrockenRLF").getMillis(); //$NON-NLS-1$
-						Debug.getLogger()
-								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-										+ this);
+						.setWert(resultat
+										.getData()
+										.getUnscaledValue("NIgrenzTrockenRLF").longValue()); //$NON-NLS-1$
+						this.niMinTrockenRLF = resultat.getData()
+								.getTimeValue("NIminTrockenRLF").getMillis(); //$NON-NLS-1$
+						LOGGER
+						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this);
 					}
 					this.parameterInitialisiert = true;
 				}

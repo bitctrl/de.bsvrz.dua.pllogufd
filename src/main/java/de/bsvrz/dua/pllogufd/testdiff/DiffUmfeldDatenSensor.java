@@ -46,12 +46,14 @@ import de.bsvrz.sys.funclib.debug.Debug;
 /**
  * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten bzgl. der
  * Differenzialkontrolle
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * aktueller Wert mit Historie.
@@ -66,7 +68,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @param obj
@@ -74,17 +76,19 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 *            <code>typ.umfeldDatenSensor</code>)
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
-	protected DiffUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
-			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+	protected DiffUmfeldDatenSensor(final IVerwaltung verwaltung,
+			final SystemObject obj) throws DUAInitialisierungsException,
+			UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
-		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(obj);
+		final UmfeldDatenArt datenArt = UmfeldDatenArt
+				.getUmfeldDatenArtVon(obj);
 		if (datenArt == null) {
 			throw new UmfeldDatenSensorUnbekannteDatenartException(
-					"Datenart von Umfelddatensensor " + obj + //$NON-NLS-1$ 
-							" (" + obj.getType()
-							+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
+					"Datenart von Umfelddatensensor " + obj + //$NON-NLS-1$
+					" (" + obj.getType()
+					+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
 		}
 		this.wert = new VariableMitKonstanzZaehler<Long>(datenArt.getName());
 		this.init();
@@ -99,15 +103,15 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
-		Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
+		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 
 		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt.//$NON-NLS-1$
 				getUmfeldDatenArtVon(this.objekt).getName();
-		AttributeGroup atg = verwaltungsModul.getVerbindung().getDataModel()
-				.getAttributeGroup(atgPid);
+		final AttributeGroup atg = AbstraktUmfeldDatenSensor.verwaltungsModul
+				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
 		if (atg != null) {
 			parameterAtgs.add(atg);
@@ -115,7 +119,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			throw new DUAInitialisierungsException(
 					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
 							"Differenzialkontrolle des Objektes " + this.objekt//$NON-NLS-1$
-							+ " bestimmt werden\n" + //$NON-NLS-1$ 
+							+ " bestimmt werden\n" + //$NON-NLS-1$
 							"Atg-Name: " + atgPid); //$NON-NLS-1$
 		}
 
@@ -127,7 +131,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 * Zeitraums (parametrierbares Zeitfenster) eine Änderung des Messwerts
 	 * vorliegt. Liegt eine Ergebniskonstanz in diesem Zeitfenster vor, so
 	 * erfolgt eine Kennzeichnung der Werte als Implausibel und Fehlerhaft.
-	 * 
+	 *
 	 * @param resultat
 	 *            ein Roh-Datum eines Umfelddatensensors
 	 * @return das gekennzeichnete Datum oder <code>null</code> wenn das Datum
@@ -136,10 +140,10 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	public final Data plausibilisiere(final ResultData resultat) {
 		Data copy = null;
 
-		if (resultat != null && resultat.getData() != null) {
+		if ((resultat != null) && (resultat.getData() != null)) {
 			if (this.parameter != null) {
 
-				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+				final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 						resultat);
 				final long aktuellerWert = datum.getWert().getWert();
 				final long t = datum.getT();
@@ -148,7 +152,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 				synchronized (this.parameter) {
 					if (!this.parameter.getGrenz().isFehlerhaft()
 							&& !this.parameter.getGrenz()
-									.isFehlerhaftBzwNichtErmittelbar()
+							.isFehlerhaftBzwNichtErmittelbar()
 							&& !this.parameter.getGrenz().isNichtErmittelbar()) {
 						boolean vergleichDurchfuehren = false;
 						if (this.parameter.getOpertator() != null) {
@@ -156,7 +160,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 									.getOpertator()
 									.vergleiche(aktuellerWert,
 											this.parameter.getGrenz().getWert())
-									&& datum.getWert().isOk();
+											&& datum.getWert().isOk();
 
 						} else {
 							vergleichDurchfuehren = aktuellerWert <= this.parameter
@@ -167,25 +171,24 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							if (this.wert.getWertIstKonstantSeit() > this.parameter
 									.getMaxZeit()) {
 								datum.getWert().setFehlerhaftAn();
-								datum
-										.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+								datum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 								copy = datum.getDatum();
 							}
 						}
 					} else {
-						Debug.getLogger()
-								.fine("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
-										this.objekt
-										+ " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
-										UmfeldDatenArt.getUmfeldDatenArtVon(
-												this.objekt).getAbkuerzung()
+						LOGGER
+						.fine("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
+								this.objekt
+								+ " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
+								UmfeldDatenArt.getUmfeldDatenArtVon(
+										this.objekt).getAbkuerzung()
 										+ "Grenz=" + this.parameter.getGrenz()); //$NON-NLS-1$
 					}
 				}
 			} else {
-				Debug.getLogger()
-						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
-								" wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
+				LOGGER
+				.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
+						" wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
 			}
 		}
 
@@ -196,16 +199,17 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
 						this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(
 								resultat);
-						Debug.getLogger()
-								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-										+ this.parameter);
+						LOGGER
+						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this.parameter);
 					}
 				}
 			}

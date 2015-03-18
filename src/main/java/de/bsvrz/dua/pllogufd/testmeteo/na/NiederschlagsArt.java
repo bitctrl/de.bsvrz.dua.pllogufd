@@ -34,7 +34,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
  * Das Submodul Niederschlagsart.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  * @version $Id$
@@ -46,7 +46,7 @@ public class NiederschlagsArt extends AbstraktMeteoSubModul {
 	 */
 	@Override
 	public AbstraktMeteoMessstelle getMessStelleVonSensor(
-			SystemObject ufdsObjekt) {
+			final SystemObject ufdsObjekt) {
 		return NiederschlagsArtMessstelle.getMessStelleVonSensor(ufdsObjekt);
 	}
 
@@ -54,7 +54,7 @@ public class NiederschlagsArt extends AbstraktMeteoSubModul {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 		NiederschlagsArtMessstelle.initialisiere(dieVerwaltung);

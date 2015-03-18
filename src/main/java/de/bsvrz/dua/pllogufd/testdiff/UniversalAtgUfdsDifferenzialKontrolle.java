@@ -36,13 +36,14 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 /**
  * Klasse zum Auslesen von Parametersätzen der Attributgruppen
  * <code>atg.ufdsDifferenzialKontrolle<b>*</b></code>.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
- * @version $Id$
+ *
+ * @version $Id: UniversalAtgUfdsDifferenzialKontrolle.java 53825 2015-03-18
+ *          09:36:42Z peuker $
  */
 public class UniversalAtgUfdsDifferenzialKontrolle extends
-		AllgemeinerDatenContainer {
+AllgemeinerDatenContainer {
 
 	/**
 	 * zu verwendender Operator zum Vergleich des Messwerts mit dem Grenzwert,
@@ -64,7 +65,7 @@ public class UniversalAtgUfdsDifferenzialKontrolle extends
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param parameter
 	 *            ein Parameterdatensatz der Attributgruppe
 	 *            <code>atg.ufdsDifferenzialKontrolle<b>*</b></code>
@@ -77,28 +78,30 @@ public class UniversalAtgUfdsDifferenzialKontrolle extends
 			throw new NullPointerException(
 					"Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
 		}
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(parameter
-				.getObject());
+		final UmfeldDatenArt datenArt = UmfeldDatenArt
+				.getUmfeldDatenArtVon(parameter.getObject());
 
-		Data.NumberValue oparatorValue = parameter.getData().getUnscaledValue(
-				"Operator"); //$NON-NLS-1$
+		final Data.NumberValue oparatorValue = parameter.getData()
+				.getUnscaledValue("Operator"); //$NON-NLS-1$
 		if (oparatorValue != null) {
 			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue
 					.intValue());
 		}
-		this.grenz = new UmfeldDatenSensorWert(UmfeldDatenArt
-				.getUmfeldDatenArtVon(parameter.getObject()));
-		this.grenz.setWert(parameter.getData().getUnscaledValue(
-				datenArt.getAbkuerzung() + "Grenz").longValue()); //$NON-NLS-1$
-		this.maxZeit = parameter.getData().getTimeValue(
-				datenArt.getAbkuerzung() + "maxZeit").getMillis(); //$NON-NLS-1$
+		this.grenz = new UmfeldDatenSensorWert(
+				UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject()));
+		this.grenz
+				.setWert(parameter
+						.getData()
+						.getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue()); //$NON-NLS-1$
+		this.maxZeit = parameter.getData()
+				.getTimeValue(datenArt.getAbkuerzung() + "maxZeit").getMillis(); //$NON-NLS-1$
 	}
 
 	/**
 	 * Erfragt den zu verwendenden Operator zum Vergleich des Messwerts mit dem
 	 * Grenzwert, der eingehalten werden muss, damit Differenzialkontrolle
 	 * durchgeführt werden darf.
-	 * 
+	 *
 	 * @return der zu verwendende Operator
 	 */
 	public final UfdsVergleichsOperator getOpertator() {
@@ -108,7 +111,7 @@ public class UniversalAtgUfdsDifferenzialKontrolle extends
 	/**
 	 * Erfragt den Grenzwert, der eingehalten werden muss, damit
 	 * Differenzialkontrolle durchgeführt werden darf.
-	 * 
+	 *
 	 * @return grenz der Grenzwert, der eingehalten werden muss, damit
 	 *         Differenzialkontrolle durchgeführt werden darf
 	 */
@@ -118,7 +121,7 @@ public class UniversalAtgUfdsDifferenzialKontrolle extends
 
 	/**
 	 * Erfragt die maximal zulässige Zeitdauer der Ergebniskonstanz.
-	 * 
+	 *
 	 * @return maxZeit maximal zulässige Zeitdauer der Ergebniskonstanz
 	 */
 	public final long getMaxZeit() {

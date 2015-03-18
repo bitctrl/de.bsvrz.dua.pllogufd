@@ -37,18 +37,18 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 
 /**
  * Abstraktes Submodul der Komponente Meteorologischen Kontrolle.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  * @version $Id$
  */
 public abstract class AbstraktMeteoSubModul extends
-		AbstraktBearbeitungsKnotenAdapter {
+AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Erfragt die Umfelddaten-Messstelle an der ein bestimmter Sensor
 	 * konfiguriert ist.
-	 * 
+	 *
 	 * @param ufdsObjekt
 	 *            das Systemobjekt eines Umfelddatensensors
 	 * @return die Umfelddaten-Messstelle oder <code>null</code>, wenn der
@@ -60,20 +60,21 @@ public abstract class AbstraktMeteoSubModul extends
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
+	@Override
+	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
 
-			List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
-			for (ResultData resultat : resultate) {
+			final List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
 
-					AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat
+					final AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat
 							.getObject());
 					if (messstelle != null) {
-						ResultData[] ergebnisse = messstelle
+						final ResultData[] ergebnisse = messstelle
 								.aktualisiereDaten(resultat);
-						if (ergebnisse != null && ergebnisse.length > 0) {
-							for (ResultData ergebnis : ergebnisse) {
+						if ((ergebnisse != null) && (ergebnisse.length > 0)) {
+							for (final ResultData ergebnis : ergebnisse) {
 								weiterzuleitendeResultate.add(ergebnis);
 							}
 						}
@@ -86,7 +87,7 @@ public abstract class AbstraktMeteoSubModul extends
 			/**
 			 * Resultate weitergeben
 			 */
-			if (this.knoten != null && !weiterzuleitendeResultate.isEmpty()) {
+			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
 				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
 						.toArray(new ResultData[0]));
 			}
@@ -96,6 +97,7 @@ public abstract class AbstraktMeteoSubModul extends
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
@@ -103,7 +105,8 @@ public abstract class AbstraktMeteoSubModul extends
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
+	@Override
+	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
 

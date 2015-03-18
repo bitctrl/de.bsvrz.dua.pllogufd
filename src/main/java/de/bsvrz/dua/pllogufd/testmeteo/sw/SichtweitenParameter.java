@@ -37,12 +37,14 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Parameter für die meteorologische Kontrolle "Sichtweiten".
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF <
@@ -60,7 +62,7 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @param obj
@@ -69,19 +71,17 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 */
-	public SichtweitenParameter(IVerwaltung verwaltung, SystemObject obj)
-			throws DUAInitialisierungsException {
+	public SichtweitenParameter(final IVerwaltung verwaltung,
+			final SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
-		swGrenzTrockenRLF = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.rlf);
-		swGrenzSW = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.sw);
+		swGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);
+		swGrenzSW = new UmfeldDatenSensorWert(UmfeldDatenArt.sw);
 		this.init();
 	}
 
 	/**
 	 * Erfragt <code>SWgrenzTrockenRLF</code>.
-	 * 
+	 *
 	 * @return SWgrenzTrockenRLF
 	 */
 	public final synchronized UmfeldDatenSensorWert getSWgrenzTrockenRLF() {
@@ -90,7 +90,7 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 
 	/**
 	 * Erfragt <code>SWgrenzSW</code>.
-	 * 
+	 *
 	 * @return SWgrenzSW
 	 */
 	public final synchronized UmfeldDatenSensorWert getSWgrenzSW() {
@@ -100,19 +100,21 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
 						this.swGrenzTrockenRLF
-								.setWert(resultat.getData().getUnscaledValue(
-										"SWgrenzTrockenRLF").longValue()); //$NON-NLS-1$
+						.setWert(resultat
+										.getData()
+										.getUnscaledValue("SWgrenzTrockenRLF").longValue()); //$NON-NLS-1$
 						this.swGrenzSW.setWert(resultat.getData()
 								.getUnscaledValue("SWgrenzSW").longValue()); //$NON-NLS-1$
-						Debug.getLogger()
-								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-										+ this);
+						LOGGER
+						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this);
 					}
 					this.parameterInitialisiert = true;
 				}

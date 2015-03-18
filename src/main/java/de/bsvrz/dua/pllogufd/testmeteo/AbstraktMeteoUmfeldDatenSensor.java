@@ -39,13 +39,14 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 /**
  * Abstrakte Klasse für Umfelddatensensoren, die der Meteorologischen Kontrolle
  * zugeführt werden.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: AbstraktMeteoUmfeldDatenSensor.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
 public abstract class AbstraktMeteoUmfeldDatenSensor extends
-		AbstraktUmfeldDatenSensor {
+AbstraktUmfeldDatenSensor {
 
 	/**
 	 * wurden schon einmal Parameter empfangen.
@@ -54,7 +55,7 @@ public abstract class AbstraktMeteoUmfeldDatenSensor extends
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @param obj
@@ -63,8 +64,8 @@ public abstract class AbstraktMeteoUmfeldDatenSensor extends
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 */
-	protected AbstraktMeteoUmfeldDatenSensor(IVerwaltung verwaltung,
-			SystemObject obj) throws DUAInitialisierungsException {
+	protected AbstraktMeteoUmfeldDatenSensor(final IVerwaltung verwaltung,
+			final SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
 	}
 
@@ -77,16 +78,16 @@ public abstract class AbstraktMeteoUmfeldDatenSensor extends
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
-		Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
+		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 
 		final String atgPid = "atg.ufdsMeteorologischeKontrolle" + //$NON-NLS-1$
 				UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();
 
-		AttributeGroup atg = verwaltungsModul.getVerbindung().getDataModel()
-				.getAttributeGroup(atgPid);
+		final AttributeGroup atg = AbstraktUmfeldDatenSensor.verwaltungsModul
+				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
 		if (atg != null) {
 			parameterAtgs.add(atg);
@@ -94,7 +95,7 @@ public abstract class AbstraktMeteoUmfeldDatenSensor extends
 			throw new DUAInitialisierungsException(
 					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
 							"Meteorologische Kontrolle des Objektes "//$NON-NLS-1$
-							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$ 
+							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$
 							"Atg-Name: " + atgPid); //$NON-NLS-1$
 		}
 
@@ -103,7 +104,7 @@ public abstract class AbstraktMeteoUmfeldDatenSensor extends
 
 	/**
 	 * Erfragt, ob schon einmal Parameter empfangen wurden.
-	 * 
+	 *
 	 * @return ob schon einmal Parameter empfangen wurden
 	 */
 	public final boolean isInitialisiert() {

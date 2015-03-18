@@ -64,12 +64,16 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Differenzialkontrolle, Anstieg-Abfall-Kontrolle und der Komponente
  * Meteorologische Kontrolle in dieser Reihenfolge durch die Angabe eines Moduls
  * als Beobachterobjekt des jeweiligen Vorgängermoduls her.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: VerwaltungPlPruefungLogischUFD.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
-public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMitGuete {
+public class VerwaltungPlPruefungLogischUFD extends
+		AbstraktVerwaltungsAdapterMitGuete {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Modul Pl-Prüfung formal.
@@ -103,22 +107,24 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
-		
+
 		UmfeldDatenArt.initialisiere(this.verbindung);
 
 		String infoStr = Constants.EMPTY_STRING;
-		Collection<SystemObject> plLogLveObjekte = DUAUtensilien
-				.getBasisInstanzen(this.verbindung.getDataModel().getType(
-						DUAKonstanten.TYP_UFD_SENSOR), this.verbindung, this
-						.getKonfigurationsBereiche());
+		final Collection<SystemObject> plLogLveObjekte = DUAUtensilien
+				.getBasisInstanzen(
+						this.verbindung.getDataModel().getType(
+								DUAKonstanten.TYP_UFD_SENSOR), this.verbindung,
+						this.getKonfigurationsBereiche());
 		this.objekte = plLogLveObjekte.toArray(new SystemObject[0]);
 
-		for (SystemObject obj : this.objekte) {
+		for (final SystemObject obj : this.objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
-		Debug.getLogger().config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		LOGGER.config(
+				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		IStandardAspekte standardAspekte = new PlLogUFDStandardAspekteVersorger(
+		final IStandardAspekte standardAspekte = new PlLogUFDStandardAspekteVersorger(
 				this).getStandardPubInfos();
 
 		/**
@@ -127,7 +133,7 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 		this.ausfall = new UFDAusfallUeberwachung();
 		this.formal = new PlPruefungFormal(
 				new PlFormUFDStandardAspekteVersorger(this)
-						.getStandardPubInfos());
+				.getStandardPubInfos());
 		this.diff = new UFDDifferenzialKontrolle();
 		this.aak = new AnstiegAbfallKontrolle();
 		this.mk = new MeteorologischeKontrolle(standardAspekte);
@@ -155,13 +161,14 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 		/**
 		 * Datenanmeldung
 		 */
-		for (AttributeGroup atg : standardAspekte.getAlleAttributGruppen()) {
+		for (final AttributeGroup atg : standardAspekte
+				.getAlleAttributGruppen()) {
 
-			for (SystemObject obj : this.objekte) {
+			for (final SystemObject obj : this.objekte) {
 
 				if (obj.getType().getAttributeGroups().contains(atg)) {
 
-					DataDescription datenBeschreibung = new DataDescription(
+					final DataDescription datenBeschreibung = new DataDescription(
 							atg, verbindung.getDataModel().getAspect(
 									DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
@@ -179,6 +186,7 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_PL_PRUEFUNG_LOGISCH_UFD;
 	}
@@ -186,17 +194,18 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		this.ausfall.aktualisiereDaten(resultate);
 	}
 
 	/**
 	 * Startet diese Applikation.
-	 * 
+	 *
 	 * @param argumente
 	 *            Argumente der Kommandozeile
 	 */
-	public static void main(String[] argumente) {
+	public static void main(final String[] argumente) {
 		StandardApplicationRunner.run(new VerwaltungPlPruefungLogischUFD(),
 				argumente);
 	}

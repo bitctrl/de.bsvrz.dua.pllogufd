@@ -51,9 +51,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Anstieg-Abfall-Kontrolle als nicht plausibel erkannt, so wird der
  * entsprechende Wert auf Fehlerhaft und Implausibel zu setzen. Nach der Prüfung
  * werden die Daten an den nächsten Bearbeitungsknoten weitergereicht.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
@@ -63,17 +63,17 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 	 * assoziierte Objekte mit allen für die Anstieg-Abfall-Kontrolle benötigten
 	 * Informationen.
 	 */
-	private Map<SystemObject, AufAbUmfeldDatenSensor> sensoren = new HashMap<SystemObject, AufAbUmfeldDatenSensor>();
+	private final Map<SystemObject, AufAbUmfeldDatenSensor> sensoren = new HashMap<SystemObject, AufAbUmfeldDatenSensor>();
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 
-		for (SystemObject obj : dieVerwaltung.getSystemObjekte()) {
+		for (final SystemObject obj : dieVerwaltung.getSystemObjekte()) {
 			this.sensoren.put(obj, new AufAbUmfeldDatenSensor(dieVerwaltung,
 					obj));
 		}
@@ -82,16 +82,17 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisiereDaten(ResultData[] resultate) {
+	@Override
+	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
-			Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
 
-			for (ResultData resultat : resultate) {
+			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
 					if (resultat.getData() != null) {
 						ResultData resultatNeu = resultat;
 
-						AufAbUmfeldDatenSensor sensor = this.sensoren
+						final AufAbUmfeldDatenSensor sensor = this.sensoren
 								.get(resultat.getObject());
 
 						Data data = null;
@@ -101,8 +102,8 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 						if (data != null) {
 							resultatNeu = new ResultData(resultat.getObject(),
-									resultat.getDataDescription(), resultat
-											.getDataTime(), data);
+									resultat.getDataDescription(),
+									resultat.getDataTime(), data);
 						}
 
 						weiterzuleitendeResultate.add(resultatNeu);
@@ -112,7 +113,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 				}
 			}
 
-			if (this.knoten != null && !weiterzuleitendeResultate.isEmpty()) {
+			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
 				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
 						.toArray(new ResultData[0]));
 			}
@@ -122,6 +123,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
@@ -129,7 +131,8 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void aktualisierePublikation(IDatenFlussSteuerung dfs) {
+	@Override
+	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
 

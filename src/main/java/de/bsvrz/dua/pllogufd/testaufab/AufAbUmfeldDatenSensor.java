@@ -44,12 +44,14 @@ import de.bsvrz.sys.funclib.debug.Debug;
 /**
  * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten bzgl. der
  * Anstieg-Abfall-Kontrolle
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  * @version $Id$
  */
 public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * aktuelle Parameter für die Anstieg-Abfall-Kontrolle dieses
@@ -64,7 +66,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @param verwaltung
 	 *            Verbindung zum Verwaltungsmodul
 	 * @param obj
@@ -72,8 +74,8 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 * @throws DUAInitialisierungsException
 	 *             wenn die Instaziierung fehlschlägt
 	 */
-	protected AufAbUmfeldDatenSensor(IVerwaltung verwaltung, SystemObject obj)
-			throws DUAInitialisierungsException {
+	protected AufAbUmfeldDatenSensor(final IVerwaltung verwaltung,
+			final SystemObject obj) throws DUAInitialisierungsException {
 		super(verwaltung, obj);
 		super.init();
 	}
@@ -87,23 +89,23 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
-		Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
+		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 
 		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + //$NON-NLS-1$
 				UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();
 
-		AttributeGroup atg = verwaltungsModul.getVerbindung().getDataModel()
-				.getAttributeGroup(atgPid);
+		final AttributeGroup atg = AbstraktUmfeldDatenSensor.verwaltungsModul
+				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
 		if (atg != null) {
 			parameterAtgs.add(atg);
 		} else {
 			throw new DUAInitialisierungsException(
 					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-							"Anstieg-Abfall-Kontrolle des Objektes "//$NON-NLS-1$ 
+							"Anstieg-Abfall-Kontrolle des Objektes "//$NON-NLS-1$
 							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$
 							"Atg-Name: " + atgPid); //$NON-NLS-1$
 		}
@@ -116,7 +118,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 * statt, dass das empfangene Datum weder als Implausibel, Fehlerhaft noch
 	 * Nicht ermittelbar gekennzeichnet ist. Das empfangene Datum wird
 	 * gespeichert
-	 * 
+	 *
 	 * @param resultat
 	 *            ein Roh-Datum eines Umfelddatensensors
 	 * @return das gekennzeichnete Datum oder <code>null</code> wenn das Datum
@@ -125,42 +127,44 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	public final Data plausibilisiere(final ResultData resultat) {
 		Data copy = null;
 
-		if (resultat != null && resultat.getData() != null) {
-			UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(resultat);
+		if ((resultat != null) && (resultat.getData() != null)) {
+			final UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(
+					resultat);
 
-			if (this.letzterWert != null
+			if ((this.letzterWert != null)
 					&& !this.letzterWert.getWert().isFehlerhaft()
 					&& !this.letzterWert.getWert()
-							.isFehlerhaftBzwNichtErmittelbar()
+					.isFehlerhaftBzwNichtErmittelbar()
 					&& !this.letzterWert.getWert().isNichtErmittelbar()
-					&& this.letzterWert.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA) {
+					&& (this.letzterWert
+							.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA)) {
 
 				if (!wert.getWert().isFehlerhaft()
 						&& !wert.getWert().isFehlerhaftBzwNichtErmittelbar()
 						&& !wert.getWert().isNichtErmittelbar()
-						&& wert.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA) {
+						&& (wert.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA)) {
 
 					if (this.parameter != null) {
 						synchronized (this.parameter) {
 							if (this.parameter.isSinnvoll()) {
-								boolean fehler = Math.abs(wert.getWert()
+								final boolean fehler = Math.abs(wert.getWert()
 										.getWert()
 										- this.letzterWert.getWert().getWert()) > this.parameter
 										.getMaxDiff();
-								if (fehler) {
-									UmfeldDatenSensorDatum neuerWert = new UmfeldDatenSensorDatum(
-											resultat);
-									neuerWert
+										if (fehler) {
+											final UmfeldDatenSensorDatum neuerWert = new UmfeldDatenSensorDatum(
+													resultat);
+											neuerWert
 											.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-									neuerWert.getWert().setFehlerhaftAn();
-									copy = neuerWert.getDatum();
-								}
+											neuerWert.getWert().setFehlerhaftAn();
+											copy = neuerWert.getDatum();
+										}
 							}
 						}
 					} else {
-						Debug.getLogger()
-								.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
-										" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
+						LOGGER
+						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
+								" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
 					}
 				}
 			}
@@ -174,16 +178,17 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
 						this.parameter = new UniversalAtgUfdsAnstiegAbstiegKontrolle(
 								resultat);
-						Debug.getLogger()
-								.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-										+ this.parameter);
+						LOGGER
+						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+								+ this.parameter);
 					}
 				}
 			}

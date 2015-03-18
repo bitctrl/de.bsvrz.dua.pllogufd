@@ -26,9 +26,8 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo.ni;
 
-import org.junit.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -48,25 +47,27 @@ import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
  * von [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.27<br>
  * <b>Achtung:</b> Die ersten drei Zeilen der Tabelle werden hier nicht
  * berücksichtigt, da diese sich auf eine Regel beziehen, die nicht mehr zur
- * Implementierung vorgesehen ist (<code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF > NIgrenzNassRLF)
+ * Implementierung vorgesehen ist (
+ * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF > NIgrenzNassRLF)
  * <b>dann</b> (NI=implausibel)</code>)
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: NiederschlagsIntensitaetTest.java 53827 2015-03-18 10:04:42Z
+ *          peuker $
  */
-@Ignore ("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prüfen")
 public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 	/**
 	 * Standardkonstruktor.
-	 * 
+	 *
 	 * @throws Exception
 	 *             leitet die Ausnahmen weiter
 	 */
 	public NiederschlagsIntensitaetTest() throws Exception {
 		super();
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			if (!this.niSensoren.contains(sensor)
 					&& !this.wfdSensoren.contains(sensor)
 					&& !this.rlfSensoren.contains(sensor)
@@ -82,13 +83,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 	// */
 	// @Test
 	// public final void testRegel1(){
-	//	
+	//
 	// /**
 	// * 4. Zeile aus Tabelle auf Seite 27
 	// */
 	// long zeitStempel = this.getTestBeginnIntervall();
 	// DAVTest.warteBis(zeitStempel + 50);
-	//	
+	//
 	// this.sendeDaten(niSensoren, 1, zeitStempel -
 	// PlPruefungLogischUFDTest.STANDARD_T);
 	// this.sendeDaten(nsSensoren, 0, zeitStempel -
@@ -111,13 +112,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 	// if(TEST_AN)Assert.assertEquals(soll, ist);
 	// }
 	//
-	//		
+	//
 	// /**
 	// * 5. Zeile aus Tabelle auf Seite 27
 	// */
 	// zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 	// DAVTest.warteBis(zeitStempel + 50);
-	//	
+	//
 	// this.sendeDaten(niSensoren, 1, zeitStempel -
 	// PlPruefungLogischUFDTest.STANDARD_T);
 	// this.sendeDaten(nsSensoren, 1, zeitStempel -
@@ -152,7 +153,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		/**
 		 * 6. Zeile aus Tabelle auf Seite 27
-		 * 
+		 *
 		 * RLF = NIgrenzTrockenRLF - 3, RLF < NIgrenzTrockenRLF (für = 1T)
 		 */
 		long zeitStempel = this.getTestBeginnIntervall();
@@ -160,8 +161,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, ++rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -170,13 +171,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.1\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -189,8 +190,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, ++rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -199,13 +200,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.2\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -218,8 +219,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, ++rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -228,13 +229,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.3\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -247,8 +248,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, ++rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -257,13 +258,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.4\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -271,7 +272,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		/**
 		 * Lasse jetzt RLF wieder abfallen bis für mehr als 3T gilt: RLF <
 		 * NIgrenzTrockenRLF
-		 * 
+		 *
 		 * RLF = NIgrenzTrockenRLF - 1, RLF < NIgrenzTrockenRLF (für = 1T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
@@ -279,8 +280,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, --rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -289,13 +290,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.5\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -308,8 +309,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, --rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -318,13 +319,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.6\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -337,8 +338,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, --rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -347,13 +348,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.7\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -366,8 +367,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, --rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -376,13 +377,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, true);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.8\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -395,8 +396,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -405,13 +406,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, true);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.9\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -424,8 +425,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, --rlfStart, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -434,13 +435,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, true);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.10\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -453,8 +454,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, MeteoKonst.NI_GRENZ_TROCKEN_RLF + 1,
 				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -463,13 +464,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.1.11\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -495,13 +496,14 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 					- PlPruefungLogischUFDTest.STANDARD_T);
 
 			DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-			for (SystemObject niSensor : this.niSensoren) {
-				MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-				MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
-						- PlPruefungLogischUFDTest.STANDARD_T, false);
+			for (final SystemObject niSensor : this.niSensoren) {
+				final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+				final MeteoErgebnis soll = new MeteoErgebnis(niSensor,
+						zeitStempel - PlPruefungLogischUFDTest.STANDARD_T,
+						false);
 				System.out.println(TestUtensilien.jzt()
 						+ ", (NI)R1.2.1\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-				if (TEST_AN) {
+				if (MeteorologischeKontrolleTest.TEST_AN) {
 					Assert.assertEquals(soll, ist);
 				}
 			}
@@ -512,8 +514,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, MeteoKonst.NI_GRENZ_TROCKEN_RLF - 1,
 				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -522,15 +524,15 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, true);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.2.2\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
-			}				
+			}
 		}
 
 		/**
@@ -541,8 +543,8 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		this.sendeDaten(wfdSensoren, 1, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
-		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0, zeitStempel
-				- PlPruefungLogischUFDTest.STANDARD_T);
+		this.sendeDaten(niSensoren, MeteoKonst.NI_GRENZ_NASS_NI + 1.0,
+				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(rlfSensoren, MeteoKonst.NI_GRENZ_TROCKEN_RLF - 1,
 				zeitStempel - PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeFehlerhaftDaten(nsSensoren, zeitStempel
@@ -551,13 +553,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R1.2.3\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN)	{
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -588,13 +590,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, true);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R2.7\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -617,13 +619,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject nsSensor : this.nsSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(nsSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(nsSensor, zeitStempel
+		for (final SystemObject nsSensor : this.nsSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(nsSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(nsSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R2.8\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -646,13 +648,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R2.9\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -675,13 +677,13 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 				- PlPruefungLogischUFDTest.STANDARD_T);
 
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T);
-		for (SystemObject niSensor : this.niSensoren) {
-			MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
-			MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
+		for (final SystemObject niSensor : this.niSensoren) {
+			final MeteoErgebnis ist = this.ergebnisIst.get(niSensor);
+			final MeteoErgebnis soll = new MeteoErgebnis(niSensor, zeitStempel
 					- PlPruefungLogischUFDTest.STANDARD_T, false);
 			System.out.println(TestUtensilien.jzt()
 					+ ", (NI)R2.10\nSoll: " + soll + "\nIst: " + ist); //$NON-NLS-1$ //$NON-NLS-2$
-			if (TEST_AN) {
+			if (MeteorologischeKontrolleTest.TEST_AN) {
 				Assert.assertEquals(soll, ist);
 			}
 		}
@@ -689,21 +691,22 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 	/**
 	 * Schaltet die Ausfallüberwachung wieder aus und wartet fünf Sekunden.
-	 * 
-	 * @throws Exception wird weitergereicht
+	 *
+	 * @throws Exception
+	 *             wird weitergereicht
 	 */
 	@After
 	public void after() throws Exception {
 		/**
 		 * Ausfallüberwachung für alle Sensoren ausschalten
 		 */
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
 		}
 
 		try {
 			Thread.sleep(5 * Constants.MILLIS_PER_SECOND);
-		} catch (InterruptedException ex) {
+		} catch (final InterruptedException ex) {
 		}
 	}
 

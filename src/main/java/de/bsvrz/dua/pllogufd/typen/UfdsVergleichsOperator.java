@@ -35,7 +35,7 @@ import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
  * Über diese Klasse werden alle im DAV-Enumerationstyp
  * <code>att.ufdsVergleichsOperator</code> beschriebenen Werte zur Verfügung
  * gestellt.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  * @version $Id$
@@ -73,30 +73,30 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 
 	/**
 	 * Standardkonstruktor
-	 * 
+	 *
 	 * @param name
 	 *            der Name des Wertes
 	 * @param code
 	 *            der Code des Wertes
 	 */
-	private UfdsVergleichsOperator(String name, int code) {
+	private UfdsVergleichsOperator(final String name, final int code) {
 		super(code, name);
-		WERTE_BEREICH.put(code, this);
+		UfdsVergleichsOperator.WERTE_BEREICH.put(code, this);
 	}
 
 	/**
 	 * Erfragt den Wert dieses DAV-Enumerationstypen mit dem übergebenen Code
-	 * 
+	 *
 	 * @param code
 	 *            der Code des Enumerations-Wertes
 	 */
-	public static final UfdsVergleichsOperator getZustand(int code) {
-		return WERTE_BEREICH.get(code);
+	public static final UfdsVergleichsOperator getZustand(final int code) {
+		return UfdsVergleichsOperator.WERTE_BEREICH.get(code);
 	}
 
 	/**
 	 * Vergleicht zwei Werte mit diesem Operator miteinander
-	 * 
+	 *
 	 * @param wert1
 	 *            Wert Nr.1
 	 * @param wert2
@@ -106,19 +106,19 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 	public final boolean vergleiche(final long wert1, final long wert2) {
 		boolean ergebnis = false;
 
-		if (this.equals(BEDINGUNG_IMMER_FALSCH)) {
+		if (this.equals(UfdsVergleichsOperator.BEDINGUNG_IMMER_FALSCH)) {
 			ergebnis = false;
-		} else if (this.equals(BEDINGUNG_IMMER_WAHR)) {
+		} else if (this.equals(UfdsVergleichsOperator.BEDINGUNG_IMMER_WAHR)) {
 			ergebnis = true;
-		} else if (this.equals(KLEINER)) {
+		} else if (this.equals(UfdsVergleichsOperator.KLEINER)) {
 			ergebnis = wert1 < wert2;
-		} else if (this.equals(KLEINER_GLEICH)) {
+		} else if (this.equals(UfdsVergleichsOperator.KLEINER_GLEICH)) {
 			ergebnis = wert1 <= wert2;
-		} else if (this.equals(GLEICH)) {
+		} else if (this.equals(UfdsVergleichsOperator.GLEICH)) {
 			ergebnis = wert1 == wert2;
-		} else if (this.equals(GROESSER_GLEICH)) {
+		} else if (this.equals(UfdsVergleichsOperator.GROESSER_GLEICH)) {
 			ergebnis = wert1 >= wert2;
-		} else if (this.equals(GROESSER)) {
+		} else if (this.equals(UfdsVergleichsOperator.GROESSER)) {
 			ergebnis = wert1 > wert2;
 		}
 

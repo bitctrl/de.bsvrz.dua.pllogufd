@@ -34,9 +34,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
  * Das Submodul Sichtweite.
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
- * 
+ *
  * @version $Id$
  */
 public class Sichtweite extends AbstraktMeteoSubModul {
@@ -45,7 +45,7 @@ public class Sichtweite extends AbstraktMeteoSubModul {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialisiere(IVerwaltung dieVerwaltung)
+	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 		SichtweitenMessstelle.initialisiere(dieVerwaltung);
@@ -56,7 +56,7 @@ public class Sichtweite extends AbstraktMeteoSubModul {
 	 */
 	@Override
 	public AbstraktMeteoMessstelle getMessStelleVonSensor(
-			SystemObject ufdsObjekt) {
+			final SystemObject ufdsObjekt) {
 		return SichtweitenMessstelle.getMessStelleVonSensor(ufdsObjekt);
 	}
 

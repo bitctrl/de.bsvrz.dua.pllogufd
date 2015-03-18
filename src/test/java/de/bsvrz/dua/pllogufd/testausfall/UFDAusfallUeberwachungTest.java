@@ -79,17 +79,17 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * Datensätzen werden beim Versand berechnet und gespeichert (jeweils Sensor und
  * erwarteter Zustand).<br>
  * <br>
- * 
+ *
  * 0(erstes Dat.) 1 TS 2 3<br>
  * |---------------------|---------------------|--------------------|<br>
  * <br>
- * 
+ *
  * Sollten die empfangenen Daten von den je Sensor berechneten Informationen
  * abweichen, gilt der Test als nicht bestanden. (Der Test läuft
  * <code>TEST_AUSFALL_UEBERWACHUNG_LAEUFE</code> mal) <br>
  * <br>
  * Alle Ergebnisse des Tests werden in die Konsole ausgegeben
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
  * @version $Id: UFDAusfallUeberwachungTest.java 53825 2015-03-18 09:36:42Z
@@ -97,7 +97,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  */
 @Ignore("Testdatenverteiler prüfen")
 public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
-		ClientReceiverInterface {
+ClientReceiverInterface {
 
 	/**
 	 * Debugging Ausgaben anzeigen?
@@ -144,7 +144,7 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	/**
 	 * letzter Soll-Ergebnis-Wert von einem Sensor.
 	 */
-	private Map<SystemObject, Ergebnis> ergebnisSoll = new HashMap<SystemObject, Ergebnis>();
+	private final Map<SystemObject, Ergebnis> ergebnisSoll = new HashMap<SystemObject, Ergebnis>();
 
 	/**
 	 * letzte Ist-Ergebnis-Werte von einem Sensor. Dies sind hier mehrere, da
@@ -152,11 +152,11 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	 * z.B. die Ausfallkontrolle <b>und</b> die Testapplikation einen Wert
 	 * senden.
 	 */
-	private Map<SystemObject, Collection<Ergebnis>> ergebnisIst = new HashMap<SystemObject, Collection<Ergebnis>>();
+	private final Map<SystemObject, Collection<Ergebnis>> ergebnisIst = new HashMap<SystemObject, Collection<Ergebnis>>();
 
 	/**
 	 * Vorbereitungen.
-	 * 
+	 *
 	 * @throws Exception
 	 *             wird weitergeleitet
 	 */
@@ -173,14 +173,14 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
 		 * UFD kommen
 		 */
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			UmfeldDatenArt datenArt = UmfeldDatenArt
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			final UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			DataDescription datenBeschreibung = new DataDescription(dav
+			final DataDescription datenBeschreibung = new DataDescription(dav
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-					dav.getDataModel().getAspect(
-							"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+							dav.getDataModel().getAspect(
+									"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -192,25 +192,25 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		/**
 		 * Ausfallüberwachung für alle Sensoren ausschalten
 		 */
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
 		}
 
 		/**
 		 * Sende jetzt drei Datensätze, die nicht überprüft werden
 		 */
-		long ersteDatenZeit = TestUtensilien.getBeginAktuellerSekunde() + 3
-				* Constants.MILLIS_PER_SECOND;
+		long ersteDatenZeit = TestUtensilien.getBeginAktuellerSekunde()
+				+ (3 * Constants.MILLIS_PER_SECOND);
 		try {
 			Thread.sleep(5 * Constants.MILLIS_PER_SECOND);
-		} catch (InterruptedException ex) {
+		} catch (final InterruptedException ex) {
 			//
 		}
 		for (int i = 0; i < 3; i++) {
-			for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-				ResultData resultat = TestUtensilien
+			for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+				final ResultData resultat = TestUtensilien
 						.getExterneErfassungDatum(sensor);
-				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+				final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 						resultat);
 				datum.setT(Constants.MILLIS_PER_HOUR);
 				resultat.setDataTime(ersteDatenZeit
@@ -225,23 +225,23 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		 * 5s (für Sensoren xxx1), 10s (für Sensoren xxx2) und 12s (für Sensoren
 		 * xxx3)
 		 */
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			if (sensor.getPid().endsWith("1")) { //$NON-NLS-1$
 				PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
-						MAX_VERZUG_1);
+						UFDAusfallUeberwachungTest.MAX_VERZUG_1);
 			} else if (sensor.getPid().endsWith("2")) { //$NON-NLS-1$
 				PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
-						MAX_VERZUG_2);
+						UFDAusfallUeberwachungTest.MAX_VERZUG_2);
 			} else if (sensor.getPid().endsWith("3")) { //$NON-NLS-1$
 				PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
-						MAX_VERZUG_3);
+						UFDAusfallUeberwachungTest.MAX_VERZUG_3);
 			}
 		}
 
 		/**
 		 * Warte jetzt wenigstens bis zum Beginn der übernächsten Minute
 		 */
-		GregorianCalendar kal = new GregorianCalendar();
+		final GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
 		kal.add(Calendar.MINUTE, 2);
 		kal.set(Calendar.SECOND, 2);
@@ -252,9 +252,9 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		 * vergangenen Minute
 		 */
 		ersteDatenZeit = TestUtensilien.getBeginNaechsterMinute()
-				- Constants.MILLIS_PER_MINUTE * 2;
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			ResultData resultat = TestUtensilien
+				- (Constants.MILLIS_PER_MINUTE * 2);
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			final ResultData resultat = TestUtensilien
 					.getExterneErfassungDatum(sensor);
 			resultat.setDataTime(ersteDatenZeit);
 			PlPruefungLogischUFDTest.sender.sende(resultat);
@@ -270,17 +270,17 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	 */
 	private void ergebnisUeberpruefen() {
 		if (!this.ergebnisIst.isEmpty() && !this.ergebnisSoll.isEmpty()) {
-			for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 
-				Collection<Ergebnis> istErgebnisse = this.ergebnisIst
+				final Collection<Ergebnis> istErgebnisse = this.ergebnisIst
 						.get(sensor);
 				Ergebnis erfolgsErgebnis = null;
 				if (istErgebnisse == null) {
-					if (DEBUG) {
+					if (UFDAusfallUeberwachungTest.DEBUG) {
 						System.out.println("NULL: " + sensor); //$NON-NLS-1$
 					}
 				} else {
-					for (Ergebnis istErgebnis : istErgebnisse) {
+					for (final Ergebnis istErgebnis : istErgebnisse) {
 						if (istErgebnis.equals(this.ergebnisSoll.get(sensor))) {
 							erfolgsErgebnis = istErgebnis;
 							break;
@@ -289,24 +289,24 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 
 					if (erfolgsErgebnis != null) {
 						System.out
-								.println("Vergleiche (AUSFALL)" + sensor.getPid() + ": Soll(" + this.ergebnisSoll.get(sensor) + //$NON-NLS-1$ //$NON-NLS-2$
-										"), Ist(" + erfolgsErgebnis //$NON-NLS-1$
-										+ ") --> Ok"); //$NON-NLS-1$
+						.println("Vergleiche (AUSFALL)" + sensor.getPid() + ": Soll(" + this.ergebnisSoll.get(sensor) + //$NON-NLS-1$ //$NON-NLS-2$
+								"), Ist(" + erfolgsErgebnis //$NON-NLS-1$
+								+ ") --> Ok"); //$NON-NLS-1$
 					} else {
 						System.out
-								.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
+						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
 						System.out
-								.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
+						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
 						System.out
-								.println("  Soll: " + this.ergebnisSoll.get(sensor)); //$NON-NLS-1$
+						.println("  Soll: " + this.ergebnisSoll.get(sensor)); //$NON-NLS-1$
 						System.out.println("  Ist-Werte: "); //$NON-NLS-1$
-						for (Ergebnis istErgebnis : istErgebnisse) {
+						for (final Ergebnis istErgebnis : istErgebnisse) {
 							System.out.println("    " + istErgebnis); //$NON-NLS-1$
 						}
 						System.out
-								.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
+						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
 						System.out
-								.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
+						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
 					}
 				}
 
@@ -332,24 +332,24 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 
 	/**
 	 * der eigentliche Test.
-	 * 
+	 *
 	 * @throws Exception
 	 *             wird weitergereciht
-	 * 
+	 *
 	 */
 	@Test
 	public void testUFDAusfallUeberwachung() throws Exception {
 
 		try {
 			Thread.sleep(Constants.MILLIS_PER_MINUTE * 2);
-		} catch (InterruptedException ex) {
+		} catch (final InterruptedException ex) {
 			//
 		}
 
 		/**
 		 * Test-Schleife
 		 */
-		for (int testZaehler = 0; testZaehler < TEST_AUSFALL_UEBERWACHUNG_LAEUFE; testZaehler++) {
+		for (int testZaehler = 0; testZaehler < UFDAusfallUeberwachungTest.TEST_AUSFALL_UEBERWACHUNG_LAEUFE; testZaehler++) {
 
 			/**
 			 * Warte bis zum Anfang der nächsten Minute
@@ -360,7 +360,7 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 			this.ergebnisUeberpruefen();
 
 			System.out
-					.println("---\nTestlauf Nr." + (testZaehler + 1) + "\n---"); //$NON-NLS-1$ //$NON-NLS-2$
+			.println("---\nTestlauf Nr." + (testZaehler + 1) + "\n---"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			/**
 			 * In dieser Schleife wird für jeden Sensor im stochastischen Takt
@@ -368,25 +368,25 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 			 * dabei vor jedem Durchlauf neu "ausgewürfelt". Jeder
 			 * <code>AUSFALL</code>-te Sensor wird ignoriert
 			 */
-			int[] indexFeld = DAVTest
+			final int[] indexFeld = DAVTest
 					.getZufaelligeZahlen(PlPruefungLogischUFDTest.SENSOREN
 							.size());
-			for (int i = 0; i < indexFeld.length; i++) {
-				SystemObject sensor = PlPruefungLogischUFDTest.SENSOREN
-						.get(indexFeld[i]);
+			for (final int element : indexFeld) {
+				final SystemObject sensor = PlPruefungLogischUFDTest.SENSOREN
+						.get(element);
 
 				/**
 				 * Dieser Wert fällt komplett aus
 				 */
-				if (DAVTest.r.nextInt(AUSFALL) == 0) {
-					Ergebnis erwartetesErgebnis = new Ergebnis(sensor, start
-							- Constants.MILLIS_PER_MINUTE, true);
+				if (DAVTest.r.nextInt(UFDAusfallUeberwachungTest.AUSFALL) == 0) {
+					final Ergebnis erwartetesErgebnis = new Ergebnis(sensor,
+							start - Constants.MILLIS_PER_MINUTE, true);
 					this.ergebnisSoll.put(sensor, erwartetesErgebnis);
 					System.out.println("Sende nicht: " + erwartetesErgebnis); //$NON-NLS-1$
 					continue;
 				}
 
-				ResultData resultat = TestUtensilien
+				final ResultData resultat = TestUtensilien
 						.getExterneErfassungDatum(sensor);
 				resultat.setDataTime(start - Constants.MILLIS_PER_MINUTE);
 				PlPruefungLogischUFDTest.sender.sende(resultat);
@@ -399,24 +399,24 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 
 				if (sensor.getPid().endsWith("1")) { //$NON-NLS-1$
 					if (Math.abs(System.currentTimeMillis() - start
-							- MAX_VERZUG_1) > ERGEBNIS_TOLERANZ) {
-						nichtErfasst = System.currentTimeMillis() - start > MAX_VERZUG_1;
+							- UFDAusfallUeberwachungTest.MAX_VERZUG_1) > UFDAusfallUeberwachungTest.ERGEBNIS_TOLERANZ) {
+						nichtErfasst = (System.currentTimeMillis() - start) > UFDAusfallUeberwachungTest.MAX_VERZUG_1;
 					}
 				}
 				if (sensor.getPid().endsWith("2")) { //$NON-NLS-1$
 					if (Math.abs(System.currentTimeMillis() - start
-							- MAX_VERZUG_2) > ERGEBNIS_TOLERANZ) {
-						nichtErfasst = System.currentTimeMillis() - start > MAX_VERZUG_2;
+							- UFDAusfallUeberwachungTest.MAX_VERZUG_2) > UFDAusfallUeberwachungTest.ERGEBNIS_TOLERANZ) {
+						nichtErfasst = (System.currentTimeMillis() - start) > UFDAusfallUeberwachungTest.MAX_VERZUG_2;
 					}
 				}
 				if (sensor.getPid().endsWith("3")) { //$NON-NLS-1$
 					if (Math.abs(System.currentTimeMillis() - start
-							- MAX_VERZUG_3) > ERGEBNIS_TOLERANZ) {
-						nichtErfasst = System.currentTimeMillis() - start > MAX_VERZUG_3;
+							- UFDAusfallUeberwachungTest.MAX_VERZUG_3) > UFDAusfallUeberwachungTest.ERGEBNIS_TOLERANZ) {
+						nichtErfasst = (System.currentTimeMillis() - start) > UFDAusfallUeberwachungTest.MAX_VERZUG_3;
 					}
 				}
 
-				Ergebnis erwartetesErgebnis = new Ergebnis(sensor, start
+				final Ergebnis erwartetesErgebnis = new Ergebnis(sensor, start
 						- Constants.MILLIS_PER_MINUTE, nichtErfasst);
 
 				this.ergebnisSoll.put(sensor, erwartetesErgebnis);
@@ -424,8 +424,10 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 						+ ", Sende: " + erwartetesErgebnis); //$NON-NLS-1$
 
 				try {
-					Thread.sleep(ABSTAND + DAVTest.r.nextInt(ABSTAND));
-				} catch (InterruptedException ex) {
+					Thread.sleep(UFDAusfallUeberwachungTest.ABSTAND
+							+ DAVTest.r
+									.nextInt(UFDAusfallUeberwachungTest.ABSTAND));
+				} catch (final InterruptedException ex) {
 					//
 				}
 			}
@@ -435,30 +437,33 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	/**
 	 * {@inheritDoc}
 	 */
-	public void dataRequest(SystemObject object,
-			DataDescription dataDescription, byte state) {
+	@Override
+	public void dataRequest(final SystemObject object,
+			final DataDescription dataDescription, final byte state) {
 		//
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isRequestSupported(SystemObject object,
-			DataDescription dataDescription) {
+	@Override
+	public boolean isRequestSupported(final SystemObject object,
+			final DataDescription dataDescription) {
 		return false;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
-					UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
+					final UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(
 							resultat);
 
-					Ergebnis ergebnisIstFuerSensor = new Ergebnis(
+					final Ergebnis ergebnisIstFuerSensor = new Ergebnis(
 							resultat.getObject(),
 							resultat.getDataTime(),
 							ufdDatum.getStatusErfassungNichtErfasst() == DUAKonstanten.JA);
@@ -474,7 +479,7 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 						ergebnisseBisJetzt.add(ergebnisIstFuerSensor);
 					}
 
-					if (DEBUG) {
+					if (UFDAusfallUeberwachungTest.DEBUG) {
 						System.out.println(TestUtensilien.jzt()
 								+ ", Empfange: " + ergebnisIstFuerSensor); //$NON-NLS-1$
 					}
@@ -487,9 +492,9 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 	 * Für den Test der Ausfallkontrolle relevanter Teil der Informationen eines
 	 * Sensorwertes. Über Objekte dieser Klasse wird der Soll-Ist-Vergleich
 	 * vorgenommen.
-	 * 
+	 *
 	 * @author BitCtrl Systems GmbH, Thierfelder
-	 * 
+	 *
 	 */
 	private class Ergebnis {
 
@@ -511,7 +516,7 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 
 		/**
 		 * Standardkontruktor.
-		 * 
+		 *
 		 * @param sensor
 		 *            Systemobjekt eines Umfelddatensensors
 		 * @param datenZeit
@@ -525,8 +530,8 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		 *            sollen, innerhalb des Toleranzbereichs
 		 *            <code>ERGEBNIS_TOLERANZ</code> liegen
 		 */
-		public Ergebnis(SystemObject sensor, long datenZeit,
-				Boolean nichtErfasst) {
+		public Ergebnis(final SystemObject sensor, final long datenZeit,
+				final Boolean nichtErfasst) {
 			this.sensor = sensor;
 			this.datenZeit = datenZeit;
 			this.nichtErfasst = nichtErfasst;
@@ -538,19 +543,20 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 		 * - die erwarteten Datenzeiten identisch sind und<br>
 		 * - die Markierungen als <code>nicht erfasst</code> identisch sind (so
 		 * diese nicht als "egal" markiert sind).
-		 * 
+		 *
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			boolean ergebnis = false;
 
 			if (obj instanceof Ergebnis) {
-				Ergebnis that = (Ergebnis) obj;
+				final Ergebnis that = (Ergebnis) obj;
 				if (this.sensor.equals(that.sensor)
-						&& this.datenZeit == that.datenZeit) {
+						&& (this.datenZeit == that.datenZeit)) {
 					ergebnis = true;
-					if (this.nichtErfasst != null && that.nichtErfasst != null) {
+					if ((this.nichtErfasst != null)
+							&& (that.nichtErfasst != null)) {
 						ergebnis &= this.nichtErfasst == that.nichtErfasst;
 					}
 				}
@@ -569,8 +575,8 @@ public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
 					DUAKonstanten.NUR_ZEIT_FORMAT_GENAU_STR);
 
 			return "Sensor: " + this.sensor.getPid() + ", Daten: "
-					+ dateFormat.format(new Date(this.datenZeit))
-					+ ", nicht Erfasst: " + nichtErfasstStr;
+			+ dateFormat.format(new Date(this.datenZeit))
+			+ ", nicht Erfasst: " + nichtErfasstStr;
 		}
 	}
 }

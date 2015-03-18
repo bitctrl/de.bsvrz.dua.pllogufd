@@ -62,14 +62,15 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * Test des Moduls Anstieg-Abfall-Kontrolle<br>
  * Der Test implementiert die Vorgaben aus dem Dokument
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25
- * 
+ *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: AnstiegAbfallKontrolleTest.java 53827 2015-03-18 10:04:42Z
+ *          peuker $
  */
-@Ignore ("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prüfen")
 public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
-		ClientReceiverInterface {
+ClientReceiverInterface {
 
 	/**
 	 * Debug-Ausgaben?
@@ -106,7 +107,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	 * die hier betrachteten Sensoren (z.B. nur Sensoren, die kontinuierliche
 	 * Werten bereitstellen)
 	 */
-	private Collection<SystemObject> untersuchteSensoren = new HashSet<SystemObject>();
+	private final Collection<SystemObject> untersuchteSensoren = new HashSet<SystemObject>();
 
 	/**
 	 * Datenverteiler-Verbindung.
@@ -114,10 +115,11 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	private ClientDavInterface dav = null;
 
 	/**
-	 * letzter Ist-Ergebnis-Wert von einem Sensor<br> (<code>Implausibel</code>
-	 * und <code>fehlerhaft</code> == <code>true</code>).
+	 * letzter Ist-Ergebnis-Wert von einem Sensor<br>
+	 * (<code>Implausibel</code> und <code>fehlerhaft</code> ==
+	 * <code>true</code>).
 	 */
-	private Map<SystemObject, Boolean> ergebnisIst = new HashMap<SystemObject, Boolean>();
+	private final Map<SystemObject, Boolean> ergebnisIst = new HashMap<SystemObject, Boolean>();
 
 	/**
 	 * aktuelles Intervall für Testdaten.
@@ -126,7 +128,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 
 	/**
 	 * Vorbereitungen.
-	 * 
+	 *
 	 * @throws Exception
 	 *             wird weitergeleitet
 	 */
@@ -142,8 +144,8 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		/**
 		 * filtere FBZ heraus, da diese nicht sinnvoll überprüft werden können
 		 */
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			UmfeldDatenArt datenArt = UmfeldDatenArt
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			final UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
 			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				this.untersuchteSensoren.add(sensor);
@@ -154,7 +156,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		 * Setzte den maximalen Ausfall auf 1,0s Setzte die Parameter für die
 		 * Differenzialkontrolle auf harmlose Werte
 		 */
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
 					1000);
 			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
@@ -167,7 +169,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		/**
 		 * maximal zulässige Differenz auf pauschal 5 setzen
 		 */
-		for (SystemObject sensor : this.untersuchteSensoren) {
+		for (final SystemObject sensor : this.untersuchteSensoren) {
 			PlPruefungLogischUFDTest.sender.setAnAbPara(sensor, 5);
 		}
 
@@ -175,14 +177,14 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
 		 * UFD kommen
 		 */
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			UmfeldDatenArt datenArt = UmfeldDatenArt
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			final UmfeldDatenArt datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(sensor);
-			DataDescription datenBeschreibung = new DataDescription(dav
+			final DataDescription datenBeschreibung = new DataDescription(dav
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-					dav.getDataModel().getAspect(
-							"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+							dav.getDataModel().getAspect(
+									"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -192,7 +194,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		 */
 		try {
 			Thread.sleep(1000L);
-		} catch (InterruptedException ex) {
+		} catch (final InterruptedException ex) {
 			//
 		}
 
@@ -202,68 +204,67 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		 * vermeiden. Es wird hier je Sensor ein Wert mit dem Zeitstempel der
 		 * nächsten Sekunden und dem Intervall von 1s geschickt
 		 */
-		GregorianCalendar kal = new GregorianCalendar();
+		final GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
 		kal.set(Calendar.MILLISECOND, 0);
 		final long zeitStempel = kal.getTimeInMillis();
-		aktuellesIntervall = zeitStempel + 5
-				* PlPruefungLogischUFDTest.STANDARD_T;
+		aktuellesIntervall = zeitStempel
+				+ (5 * PlPruefungLogischUFDTest.STANDARD_T);
 
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
 		}
-		
-		final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
-		
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			ResultData resultat = TestUtensilien
+
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(
+				DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			final ResultData resultat = TestUtensilien
 					.getExterneErfassungDatum(sensor);
-			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
+			final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+					resultat);
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 			datum.getWert().setFehlerhaftAn();
 
-			ResultData sendeDatum = new ResultData(datum.getOriginalDatum()
-					.getObject(),
-					datum.getOriginalDatum().getDataDescription(), zeitStempel,
-					datum.getDatum());
+			final ResultData sendeDatum = new ResultData(datum
+					.getOriginalDatum().getObject(), datum.getOriginalDatum()
+					.getDataDescription(), zeitStempel, datum.getDatum());
 
-			if (DEBUG) {
-				System.out.println(TestUtensilien.jzt()
-						+ " Sende initial: " + //$NON-NLS-1$
-						dateFormat.format(new Date(
-								sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
-						datum.getOriginalDatum().getObject());
+			if (AnstiegAbfallKontrolleTest.DEBUG) {
+				System.out.println(TestUtensilien.jzt() + " Sende initial: " + //$NON-NLS-1$
+						dateFormat.format(new Date(sendeDatum.getDataTime()))
+						+ ", " + //$NON-NLS-1$
+								datum.getOriginalDatum().getObject());
 			}
 
 			PlPruefungLogischUFDTest.sender.sende(sendeDatum);
 		}
 
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
 					1000);
 		}
-		DAVTest.warteBis(zeitStempel + 2 * PlPruefungLogischUFDTest.STANDARD_T
-				+ 50);
+		DAVTest.warteBis(zeitStempel
+				+ (2 * PlPruefungLogischUFDTest.STANDARD_T) + 50);
 
-		for (SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			ResultData resultat = TestUtensilien
+		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+			final ResultData resultat = TestUtensilien
 					.getExterneErfassungDatum(sensor);
-			UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
+			final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+					resultat);
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 			datum.getWert().setFehlerhaftAn();
 
-			ResultData sendeDatum = new ResultData(datum.getOriginalDatum()
-					.getObject(),
-					datum.getOriginalDatum().getDataDescription(), zeitStempel
-							+ PlPruefungLogischUFDTest.STANDARD_T, datum
-							.getDatum());
+			final ResultData sendeDatum = new ResultData(datum
+					.getOriginalDatum().getObject(), datum.getOriginalDatum()
+					.getDataDescription(), zeitStempel
+					+ PlPruefungLogischUFDTest.STANDARD_T, datum.getDatum());
 
-			if (DEBUG) {
-				System.out.println(TestUtensilien.jzt()
-						+ " Sende initial: " + //$NON-NLS-1$
-						dateFormat.format(new Date(
-								sendeDatum.getDataTime())) + ", " + //$NON-NLS-1$
-						datum.getOriginalDatum().getObject());
+			if (AnstiegAbfallKontrolleTest.DEBUG) {
+				System.out.println(TestUtensilien.jzt() + " Sende initial: " + //$NON-NLS-1$
+						dateFormat.format(new Date(sendeDatum.getDataTime()))
+						+ ", " + //$NON-NLS-1$
+								datum.getOriginalDatum().getObject());
 			}
 
 			PlPruefungLogischUFDTest.sender.sende(sendeDatum);
@@ -274,7 +275,8 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		 * entsprechend der Graphik 4-5 in [QS-02.04.00.00.00-PrSpez-2.0 (DUA)],
 		 * S. 25 (bei maximaler Differenz von 5)
 		 */
-		messWerte = new MessWert[] { new MessWert(5, MARKIERUNG.ok, null),
+		AnstiegAbfallKontrolleTest.messWerte = new MessWert[] {
+				new MessWert(5, MARKIERUNG.ok, null),
 				new MessWert(5, MARKIERUNG.ok, null),
 				new MessWert(11, MARKIERUNG.ok, true),
 				new MessWert(9, MARKIERUNG.ok, null),
@@ -312,23 +314,24 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	 * <code>JUnit</code> getestet<br>
 	 * <br>
 	 * Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelöscht
-	 * 
-	 * @param durchlauf der Durchlauf
+	 *
+	 * @param durchlauf
+	 *            der Durchlauf
 	 */
 	private void ergebnisUeberpruefen(final int durchlauf) {
 		if (!this.ergebnisIst.isEmpty()) {
-			Boolean erwartung = messWerte[durchlauf]
+			final Boolean erwartung = AnstiegAbfallKontrolleTest.messWerte[durchlauf]
 					.wirdAlsFehlerhaftUndImplausibelErwartet();
 			if (erwartung != null) {
-				boolean erwarteterStatusIstImplausibelUndFehlerHaft = erwartung;
-				for (SystemObject sensor : this.untersuchteSensoren) {
+				final boolean erwarteterStatusIstImplausibelUndFehlerHaft = erwartung;
+				for (final SystemObject sensor : this.untersuchteSensoren) {
 					System.out
-							.println("Vergleiche (AAKONTR)[" + durchlauf + "] " + sensor.getPid() + ": Soll(" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-									(erwarteterStatusIstImplausibelUndFehlerHaft ? "impl" : "ok") + //$NON-NLS-1$ //$NON-NLS-2$
-									"), Ist(" //$NON-NLS-1$
-									+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") + ") --> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-									(erwarteterStatusIstImplausibelUndFehlerHaft == this.ergebnisIst
-											.get(sensor) ? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
+					.println("Vergleiche (AAKONTR)[" + durchlauf + "] " + sensor.getPid() + ": Soll(" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							(erwarteterStatusIstImplausibelUndFehlerHaft ? "impl" : "ok") + //$NON-NLS-1$ //$NON-NLS-2$
+							"), Ist(" //$NON-NLS-1$
+							+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") + ") --> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							(erwarteterStatusIstImplausibelUndFehlerHaft == this.ergebnisIst
+							.get(sensor) ? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
 					Assert.assertEquals(
 							"Objekt: " + sensor.toString(), //$NON-NLS-1$
 							erwarteterStatusIstImplausibelUndFehlerHaft,
@@ -341,15 +344,16 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 
 	/**
 	 * der eigentliche Test.
-	 * 
-	 * @throws Exception wird weitergereicht
+	 *
+	 * @throws Exception
+	 *             wird weitergereicht
 	 */
 	@Test
 	public void testAnstiegAbfallKontrolle() throws Exception {
 
 		DAVTest.warteBis(aktuellesIntervall);
 
-		for (int durchlauf = 0; durchlauf < messWerte.length; durchlauf++) {
+		for (int durchlauf = 0; durchlauf < AnstiegAbfallKontrolleTest.messWerte.length; durchlauf++) {
 
 			/**
 			 * nach dem Anfang des nächsten Intervalls geht es los
@@ -357,47 +361,51 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 			DAVTest.warteBis(aktuellesIntervall
 					+ PlPruefungLogischUFDTest.STANDARD_T + 50);
 
-			final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(
+					DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 
 			/**
 			 * Produziere Werte, die getestet werden und "unbeschädigt" durch
 			 * die Diff-Prüfung kommen
 			 */
-			for (SystemObject sensor : this.untersuchteSensoren) {
-				ResultData resultat = TestUtensilien
+			for (final SystemObject sensor : this.untersuchteSensoren) {
+				final ResultData resultat = TestUtensilien
 						.getExterneErfassungDatum(sensor);
-				UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
+				final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 						resultat);
 				datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 
 				/**
 				 * Setzte Prüfwert
 				 */
-				datum.getWert().setWert(messWerte[durchlauf].getWert());
-				if (messWerte[durchlauf].getMarkierung() == MARKIERUNG.nicht_ermittelbar) {
+				datum.getWert().setWert(
+						AnstiegAbfallKontrolleTest.messWerte[durchlauf]
+								.getWert());
+				if (AnstiegAbfallKontrolleTest.messWerte[durchlauf]
+						.getMarkierung() == MARKIERUNG.nicht_ermittelbar) {
 					datum.getWert().setNichtErmittelbarAn();
-				} else if (messWerte[durchlauf].getMarkierung() == MARKIERUNG.implausibel_o_fehlerfahft) {
-					if (durchlauf % 2 == 0) {
+				} else if (AnstiegAbfallKontrolleTest.messWerte[durchlauf]
+						.getMarkierung() == MARKIERUNG.implausibel_o_fehlerfahft) {
+					if ((durchlauf % 2) == 0) {
 						datum.getWert().setFehlerhaftAn();
 					} else {
-						datum
-								.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+						datum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 					}
 				}
 
-				ResultData sendeDatum = new ResultData(datum.getOriginalDatum()
-						.getObject(), datum.getOriginalDatum()
-						.getDataDescription(), aktuellesIntervall, datum
-						.getDatum());
+				final ResultData sendeDatum = new ResultData(datum
+						.getOriginalDatum().getObject(), datum
+						.getOriginalDatum().getDataDescription(),
+						aktuellesIntervall, datum.getDatum());
 
-				if (DEBUG) {
-					System.out.println(TestUtensilien.jzt()
-							+ ", Sende[" + durchlauf + "]: " + //$NON-NLS-1$ //$NON-NLS-2$
-							dateFormat.format(new Date(
-									sendeDatum.getDataTime()))
-							+ ", " + //$NON-NLS-1$
-							datum.getOriginalDatum().getObject()
-							+ ", T: " + datum.getT()); //$NON-NLS-1$
+				if (AnstiegAbfallKontrolleTest.DEBUG) {
+					System.out
+							.println(TestUtensilien.jzt()
+									+ ", Sende[" + durchlauf + "]: " + //$NON-NLS-1$ //$NON-NLS-2$
+									dateFormat.format(new Date(sendeDatum
+											.getDataTime())) + ", " + //$NON-NLS-1$
+									datum.getOriginalDatum().getObject()
+									+ ", T: " + datum.getT()); //$NON-NLS-1$
 				}
 
 				PlPruefungLogischUFDTest.sender.sende(sendeDatum);
@@ -408,7 +416,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 			 */
 			aktuellesIntervall += PlPruefungLogischUFDTest.STANDARD_T;
 			DAVTest.warteBis(aktuellesIntervall
-					+ PlPruefungLogischUFDTest.STANDARD_T / 20 * 18);
+					+ ((PlPruefungLogischUFDTest.STANDARD_T / 20) * 18));
 
 			/**
 			 * Überprüfe Ergebnisse
@@ -421,45 +429,48 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	/**
 	 * {@inheritDoc}
 	 */
-	public void dataRequest(SystemObject object,
-			DataDescription dataDescription, byte state) {
-		// 		
+	@Override
+	public void dataRequest(final SystemObject object,
+			final DataDescription dataDescription, final byte state) {
+		//
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isRequestSupported(SystemObject object,
-			DataDescription dataDescription) {
+	@Override
+	public boolean isRequestSupported(final SystemObject object,
+			final DataDescription dataDescription) {
 		return false;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(ResultData[] resultate) {
+	@Override
+	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
-			final SimpleDateFormat dateFormat = new SimpleDateFormat(DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
+			final SimpleDateFormat dateFormat = new SimpleDateFormat(
+					DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 
-			for (ResultData resultat : resultate) {
-				if (resultat != null && resultat.getData() != null) {
-					UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(
+			for (final ResultData resultat : resultate) {
+				if ((resultat != null) && (resultat.getData() != null)) {
+					final UmfeldDatenSensorDatum ufdDatum = new UmfeldDatenSensorDatum(
 							resultat);
-					boolean implausibelUndFehlerhaft = ufdDatum.getWert()
+					final boolean implausibelUndFehlerhaft = ufdDatum.getWert()
 							.isFehlerhaft()
-							&& ufdDatum.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.JA;
+							&& (ufdDatum
+									.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.JA);
 
-					if (DEBUG) {
-						System.out
-								.println(TestUtensilien.jzt()
-										+ ", Empfange: " + //$NON-NLS-1$
-										dateFormat
-												.format(new Date(resultat
-														.getDataTime()))
-										+ ", " + //$NON-NLS-1$
-										resultat.getObject()
-										+ ", T: " + ufdDatum.getT() + ", impl: " + //$NON-NLS-1$ //$NON-NLS-2$ 
-										(implausibelUndFehlerhaft ? "ja" : "nein")); //$NON-NLS-1$ //$NON-NLS-2$
+					if (AnstiegAbfallKontrolleTest.DEBUG) {
+						System.out.println(TestUtensilien.jzt()
+								+ ", Empfange: " + //$NON-NLS-1$
+								dateFormat.format(new Date(resultat
+										.getDataTime()))
+								+ ", " + //$NON-NLS-1$
+								resultat.getObject()
+								+ ", T: " + ufdDatum.getT() + ", impl: " + //$NON-NLS-1$ //$NON-NLS-2$ 
+								(implausibelUndFehlerhaft ? "ja" : "nein")); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 
 					if (this.untersuchteSensoren.contains(resultat.getObject())) {
@@ -474,9 +485,9 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 	/**
 	 * Ein Objekt dieser Klasse entspricht einem Punkt innerhalb der Graphik aus
 	 * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25
-	 * 
+	 *
 	 * @author Thierfelder
-	 * 
+	 *
 	 */
 	protected class MessWert {
 
@@ -493,15 +504,14 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 
 		/**
 		 * gibt an, ob das Pl-Ergebnis der Prüfung dieses Wertes als
-		 * <code>implausibel</code> und <code>fehlerhaft</code>.
-		 * gekennzeichnet erwartet wird <code>null</code> wird als don't care
-		 * interpretiert
+		 * <code>implausibel</code> und <code>fehlerhaft</code>. gekennzeichnet
+		 * erwartet wird <code>null</code> wird als don't care interpretiert
 		 */
 		private Boolean fehlerhaftUndImplausibel = null;
 
 		/**
 		 * Standardkontruktor.
-		 * 
+		 *
 		 * @param wert
 		 *            der Sensor-Wert
 		 * @param markierung
@@ -523,7 +533,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 		/**
 		 * Erfragt die Markierung des Wertes (analog
 		 * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25)
-		 * 
+		 *
 		 * @return markierung Markierung des Wertes (analog
 		 *         [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25)
 		 */
@@ -533,7 +543,7 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 
 		/**
 		 * Erfragt den Sensor-Wert.
-		 * 
+		 *
 		 * @return wert der Sensor-Wert
 		 */
 		public final long getWert() {
@@ -542,12 +552,12 @@ public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
 
 		/**
 		 * Erfragt, ob das Pl-Ergebnis der Prüfung dieses Wertes als
-		 * <code>implausibel</code> und <code>fehlerhaft</code>
-		 * gekennzeichnet erwartet wird.
-		 * 
+		 * <code>implausibel</code> und <code>fehlerhaft</code> gekennzeichnet
+		 * erwartet wird.
+		 *
 		 * @return fehlerhaftUndImplausibel ob das Pl-Ergebnis der Prüfung
-		 *         dieses Wertes als <code>implausibel</code> und <code>fehlerhaft</code>
-		 *         gekennzeichnet erwartet wird<br>
+		 *         dieses Wertes als <code>implausibel</code> und
+		 *         <code>fehlerhaft</code> gekennzeichnet erwartet wird<br>
 		 *         <code>null</code> wird als don't care interpretiert
 		 */
 		public final Boolean wirdAlsFehlerhaftUndImplausibelErwartet() {
