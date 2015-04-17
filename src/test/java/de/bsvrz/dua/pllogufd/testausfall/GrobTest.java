@@ -50,6 +50,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
@@ -199,9 +200,10 @@ public class GrobTest implements ClientSenderInterface, ClientReceiverInterface 
 	 * @return ein (ausgefüllter) Umfelddaten-Messwert der zum übergebenen
 	 *         Systemobjekt passt. Alle Pl-Prüfungs-Flags sind auf
 	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall beträgt 1 min.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public static final ResultData getExterneErfassungDatum(
-			final SystemObject sensor) {
+			final SystemObject sensor) throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(sensor);
 		final DataDescription datenBeschreibung = new DataDescription(

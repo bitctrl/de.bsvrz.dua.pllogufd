@@ -35,6 +35,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -324,8 +325,18 @@ public abstract class AbstraktMeteoMessstelle {
 	private boolean isDatenArtRelevantFuerSubModul(final ResultData umfeldDatum) {
 		boolean relevant = false;
 
-		final UmfeldDatenArt datenArt = UmfeldDatenArt
-				.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		
+		UmfeldDatenArt datenArt;
+		try {
+			datenArt = UmfeldDatenArt
+					.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			LOGGER
+			.error(
+					this.getClass().getSimpleName()	+ ": " + e.getMessage());
+			return false;
+		}
+		
 		if (datenArt != null) {
 			relevant = this.getDatenArten().contains(datenArt);
 		}

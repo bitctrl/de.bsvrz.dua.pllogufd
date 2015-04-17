@@ -96,10 +96,11 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
 	/**
 	 * {@inheritDoc}
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
@@ -180,9 +181,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 						.fine("Die Differenzialkontrolle für den Umfelddatensensor " + //$NON-NLS-1$
 								this.objekt
 								+ " kann nicht durchgeführt werden, da der Parameter " + //$NON-NLS-1$
-								UmfeldDatenArt.getUmfeldDatenArtVon(
-										this.objekt).getAbkuerzung()
-										+ "Grenz=" + this.parameter.getGrenz()); //$NON-NLS-1$
+										"Grenz=" + this.parameter.getGrenz()); //$NON-NLS-1$
 					}
 				}
 			} else {
@@ -205,8 +204,13 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			for (final ResultData resultat : resultate) {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
-						this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(
-								resultat);
+						try {
+							this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(
+									resultat);
+						} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+							LOGGER.warning(e.getMessage());
+							continue;
+						}
 						LOGGER
 						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
 								+ this.parameter);

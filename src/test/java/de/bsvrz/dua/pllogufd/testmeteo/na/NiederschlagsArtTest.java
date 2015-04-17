@@ -43,6 +43,7 @@ import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
@@ -80,9 +81,10 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel1</code> aus
 	 * {@link NiederschlagsArtMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel1() {
+	public final void testRegel1() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		/**
 		 * Erste Zeile aus Tabelle auf Seite 26
@@ -172,9 +174,10 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel3</code> aus
 	 * {@link NiederschlagsArtMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel3() {
+	public final void testRegel3() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		/**
 		 * 4. Zeile aus Tabelle auf Seite 26
@@ -269,9 +272,10 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 	 * ([QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.26) fällt weg, da diese die
 	 * Funktionalität der NS-Regel Nr.4 aus den AFo testen (S. 104). Diese Regel
 	 * wurde jedoch nicht implementiert.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel2() {
+	public final void testRegel2() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		/**
 		 * 7. Zeile aus Tabelle auf Seite 26

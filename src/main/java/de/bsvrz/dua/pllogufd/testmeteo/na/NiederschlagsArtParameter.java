@@ -31,6 +31,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
@@ -81,9 +82,10 @@ public final class NiederschlagsArtParameter extends
 	 *            <code>typ.umfeldDatenSensor</code>)
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public NiederschlagsArtParameter(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException {
+			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
 		nsGrenzLT = new UmfeldDatenSensorWert(UmfeldDatenArt.lt);
 		nsGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);

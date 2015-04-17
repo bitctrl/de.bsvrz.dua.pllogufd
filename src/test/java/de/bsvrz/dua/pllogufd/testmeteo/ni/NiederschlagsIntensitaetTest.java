@@ -40,6 +40,7 @@ import de.bsvrz.dua.pllogufd.testmeteo.MeteoErgebnis;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
  * Überprüfung des Submoduls NiederschlagsIntensität aus der Komponente
@@ -145,9 +146,10 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel3</code> aus
 	 * {@link NiederschlagsIntensitaetsMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel3() {
+	public final void testRegel3() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		long rlfStart = MeteoKonst.NI_GRENZ_TROCKEN_RLF - 4;
 
@@ -568,9 +570,10 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel2</code> aus
 	 * {@link NiederschlagsIntensitaetsMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel2() {
+	public final void testRegel2() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		/**
 		 * 7. Zeile aus Tabelle auf Seite 27

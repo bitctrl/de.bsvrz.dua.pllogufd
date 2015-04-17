@@ -39,6 +39,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapte
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Implementierung des Moduls Anstieg-Abfall-Kontrolle. Dieses meldet sich auf
@@ -67,6 +69,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * {@inheritDoc}
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
@@ -74,8 +77,12 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 		super.initialisiere(dieVerwaltung);
 
 		for (final SystemObject obj : dieVerwaltung.getSystemObjekte()) {
-			this.sensoren.put(obj, new AufAbUmfeldDatenSensor(dieVerwaltung,
-					obj));
+			try {
+				this.sensoren.put(obj, new AufAbUmfeldDatenSensor(dieVerwaltung,
+						obj));
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				Debug.getLogger().warning(e.getMessage());
+			}
 		}
 	}
 

@@ -36,6 +36,7 @@ import de.bsvrz.dua.pllogufd.testmeteo.MeteoErgebnis;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
  * Überprüfung des Submoduls WasserFilmDicke aus der Komponente Meteorologische
@@ -71,9 +72,10 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel1</code> aus
 	 * {@link WasserfilmDickeMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel1() {
+	public final void testRegel1() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		long rlfStart = MeteoKonst.WFD_GRENZ_NASS_RLF + 4;
 
@@ -484,9 +486,10 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel3</code> aus
 	 * {@link WasserfilmDickeMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel3() {
+	public final void testRegel3() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		/**
 		 * 3. Zeile aus Tabelle auf Seite 27-28
@@ -557,9 +560,10 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel2</code> aus
 	 * {@link WasserfilmDickeMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel2() {
+	public final void testRegel2() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		/**
 		 * 5. Zeile aus Tabelle auf Seite 28

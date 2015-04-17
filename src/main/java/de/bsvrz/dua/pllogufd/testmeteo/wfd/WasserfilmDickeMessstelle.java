@@ -42,6 +42,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -133,14 +134,18 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 					if (betrachtetesObjekt.isValid()) {
 						if (sensorMengeAnMessStelle.getElements().contains(
 								betrachtetesObjekt)) {
-							final UmfeldDatenArt datenArt = UmfeldDatenArt
-									.getUmfeldDatenArtVon(betrachtetesObjekt);
-							if (datenArt == null) {
-								throw new DUAInitialisierungsException(
-										"Unbekannter Sensor (" + //$NON-NLS-1$
+							UmfeldDatenArt datenArt;
+							try {
+								datenArt = UmfeldDatenArt
+										.getUmfeldDatenArtVon(betrachtetesObjekt);
+							} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+									LOGGER.warning("Unbekannter Sensor (" + //$NON-NLS-1$
 												betrachtetesObjekt
 												+ ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
-							} else if (WasserfilmDickeMessstelle.datenArten
+								continue;
+							} 
+							
+							if (WasserfilmDickeMessstelle.datenArten
 									.contains(datenArt)) {
 								sensorenAnMessStelle.add(betrachtetesObjekt);
 							}
@@ -229,6 +234,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * {@inheritDoc}
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Override
 	protected void initialisiereMessStelle()
@@ -236,8 +242,14 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		SystemObject parameterSensorObj = null;
 
 		for (final SystemObject sensor : this.getSensoren()) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				continue;
+			}
 			if (datenArt.equals(UmfeldDatenArt.wfd)) {
 				parameterSensorObj = sensor;
 				break;
@@ -249,8 +261,13 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 					" konnte kein Sensor für Wasserfilmdicke identifiziert werden"); //$NON-NLS-1$
 		}
 
-		this.parameterSensor = new WasserFilmDickeParameter(
-				AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
+		try {
+			this.parameterSensor = new WasserFilmDickeParameter(
+					AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
+		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
+					": " + e.getMessage()); 
+		}
 	}
 
 	/**
@@ -272,8 +289,14 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		boolean erfolgreich = false;
 
 		if (umfeldDatum.getData() != null) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(umfeldDatum.getObject());
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(umfeldDatum.getObject());
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				return false;
+			}
 
 			if (datenArt != null) {
 				if (this.isDatumSpeicherbar(umfeldDatum)) {
@@ -394,8 +417,15 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 			final ResultData umfeldDatum) {
 		UmfeldDatenSensorDatum datumInPosition = null;
 
-		final UmfeldDatenArt datenArt = UmfeldDatenArt
-				.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		UmfeldDatenArt datenArt;
+		try {
+			datenArt = UmfeldDatenArt
+					.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			LOGGER.warning(e.getMessage());
+			return null;
+		}
+		
 		if (datenArt != null) {
 			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				datumInPosition = this.letztesUfdNIDatum;

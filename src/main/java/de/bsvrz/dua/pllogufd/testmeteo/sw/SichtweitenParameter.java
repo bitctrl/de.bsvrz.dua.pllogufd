@@ -31,6 +31,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
@@ -70,9 +71,10 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 *            <code>typ.umfeldDatenSensor</code>)
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public SichtweitenParameter(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException {
+			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
 		swGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);
 		swGrenzSW = new UmfeldDatenSensorWert(UmfeldDatenArt.sw);

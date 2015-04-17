@@ -28,6 +28,7 @@ package de.bsvrz.dua.pllogufd.testaufab;
 
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
@@ -64,8 +65,9 @@ AllgemeinerDatenContainer {
 	 * @param parameter
 	 *            ein Parameterdatensatz der Attributgruppe
 	 *            <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	public UniversalAtgUfdsAnstiegAbstiegKontrolle(final ResultData parameter) {
+	public UniversalAtgUfdsAnstiegAbstiegKontrolle(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
 			throw new NullPointerException("Übergebener Parameter ist <<null>>"); //$NON-NLS-1$
 		}

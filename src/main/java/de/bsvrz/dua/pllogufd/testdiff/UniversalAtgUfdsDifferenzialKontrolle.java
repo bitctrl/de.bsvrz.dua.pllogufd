@@ -30,6 +30,7 @@ import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
@@ -69,8 +70,9 @@ AllgemeinerDatenContainer {
 	 * @param parameter
 	 *            ein Parameterdatensatz der Attributgruppe
 	 *            <code>atg.ufdsDifferenzialKontrolle<b>*</b></code>
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	public UniversalAtgUfdsDifferenzialKontrolle(final ResultData parameter) {
+	public UniversalAtgUfdsDifferenzialKontrolle(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
 			throw new NullPointerException("Übergebener Parameter ist <<null>>"); //$NON-NLS-1$
 		}
@@ -87,8 +89,7 @@ AllgemeinerDatenContainer {
 			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue
 					.intValue());
 		}
-		this.grenz = new UmfeldDatenSensorWert(
-				UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject()));
+		this.grenz = new UmfeldDatenSensorWert(datenArt);
 		this.grenz
 				.setWert(parameter
 						.getData()

@@ -34,6 +34,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
@@ -71,10 +72,11 @@ AbstraktUmfeldDatenSensor {
 
 	/**
 	 * {@inheritDoc}
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$

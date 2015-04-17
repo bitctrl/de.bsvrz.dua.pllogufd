@@ -50,6 +50,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
@@ -261,9 +262,10 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public final void sendeDatum(final SystemObject sensor, final double wert,
-			final long datenZeitStempel) {
+			final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 				TestUtensilien.getExterneErfassungDatum(sensor));
 		datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
@@ -288,9 +290,10 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public final void sendeDaten(final Collection<SystemObject> sensoren,
-			final double wert, final long datenZeitStempel) {
+			final double wert, final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
 		for (final SystemObject sensor : sensoren) {
 			this.sendeDatum(sensor, wert, datenZeitStempel);
 		}
@@ -303,9 +306,10 @@ ClientReceiverInterface {
 	 *            eine Menge von Umfelddatensensoren
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public final void sendeFehlerhaftDaten(
-			final Collection<SystemObject> sensoren, final long datenZeitStempel) {
+			final Collection<SystemObject> sensoren, final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
 		for (final SystemObject sensor : sensoren) {
 			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
 					UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
@@ -323,9 +327,10 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public final void sendeDatum(final SystemObject sensor, final long wert,
-			final long datenZeitStempel) {
+			final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 				TestUtensilien.getExterneErfassungDatum(sensor));
 		datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
@@ -353,9 +358,10 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public final void sendeDaten(final Collection<SystemObject> sensoren,
-			final long wert, final long datenZeitStempel) {
+			final long wert, final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
 		for (final SystemObject sensor : sensoren) {
 			this.sendeDatum(sensor, wert, datenZeitStempel);
 		}
@@ -392,8 +398,9 @@ ClientReceiverInterface {
 	 *
 	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher schon
 	 *         seit mehreren Intervallen keine Werte mehr vorliegen
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	protected final long getTestBeginnIntervall() {
+	protected final long getTestBeginnIntervall() throws UmfeldDatenSensorUnbekannteDatenartException {
 		final long intervall = TestUtensilien.getBeginAktuellerSekunde();
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {

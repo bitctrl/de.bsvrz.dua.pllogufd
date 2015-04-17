@@ -36,6 +36,7 @@ import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
@@ -90,8 +91,9 @@ public final class TestUtensilien {
 	 * @return ein (ausgefüllter) Umfelddaten-Messwert der zum übergebenen
 	 *         Systemobjekt passt. Alle Pl-Prüfungs-Flags sind auf
 	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall beträgt 1 min.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	public static ResultData getExterneErfassungDatum(final SystemObject sensor) {
+	public static ResultData getExterneErfassungDatum(final SystemObject sensor) throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(sensor);
 		final DataDescription datenBeschreibung = new DataDescription(

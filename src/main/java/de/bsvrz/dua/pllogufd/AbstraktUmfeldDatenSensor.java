@@ -39,6 +39,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
  * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine Pl-Prüfung
@@ -100,15 +101,16 @@ ClientReceiverInterface {
 	 *             auftritt
 	 */
 	protected abstract Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException;
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException ;
 
 	/**
 	 * Fuehrt die Empfangsanmeldung durch.
 	 *
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	public void init() throws DUAInitialisierungsException {
+	public void init() throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
 		for (final AttributeGroup atg : this.getParameterAtgs()) {
 			parameterBeschreibungen.add(new DataDescription(atg,

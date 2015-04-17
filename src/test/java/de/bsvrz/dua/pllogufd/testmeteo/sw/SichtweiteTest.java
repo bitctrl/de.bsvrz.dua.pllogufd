@@ -36,6 +36,7 @@ import de.bsvrz.dua.pllogufd.testmeteo.MeteoErgebnis;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoKonst;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolleTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
  * Überprüfung des Submoduls Sichtweite aus der Komponente Meteorologische
@@ -74,9 +75,10 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel1</code> aus
 	 * {@link SichtweitenMessstelle}.
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Test
-	public final void testRegel1() {
+	public final void testRegel1() throws UmfeldDatenSensorUnbekannteDatenartException {
 
 		/**
 		 * Erste Zeile aus Tabelle auf Seite 28

@@ -47,6 +47,7 @@ import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
@@ -505,8 +506,9 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	 *
 	 * @param an
 	 *            Standardparameter anschalten?
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	public void setMeteoKontrolle(final boolean an) {
+	public void setMeteoKontrolle(final boolean an) throws UmfeldDatenSensorUnbekannteDatenartException {
 		final Aspect vorgabeAspekt = PlPruefungLogischUFDTest.dav
 				.getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE);
 
@@ -847,9 +849,10 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	 *            muss, damit die Differenzialkontrolle durchgeführt werden kann
 	 * @param zeit
 	 *            die Zeit, die ein Wert maximal gleich bleiben darf
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public final void setDiffPara(final SystemObject sensor, final int wert,
-			final long zeit) {
+			final long zeit) throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(sensor);
 		final Data datum = PlPruefungLogischUFDTest.dav
@@ -888,8 +891,9 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	 *            der Sensor
 	 * @param maxDiff
 	 *            die maximale Differenz zwischen zwei Werten
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	public final void setAnAbPara(final SystemObject sensor, final long maxDiff) {
+	public final void setAnAbPara(final SystemObject sensor, final long maxDiff) throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(sensor);
 

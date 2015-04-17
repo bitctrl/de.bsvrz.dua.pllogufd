@@ -42,6 +42,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -127,8 +128,17 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 					if (betrachtetesObjekt.isValid()) {
 						if (sensorMengeAnMessStelle.getElements().contains(
 								betrachtetesObjekt)) {
-							final UmfeldDatenArt datenArt = UmfeldDatenArt
-									.getUmfeldDatenArtVon(betrachtetesObjekt);
+							UmfeldDatenArt datenArt;
+							try {
+								datenArt = UmfeldDatenArt
+										.getUmfeldDatenArtVon(betrachtetesObjekt);
+							} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+								LOGGER.warning("Unbekannter Sensor (" + //$NON-NLS-1$
+										betrachtetesObjekt
+										+ ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
+								continue;
+							}
+							
 							if (datenArt == null) {
 								throw new DUAInitialisierungsException(
 										"Unbekannter Sensor (" + //$NON-NLS-1$
@@ -232,8 +242,15 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 		SystemObject parameterSensorObj = null;
 
 		for (final SystemObject sensor : this.getSensoren()) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				continue;
+			}
+			
 			if (datenArt.equals(UmfeldDatenArt.ns)) {
 				parameterSensorObj = sensor;
 				break;
@@ -245,8 +262,13 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 					" konnte kein Sensor für Niederschlagsart identifiziert werden"); //$NON-NLS-1$
 		}
 
-		this.parameterSensor = new NiederschlagsArtParameter(
-				AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
+		try {
+			this.parameterSensor = new NiederschlagsArtParameter(
+					AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
+		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
+					" konnte kein Sensor für Niederschlagsart identifiziert werden: " + e.getMessage()); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -268,8 +290,14 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 		boolean erfolgreich = false;
 
 		if (umfeldDatum.getData() != null) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(umfeldDatum.getObject());
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(umfeldDatum.getObject());
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				return false;
+			}
 
 			if (datenArt != null) {
 				if (this.isDatumSpeicherbar(umfeldDatum)) {
@@ -365,8 +393,15 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 			final ResultData umfeldDatum) {
 		UmfeldDatenSensorDatum datumInPosition = null;
 
-		final UmfeldDatenArt datenArt = UmfeldDatenArt
-				.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		UmfeldDatenArt datenArt;
+		try {
+			datenArt = UmfeldDatenArt
+					.getUmfeldDatenArtVon(umfeldDatum.getObject());
+		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			LOGGER.warning(e.getMessage());
+			return null;
+		}
+		
 		if (datenArt != null) {
 			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				datumInPosition = this.letztesUfdNIDatum;

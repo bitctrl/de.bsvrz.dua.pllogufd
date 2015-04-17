@@ -38,6 +38,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -73,19 +74,21 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 *            das Sensor-Objekt
 	 * @throws DUAInitialisierungsException
 	 *             wenn die Instaziierung fehlschlägt
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	protected AufAbUmfeldDatenSensor(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException {
+			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
 		super.init();
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException {
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
@@ -93,9 +96,16 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		}
 
 		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
+		
+		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt);
+		if (datenArt == null) {
+			throw new UmfeldDatenSensorUnbekannteDatenartException(
+					"Datenart von Umfelddatensensor " + this.objekt + //$NON-NLS-1$ 
+							" (" + objekt.getType()
+							+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
+		}
 
-		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + //$NON-NLS-1$
-				UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();
+		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName();
 
 		final AttributeGroup atg = AbstraktUmfeldDatenSensor.verwaltungsModul
 				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
@@ -184,8 +194,13 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			for (final ResultData resultat : resultate) {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
-						this.parameter = new UniversalAtgUfdsAnstiegAbstiegKontrolle(
-								resultat);
+						try {
+							this.parameter = new UniversalAtgUfdsAnstiegAbstiegKontrolle(
+									resultat);
+						} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+							LOGGER.warning(e.getMessage());
+							continue;
+						}
 						LOGGER
 						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
 								+ this.parameter);
