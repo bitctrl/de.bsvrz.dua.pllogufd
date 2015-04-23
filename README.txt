@@ -11,11 +11,11 @@ Version: 1.4.0
 Aufgabe der SWE PL-Prüfung logisch UFD besteht in der Durchführung der logischen
 Plausibilitätsprüfungen der von Umfelddatensensoren gelieferten Umfelddaten. Dazu
 wird eine Reihe von einzelnen Prüfungen durchgeführt. Dies sind
-•	Ausfallüberwachung von Messwerten,
-•	Wertebereichsprüfung,
-•	Differentialkontrolle von Werten,
-•	Anstieg-Abstieg-Kontrolle und
-•	Meteorologische Kontrolle.
+-	Ausfallüberwachung von Messwerten,
+-	Wertebereichsprüfung,
+-	Differentialkontrolle von Werten,
+-	Anstieg-Abstieg-Kontrolle und
+-	Meteorologische Kontrolle.
 Die genauen Prüfalgorithmen sind in den Anwenderforderungen aufgeführt. Nach der
 Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
@@ -25,6 +25,9 @@ Versionsgeschichte
 
 1.4.0
 - Umstellung auf Maven-Build
+- Behandlung nicht unterstützter Sensorarten über die 'UmfeldDatenSensorUnbekannteDatenartException'
+- benötigt SWE_de.bsvrz.sys.funclib.bitctrl_FREI_V1.2.3.zip oder höher 
+
 
 1.3.3
 

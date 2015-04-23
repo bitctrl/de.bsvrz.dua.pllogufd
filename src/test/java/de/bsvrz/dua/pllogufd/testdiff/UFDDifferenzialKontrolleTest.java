@@ -52,6 +52,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
@@ -66,7 +67,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  */
 @Ignore("Testdatenverteiler prüfen")
 public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
-ClientReceiverInterface {
+		ClientReceiverInterface {
 
 	/**
 	 * standardmäßige maximal zulässige Ergebniskonstanz in Intervallen.
@@ -127,14 +128,20 @@ ClientReceiverInterface {
 		 * filtere FBZ heraus
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+
 			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				this.untersuchteSensoren.add(sensor);
 			}
 		}
 
-		/**
+/**
 		 * maximal zulässige Zeitdauer der Ergebniskonstanz auf
 		 * <code>STANDARD_T * STANDARD_MAX_INTERVALLE</code> stellen Eine
 		 * Überprüfung findet nur statt, wenn ein eingetroffener Wert "<" als
@@ -154,13 +161,18 @@ ClientReceiverInterface {
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : this.untersuchteSensoren) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
 			final DataDescription datenBeschreibung = new DataDescription(dav
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-							dav.getDataModel().getAspect(
-									"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+					dav.getDataModel().getAspect(
+							"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -190,8 +202,15 @@ ClientReceiverInterface {
 		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T + 10);
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final ResultData resultat = TestUtensilien
-					.getExterneErfassungDatum(sensor);
+			final ResultData resultat;
+			try {
+				resultat = TestUtensilien
+						.getExterneErfassungDatum(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+			
 			final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 					resultat);
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
@@ -216,15 +235,15 @@ ClientReceiverInterface {
 		if (!this.ergebnisIst.isEmpty() && !this.ergebnisSoll.isEmpty()) {
 			for (final SystemObject sensor : this.untersuchteSensoren) {
 				System.out
-				.println("Vergleiche (DIFF)" + sensor.getPid() + ": Soll(" + (this.ergebnisSoll.get(sensor) ? "impl" : "ok") + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-						"), Ist(" //$NON-NLS-1$
-						+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") + ") --> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						(this.ergebnisSoll.get(sensor) == this.ergebnisIst
-						.get(sensor) ? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
+						.println("Vergleiche (DIFF)" + sensor.getPid() + ": Soll(" + (this.ergebnisSoll.get(sensor) ? "impl" : "ok") + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+								"), Ist(" //$NON-NLS-1$
+								+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") + ") --> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								(this.ergebnisSoll.get(sensor) == this.ergebnisIst
+										.get(sensor) ? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
 				Assert.assertEquals(
 						"fehlerhaftes Resultat: " + this.ergebnisEingetroffen.get(sensor), //$NON-NLS-1$
 						this.ergebnisSoll.get(sensor), this.ergebnisIst
-						.get(sensor));
+								.get(sensor));
 			}
 		}
 		this.ergebnisIst.clear();

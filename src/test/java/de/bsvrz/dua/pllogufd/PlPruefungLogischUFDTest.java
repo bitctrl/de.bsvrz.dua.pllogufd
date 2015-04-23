@@ -163,6 +163,9 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	public static SystemObject wr1 = null;
 	public static SystemObject wr2 = null;
 	public static SystemObject wr3 = null;
+	
+	
+	public static SystemObject uk1 = null;
 
 	/**
 	 * Menge aller im Test betrachteten Sensoren.
@@ -188,8 +191,14 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	public PlPruefungLogischUFDTest() throws Exception {
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				continue;
+			}
 
 			final DataDescription datenBeschreibung = new DataDescription(
 					PlPruefungLogischUFDTest.dav.getDataModel()
@@ -204,8 +213,14 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		 * Anmelden zum Senden von Parameter für die Meteorologische Kontrolle
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				continue;
+			}
 
 			if (datenArt.equals(UmfeldDatenArt.ns)
 					|| datenArt.equals(UmfeldDatenArt.ni)
@@ -243,8 +258,15 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		 * Anmeldung auf die Parameter der Differenzialkontrolle
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				continue;
+			}
+			
 			final DataDescription paraDifferenzialkontrolle = new DataDescription(
 					PlPruefungLogischUFDTest.dav
 					.getDataModel()
@@ -260,8 +282,15 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		 * Anmeldung auf alle Parameter der Anstieg-Abfall-Kontrolle
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				LOGGER.warning(e.getMessage());
+				continue;
+			}
+			
 			final DataDescription paraAnstiegAbfallKontrolle = new DataDescription(
 					PlPruefungLogischUFDTest.dav
 					.getDataModel()
@@ -484,6 +513,10 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 					.add(PlPruefungLogischUFDTest.wr3 = PlPruefungLogischUFDTest.dav
 							.getDataModel().getObject("AAA.pllogufd.WR.3")); //$NON-NLS-1$
 
+			PlPruefungLogischUFDTest.SENSOREN
+			.add(PlPruefungLogischUFDTest.uk1 = PlPruefungLogischUFDTest.dav
+					.getDataModel().getObject("BBB.pllogufd.US.1")); //$NON-NLS-1$
+
 			PlPruefungLogischUFDTest.sender = new PlPruefungLogischUFDTest();
 		}
 	}
@@ -517,8 +550,13 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			 * Standardparameter senden
 			 */
 			for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-				final UmfeldDatenArt datenArt = UmfeldDatenArt
-						.getUmfeldDatenArtVon(sensor);
+				UmfeldDatenArt datenArt;
+				try {
+					datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+				} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+					System.err.println("Wird nicht geprüft: " + e.getMessage());
+					continue;
+				}
 
 				if (datenArt.equals(UmfeldDatenArt.ns)) {
 					final AttributeGroup atg = PlPruefungLogischUFDTest.dav
@@ -642,8 +680,14 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			 * Alle Vergleichswerte auf <code>fehlerhaft</code> setzen
 			 */
 			for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-				final UmfeldDatenArt datenArt = UmfeldDatenArt
-						.getUmfeldDatenArtVon(sensor);
+				UmfeldDatenArt datenArt;
+				try {
+					datenArt = UmfeldDatenArt
+							.getUmfeldDatenArtVon(sensor);
+				} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+					LOGGER.warning(e.getMessage());
+					continue;
+				}
 
 				if (datenArt.equals(UmfeldDatenArt.ns)) {
 					final AttributeGroup atg = PlPruefungLogischUFDTest.dav

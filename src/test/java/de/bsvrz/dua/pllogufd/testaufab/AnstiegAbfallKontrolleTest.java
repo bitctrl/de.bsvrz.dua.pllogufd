@@ -56,6 +56,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
@@ -145,8 +146,13 @@ ClientReceiverInterface {
 		 * filtere FBZ heraus, da diese nicht sinnvoll überprüft werden können
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
 			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				this.untersuchteSensoren.add(sensor);
 			}
@@ -159,8 +165,15 @@ ClientReceiverInterface {
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
 					1000);
-			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
-					UmfeldDatenArt.fbz)) {
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+			
+			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				PlPruefungLogischUFDTest.sender.setDiffPara(sensor, 5,
 						Constants.MILLIS_PER_HOUR);
 			}
@@ -178,8 +191,13 @@ ClientReceiverInterface {
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
 			final DataDescription datenBeschreibung = new DataDescription(dav
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
@@ -219,8 +237,15 @@ ClientReceiverInterface {
 				DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final ResultData resultat = TestUtensilien
-					.getExterneErfassungDatum(sensor);
+			final ResultData resultat;
+			try {
+				resultat = TestUtensilien
+						.getExterneErfassungDatum(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+			
 			final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 					resultat);
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
@@ -248,8 +273,15 @@ ClientReceiverInterface {
 				+ (2 * PlPruefungLogischUFDTest.STANDARD_T) + 50);
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final ResultData resultat = TestUtensilien
-					.getExterneErfassungDatum(sensor);
+			final ResultData resultat;
+			try {
+				resultat = TestUtensilien
+						.getExterneErfassungDatum(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+
 			final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 					resultat);
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
@@ -369,8 +401,15 @@ ClientReceiverInterface {
 			 * die Diff-Prüfung kommen
 			 */
 			for (final SystemObject sensor : this.untersuchteSensoren) {
-				final ResultData resultat = TestUtensilien
-						.getExterneErfassungDatum(sensor);
+				final ResultData resultat;
+				try {
+					resultat = TestUtensilien
+							.getExterneErfassungDatum(sensor);
+				} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+					System.err.println("Wird nicht geprüft: " + e.getMessage());
+					continue;
+				}
+
 				final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 						resultat);
 				datum.setT(PlPruefungLogischUFDTest.STANDARD_T);

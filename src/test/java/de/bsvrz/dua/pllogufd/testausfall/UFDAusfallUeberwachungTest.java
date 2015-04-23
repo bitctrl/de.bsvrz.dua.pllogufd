@@ -56,6 +56,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
@@ -174,8 +175,15 @@ ClientReceiverInterface {
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt
+						.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println(e.getMessage());
+				continue;
+			}
+			
 			final DataDescription datenBeschreibung = new DataDescription(dav
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
@@ -208,8 +216,15 @@ ClientReceiverInterface {
 		}
 		for (int i = 0; i < 3; i++) {
 			for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-				final ResultData resultat = TestUtensilien
+				final ResultData resultat;
+				
+				try {
+					resultat = TestUtensilien
 						.getExterneErfassungDatum(sensor);
+				} catch (UmfeldDatenSensorUnbekannteDatenartException e ) {
+					System.err.println( e.getMessage());
+					continue;
+				}
 				final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 						resultat);
 				datum.setT(Constants.MILLIS_PER_HOUR);
@@ -254,8 +269,15 @@ ClientReceiverInterface {
 		ersteDatenZeit = TestUtensilien.getBeginNaechsterMinute()
 				- (Constants.MILLIS_PER_MINUTE * 2);
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final ResultData resultat = TestUtensilien
+			final ResultData resultat;
+			
+			try {
+				resultat = TestUtensilien
 					.getExterneErfassungDatum(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e ) {
+				System.err.println( e.getMessage());
+				continue;
+			}
 			resultat.setDataTime(ersteDatenZeit);
 			PlPruefungLogischUFDTest.sender.sende(resultat);
 		}
@@ -271,6 +293,13 @@ ClientReceiverInterface {
 	private void ergebnisUeberpruefen() {
 		if (!this.ergebnisIst.isEmpty() && !this.ergebnisSoll.isEmpty()) {
 			for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
+				
+				try {
+					UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+				} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+					System.err.println("Nicht geprüft: " + e.getMessage());
+					continue;
+				}
 
 				final Collection<Ergebnis> istErgebnisse = this.ergebnisIst
 						.get(sensor);
@@ -314,7 +343,7 @@ ClientReceiverInterface {
 				 * JUnit-Test
 				 */
 				Assert.assertTrue(
-						"Felher an Sensor: " + sensor.getPid(), erfolgsErgebnis != null); //$NON-NLS-1$
+						"Fehler an Sensor: " + sensor.getPid(), erfolgsErgebnis != null); //$NON-NLS-1$
 			}
 		}
 
@@ -386,8 +415,14 @@ ClientReceiverInterface {
 					continue;
 				}
 
-				final ResultData resultat = TestUtensilien
-						.getExterneErfassungDatum(sensor);
+				ResultData resultat;
+				try {
+					resultat = TestUtensilien
+							.getExterneErfassungDatum(sensor);
+				} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+					System.err.println("Sende nicht: " + e.getMessage()); //$NON-NLS-1$
+					continue;
+				}
 				resultat.setDataTime(start - Constants.MILLIS_PER_MINUTE);
 				PlPruefungLogischUFDTest.sender.sende(resultat);
 

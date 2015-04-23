@@ -169,13 +169,18 @@ ClientReceiverInterface {
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
-			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
-					UmfeldDatenArt.fbz)) {
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				PlPruefungLogischUFDTest.sender.setDiffPara(sensor, 5,
 						Constants.MILLIS_PER_HOUR);
 			}
-			if (!UmfeldDatenArt.getUmfeldDatenArtVon(sensor).equals(
-					UmfeldDatenArt.fbz)) {
+			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				PlPruefungLogischUFDTest.sender.setAnAbPara(sensor, 5);
 			}
 		}
@@ -185,8 +190,13 @@ ClientReceiverInterface {
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
 			final DataDescription datenBeschreibung = new DataDescription(dav
 					.getDataModel().getAttributeGroup(
 							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
@@ -200,8 +210,13 @@ ClientReceiverInterface {
 		 * Initialisiere alle Objektmengen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenArt datenArt = UmfeldDatenArt
-					.getUmfeldDatenArtVon(sensor);
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
 			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				this.niSensoren.add(sensor);
 			}
@@ -311,8 +326,14 @@ ClientReceiverInterface {
 	public final void sendeFehlerhaftDaten(
 			final Collection<SystemObject> sensoren, final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
 		for (final SystemObject sensor : sensoren) {
-			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
-					UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
 			wert.setFehlerhaftAn();
 			this.sendeDatum(sensor, wert.getWert(), datenZeitStempel);
 		}
@@ -404,8 +425,14 @@ ClientReceiverInterface {
 		final long intervall = TestUtensilien.getBeginAktuellerSekunde();
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
-			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
-					UmfeldDatenArt.getUmfeldDatenArtVon(sensor));
+			UmfeldDatenArt datenArt;
+			try {
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				continue;
+			}
+			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
 			wert.setFehlerhaftAn();
 			this.sendeDatum(sensor, wert.getWert(), intervall);
 		}
