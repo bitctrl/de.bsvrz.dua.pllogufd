@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.bsvrz.dua</groupId>
 	<artifactId>de.bsvrz.dua.pllogufd</artifactId>
-	<version>1.4.0</version>
+	<version>1.4.1-SNAPSHOT</version>
 
 
 	<name>Segment 4 Datenübernahme und Aufbereitung (DUA), Pl-Logisch UFD (SWE 4.3)</name>
