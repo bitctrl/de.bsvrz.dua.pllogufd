@@ -232,10 +232,6 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		return WasserfilmDickeMessstelle.ufdsAufUfdMs.get(umfeldDatenSensorObj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
-	 */
 	@Override
 	protected void initialisiereMessStelle()
 			throws DUAInitialisierungsException, NoSuchSensorException {

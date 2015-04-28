@@ -28,6 +28,7 @@ package de.bsvrz.dua.pllogufd.testmeteo.sw;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.DuplicateFormatFlagsException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -106,7 +107,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	 * @throws DUAInitialisierungsException
 	 *             wenn die Umfelddaten-Messstelle nicht vollständig
 	 *             initialisiert werden konnte (mit allen Sensoren usw.)
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws DuplicateFormatFlagsException
 	 */
 	private SichtweitenMessstelle(final SystemObject ufdmsObj)
 			throws DUAInitialisierungsException {
@@ -164,7 +165,6 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	 *             wenn eine Messstelle nicht instanziiert werden konnte oder
 	 *             wenn ein Umfelddatensensor mehreren Messstellen zugeordnet
 	 *             ist
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public static void initialisiere(final IVerwaltung verwaltung)
 			throws DUAInitialisierungsException {
