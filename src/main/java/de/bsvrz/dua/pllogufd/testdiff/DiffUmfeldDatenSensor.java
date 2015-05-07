@@ -48,8 +48,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Differenzialkontrolle
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
@@ -90,7 +88,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					" (" + obj.getType()
 					+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
 		}
-		this.wert = new VariableMitKonstanzZaehler<Long>(datenArt.getName());
+		this.wert = new VariableMitKonstanzZaehler<>(datenArt.getName());
 		this.init();
 	}
 
@@ -107,7 +105,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
-		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
+		final Collection<AttributeGroup> parameterAtgs = new HashSet<>();
 
 		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt.//$NON-NLS-1$
 				getUmfeldDatenArtVon(this.objekt).getName();

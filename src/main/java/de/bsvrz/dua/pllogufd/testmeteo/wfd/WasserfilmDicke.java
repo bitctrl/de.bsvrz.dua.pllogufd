@@ -36,8 +36,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Das Submodul Wasserfilmdicke.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class WasserfilmDicke extends AbstraktMeteoSubModul {
 

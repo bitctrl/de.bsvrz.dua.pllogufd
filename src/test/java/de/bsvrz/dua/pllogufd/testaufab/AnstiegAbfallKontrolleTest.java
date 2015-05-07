@@ -65,9 +65,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: AnstiegAbfallKontrolleTest.java 53827 2015-03-18 10:04:42Z
- *          peuker $
  */
 @Ignore("Testdatenverteiler prüfen")
 public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
@@ -108,7 +105,7 @@ ClientReceiverInterface {
 	 * die hier betrachteten Sensoren (z.B. nur Sensoren, die kontinuierliche
 	 * Werten bereitstellen)
 	 */
-	private final Collection<SystemObject> untersuchteSensoren = new HashSet<SystemObject>();
+	private final Collection<SystemObject> untersuchteSensoren = new HashSet<>();
 
 	/**
 	 * Datenverteiler-Verbindung.
@@ -120,7 +117,7 @@ ClientReceiverInterface {
 	 * (<code>Implausibel</code> und <code>fehlerhaft</code> ==
 	 * <code>true</code>).
 	 */
-	private final Map<SystemObject, Boolean> ergebnisIst = new HashMap<SystemObject, Boolean>();
+	private final Map<SystemObject, Boolean> ergebnisIst = new HashMap<>();
 
 	/**
 	 * aktuelles Intervall für Testdaten.

@@ -36,8 +36,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
  * Ergebnisobjekt eines Tests der Komponente Meteorologische Kontrolle.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class MeteoErgebnis {
 

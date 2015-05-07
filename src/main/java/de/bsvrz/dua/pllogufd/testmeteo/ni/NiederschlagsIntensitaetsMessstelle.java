@@ -56,9 +56,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * <code>aktualisiereDaten(..)</code> durchgeführt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: NiederschlagsIntensitaetsMessstelle.java 53825 2015-03-18
- *          09:36:42Z peuker $
  */
 public final class NiederschlagsIntensitaetsMessstelle extends
 AbstraktMeteoMessstelle {
@@ -68,7 +65,7 @@ AbstraktMeteoMessstelle {
 	/**
 	 * Im Submodul Niederschlagsintensität betrachtete Datenarten.
 	 */
-	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
+	private static Collection<UmfeldDatenArt> datenArten = new HashSet<>();
 	static {
 		NiederschlagsIntensitaetsMessstelle.datenArten.add(UmfeldDatenArt.ns);
 		NiederschlagsIntensitaetsMessstelle.datenArten.add(UmfeldDatenArt.ni);
@@ -80,7 +77,7 @@ AbstraktMeteoMessstelle {
 	 * Zuordnung des Systemobjekts eines Umfelddatensensors zu einer Instanz
 	 * dieser Klasse.
 	 */
-	private static Map<SystemObject, NiederschlagsIntensitaetsMessstelle> ufdsAufUfdMs = new HashMap<SystemObject, NiederschlagsIntensitaetsMessstelle>();
+	private static Map<SystemObject, NiederschlagsIntensitaetsMessstelle> ufdsAufUfdMs = new HashMap<>();
 
 	/**
 	 * letztes Niederschlagsintensitäts-Datum.
@@ -362,7 +359,7 @@ AbstraktMeteoMessstelle {
 	 */
 	@Override
 	protected ResultData[] getAlleAktuellenWerte() {
-		final List<ResultData> aktuelleWerte = new ArrayList<ResultData>();
+		final List<ResultData> aktuelleWerte = new ArrayList<>();
 
 		if (this.letztesUfdNIDatum != null) {
 			aktuelleWerte.add(this.letztesUfdNIDatum

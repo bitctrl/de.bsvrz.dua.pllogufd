@@ -37,8 +37,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
  * Das Submodul Sichtweite.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class Sichtweite extends AbstraktMeteoSubModul {
 

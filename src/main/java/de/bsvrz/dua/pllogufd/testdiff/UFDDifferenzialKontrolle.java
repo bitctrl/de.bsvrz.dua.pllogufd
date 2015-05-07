@@ -51,9 +51,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * die Daten an den nächsten Bearbeitungsknoten weitergereicht
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UFDDifferenzialKontrolle.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -63,7 +60,7 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	 * assoziierte Objekte mit allen für die Differentialkontrolle benötigten
 	 * Informationen.
 	 */
-	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<SystemObject, DiffUmfeldDatenSensor>();
+	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<>();
 
 	/**
 	 * {@inheritDoc}
@@ -94,7 +91,7 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
-			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<>();
 
 			for (final ResultData resultat : resultate) {
 				if (resultat != null) {

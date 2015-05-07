@@ -40,9 +40,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Parameter für die meteorologische Kontrolle "Niederschlagsintensität".
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: NiederschlagsIntensitaetsParameter.java 53825 2015-03-18
- *          09:36:42Z peuker $
  */
 public class NiederschlagsIntensitaetsParameter extends
 AbstraktMeteoUmfeldDatenSensor {

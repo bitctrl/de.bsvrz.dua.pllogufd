@@ -61,9 +61,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * dem Aspekt <code>asp.plausibilitätsPrüfungLogisch</code> an
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: MeteorologischeKontrolleTest.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public class MeteorologischeKontrolleTest implements ClientSenderInterface,
 ClientReceiverInterface {
@@ -98,43 +95,43 @@ ClientReceiverInterface {
 	/**
 	 * alle NS-Sensoren.
 	 */
-	protected SortedSet<SystemObject> nsSensoren = new TreeSet<SystemObject>(
+	protected SortedSet<SystemObject> nsSensoren = new TreeSet<>(
 			MeteorologischeKontrolleTest.C);
 
 	/**
 	 * alle NI-Sensoren.
 	 */
-	protected SortedSet<SystemObject> niSensoren = new TreeSet<SystemObject>(
+	protected SortedSet<SystemObject> niSensoren = new TreeSet<>(
 			MeteorologischeKontrolleTest.C);
 
 	/**
 	 * alle LT-Sensoren.
 	 */
-	protected SortedSet<SystemObject> ltSensoren = new TreeSet<SystemObject>(
+	protected SortedSet<SystemObject> ltSensoren = new TreeSet<>(
 			MeteorologischeKontrolleTest.C);
 
 	/**
 	 * alle RLF-Sensoren.
 	 */
-	protected SortedSet<SystemObject> rlfSensoren = new TreeSet<SystemObject>(
+	protected SortedSet<SystemObject> rlfSensoren = new TreeSet<>(
 			MeteorologischeKontrolleTest.C);
 
 	/**
 	 * alle WFD-Sensoren.
 	 */
-	protected SortedSet<SystemObject> wfdSensoren = new TreeSet<SystemObject>(
+	protected SortedSet<SystemObject> wfdSensoren = new TreeSet<>(
 			MeteorologischeKontrolleTest.C);
 
 	/**
 	 * alle SW-Sensoren.
 	 */
-	protected SortedSet<SystemObject> swSensoren = new TreeSet<SystemObject>(
+	protected SortedSet<SystemObject> swSensoren = new TreeSet<>(
 			MeteorologischeKontrolleTest.C);
 
 	/**
 	 * alle FBZ-Sensoren.
 	 */
-	protected SortedSet<SystemObject> fbzSensoren = new TreeSet<SystemObject>(
+	protected SortedSet<SystemObject> fbzSensoren = new TreeSet<>(
 			MeteorologischeKontrolleTest.C);
 
 	/**
@@ -142,12 +139,12 @@ ClientReceiverInterface {
 	 * "fehlerhaft" gesendet werden müssen, um das Ergebnis nicht zu
 	 * beeinflussen.
 	 */
-	protected HashSet<SystemObject> restSensoren = new HashSet<SystemObject>();
+	protected HashSet<SystemObject> restSensoren = new HashSet<>();
 
 	/**
 	 * letzter Ist-Ergebnis-Wert von einem Sensor.
 	 */
-	protected Map<SystemObject, MeteoErgebnis> ergebnisIst = new HashMap<SystemObject, MeteoErgebnis>();
+	protected Map<SystemObject, MeteoErgebnis> ergebnisIst = new HashMap<>();
 
 	/**
 	 * Standardkonstruktor.

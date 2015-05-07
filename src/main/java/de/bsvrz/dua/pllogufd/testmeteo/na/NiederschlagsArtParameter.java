@@ -40,9 +40,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Parameter für die meteorologische Kontrolle "Niederschlagsart".
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: NiederschlagsArtParameter.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public final class NiederschlagsArtParameter extends
 		AbstraktMeteoUmfeldDatenSensor {

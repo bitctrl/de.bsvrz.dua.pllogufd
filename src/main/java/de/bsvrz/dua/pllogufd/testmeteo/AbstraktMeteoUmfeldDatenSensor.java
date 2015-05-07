@@ -42,9 +42,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * zugeführt werden.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: AbstraktMeteoUmfeldDatenSensor.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public abstract class AbstraktMeteoUmfeldDatenSensor extends
 AbstraktUmfeldDatenSensor {

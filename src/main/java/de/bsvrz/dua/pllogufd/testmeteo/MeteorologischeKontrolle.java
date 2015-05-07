@@ -48,9 +48,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Implausibel gesetzt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: MeteorologischeKontrolle.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 

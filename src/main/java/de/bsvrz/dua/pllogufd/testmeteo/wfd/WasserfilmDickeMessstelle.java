@@ -55,9 +55,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * <code>aktualisiereDaten(..)</code> durchgeführt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: WasserfilmDickeMessstelle.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 
@@ -66,7 +63,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	/**
 	 * Im Submodul WasserfilmDicke betrachtete Datenarten.
 	 */
-	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
+	private static Collection<UmfeldDatenArt> datenArten = new HashSet<>();
 	static {
 		WasserfilmDickeMessstelle.datenArten.add(UmfeldDatenArt.fbz);
 		WasserfilmDickeMessstelle.datenArten.add(UmfeldDatenArt.ni);
@@ -78,7 +75,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	 * Zuordnung des Systemobjekts eines Umfelddatensensors zu einer Instanz
 	 * dieser Klasse.
 	 */
-	private static Map<SystemObject, WasserfilmDickeMessstelle> ufdsAufUfdMs = new HashMap<SystemObject, WasserfilmDickeMessstelle>();
+	private static Map<SystemObject, WasserfilmDickeMessstelle> ufdsAufUfdMs = new HashMap<>();
 
 	/**
 	 * letztes Niederschlagsintensitäts-Datum.
@@ -342,7 +339,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	 */
 	@Override
 	protected ResultData[] getAlleAktuellenWerte() {
-		final List<ResultData> aktuelleWerte = new ArrayList<ResultData>();
+		final List<ResultData> aktuelleWerte = new ArrayList<>();
 
 		if (this.letztesUfdNIDatum != null) {
 			aktuelleWerte.add(this.letztesUfdNIDatum

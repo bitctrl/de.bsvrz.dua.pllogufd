@@ -32,8 +32,6 @@ import de.bsvrz.dua.pllogufd.PlPruefungLogischUFDTest;
  * Standardwerte für meteorologische Pl-Prüfung.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public final class MeteoKonst {
 

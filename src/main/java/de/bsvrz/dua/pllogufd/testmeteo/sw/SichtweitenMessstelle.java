@@ -56,8 +56,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * <code>aktualisiereDaten(..)</code> durchgeführt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 
@@ -66,7 +64,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	/**
 	 * Im Submodul Sichtweiten betrachtete Datenarten.
 	 */
-	private static Collection<UmfeldDatenArt> datenArten = new HashSet<UmfeldDatenArt>();
+	private static Collection<UmfeldDatenArt> datenArten = new HashSet<>();
 	static {
 		SichtweitenMessstelle.datenArten.add(UmfeldDatenArt.sw);
 		SichtweitenMessstelle.datenArten.add(UmfeldDatenArt.ns);
@@ -77,7 +75,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	 * Zuordnung des Systemobjekts eines Umfelddatensensors zu einer Instanz
 	 * dieser Klasse.
 	 */
-	private static Map<SystemObject, SichtweitenMessstelle> ufdsAufUfdMs = new HashMap<SystemObject, SichtweitenMessstelle>();
+	private static Map<SystemObject, SichtweitenMessstelle> ufdsAufUfdMs = new HashMap<>();
 
 	/**
 	 * letztes Scihtweite-Datum.
@@ -332,7 +330,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	 */
 	@Override
 	protected ResultData[] getAlleAktuellenWerte() {
-		final List<ResultData> aktuelleWerte = new ArrayList<ResultData>();
+		final List<ResultData> aktuelleWerte = new ArrayList<>();
 
 		if (this.letztesUfdSWDatum != null) {
 			aktuelleWerte.add(this.letztesUfdSWDatum

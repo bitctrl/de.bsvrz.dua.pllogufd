@@ -52,8 +52,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.26
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 @Ignore("Testdatenverteiler prüfen")
 public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {

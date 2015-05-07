@@ -36,8 +36,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Das Submodul Niederschlagsart.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class NiederschlagsArt extends AbstraktMeteoSubModul {
 

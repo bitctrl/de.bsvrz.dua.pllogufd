@@ -37,15 +37,13 @@ import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
  * gestellt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class UfdsVergleichsOperator extends AbstractDavZustand {
 
 	/**
 	 * Der Wertebereich dieses DAV-Enumerationstypen
 	 */
-	private static final Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = new HashMap<Integer, UfdsVergleichsOperator>();
+	private static final Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = new HashMap<>();
 
 	/**
 	 * Alle wirklichen Enumerationswerte

@@ -44,9 +44,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Kontrolle durchgeführt werden soll.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: AbstraktMeteoMessstelle.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public abstract class AbstraktMeteoMessstelle {
 
@@ -61,7 +58,7 @@ public abstract class AbstraktMeteoMessstelle {
 	 * die Systemobjekte aller Umfelddatensensoren, die an dieser Messstelle
 	 * konfiguriert sind (und in diesem Submodul betrachtet werden).
 	 */
-	protected Collection<SystemObject> sensorenAnMessStelle = new HashSet<SystemObject>();
+	protected Collection<SystemObject> sensorenAnMessStelle = new HashSet<>();
 
 	/**
 	 * der Zeitstempel aller im Moment gespeicherten Werte.
@@ -213,7 +210,7 @@ public abstract class AbstraktMeteoMessstelle {
 						 * Keine Daten oder keine Quelle heißt hier: Mache FLUSH
 						 * und leitet den übergebenen Datensatz sofort weiter
 						 */
-						final Collection<ResultData> ergebnisListe = new ArrayList<ResultData>();
+						final Collection<ResultData> ergebnisListe = new ArrayList<>();
 						for (final ResultData berechnungsErgebnis : this
 								.berechneAlleRegeln()) {
 							ergebnisListe.add(berechnungsErgebnis);
@@ -231,7 +228,7 @@ public abstract class AbstraktMeteoMessstelle {
 								LOGGER
 								.warning(
 										"Datum konnte nicht gespeichert werden:\n" + umfeldDatum); //$NON-NLS-1$
-								final ArrayList<ResultData> ergebnisseDummy = new ArrayList<ResultData>();
+								final ArrayList<ResultData> ergebnisseDummy = new ArrayList<>();
 								for (final ResultData ergebnis : ergebnisse) {
 									ergebnisseDummy.add(ergebnis);
 								}
@@ -358,11 +355,6 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Wird geworfen, wenn eine Meteomessstelle, die einer meteorologischen
 	 * Kontrolle unterworfen werden soll, eine bestimmte Umfelddatenart nicht
 	 * erfasst.
-	 *
-	 * @author BitCtrl Systems GmbH, Thierfelder
-	 *
-	 * @version $Id: AbstraktMeteoMessstelle.java 53825 2015-03-18 09:36:42Z
-	 *          peuker $
 	 */
 	protected class NoSuchSensorException extends Exception {
 

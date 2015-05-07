@@ -46,9 +46,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
  * logisch UFD anmeldet.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: AbstraktUmfeldDatenSensor.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public abstract class AbstraktUmfeldDatenSensor
 		implements ClientReceiverInterface {
@@ -114,7 +111,7 @@ public abstract class AbstraktUmfeldDatenSensor
 	 */
 	public void init() throws DUAInitialisierungsException,
 			UmfeldDatenSensorUnbekannteDatenartException {
-		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
+		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<>();
 		for (final AttributeGroup atg : this.getParameterAtgs()) {
 			parameterBeschreibungen.add(new DataDescription(atg,
 					AbstraktUmfeldDatenSensor.aspParameterSoll));

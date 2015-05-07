@@ -40,9 +40,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Parameter für die meteorologische Kontrolle "Wasserfilmdicke".
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: WasserFilmDickeParameter.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 

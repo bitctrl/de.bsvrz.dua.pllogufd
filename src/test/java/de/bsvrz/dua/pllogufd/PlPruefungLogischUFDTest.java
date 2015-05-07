@@ -56,9 +56,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Basisklasse der Tests der SWE Pl-Prüfung logisch UFD.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: PlPruefungLogischUFDTest.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 
@@ -170,7 +167,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	/**
 	 * Menge aller im Test betrachteten Sensoren.
 	 */
-	public static final List<SystemObject> SENSOREN = new ArrayList<SystemObject>();
+	public static final List<SystemObject> SENSOREN = new ArrayList<>();
 
 	/**
 	 * Datenverteiler-Verbindung.

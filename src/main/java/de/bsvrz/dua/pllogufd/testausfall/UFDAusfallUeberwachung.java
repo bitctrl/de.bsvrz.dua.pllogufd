@@ -52,8 +52,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * nächsten Bearbeitungsknoten weitergereicht.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
 implements ClientReceiverInterface {

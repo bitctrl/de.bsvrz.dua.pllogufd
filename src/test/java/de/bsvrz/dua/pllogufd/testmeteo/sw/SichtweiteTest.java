@@ -48,8 +48,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
  * implementiert.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 @Ignore("Testdatenverteiler prüfen")
 public class SichtweiteTest extends MeteorologischeKontrolleTest {

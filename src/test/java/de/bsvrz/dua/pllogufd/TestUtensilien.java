@@ -43,8 +43,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * Einige Utensilien für die Tests der SWE 4.3.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public final class TestUtensilien {
 

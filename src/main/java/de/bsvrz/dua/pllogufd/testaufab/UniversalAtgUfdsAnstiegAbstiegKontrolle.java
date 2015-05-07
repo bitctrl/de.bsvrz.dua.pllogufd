@@ -37,9 +37,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UniversalAtgUfdsAnstiegAbstiegKontrolle.java 53825 2015-03-18
- *          09:36:42Z peuker $
  */
 public class UniversalAtgUfdsAnstiegAbstiegKontrolle extends
 AllgemeinerDatenContainer {

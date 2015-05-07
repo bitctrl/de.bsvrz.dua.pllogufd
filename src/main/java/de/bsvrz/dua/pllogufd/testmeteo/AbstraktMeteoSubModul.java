@@ -39,8 +39,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
  * Abstraktes Submodul der Komponente Meteorologischen Kontrolle.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public abstract class AbstraktMeteoSubModul extends
 AbstraktBearbeitungsKnotenAdapter {
@@ -64,7 +62,7 @@ AbstraktBearbeitungsKnotenAdapter {
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
 
-			final List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			final List<ResultData> weiterzuleitendeResultate = new ArrayList<>();
 			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
 

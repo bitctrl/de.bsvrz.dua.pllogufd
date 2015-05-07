@@ -36,9 +36,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Das Submodul Niederschlagsintensität.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: NiederschlagsIntensitaet.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public class NiederschlagsIntensitaet extends AbstraktMeteoSubModul {
 

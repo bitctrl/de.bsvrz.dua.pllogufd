@@ -61,9 +61,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 24
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UFDDifferenzialKontrolleTest.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 @Ignore("Testdatenverteiler prüfen")
 public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
@@ -77,7 +74,7 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	/**
 	 * die hier betrachteten Sensoren.
 	 */
-	private final Collection<SystemObject> untersuchteSensoren = new HashSet<SystemObject>();
+	private final Collection<SystemObject> untersuchteSensoren = new HashSet<>();
 
 	/**
 	 * Datenverteiler-Verbindung.
@@ -89,20 +86,20 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	 * (<code>Implausibel</code> und <code>fehlerhaft</code> ==
 	 * <code>true</code>).
 	 */
-	private final Map<SystemObject, Boolean> ergebnisSoll = new HashMap<SystemObject, Boolean>();
+	private final Map<SystemObject, Boolean> ergebnisSoll = new HashMap<>();
 
 	/**
 	 * letzter Ist-Ergebnis-Wert von einem Sensor<br>
 	 * (<code>Implausibel</code> und <code>fehlerhaft</code> ==
 	 * <code>true</code>).
 	 */
-	private final Map<SystemObject, Boolean> ergebnisIst = new HashMap<SystemObject, Boolean>();
+	private final Map<SystemObject, Boolean> ergebnisIst = new HashMap<>();
 
 	/**
 	 * letzter für einen Sensor eingetroffener Ergebnisdatensatz (für
 	 * Debugging).
 	 */
-	private final Map<SystemObject, ResultData> ergebnisEingetroffen = new HashMap<SystemObject, ResultData>();
+	private final Map<SystemObject, ResultData> ergebnisEingetroffen = new HashMap<>();
 
 	/**
 	 * aktuelles Intervall für Testdaten.

@@ -55,8 +55,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * werden die Daten an den nächsten Bearbeitungsknoten weitergereicht.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -65,7 +63,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 	 * assoziierte Objekte mit allen für die Anstieg-Abfall-Kontrolle benötigten
 	 * Informationen.
 	 */
-	private final Map<SystemObject, AufAbUmfeldDatenSensor> sensoren = new HashMap<SystemObject, AufAbUmfeldDatenSensor>();
+	private final Map<SystemObject, AufAbUmfeldDatenSensor> sensoren = new HashMap<>();
 
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
@@ -88,7 +86,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
-			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
+			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<>();
 
 			for (final ResultData resultat : resultate) {
 				if (resultat != null) {

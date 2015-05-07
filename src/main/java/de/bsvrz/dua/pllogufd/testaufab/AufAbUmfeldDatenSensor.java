@@ -47,8 +47,6 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Anstieg-Abfall-Kontrolle
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
@@ -95,7 +93,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
-		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
+		final Collection<AttributeGroup> parameterAtgs = new HashSet<>();
 		
 		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt);
 		if (datenArt == null) {

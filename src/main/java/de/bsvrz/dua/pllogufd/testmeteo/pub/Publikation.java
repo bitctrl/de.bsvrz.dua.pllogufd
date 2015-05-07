@@ -45,8 +45,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * Vorgaben der Datenflusssteuerung für das Modul Pl-Prüfung logisch UFD statt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -122,7 +120,7 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 				this.getModulTyp());
 
 		if (this.publizieren) {
-			Collection<DAVObjektAnmeldung> anmeldungenStd = new ArrayList<DAVObjektAnmeldung>();
+			Collection<DAVObjektAnmeldung> anmeldungenStd = new ArrayList<>();
 
 			if (this.standardAspekte != null) {
 				anmeldungenStd = this.standardAspekte

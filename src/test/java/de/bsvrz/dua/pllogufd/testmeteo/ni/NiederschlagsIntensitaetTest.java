@@ -53,9 +53,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
  * <b>dann</b> (NI=implausibel)</code>)
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: NiederschlagsIntensitaetTest.java 53827 2015-03-18 10:04:42Z
- *          peuker $
  */
 @Ignore("Testdatenverteiler prüfen")
 public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {

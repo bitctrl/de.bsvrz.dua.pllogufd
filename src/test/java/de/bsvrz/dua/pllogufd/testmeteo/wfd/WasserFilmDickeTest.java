@@ -44,8 +44,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.27-28
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 @Ignore("Testdatenverteiler prüfen")
 public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {

@@ -58,8 +58,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * Ausfallkontrolle
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
  */
 @Ignore("Testdatenverteiler prüfen")
 public class GrobTest implements ClientSenderInterface, ClientReceiverInterface {

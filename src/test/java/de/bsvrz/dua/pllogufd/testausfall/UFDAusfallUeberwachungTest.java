@@ -92,9 +92,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * Alle Ergebnisse des Tests werden in die Konsole ausgegeben
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UFDAusfallUeberwachungTest.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 @Ignore("Testdatenverteiler prüfen")
 public class UFDAusfallUeberwachungTest implements ClientSenderInterface,
@@ -145,7 +142,7 @@ ClientReceiverInterface {
 	/**
 	 * letzter Soll-Ergebnis-Wert von einem Sensor.
 	 */
-	private final Map<SystemObject, Ergebnis> ergebnisSoll = new HashMap<SystemObject, Ergebnis>();
+	private final Map<SystemObject, Ergebnis> ergebnisSoll = new HashMap<>();
 
 	/**
 	 * letzte Ist-Ergebnis-Werte von einem Sensor. Dies sind hier mehrere, da
@@ -153,7 +150,7 @@ ClientReceiverInterface {
 	 * z.B. die Ausfallkontrolle <b>und</b> die Testapplikation einen Wert
 	 * senden.
 	 */
-	private final Map<SystemObject, Collection<Ergebnis>> ergebnisIst = new HashMap<SystemObject, Collection<Ergebnis>>();
+	private final Map<SystemObject, Collection<Ergebnis>> ergebnisIst = new HashMap<>();
 
 	/**
 	 * Vorbereitungen.
@@ -506,7 +503,7 @@ ClientReceiverInterface {
 					Collection<Ergebnis> ergebnisseBisJetzt = this.ergebnisIst
 							.get(resultat.getObject());
 					if (ergebnisseBisJetzt == null) {
-						ergebnisseBisJetzt = new ArrayList<Ergebnis>();
+						ergebnisseBisJetzt = new ArrayList<>();
 						ergebnisseBisJetzt.add(ergebnisIstFuerSensor);
 						this.ergebnisIst.put(resultat.getObject(),
 								ergebnisseBisJetzt);
