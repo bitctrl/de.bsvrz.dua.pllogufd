@@ -50,8 +50,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
  * @version $Id: AbstraktUmfeldDatenSensor.java 53825 2015-03-18 09:36:42Z
  *          peuker $
  */
-public abstract class AbstraktUmfeldDatenSensor implements
-ClientReceiverInterface {
+public abstract class AbstraktUmfeldDatenSensor
+		implements ClientReceiverInterface {
 
 	/**
 	 * <code>asp.parameterSoll</code>.
@@ -101,16 +101,19 @@ ClientReceiverInterface {
 	 *             auftritt
 	 */
 	protected abstract Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException ;
+			throws DUAInitialisierungsException,
+			UmfeldDatenSensorUnbekannteDatenartException;
 
 	/**
 	 * Fuehrt die Empfangsanmeldung durch.
 	 *
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
+	 *             die Datenart des übergebenen Sensors wird nicht unterstützt
 	 */
-	public void init() throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+	public void init() throws DUAInitialisierungsException,
+			UmfeldDatenSensorUnbekannteDatenartException {
 		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
 		for (final AttributeGroup atg : this.getParameterAtgs()) {
 			parameterBeschreibungen.add(new DataDescription(atg,
@@ -119,9 +122,8 @@ ClientReceiverInterface {
 
 		for (final DataDescription parameterBeschreibung : parameterBeschreibungen) {
 			AbstraktUmfeldDatenSensor.verwaltungsModul.getVerbindung()
-					.subscribeReceiver(this, this.objekt,
-							parameterBeschreibung, ReceiveOptions.normal(),
-							ReceiverRole.receiver());
+			.subscribeReceiver(this, this.objekt, parameterBeschreibung,
+							ReceiveOptions.normal(), ReceiverRole.receiver());
 		}
 	}
 
