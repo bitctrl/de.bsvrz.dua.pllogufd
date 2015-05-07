@@ -443,7 +443,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NI > 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF > WFDgrenzNassRLF für Zeitraum > WFDminNassRLF)
+	 * <code><b>Wenn</b> (NI &gt; 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF &gt; WFDgrenzNassRLF für Zeitraum &gt; WFDminNassRLF)
 	 * <b>dann</b> (WFD=implausibel)</code> <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
@@ -477,7 +477,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (WFD > 0) <b>und</b> (FBZ == trocken) <b>dann</b> (WFD=implausibel, FBZ=implausibel)</code>
+	 * <code><b>Wenn</b> (WFD &gt; 0) <b>und</b> (FBZ == trocken) <b>dann</b> (WFD=implausibel, FBZ=implausibel)</code>
 	 * <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */

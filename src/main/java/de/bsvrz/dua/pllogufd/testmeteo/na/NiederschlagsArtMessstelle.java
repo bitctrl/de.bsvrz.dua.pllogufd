@@ -446,7 +446,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NS == Regen) <b>und</b> (LT < NSgrenzLT) <b>dann</b> (NS=implausibel)</code>
+	 * <code><b>Wenn</b> (NS == Regen) <b>und</b> (LT &lt; NSgrenzLT) <b>dann</b> (NS=implausibel)</code>
 	 * <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
@@ -477,7 +477,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI > 0) <b>dann</b> (NI=implausibel, NS=implausibel)</code>
+	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI &gt; 0) <b>dann</b> (NI=implausibel, NS=implausibel)</code>
 	 * <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 *
@@ -513,8 +513,8 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI > 0) <b>und</b> RLF == <code>nicht erfasst</code>
-	 * <b>dann</b> (NI=implausibel, NS=implausibel)</code> <br>
+	 * <b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI &gt; 0) <b>und</b> RLF == <code>nicht erfasst</code>
+	 * <b>dann</b> (NI=implausibel, NS=implausibel) <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
 	private void regel2() {
@@ -544,7 +544,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF < NSgrenzTrockenRLF)
+	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF &lt; NSgrenzTrockenRLF)
 	 * <b>dann</b> (NS=implausibel)</code> <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */

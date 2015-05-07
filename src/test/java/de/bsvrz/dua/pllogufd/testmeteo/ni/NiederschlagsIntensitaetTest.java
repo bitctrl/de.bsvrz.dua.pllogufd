@@ -49,7 +49,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
  * <b>Achtung:</b> Die ersten drei Zeilen der Tabelle werden hier nicht
  * berücksichtigt, da diese sich auf eine Regel beziehen, die nicht mehr zur
  * Implementierung vorgesehen ist (
- * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF > NIgrenzNassRLF)
+ * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF &gt; NIgrenzNassRLF)
  * <b>dann</b> (NI=implausibel)</code>)
  *
  * @author BitCtrl Systems GmbH, Thierfelder

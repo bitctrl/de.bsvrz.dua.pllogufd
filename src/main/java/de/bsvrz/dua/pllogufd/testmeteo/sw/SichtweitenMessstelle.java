@@ -431,7 +431,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (SW <= SWgrenz) <b>und</b> (NS == kein Niederschlag) <b>und</b> (RLF < SWgrenzTrockenRLF)
+	 * <code><b>Wenn</b> (SW &lt;= SWgrenz) <b>und</b> (NS == kein Niederschlag) <b>und</b> (RLF &lt; SWgrenzTrockenRLF)
 	 * <b>dann</b> (SW=implausibel)</code> <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */

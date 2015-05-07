@@ -48,16 +48,16 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF <
-	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW <= SWgrenzSW und NS =
-	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel
+	 * Wenn SW &lt;= SWgrenzSW und NS = 'kein Niederschlag' und RLF &lt;
+	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW &lt;= SWgrenzSW und NS =
+	 * Niederschlag' und NI &gt; 0,5 mm/h, dann SW implausibel
 	 */
 	private UmfeldDatenSensorWert swGrenzTrockenRLF = null;
 
 	/**
-	 * Wenn SW <= SWgrenzSW und NS = 'kein Niederschlag' und RLF <
-	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW <= SWgrenzSW und NS =
-	 * Niederschlag' und NI > 0,5 mm/h, dann SW implausibel.
+	 * Wenn SW &lt;= SWgrenzSW und NS = 'kein Niederschlag' und RLF &lt;
+	 * SWgrenzTrockenRLF, dann SW implausibel. Wenn SW &lt;= SWgrenzSW und NS =
+	 * Niederschlag' und NI &gt; 0,5 mm/h, dann SW implausibel.
 	 */
 	private UmfeldDatenSensorWert swGrenzSW = null;
 

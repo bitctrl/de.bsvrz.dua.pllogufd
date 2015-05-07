@@ -50,25 +50,25 @@ public final class NiederschlagsArtParameter extends
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Wenn NS = 'Regen' und LT < NSGrenzLT, dann NS implausibel.
+	 * Wenn NS = 'Regen' und LT &lt; NSGrenzLT, dann NS implausibel.
 	 */
 	private final UmfeldDatenSensorWert nsGrenzLT;
 
 	/**
-	 * Wenn NS = 'Niederschlag' und NI = 0 mm/h und RLF < NSGrenzTrockenRLF,
+	 * Wenn NS = 'Niederschlag' und NI = 0 mm/h und RLF &lt; NSGrenzTrockenRLF,
 	 * dann NS implausibel.
 	 */
 	private final UmfeldDatenSensorWert nsGrenzTrockenRLF;
 
 	/**
-	 * Wenn NS='kein Niederschlag' und NI >NSminNI und RLF>NSGrenzNassRLF, dann
+	 * Wenn NS='kein Niederschlag' und NI &gt; NSminNI und RLF &gt; NSGrenzNassRLF, dann
 	 * NS implausibel.
 	 */
 	private final UmfeldDatenSensorWert nsMinNI;
 
 	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
-	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &lt; NIgrenzTrockenRLF für
+	 * Zeitraum &gt; NIminTrockenRLF, dann NI implausibel.
 	 */
 	private final UmfeldDatenSensorWert nsGrenzRLF;
 

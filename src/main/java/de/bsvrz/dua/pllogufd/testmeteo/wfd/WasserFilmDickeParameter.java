@@ -49,8 +49,8 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum
-	 * > WDFminNassRLF, dann WFD implausibel.
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für Zeitraum
+	 * &gt; WDFminNassRLF, dann WFD implausibel.
 	 */
 	private final UmfeldDatenSensorWert wfdGrenzNassRLF;;
 
@@ -60,8 +60,8 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	private final UmfeldDatenSensorWert wfdGrenzNassNI;
 
 	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF > WFDgrenzNassRLF für Zeitraum
-	 * > WDFminNassRLF, dann WFD implausibel.
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für Zeitraum
+	 * &gt; WDFminNassRLF, dann WFD implausibel.
 	 */
 	private long wfdMinNassRLF = -1;
 

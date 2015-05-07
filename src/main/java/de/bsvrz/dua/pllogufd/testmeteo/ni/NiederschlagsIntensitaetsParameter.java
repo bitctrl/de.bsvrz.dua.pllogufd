@@ -50,7 +50,7 @@ AbstraktMeteoUmfeldDatenSensor {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Wenn NS= 'Niederschlag' und NI = 0 mm/h und RLF < NIgrenzNassRLF, dann NI
+	 * Wenn NS= 'Niederschlag' und NI = 0 mm/h und RLF &lt; NIgrenzNassRLF, dann NI
 	 * implausibel.
 	 */
 	private final UmfeldDatenSensorWert niGrenzNassRLF;
@@ -61,20 +61,20 @@ AbstraktMeteoUmfeldDatenSensor {
 	private final UmfeldDatenSensorWert niGrenzNassNI;
 
 	/**
-	 * Wenn NS = 'kein Niederschlag' und NI > NIminNI und RLF <
+	 * Wenn NS = 'kein Niederschlag' und NI &gt; NIminNI und RLF &lt;
 	 * NIgrenzTrockenRLF, dann NI implausibel.
 	 */
 	private final UmfeldDatenSensorWert niMinNI;
 
 	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
-	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &lt; NIgrenzTrockenRLF für
+	 * Zeitraum &gt; NIminTrockenRLF, dann NI implausibel.
 	 */
 	private final UmfeldDatenSensorWert niGrenzTrockenRLF;
 
 	/**
-	 * Wenn NI > 0,5 mm/h und WDF = 0 mm und RLF < NIgrenzTrockenRLF für
-	 * Zeitraum > NIminTrockenRLF, dann NI implausibel.
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &lt; NIgrenzTrockenRLF für
+	 * Zeitraum &gt; NIminTrockenRLF, dann NI implausibel.
 	 */
 	private long niMinTrockenRLF = -1;
 

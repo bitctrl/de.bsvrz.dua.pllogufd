@@ -494,7 +494,7 @@ AbstraktMeteoMessstelle {
 	// }
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI > NIminNI) <b>und</b> (RLF < NIgrenzTrockenRLF)
+	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI &gt; NIminNI) <b>und</b> (RLF &lt; NIgrenzTrockenRLF)
 	 * <b>dann</b> (NI=implausibel)</code> <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
@@ -529,7 +529,7 @@ AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NI > 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF > WFDgrenzNassPLF für Zeitraum > WFDminNassRLF)
+	 * <code><b>Wenn</b> (NI &gt; 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF &gt; WFDgrenzNassPLF für Zeitraum &gt; WFDminNassRLF)
 	 * <b>dann</b> (NI=implausibel)</code> <br>
 	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
 	 */
