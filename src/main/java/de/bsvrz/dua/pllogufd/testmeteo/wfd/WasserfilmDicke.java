@@ -39,9 +39,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  */
 public class WasserfilmDicke extends AbstraktMeteoSubModul {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -49,9 +46,6 @@ public class WasserfilmDicke extends AbstraktMeteoSubModul {
 		WasserfilmDickeMessstelle.initialisiere(dieVerwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public AbstraktMeteoMessstelle getMessStelleVonSensor(
 			final SystemObject ufdsObjekt) {

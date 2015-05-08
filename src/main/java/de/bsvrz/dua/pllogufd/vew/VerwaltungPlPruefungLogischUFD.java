@@ -67,8 +67,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public class VerwaltungPlPruefungLogischUFD extends
-		AbstraktVerwaltungsAdapterMitGuete {
+public class VerwaltungPlPruefungLogischUFD
+		extends AbstraktVerwaltungsAdapterMitGuete {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -97,9 +97,6 @@ public class VerwaltungPlPruefungLogischUFD extends
 	 */
 	private MeteorologischeKontrolle mk = null;
 
-	/**
-	 * {@inheritDoc}.
-	 */
 	@Override
 	protected void initialisiere() throws DUAInitialisierungsException {
 
@@ -110,16 +107,16 @@ public class VerwaltungPlPruefungLogischUFD extends
 		String infoStr = Constants.EMPTY_STRING;
 		final Collection<SystemObject> plLogLveObjekte = DUAUtensilien
 				.getBasisInstanzen(
-						this.verbindung.getDataModel().getType(
-								DUAKonstanten.TYP_UFD_SENSOR), this.verbindung,
-						this.getKonfigurationsBereiche());
+						this.verbindung.getDataModel()
+								.getType(DUAKonstanten.TYP_UFD_SENSOR),
+						this.verbindung, this.getKonfigurationsBereiche());
 		this.objekte = plLogLveObjekte.toArray(new SystemObject[0]);
 
 		for (final SystemObject obj : this.objekte) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
-		LOGGER.config(
-				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		VerwaltungPlPruefungLogischUFD.LOGGER
+				.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final IStandardAspekte standardAspekte = new PlLogUFDStandardAspekteVersorger(
 				this).getStandardPubInfos();
@@ -130,7 +127,7 @@ public class VerwaltungPlPruefungLogischUFD extends
 		this.ausfall = new UFDAusfallUeberwachung();
 		this.formal = new PlPruefungFormal(
 				new PlFormUFDStandardAspekteVersorger(this)
-				.getStandardPubInfos());
+						.getStandardPubInfos());
 		this.diff = new UFDDifferenzialKontrolle();
 		this.aak = new AnstiegAbfallKontrolle();
 		this.mk = new MeteorologischeKontrolle(standardAspekte);
@@ -180,17 +177,11 @@ public class VerwaltungPlPruefungLogischUFD extends
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_PL_PRUEFUNG_LOGISCH_UFD;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		this.ausfall.aktualisiereDaten(resultate);
@@ -207,12 +198,8 @@ public class VerwaltungPlPruefungLogischUFD extends
 				argumente);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public double getStandardGueteFaktor() {
 		return 0.9;
 	}
-
 }

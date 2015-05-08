@@ -40,8 +40,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public abstract class AbstraktMeteoSubModul extends
-AbstraktBearbeitungsKnotenAdapter {
+public abstract class AbstraktMeteoSubModul
+		extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Erfragt die Umfelddaten-Messstelle an der ein bestimmter Sensor
@@ -55,9 +55,6 @@ AbstraktBearbeitungsKnotenAdapter {
 	public abstract AbstraktMeteoMessstelle getMessStelleVonSensor(
 			final SystemObject ufdsObjekt);
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -66,8 +63,8 @@ AbstraktBearbeitungsKnotenAdapter {
 			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
 
-					final AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(resultat
-							.getObject());
+					final AbstraktMeteoMessstelle messstelle = getMessStelleVonSensor(
+							resultat.getObject());
 					if (messstelle != null) {
 						final ResultData[] ergebnisse = messstelle
 								.aktualisiereDaten(resultat);
@@ -86,23 +83,17 @@ AbstraktBearbeitungsKnotenAdapter {
 			 * Resultate weitergeben
 			 */
 			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
-				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
-						.toArray(new ResultData[0]));
+				this.knoten.aktualisiereDaten(
+						weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert

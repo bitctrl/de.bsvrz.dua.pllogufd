@@ -64,6 +64,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	 * Im Submodul WasserfilmDicke betrachtete Datenarten.
 	 */
 	private static Collection<UmfeldDatenArt> datenArten = new HashSet<>();
+
 	static {
 		WasserfilmDickeMessstelle.datenArten.add(UmfeldDatenArt.fbz);
 		WasserfilmDickeMessstelle.datenArten.add(UmfeldDatenArt.ni);
@@ -129,19 +130,21 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				for (final SystemObject betrachtetesObjekt : AbstraktMeteoMessstelle.verwaltung
 						.getSystemObjekte()) {
 					if (betrachtetesObjekt.isValid()) {
-						if (sensorMengeAnMessStelle.getElements().contains(
-								betrachtetesObjekt)) {
+						if (sensorMengeAnMessStelle.getElements()
+								.contains(betrachtetesObjekt)) {
 							UmfeldDatenArt datenArt;
 							try {
-								datenArt = UmfeldDatenArt
-										.getUmfeldDatenArtVon(betrachtetesObjekt);
-							} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-									LOGGER.warning("Unbekannter Sensor (" + //$NON-NLS-1$
-												betrachtetesObjekt
-												+ ") an Messstelle " + ufdmsObj); //$NON-NLS-1$
+								datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(
+										betrachtetesObjekt);
+							} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
+								WasserfilmDickeMessstelle.LOGGER
+										.warning("Unbekannter Sensor (" + //$NON-NLS-1$
+										betrachtetesObjekt
+										+ ") an Messstelle " //$NON-NLS-1$
+												+ ufdmsObj);
 								continue;
-							} 
-							
+							}
+
 							if (WasserfilmDickeMessstelle.datenArten
 									.contains(datenArt)) {
 								sensorenAnMessStelle.add(betrachtetesObjekt);
@@ -154,8 +157,8 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 			/**
 			 * sollte eigentlich nicht vorkommen
 			 */
-			throw new DUAInitialisierungsException(ufdmsObj
-					+ " ist kein Konfigurationsobjekt"); //$NON-NLS-1$
+			throw new DUAInitialisierungsException(
+					ufdmsObj + " ist kein Konfigurationsobjekt"); //$NON-NLS-1$
 		}
 	}
 
@@ -174,40 +177,41 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		AbstraktMeteoMessstelle.setVerwaltungsModul(verwaltung);
 
 		for (final SystemObject ufdmsObj : verwaltung.getVerbindung()
-				.getDataModel()
-				.getType("typ.umfeldDatenMessStelle").getElements()) { //$NON-NLS-1$
+				.getDataModel().getType("typ.umfeldDatenMessStelle") //$NON-NLS-1$
+				.getElements()) {
 			if (ufdmsObj.isValid()) {
 				final WasserfilmDickeMessstelle messStelle = new WasserfilmDickeMessstelle(
 						ufdmsObj);
 				if (messStelle.getSensoren().isEmpty()) {
-					LOGGER.config(
-							"Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
-							" wird nicht betrachtet"); //$NON-NLS-1$
+					WasserfilmDickeMessstelle.LOGGER
+							.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
+									" wird nicht betrachtet"); //$NON-NLS-1$
 				} else {
 					for (final SystemObject umfeldDatenSensor : messStelle
 							.getSensoren()) {
 						if (WasserfilmDickeMessstelle.ufdsAufUfdMs
 								.get(umfeldDatenSensor) != null) {
 							throw new DUAInitialisierungsException(
-									"Der Umfelddatensensor " + umfeldDatenSensor + //$NON-NLS-1$
-									" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n" //$NON-NLS-1$
-									+ WasserfilmDickeMessstelle.ufdsAufUfdMs
-									.get(umfeldDatenSensor)
-									+ " und\n" + messStelle); //$NON-NLS-1$
+									"Der Umfelddatensensor " + umfeldDatenSensor //$NON-NLS-1$
+											+
+											" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n"
+											+ WasserfilmDickeMessstelle.ufdsAufUfdMs
+													.get(umfeldDatenSensor)
+											+ " und\n" + messStelle); //$NON-NLS-1$
 						}
-						WasserfilmDickeMessstelle.ufdsAufUfdMs.put(
-								umfeldDatenSensor, messStelle);
+						WasserfilmDickeMessstelle.ufdsAufUfdMs
+								.put(umfeldDatenSensor, messStelle);
 					}
 					try {
 						messStelle.initialisiereMessStelle();
 					} catch (final NoSuchSensorException e) {
-						LOGGER.config(
-								"Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
-								" wird nicht betrachtet"); //$NON-NLS-1$
+						WasserfilmDickeMessstelle.LOGGER
+								.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
+										" wird nicht betrachtet"); //$NON-NLS-1$
 						for (final SystemObject umfeldDatenSensor : messStelle
 								.getSensoren()) {
 							WasserfilmDickeMessstelle.ufdsAufUfdMs
-									.remove(umfeldDatenSensor);
+							.remove(umfeldDatenSensor);
 						}
 					}
 				}
@@ -237,10 +241,9 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		for (final SystemObject sensor : this.getSensoren()) {
 			UmfeldDatenArt datenArt;
 			try {
-				datenArt = UmfeldDatenArt
-						.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-				LOGGER.warning(e.getMessage());
+				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
+				WasserfilmDickeMessstelle.LOGGER.warning(e.getMessage());
 				continue;
 			}
 			if (datenArt.equals(UmfeldDatenArt.wfd)) {
@@ -257,15 +260,12 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		try {
 			this.parameterSensor = new WasserFilmDickeParameter(
 					AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
-		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+		} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					": " + e.getMessage()); 
+					": " + e.getMessage());
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected ResultData[] berechneAlleRegeln() {
 		regel1();
@@ -274,9 +274,6 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		return this.getAlleAktuellenWerte();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected boolean bringeDatumInPosition(final ResultData umfeldDatum) {
 		boolean erfolgreich = false;
@@ -286,8 +283,8 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 			try {
 				datenArt = UmfeldDatenArt
 						.getUmfeldDatenArtVon(umfeldDatum.getObject());
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-				LOGGER.warning(e.getMessage());
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
+				WasserfilmDickeMessstelle.LOGGER.warning(e.getMessage());
 				return false;
 			}
 
@@ -306,9 +303,11 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 						if (datum.getWert().isOk()
 								&& this.parameterSensor.isInitialisiert()
 								&& this.parameterSensor.getWFDgrenzNassRLF()
-								.isOk()
-								&& (datum.getWert().getWert() > this.parameterSensor
-										.getWFDgrenzNassRLF().getWert())) {
+										.isOk()
+								&& (datum.getWert()
+										.getWert() > this.parameterSensor
+												.getWFDgrenzNassRLF()
+												.getWert())) {
 							this.rlfUeberWfdgrenzNassFuerMS += datum.getT();
 						} else {
 							this.rlfUeberWfdgrenzNassFuerMS = 0;
@@ -323,10 +322,10 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 						this.aktuellerZeitstempel = umfeldDatum.getDataTime();
 					}
 				} else {
-					LOGGER
-					.warning(
-							this.getClass().getSimpleName()
-							+ ", Datum nicht speicherbar:\n" + umfeldDatum); //$NON-NLS-1$
+					WasserfilmDickeMessstelle.LOGGER
+							.warning(this.getClass().getSimpleName()
+									+ ", Datum nicht speicherbar:\n" //$NON-NLS-1$
+									+ umfeldDatum);
 				}
 			}
 		}
@@ -334,44 +333,35 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		return erfolgreich;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected ResultData[] getAlleAktuellenWerte() {
 		final List<ResultData> aktuelleWerte = new ArrayList<>();
 
 		if (this.letztesUfdNIDatum != null) {
-			aktuelleWerte.add(this.letztesUfdNIDatum
-					.getVeraendertesOriginalDatum());
+			aktuelleWerte
+					.add(this.letztesUfdNIDatum.getVeraendertesOriginalDatum());
 		}
 		if (this.letztesUfdFBZDatum != null) {
-			aktuelleWerte.add(this.letztesUfdFBZDatum
-					.getVeraendertesOriginalDatum());
+			aktuelleWerte.add(
+					this.letztesUfdFBZDatum.getVeraendertesOriginalDatum());
 		}
 		if (this.letztesUfdWFDDatum != null) {
-			aktuelleWerte.add(this.letztesUfdWFDDatum
-					.getVeraendertesOriginalDatum());
+			aktuelleWerte.add(
+					this.letztesUfdWFDDatum.getVeraendertesOriginalDatum());
 		}
 		if (this.letztesUfdRLFDatum != null) {
-			aktuelleWerte.add(this.letztesUfdRLFDatum
-					.getVeraendertesOriginalDatum());
+			aktuelleWerte.add(
+					this.letztesUfdRLFDatum.getVeraendertesOriginalDatum());
 		}
 
 		return aktuelleWerte.toArray(new ResultData[0]);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected Collection<UmfeldDatenArt> getDatenArten() {
 		return WasserfilmDickeMessstelle.datenArten;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void loescheAlleWerte() {
 		this.letztesUfdNIDatum = null;
@@ -380,9 +370,6 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		this.letztesUfdWFDDatum = null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected boolean sindAlleWerteFuerIntervallDa() {
 		return (this.letztesUfdNIDatum != null)
@@ -391,9 +378,6 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				&& (this.letztesUfdWFDDatum != null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected boolean isPufferLeer() {
 		return (this.letztesUfdNIDatum == null)
@@ -402,9 +386,6 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				&& (this.letztesUfdWFDDatum == null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected UmfeldDatenSensorDatum getDatumBereitsInPosition(
 			final ResultData umfeldDatum) {
@@ -414,11 +395,11 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		try {
 			datenArt = UmfeldDatenArt
 					.getUmfeldDatenArtVon(umfeldDatum.getObject());
-		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-			LOGGER.warning(e.getMessage());
+		} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
+			WasserfilmDickeMessstelle.LOGGER.warning(e.getMessage());
 			return null;
 		}
-		
+
 		if (datenArt != null) {
 			if (datenArt.equals(UmfeldDatenArt.ni)) {
 				datumInPosition = this.letztesUfdNIDatum;
@@ -450,23 +431,26 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				&& (this.letztesUfdRLFDatum != null)
 				&& (this.letztesUfdNIDatum
 						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-						&& (this.letztesUfdWFDDatum
-								.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-								&& (this.letztesUfdRLFDatum
-										.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
+				&& (this.letztesUfdWFDDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
+				&& (this.letztesUfdRLFDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
 			if (this.parameterSensor.isInitialisiert()
 					&& this.parameterSensor.getWFDgrenzNassNI().isOk()
 					&& this.parameterSensor.getWFDgrenzNassRLF().isOk()) {
-				if ((this.letztesUfdNIDatum.getWert().getWert() > this.parameterSensor
-						.getWFDgrenzNassNI().getWert())
+				if ((this.letztesUfdNIDatum.getWert()
+						.getWert() > this.parameterSensor.getWFDgrenzNassNI()
+								.getWert())
 						&& (this.letztesUfdWFDDatum.getWert().getWert() == 0)
 						&& (this.rlfUeberWfdgrenzNassFuerMS > this.parameterSensor
 								.getWFDminNassRLF())) {
 					this.letztesUfdWFDDatum
-					.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+							.setStatusMessWertErsetzungImplausibel(
+									DUAKonstanten.JA);
 					this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
-					LOGGER
-					.fine("[WFD.R1]Daten geändert:\n" + this.letztesUfdWFDDatum.toString()); //$NON-NLS-1$
+					WasserfilmDickeMessstelle.LOGGER
+							.fine("[WFD.R1]Daten geändert:\n" //$NON-NLS-1$
+									+ this.letztesUfdWFDDatum.toString());
 				}
 			}
 		}
@@ -483,18 +467,19 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				&& (this.letztesUfdFBZDatum != null)
 				&& (this.letztesUfdWFDDatum
 						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-						&& (this.letztesUfdFBZDatum
-								.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
+				&& (this.letztesUfdFBZDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
 			if ((this.letztesUfdWFDDatum.getWert().getWert() > 0)
 					&& (this.letztesUfdFBZDatum.getWert().getWert() == 0)) {
-				this.letztesUfdWFDDatum
-				.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+				this.letztesUfdWFDDatum.setStatusMessWertErsetzungImplausibel(
+						DUAKonstanten.JA);
 				this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
-				this.letztesUfdFBZDatum
-				.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+				this.letztesUfdFBZDatum.setStatusMessWertErsetzungImplausibel(
+						DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
-				LOGGER
-				.fine("[WFD.R2]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
+				WasserfilmDickeMessstelle.LOGGER
+						.fine("[WFD.R2]Daten geändert:\n" //$NON-NLS-1$
+								+ this.letztesUfdWFDDatum.toString() +
 								"\n" + this.letztesUfdFBZDatum.toString());
 			}
 		}
@@ -511,18 +496,19 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				&& (this.letztesUfdFBZDatum != null)
 				&& (this.letztesUfdWFDDatum
 						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-						&& (this.letztesUfdFBZDatum
-								.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
+				&& (this.letztesUfdFBZDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
 			if ((this.letztesUfdWFDDatum.getWert().getWert() == 0)
 					&& (this.letztesUfdFBZDatum.getWert().getWert() > 0)) {
-				this.letztesUfdWFDDatum
-				.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+				this.letztesUfdWFDDatum.setStatusMessWertErsetzungImplausibel(
+						DUAKonstanten.JA);
 				this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
-				this.letztesUfdFBZDatum
-				.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+				this.letztesUfdFBZDatum.setStatusMessWertErsetzungImplausibel(
+						DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
-				LOGGER
-				.fine("[WFD.R3]Daten geändert:\n" + this.letztesUfdWFDDatum.toString() + //$NON-NLS-1$ 
+				WasserfilmDickeMessstelle.LOGGER
+						.fine("[WFD.R3]Daten geändert:\n" //$NON-NLS-1$
+								+ this.letztesUfdWFDDatum.toString() +
 								"\n" + this.letztesUfdFBZDatum.toString());
 			}
 		}

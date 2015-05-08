@@ -49,7 +49,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter {
+public class MeteorologischeKontrolle
+extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Submodul Niederschlagsart (NS).
@@ -87,9 +88,6 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		this.pub = new Publikation(stdAspekte);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -112,25 +110,16 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		pub.initialisiere(dieVerwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		this.ni.aktualisiereDaten(resultate);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert (sondern im Submodul Publikation)

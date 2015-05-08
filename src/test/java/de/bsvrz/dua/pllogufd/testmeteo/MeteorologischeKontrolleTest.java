@@ -62,8 +62,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public class MeteorologischeKontrolleTest implements ClientSenderInterface,
-ClientReceiverInterface {
+public class MeteorologischeKontrolleTest
+implements ClientSenderInterface, ClientReceiverInterface {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -169,7 +169,7 @@ ClientReceiverInterface {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
@@ -190,15 +190,15 @@ ClientReceiverInterface {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			final DataDescription datenBeschreibung = new DataDescription(dav
-					.getDataModel().getAttributeGroup(
-							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-							dav.getDataModel().getAspect(
-									"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+			final DataDescription datenBeschreibung = new DataDescription(
+					dav.getDataModel()
+					.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+					dav.getDataModel()
+					.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -210,7 +210,7 @@ ClientReceiverInterface {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
@@ -247,18 +247,12 @@ ClientReceiverInterface {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dataRequest(final SystemObject object,
 			final DataDescription dataDescription, final byte state) {
 		//
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isRequestSupported(final SystemObject object,
 			final DataDescription dataDescription) {
@@ -274,22 +268,24 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public final void sendeDatum(final SystemObject sensor, final double wert,
-			final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
+			final long datenZeitStempel)
+					throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 				TestUtensilien.getExterneErfassungDatum(sensor));
 		datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 		datum.getWert().setSkaliertenWert(wert);
-		final ResultData resultat = new ResultData(sensor, datum
-				.getOriginalDatum().getDataDescription(), datenZeitStempel,
+		final ResultData resultat = new ResultData(sensor,
+				datum.getOriginalDatum().getDataDescription(), datenZeitStempel,
 				datum.getDatum());
 		try {
 			PlPruefungLogischUFDTest.sender.sende(resultat);
 		} catch (final Exception e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			MeteorologischeKontrolleTest.LOGGER.error(Constants.EMPTY_STRING,
+					e);
 		}
 	}
 
@@ -302,10 +298,11 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public final void sendeDaten(final Collection<SystemObject> sensoren,
-			final double wert, final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
+			final double wert, final long datenZeitStempel)
+					throws UmfeldDatenSensorUnbekannteDatenartException {
 		for (final SystemObject sensor : sensoren) {
 			this.sendeDatum(sensor, wert, datenZeitStempel);
 		}
@@ -318,19 +315,22 @@ ClientReceiverInterface {
 	 *            eine Menge von Umfelddatensensoren
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public final void sendeFehlerhaftDaten(
-			final Collection<SystemObject> sensoren, final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
+			final Collection<SystemObject> sensoren,
+			final long datenZeitStempel)
+					throws UmfeldDatenSensorUnbekannteDatenartException {
 		for (final SystemObject sensor : sensoren) {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
+			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
+					datenArt);
 			wert.setFehlerhaftAn();
 			this.sendeDatum(sensor, wert.getWert(), datenZeitStempel);
 		}
@@ -345,16 +345,17 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public final void sendeDatum(final SystemObject sensor, final long wert,
-			final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
+			final long datenZeitStempel)
+					throws UmfeldDatenSensorUnbekannteDatenartException {
 		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 				TestUtensilien.getExterneErfassungDatum(sensor));
 		datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 		datum.getWert().setWert(wert);
-		final ResultData resultat = new ResultData(sensor, datum
-				.getOriginalDatum().getDataDescription(), datenZeitStempel,
+		final ResultData resultat = new ResultData(sensor,
+				datum.getOriginalDatum().getDataDescription(), datenZeitStempel,
 				datum.getDatum());
 		if (MeteorologischeKontrolleTest.DEBUG) {
 			System.out.println(TestUtensilien.jzt() + ", Sende: " + resultat); //$NON-NLS-1$
@@ -363,7 +364,8 @@ ClientReceiverInterface {
 			PlPruefungLogischUFDTest.sender.sende(resultat);
 		} catch (final Exception e) {
 			e.printStackTrace();
-			LOGGER.error(Constants.EMPTY_STRING, e);
+			MeteorologischeKontrolleTest.LOGGER.error(Constants.EMPTY_STRING,
+					e);
 		}
 	}
 
@@ -376,18 +378,16 @@ ClientReceiverInterface {
 	 *            der zu sendende Wert
 	 * @param datenZeitStempel
 	 *            der Datenzeitstempel
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public final void sendeDaten(final Collection<SystemObject> sensoren,
-			final long wert, final long datenZeitStempel) throws UmfeldDatenSensorUnbekannteDatenartException {
+			final long wert, final long datenZeitStempel)
+					throws UmfeldDatenSensorUnbekannteDatenartException {
 		for (final SystemObject sensor : sensoren) {
 			this.sendeDatum(sensor, wert, datenZeitStempel);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -403,8 +403,8 @@ ClientReceiverInterface {
 					this.ergebnisIst.put(resultat.getObject(), ergebnis);
 
 					if (MeteorologischeKontrolleTest.DEBUG) {
-						System.out.println(TestUtensilien.jzt()
-								+ ", Empfange(" + ergebnis + "): " + resultat); //$NON-NLS-1$ //$NON-NLS-2$
+						System.out.println(TestUtensilien.jzt() + ", Empfange(" //$NON-NLS-1$
+								+ ergebnis + "): " + resultat); //$NON-NLS-1$
 					}
 				}
 			}
@@ -416,20 +416,22 @@ ClientReceiverInterface {
 	 *
 	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher schon
 	 *         seit mehreren Intervallen keine Werte mehr vorliegen
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
-	protected final long getTestBeginnIntervall() throws UmfeldDatenSensorUnbekannteDatenartException {
+	protected final long getTestBeginnIntervall()
+			throws UmfeldDatenSensorUnbekannteDatenartException {
 		final long intervall = TestUtensilien.getBeginAktuellerSekunde();
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
+			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
+					datenArt);
 			wert.setFehlerhaftAn();
 			this.sendeDatum(sensor, wert.getWert(), intervall);
 		}

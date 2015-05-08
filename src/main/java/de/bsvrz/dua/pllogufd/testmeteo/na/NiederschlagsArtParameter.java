@@ -41,8 +41,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public final class NiederschlagsArtParameter extends
-		AbstraktMeteoUmfeldDatenSensor {
+public final class NiederschlagsArtParameter
+extends AbstraktMeteoUmfeldDatenSensor {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -58,8 +58,8 @@ public final class NiederschlagsArtParameter extends
 	private final UmfeldDatenSensorWert nsGrenzTrockenRLF;
 
 	/**
-	 * Wenn NS='kein Niederschlag' und NI &gt; NSminNI und RLF &gt; NSGrenzNassRLF, dann
-	 * NS implausibel.
+	 * Wenn NS='kein Niederschlag' und NI &gt; NSminNI und RLF &gt;
+	 * NSGrenzNassRLF, dann NS implausibel.
 	 */
 	private final UmfeldDatenSensorWert nsMinNI;
 
@@ -79,10 +79,11 @@ public final class NiederschlagsArtParameter extends
 	 *            <code>typ.umfeldDatenSensor</code>)
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public NiederschlagsArtParameter(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+			final SystemObject obj) throws DUAInitialisierungsException,
+			UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
 		nsGrenzLT = new UmfeldDatenSensorWert(UmfeldDatenArt.lt);
 		nsGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);
@@ -127,9 +128,6 @@ public final class NiederschlagsArtParameter extends
 		return this.nsMinNI;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -138,27 +136,23 @@ public final class NiederschlagsArtParameter extends
 					synchronized (this) {
 						this.nsGrenzLT.setWert(resultat.getData()
 								.getUnscaledValue("NSGrenzLT").longValue()); //$NON-NLS-1$
-						this.nsGrenzTrockenRLF
-						.setWert(resultat
-										.getData()
-										.getUnscaledValue("NSGrenzTrockenRLF").longValue()); //$NON-NLS-1$
+						this.nsGrenzTrockenRLF.setWert(resultat.getData()
+								.getUnscaledValue("NSGrenzTrockenRLF") //$NON-NLS-1$
+								.longValue());
 						this.nsMinNI.setWert(resultat.getData()
 								.getUnscaledValue("NSminNI").longValue()); //$NON-NLS-1$
 						this.nsGrenzRLF.setWert(resultat.getData()
 								.getUnscaledValue("NSGrenzRLF").longValue()); //$NON-NLS-1$
 					}
 					this.parameterInitialisiert = true;
-					LOGGER
-					.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+					NiederschlagsArtParameter.LOGGER.info("Neue Parameter für (" //$NON-NLS-1$
+							+ resultat.getObject() + "):\n" //$NON-NLS-1$
 							+ this);
 				}
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return "nsGrenzLT = " + nsGrenzLT + //$NON-NLS-1$

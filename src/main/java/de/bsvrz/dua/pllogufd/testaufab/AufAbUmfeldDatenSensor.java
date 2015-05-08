@@ -72,21 +72,19 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 *            das Sensor-Objekt
 	 * @throws DUAInitialisierungsException
 	 *             wenn die Instaziierung fehlschlägt
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	protected AufAbUmfeldDatenSensor(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+			final SystemObject obj) throws DUAInitialisierungsException,
+			UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
 		super.init();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
-	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+			throws DUAInitialisierungsException,
+			UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
@@ -94,16 +92,18 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		}
 
 		final Collection<AttributeGroup> parameterAtgs = new HashSet<>();
-		
-		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt);
+
+		final UmfeldDatenArt datenArt = UmfeldDatenArt
+				.getUmfeldDatenArtVon(this.objekt);
 		if (datenArt == null) {
 			throw new UmfeldDatenSensorUnbekannteDatenartException(
-					"Datenart von Umfelddatensensor " + this.objekt + //$NON-NLS-1$ 
+					"Datenart von Umfelddatensensor " + this.objekt + //$NON-NLS-1$
 							" (" + objekt.getType()
 							+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
 		}
 
-		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName();
+		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle"
+				+ datenArt.getName();
 
 		final AttributeGroup atg = AbstraktUmfeldDatenSensor.verwaltungsModul
 				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
@@ -155,22 +155,24 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					if (this.parameter != null) {
 						synchronized (this.parameter) {
 							if (this.parameter.isSinnvoll()) {
-								final boolean fehler = Math.abs(wert.getWert()
-										.getWert()
-										- this.letzterWert.getWert().getWert()) > this.parameter
-										.getMaxDiff();
-										if (fehler) {
-											final UmfeldDatenSensorDatum neuerWert = new UmfeldDatenSensorDatum(
-													resultat);
-											neuerWert
-											.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-											neuerWert.getWert().setFehlerhaftAn();
-											copy = neuerWert.getDatum();
-										}
+								final boolean fehler = Math
+										.abs(wert.getWert().getWert()
+												- this.letzterWert.getWert()
+												.getWert()) > this.parameter
+												.getMaxDiff();
+												if (fehler) {
+													final UmfeldDatenSensorDatum neuerWert = new UmfeldDatenSensorDatum(
+															resultat);
+													neuerWert
+													.setStatusMessWertErsetzungImplausibel(
+															DUAKonstanten.JA);
+													neuerWert.getWert().setFehlerhaftAn();
+													copy = neuerWert.getDatum();
+												}
 							}
 						}
 					} else {
-						LOGGER
+						AufAbUmfeldDatenSensor.LOGGER
 						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
 								" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
 					}
@@ -183,9 +185,6 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		return copy;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -195,12 +194,14 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 						try {
 							this.parameter = new UniversalAtgUfdsAnstiegAbstiegKontrolle(
 									resultat);
-						} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-							LOGGER.warning(e.getMessage());
+						} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
+							AufAbUmfeldDatenSensor.LOGGER
+							.warning(e.getMessage());
 							continue;
 						}
-						LOGGER
-						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+						AufAbUmfeldDatenSensor.LOGGER
+						.info("Neue Parameter für (" //$NON-NLS-1$
+								+ resultat.getObject() + "):\n" //$NON-NLS-1$
 								+ this.parameter);
 					}
 				}

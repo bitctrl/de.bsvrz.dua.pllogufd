@@ -52,7 +52,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter {
+public class UFDDifferenzialKontrolle
+extends AbstraktBearbeitungsKnotenAdapter {
 
 	private static final Debug LOGGER = Debug.getLogger();
 	/**
@@ -62,9 +63,6 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	 */
 	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<>();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -75,19 +73,15 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 			try {
 				sensor = new DiffUmfeldDatenSensor(dieVerwaltung, obj);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException ex) {
-				LOGGER.warning(
-						"UmfeldDatenSensor '" + obj
-								+ "': wird nicht verarbeitet: "
-								+ ex.getMessage());
+				UFDDifferenzialKontrolle.LOGGER.warning("UmfeldDatenSensor '"
+						+ obj + "': wird nicht verarbeitet: "
+						+ ex.getMessage());
 				continue;
 			}
 			this.sensoren.put(obj, sensor);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -120,26 +114,19 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 			}
 
 			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
-				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
-						.toArray(new ResultData[0]));
+				this.knoten.aktualisiereDaten(
+						weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
-
 }

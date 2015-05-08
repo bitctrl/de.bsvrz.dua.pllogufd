@@ -46,8 +46,8 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für Zeitraum
-	 * &gt; WDFminNassRLF, dann WFD implausibel.
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für
+	 * Zeitraum &gt; WDFminNassRLF, dann WFD implausibel.
 	 */
 	private final UmfeldDatenSensorWert wfdGrenzNassRLF;;
 
@@ -57,8 +57,8 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	private final UmfeldDatenSensorWert wfdGrenzNassNI;
 
 	/**
-	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für Zeitraum
-	 * &gt; WDFminNassRLF, dann WFD implausibel.
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für
+	 * Zeitraum &gt; WDFminNassRLF, dann WFD implausibel.
 	 */
 	private long wfdMinNassRLF = -1;
 
@@ -72,10 +72,11 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 *            <code>typ.umfeldDatenSensor</code>)
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public WasserFilmDickeParameter(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+			final SystemObject obj) throws DUAInitialisierungsException,
+					UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
 		wfdGrenzNassRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.wfd);
 		wfdGrenzNassNI = new UmfeldDatenSensorWert(UmfeldDatenArt.ni);
@@ -109,28 +110,24 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 		return this.wfdMinNassRLF;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
 			for (final ResultData resultat : resultate) {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
-						this.wfdGrenzNassRLF
-						.setWert(resultat
-										.getData()
-										.getUnscaledValue("WFDgrenzNassRLF").longValue()); //$NON-NLS-1$
+						this.wfdGrenzNassRLF.setWert(resultat.getData()
+								.getUnscaledValue("WFDgrenzNassRLF") //$NON-NLS-1$
+								.longValue());
 						this.wfdMinNassRLF = resultat.getData()
 								.getTimeValue("WDFminNassRLF").getMillis(); //$NON-NLS-1$
-						this.wfdGrenzNassNI
-						.setWert(resultat
-										.getData()
-										.getUnscaledValue("WFDgrenzNassNI").longValue()); //$NON-NLS-1$
-						LOGGER
-						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-								+ this);
+						this.wfdGrenzNassNI.setWert(resultat.getData()
+								.getUnscaledValue("WFDgrenzNassNI") //$NON-NLS-1$
+								.longValue());
+						WasserFilmDickeParameter.LOGGER
+								.info("Neue Parameter für (" //$NON-NLS-1$
+										+ resultat.getObject() + "):\n" //$NON-NLS-1$
+										+ this);
 					}
 					this.parameterInitialisiert = true;
 				}
@@ -138,9 +135,6 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return "swGrenzTrockenRLF = " + wfdGrenzNassRLF + //$NON-NLS-1$

@@ -72,17 +72,14 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 		for (final SystemObject obj : dieVerwaltung.getSystemObjekte()) {
 			try {
-				this.sensoren.put(obj, new AufAbUmfeldDatenSensor(dieVerwaltung,
-						obj));
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				this.sensoren.put(obj,
+						new AufAbUmfeldDatenSensor(dieVerwaltung, obj));
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				Debug.getLogger().warning(e.getMessage());
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -115,26 +112,19 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 			}
 
 			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
-				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
-						.toArray(new ResultData[0]));
+				this.knoten.aktualisiereDaten(
+						weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
-
 }

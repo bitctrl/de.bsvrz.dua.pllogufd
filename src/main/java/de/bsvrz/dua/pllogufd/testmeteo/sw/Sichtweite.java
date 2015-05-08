@@ -31,7 +31,6 @@ import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoMessstelle;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoSubModul;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
-import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
  * Das Submodul Sichtweite.
@@ -42,14 +41,11 @@ public class Sichtweite extends AbstraktMeteoSubModul {
 
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
-			throws DUAInitialisierungsException{
+			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 		SichtweitenMessstelle.initialisiere(dieVerwaltung);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public AbstraktMeteoMessstelle getMessStelleVonSensor(
 			final SystemObject ufdsObjekt) {

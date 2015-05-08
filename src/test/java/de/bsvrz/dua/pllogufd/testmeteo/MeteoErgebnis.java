@@ -112,16 +112,13 @@ public class MeteoErgebnis {
 		return ergebnis;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat(
 				DUAKonstanten.NUR_ZEIT_FORMAT_GENAU_STR);
 		return "Sensor: " + this.sensor.getPid() + ", "
-		+ dateFormat.format(new Date(this.zeitStempel)) + ", impl.: "
-		+ (this.implausibel ? "ja" : "nein");
+				+ dateFormat.format(new Date(this.zeitStempel)) + ", impl.: "
+				+ (this.implausibel ? "ja" : "nein");
 	}
 
 	@Override

@@ -39,18 +39,12 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  */
 public class NiederschlagsArt extends AbstraktMeteoSubModul {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public AbstraktMeteoMessstelle getMessStelleVonSensor(
 			final SystemObject ufdsObjekt) {
 		return NiederschlagsArtMessstelle.getMessStelleVonSensor(ufdsObjekt);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {

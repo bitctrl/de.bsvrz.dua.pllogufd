@@ -67,8 +67,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 @Ignore("Testdatenverteiler prüfen")
-public class AnstiegAbfallKontrolleTest implements ClientSenderInterface,
-ClientReceiverInterface {
+public class AnstiegAbfallKontrolleTest
+		implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
 	 * Debug-Ausgaben?
@@ -83,14 +83,12 @@ ClientReceiverInterface {
 		/**
 		 * ok.
 		 */
-		ok,
-		/**
-		 * nicht_ermittelbar.
-		 */
-		nicht_ermittelbar,
-		/**
-		 * implausibel_o_fehlerfahft.
-		 */
+		ok, /**
+			 * nicht_ermittelbar.
+			 */
+		nicht_ermittelbar, /**
+							 * implausibel_o_fehlerfahft.
+							 */
 		implausibel_o_fehlerfahft
 	}
 
@@ -146,7 +144,7 @@ ClientReceiverInterface {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
@@ -165,11 +163,11 @@ ClientReceiverInterface {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			
+
 			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
 				PlPruefungLogischUFDTest.sender.setDiffPara(sensor, 5,
 						Constants.MILLIS_PER_HOUR);
@@ -191,15 +189,15 @@ ClientReceiverInterface {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			final DataDescription datenBeschreibung = new DataDescription(dav
-					.getDataModel().getAttributeGroup(
-							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-							dav.getDataModel().getAspect(
-									"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+			final DataDescription datenBeschreibung = new DataDescription(
+					dav.getDataModel()
+							.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+					dav.getDataModel()
+							.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -236,27 +234,27 @@ ClientReceiverInterface {
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			final ResultData resultat;
 			try {
-				resultat = TestUtensilien
-						.getExterneErfassungDatum(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				resultat = TestUtensilien.getExterneErfassungDatum(sensor);
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			
+
 			final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 					resultat);
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 			datum.getWert().setFehlerhaftAn();
 
-			final ResultData sendeDatum = new ResultData(datum
-					.getOriginalDatum().getObject(), datum.getOriginalDatum()
-					.getDataDescription(), zeitStempel, datum.getDatum());
+			final ResultData sendeDatum = new ResultData(
+					datum.getOriginalDatum().getObject(),
+					datum.getOriginalDatum().getDataDescription(), zeitStempel,
+					datum.getDatum());
 
 			if (AnstiegAbfallKontrolleTest.DEBUG) {
 				System.out.println(TestUtensilien.jzt() + " Sende initial: " + //$NON-NLS-1$
 						dateFormat.format(new Date(sendeDatum.getDataTime()))
-						+ ", " + //$NON-NLS-1$
-								datum.getOriginalDatum().getObject());
+				+ ", " + //$NON-NLS-1$
+						datum.getOriginalDatum().getObject());
 			}
 
 			PlPruefungLogischUFDTest.sender.sende(sendeDatum);
@@ -266,15 +264,14 @@ ClientReceiverInterface {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor,
 					1000);
 		}
-		DAVTest.warteBis(zeitStempel
-				+ (2 * PlPruefungLogischUFDTest.STANDARD_T) + 50);
+		DAVTest.warteBis(
+				zeitStempel + (2 * PlPruefungLogischUFDTest.STANDARD_T) + 50);
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			final ResultData resultat;
 			try {
-				resultat = TestUtensilien
-						.getExterneErfassungDatum(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				resultat = TestUtensilien.getExterneErfassungDatum(sensor);
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
@@ -284,16 +281,17 @@ ClientReceiverInterface {
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 			datum.getWert().setFehlerhaftAn();
 
-			final ResultData sendeDatum = new ResultData(datum
-					.getOriginalDatum().getObject(), datum.getOriginalDatum()
-					.getDataDescription(), zeitStempel
-					+ PlPruefungLogischUFDTest.STANDARD_T, datum.getDatum());
+			final ResultData sendeDatum = new ResultData(
+					datum.getOriginalDatum().getObject(),
+					datum.getOriginalDatum().getDataDescription(),
+					zeitStempel + PlPruefungLogischUFDTest.STANDARD_T,
+					datum.getDatum());
 
 			if (AnstiegAbfallKontrolleTest.DEBUG) {
 				System.out.println(TestUtensilien.jzt() + " Sende initial: " + //$NON-NLS-1$
 						dateFormat.format(new Date(sendeDatum.getDataTime()))
-						+ ", " + //$NON-NLS-1$
-								datum.getOriginalDatum().getObject());
+				+ ", " + //$NON-NLS-1$
+						datum.getOriginalDatum().getObject());
 			}
 
 			PlPruefungLogischUFDTest.sender.sende(sendeDatum);
@@ -355,14 +353,19 @@ ClientReceiverInterface {
 				final boolean erwarteterStatusIstImplausibelUndFehlerHaft = erwartung;
 				for (final SystemObject sensor : this.untersuchteSensoren) {
 					System.out
-					.println("Vergleiche (AAKONTR)[" + durchlauf + "] " + sensor.getPid() + ": Soll(" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							(erwarteterStatusIstImplausibelUndFehlerHaft ? "impl" : "ok") + //$NON-NLS-1$ //$NON-NLS-2$
-							"), Ist(" //$NON-NLS-1$
-							+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") + ") --> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							(erwarteterStatusIstImplausibelUndFehlerHaft == this.ergebnisIst
-							.get(sensor) ? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
-					Assert.assertEquals(
-							"Objekt: " + sensor.toString(), //$NON-NLS-1$
+							.println("Vergleiche (AAKONTR)[" + durchlauf + "] " //$NON-NLS-1$ //$NON-NLS-2$
+									+ sensor.getPid() + ": Soll(" + //$NON-NLS-1$
+									(erwarteterStatusIstImplausibelUndFehlerHaft
+											? "impl" : "ok") //$NON-NLS-1$ //$NON-NLS-2$
+									+
+									"), Ist("
+									+ (this.ergebnisIst
+											.get(sensor) ? "impl" : "ok") //$NON-NLS-1$ //$NON-NLS-2$
+									+ ") --> " + //$NON-NLS-1$
+									(erwarteterStatusIstImplausibelUndFehlerHaft == this.ergebnisIst
+											.get(sensor) ? "Ok" //$NON-NLS-1$
+													: "!!!FEHLER!!!")); //$NON-NLS-1$
+					Assert.assertEquals("Objekt: " + sensor.toString(), //$NON-NLS-1$
 							erwarteterStatusIstImplausibelUndFehlerHaft,
 							this.ergebnisIst.get(sensor).booleanValue());
 				}
@@ -400,9 +403,8 @@ ClientReceiverInterface {
 			for (final SystemObject sensor : this.untersuchteSensoren) {
 				final ResultData resultat;
 				try {
-					resultat = TestUtensilien
-							.getExterneErfassungDatum(sensor);
-				} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+					resultat = TestUtensilien.getExterneErfassungDatum(sensor);
+				} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 					System.err.println("Wird nicht geprüft: " + e.getMessage());
 					continue;
 				}
@@ -414,8 +416,8 @@ ClientReceiverInterface {
 				/**
 				 * Setzte Prüfwert
 				 */
-				datum.getWert().setWert(
-						AnstiegAbfallKontrolleTest.messWerte[durchlauf]
+				datum.getWert()
+						.setWert(AnstiegAbfallKontrolleTest.messWerte[durchlauf]
 								.getWert());
 				if (AnstiegAbfallKontrolleTest.messWerte[durchlauf]
 						.getMarkierung() == MARKIERUNG.nicht_ermittelbar) {
@@ -425,23 +427,24 @@ ClientReceiverInterface {
 					if ((durchlauf % 2) == 0) {
 						datum.getWert().setFehlerhaftAn();
 					} else {
-						datum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+						datum.setStatusMessWertErsetzungImplausibel(
+								DUAKonstanten.JA);
 					}
 				}
 
-				final ResultData sendeDatum = new ResultData(datum
-						.getOriginalDatum().getObject(), datum
-						.getOriginalDatum().getDataDescription(),
+				final ResultData sendeDatum = new ResultData(
+						datum.getOriginalDatum().getObject(),
+						datum.getOriginalDatum().getDataDescription(),
 						aktuellesIntervall, datum.getDatum());
 
 				if (AnstiegAbfallKontrolleTest.DEBUG) {
-					System.out
-							.println(TestUtensilien.jzt()
-									+ ", Sende[" + durchlauf + "]: " + //$NON-NLS-1$ //$NON-NLS-2$
-									dateFormat.format(new Date(sendeDatum
-											.getDataTime())) + ", " + //$NON-NLS-1$
-									datum.getOriginalDatum().getObject()
-									+ ", T: " + datum.getT()); //$NON-NLS-1$
+					System.out.println(TestUtensilien.jzt() + ", Sende[" //$NON-NLS-1$
+							+ durchlauf + "]: " + //$NON-NLS-1$
+							dateFormat.format(
+									new Date(sendeDatum.getDataTime()))
+							+ ", " + //$NON-NLS-1$
+							datum.getOriginalDatum().getObject() + ", T: " //$NON-NLS-1$
+							+ datum.getT());
 				}
 
 				PlPruefungLogischUFDTest.sender.sende(sendeDatum);
@@ -462,27 +465,18 @@ ClientReceiverInterface {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dataRequest(final SystemObject object,
 			final DataDescription dataDescription, final byte state) {
 		//
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isRequestSupported(final SystemObject object,
 			final DataDescription dataDescription) {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -499,17 +493,19 @@ ClientReceiverInterface {
 									.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.JA);
 
 					if (AnstiegAbfallKontrolleTest.DEBUG) {
-						System.out.println(TestUtensilien.jzt()
-								+ ", Empfange: " + //$NON-NLS-1$
-								dateFormat.format(new Date(resultat
-										.getDataTime()))
-								+ ", " + //$NON-NLS-1$
-								resultat.getObject()
-								+ ", T: " + ufdDatum.getT() + ", impl: " + //$NON-NLS-1$ //$NON-NLS-2$ 
-								(implausibelUndFehlerhaft ? "ja" : "nein")); //$NON-NLS-1$ //$NON-NLS-2$
+						System.out
+								.println(TestUtensilien.jzt() + ", Empfange: " + //$NON-NLS-1$
+										dateFormat.format(new Date(
+												resultat.getDataTime()))
+										+ ", " + //$NON-NLS-1$
+										resultat.getObject() + ", T: " //$NON-NLS-1$
+										+ ufdDatum.getT() + ", impl: " + //$NON-NLS-1$
+										(implausibelUndFehlerhaft ? "ja" //$NON-NLS-1$
+												: "nein")); //$NON-NLS-1$
 					}
 
-					if (this.untersuchteSensoren.contains(resultat.getObject())) {
+					if (this.untersuchteSensoren
+							.contains(resultat.getObject())) {
 						this.ergebnisIst.put(resultat.getObject(),
 								implausibelUndFehlerhaft);
 					}

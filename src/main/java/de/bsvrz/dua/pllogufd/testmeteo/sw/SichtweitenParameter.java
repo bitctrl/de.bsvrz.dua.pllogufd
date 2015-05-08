@@ -69,10 +69,11 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 	 *            <code>typ.umfeldDatenSensor</code>)
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public SichtweitenParameter(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+			final SystemObject obj) throws DUAInitialisierungsException,
+					UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
 		swGrenzTrockenRLF = new UmfeldDatenSensorWert(UmfeldDatenArt.rlf);
 		swGrenzSW = new UmfeldDatenSensorWert(UmfeldDatenArt.sw);
@@ -97,23 +98,19 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 		return this.swGrenzSW;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
 			for (final ResultData resultat : resultate) {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
-						this.swGrenzTrockenRLF
-						.setWert(resultat
-										.getData()
-										.getUnscaledValue("SWgrenzTrockenRLF").longValue()); //$NON-NLS-1$
+						this.swGrenzTrockenRLF.setWert(resultat.getData()
+								.getUnscaledValue("SWgrenzTrockenRLF") //$NON-NLS-1$
+								.longValue());
 						this.swGrenzSW.setWert(resultat.getData()
 								.getUnscaledValue("SWgrenzSW").longValue()); //$NON-NLS-1$
-						LOGGER
-						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+						SichtweitenParameter.LOGGER.info("Neue Parameter für (" //$NON-NLS-1$
+								+ resultat.getObject() + "):\n" //$NON-NLS-1$
 								+ this);
 					}
 					this.parameterInitialisiert = true;
@@ -122,9 +119,6 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return "swGrenzTrockenRLF = " + swGrenzTrockenRLF + //$NON-NLS-1$

@@ -43,8 +43,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public abstract class AbstraktMeteoUmfeldDatenSensor extends
-AbstraktUmfeldDatenSensor {
+public abstract class AbstraktMeteoUmfeldDatenSensor
+		extends AbstraktUmfeldDatenSensor {
 
 	/**
 	 * wurden schon einmal Parameter empfangen.
@@ -67,17 +67,14 @@ AbstraktUmfeldDatenSensor {
 		super(verwaltung, obj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
-	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+			throws DUAInitialisierungsException,
+			UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
 					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
 		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();

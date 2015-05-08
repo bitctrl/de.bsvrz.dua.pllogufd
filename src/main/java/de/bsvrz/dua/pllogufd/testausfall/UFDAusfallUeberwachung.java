@@ -54,13 +54,10 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
-implements ClientReceiverInterface {
+		implements ClientReceiverInterface {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -68,17 +65,14 @@ implements ClientReceiverInterface {
 
 		final DataDescription parameterBeschreibung = new DataDescription(
 				dieVerwaltung.getVerbindung().getDataModel()
-						.getAttributeGroup("atg.ufdsAusfall‹berwachung"), //$NON-NLS-1$
-						dieVerwaltung.getVerbindung().getDataModel()
-						.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
+				.getAttributeGroup("atg.ufdsAusfall‹berwachung"), //$NON-NLS-1$
+				dieVerwaltung.getVerbindung().getDataModel()
+				.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dieVerwaltung.getVerbindung().subscribeReceiver(this,
 				dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected ResultData getAusfallDatumVon(final ResultData originalResultat) {
 		final UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(
@@ -88,17 +82,13 @@ implements ClientReceiverInterface {
 
 		final long zeitStempel = wert.getDatenZeit() + wert.getT();
 
-		final ResultData resultat = new ResultData(
-				originalResultat.getObject(),
+		final ResultData resultat = new ResultData(originalResultat.getObject(),
 				originalResultat.getDataDescription(), zeitStempel,
 				wert.getDatum());
 
 		return resultat;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected long getTVon(final ResultData resultat) {
 		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
@@ -106,25 +96,23 @@ implements ClientReceiverInterface {
 		return datum.getT();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
 			for (final ResultData resultat : resultate) {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this.objektWertErfassungVerzug) {
-						this.objektWertErfassungVerzug
-								.put(resultat.getObject(),
-										new Long(
-												resultat.getData()
-														.getTimeValue(
-																"maxZeitVerzug").getMillis())); //$NON-NLS-1$
-						LOGGER
-						.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = " + //$NON-NLS-1$ //$NON-NLS-2$
-								resultat.getData()
-												.getTimeValue("maxZeitVerzug").getMillis() + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+						this.objektWertErfassungVerzug.put(resultat.getObject(),
+								new Long(resultat.getData()
+										.getTimeValue("maxZeitVerzug") //$NON-NLS-1$
+										.getMillis()));
+						UFDAusfallUeberwachung.LOGGER
+								.info("Neue Parameter: maxZeitVerzug(" //$NON-NLS-1$
+										+ resultat.getObject() + ") = " + //$NON-NLS-1$
+										resultat.getData()
+						.getTimeValue("maxZeitVerzug") //$NON-NLS-1$
+												.getMillis()
+										+ "ms"); //$NON-NLS-1$
 					}
 				}
 			}

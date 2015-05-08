@@ -63,8 +63,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 @Ignore("Testdatenverteiler prüfen")
-public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
-		ClientReceiverInterface {
+public class UFDDifferenzialKontrolleTest
+		implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
 	 * standardmäßige maximal zulässige Ergebniskonstanz in Intervallen.
@@ -128,7 +128,7 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
@@ -138,19 +138,16 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 			}
 		}
 
-/**
+		/**
 		 * maximal zulässige Zeitdauer der Ergebniskonstanz auf
 		 * <code>STANDARD_T * STANDARD_MAX_INTERVALLE</code> stellen Eine
 		 * Überprüfung findet nur statt, wenn ein eingetroffener Wert "<" als
 		 * der Grenzwert von 5 ist
 		 */
 		for (final SystemObject sensor : this.untersuchteSensoren) {
-			PlPruefungLogischUFDTest.sender
-					.setDiffPara(
-							sensor,
-							5,
-							PlPruefungLogischUFDTest.STANDARD_T
-									* UFDDifferenzialKontrolleTest.STANDARD_MAX_INTERVALLE);
+			PlPruefungLogischUFDTest.sender.setDiffPara(sensor, 5,
+					PlPruefungLogischUFDTest.STANDARD_T
+							* UFDDifferenzialKontrolleTest.STANDARD_MAX_INTERVALLE);
 		}
 
 		/**
@@ -161,15 +158,15 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			final DataDescription datenBeschreibung = new DataDescription(dav
-					.getDataModel().getAttributeGroup(
-							"atg.ufds" + datenArt.getName()), //$NON-NLS-1$
-					dav.getDataModel().getAspect(
-							"asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+			final DataDescription datenBeschreibung = new DataDescription(
+					dav.getDataModel()
+							.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+							dav.getDataModel()
+							.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -196,26 +193,27 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 		aktuellesIntervall = zeitStempel
 				+ (4 * PlPruefungLogischUFDTest.STANDARD_T);
 
-		DAVTest.warteBis(zeitStempel + PlPruefungLogischUFDTest.STANDARD_T + 10);
+		DAVTest.warteBis(
+				zeitStempel + PlPruefungLogischUFDTest.STANDARD_T + 10);
 
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			final ResultData resultat;
 			try {
-				resultat = TestUtensilien
-						.getExterneErfassungDatum(sensor);
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+				resultat = TestUtensilien.getExterneErfassungDatum(sensor);
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				System.err.println("Wird nicht geprüft: " + e.getMessage());
 				continue;
 			}
-			
+
 			final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
 					resultat);
 			datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 			datum.getWert().setFehlerhaftAn();
 
-			final ResultData sendeDatum = new ResultData(datum
-					.getOriginalDatum().getObject(), datum.getOriginalDatum()
-					.getDataDescription(), zeitStempel, datum.getDatum());
+			final ResultData sendeDatum = new ResultData(
+					datum.getOriginalDatum().getObject(),
+					datum.getOriginalDatum().getDataDescription(), zeitStempel,
+					datum.getDatum());
 
 			PlPruefungLogischUFDTest.sender.sende(sendeDatum);
 		}
@@ -231,16 +229,22 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 	private void ergebnisUeberpruefen() {
 		if (!this.ergebnisIst.isEmpty() && !this.ergebnisSoll.isEmpty()) {
 			for (final SystemObject sensor : this.untersuchteSensoren) {
-				System.out
-						.println("Vergleiche (DIFF)" + sensor.getPid() + ": Soll(" + (this.ergebnisSoll.get(sensor) ? "impl" : "ok") + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-								"), Ist(" //$NON-NLS-1$
-								+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") + ") --> " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-								(this.ergebnisSoll.get(sensor) == this.ergebnisIst
-										.get(sensor) ? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
+				System.out.println(
+						"Vergleiche (DIFF)" + sensor.getPid() + ": Soll(" //$NON-NLS-1$ //$NON-NLS-2$
+								+ (this.ergebnisSoll
+										.get(sensor) ? "impl" : "ok") //$NON-NLS-1$ //$NON-NLS-2$
+								+
+								"), Ist("
+								+ (this.ergebnisIst.get(sensor) ? "impl" : "ok") //$NON-NLS-1$ //$NON-NLS-2$
+								+ ") --> " + //$NON-NLS-1$
+						(this.ergebnisSoll.get(
+										sensor) == this.ergebnisIst.get(sensor)
+												? "Ok" : "!!!FEHLER!!!")); //$NON-NLS-1$ //$NON-NLS-2$
 				Assert.assertEquals(
-						"fehlerhaftes Resultat: " + this.ergebnisEingetroffen.get(sensor), //$NON-NLS-1$
-						this.ergebnisSoll.get(sensor), this.ergebnisIst
-								.get(sensor));
+						"fehlerhaftes Resultat: " //$NON-NLS-1$
+								+ this.ergebnisEingetroffen.get(sensor),
+						this.ergebnisSoll.get(sensor),
+						this.ergebnisIst.get(sensor));
 			}
 		}
 		this.ergebnisIst.clear();
@@ -364,10 +368,10 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 					 */
 					this.ergebnisSoll.put(resultat.getObject(), false);
 				}
-				sendeDatum = new ResultData(datum.getOriginalDatum()
-						.getObject(), datum.getOriginalDatum()
-						.getDataDescription(), aktuellesIntervall,
-						datum.getDatum());
+				sendeDatum = new ResultData(
+						datum.getOriginalDatum().getObject(),
+						datum.getOriginalDatum().getDataDescription(),
+						aktuellesIntervall, datum.getDatum());
 
 				PlPruefungLogischUFDTest.sender.sende(sendeDatum);
 			}
@@ -382,27 +386,18 @@ public class UFDDifferenzialKontrolleTest implements ClientSenderInterface,
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dataRequest(final SystemObject object,
 			final DataDescription dataDescription, final byte state) {
 		//
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isRequestSupported(final SystemObject object,
 			final DataDescription dataDescription) {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
