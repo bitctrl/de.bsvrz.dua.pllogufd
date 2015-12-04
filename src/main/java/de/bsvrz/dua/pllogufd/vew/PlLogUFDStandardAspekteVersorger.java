@@ -26,10 +26,15 @@
 
 package de.bsvrz.dua.pllogufd.vew;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.StandardAspekteVersorger;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Diese Klasse repräsentiert die Versorgung des Moduls Pl-Prüfung logisch UFD
@@ -56,8 +61,7 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 
 	@Override
 	protected void init() throws DUAInitialisierungsException {
-
-		this.standardAspekte = new StandardAspekteAdapter(
+		final StandardPublikationsZuordnung[] bekannteZuordnungen = 
 				new StandardPublikationsZuordnung[] {
 						new StandardPublikationsZuordnung(
 								"typ.ufdsFahrBahnFeuchte", //$NON-NLS-1$
@@ -168,8 +172,33 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 								"typ.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
 								"atg.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH), });
+								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH)
+					};
+		
+		final List<StandardPublikationsZuordnung> zuordnungen = new ArrayList<StandardPublikationsZuordnung>();
+		zuordnungen.addAll(Arrays.asList(bekannteZuordnungen));
 
+		final String typZg = "typ.ufdsZeitreserveGlätteVaisala";
+		final String atgZg = "atg.ufdsZeitreserveGlätteVaisala";
+		try {
+			final StandardPublikationsZuordnung zuordnungZg = new StandardPublikationsZuordnung(
+				typZg, atgZg, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
+			zuordnungen.add(zuordnungZg);
+		} catch (final Exception e) {
+			Debug.getLogger().warning("Zuordnung für " + typZg + " und " + atgZg + " nicht möglich: " + e);
+		}
+
+		final String typTsq = "typ.ufdsTaustoffmenge";
+		final String atgTsq = "atg.ufdsTaustoffmenge";
+		try {
+			final StandardPublikationsZuordnung zuordnungTsq = new StandardPublikationsZuordnung(
+				typTsq, atgTsq, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
+			zuordnungen.add(zuordnungTsq);
+		} catch (final Exception e) {
+			Debug.getLogger().warning("Zuordnung für " + typTsq + " und " + atgTsq + " nicht möglich: " + e);
+		}
+		
+		this.standardAspekte = new StandardAspekteAdapter(zuordnungen.toArray(new StandardPublikationsZuordnung[zuordnungen.size()]));
 	}
 
 }

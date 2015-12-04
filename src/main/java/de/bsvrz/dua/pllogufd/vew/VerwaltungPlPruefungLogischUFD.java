@@ -49,6 +49,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGuete;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -102,6 +103,10 @@ public class VerwaltungPlPruefungLogischUFD
 
 		super.initialisiere();
 
+		final String arg = getArgument("fehlerhafteWertePublizieren");
+		if (null != arg) {
+			UmfeldDatenSensorWert.setFehlerhafteWertePublizieren(Boolean.parseBoolean(arg));
+		}
 		UmfeldDatenArt.initialisiere(this.verbindung);
 
 		String infoStr = Constants.EMPTY_STRING;

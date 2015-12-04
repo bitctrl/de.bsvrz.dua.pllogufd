@@ -2,7 +2,7 @@
 *  Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD  *
 *************************************************************************************
 
-Version: 1.4.0
+Version: 1.5.0
 
 
 Übersicht
@@ -22,6 +22,12 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 Versionsgeschichte
 ==================
+
+1.5.0
+- Unterstützung für die Umfalddatenarten ZeitreserveGlätte (Vaisala) und Taustoffmenge je Quadratmeter (TLS2012)
+- Neues Kommandozeilenargument -fehlerhafteWertePublizieren, mit dem das Defaultverhalten, implausible Werte
+  durch 'fehlerhaft' zu ersetzen, überschrieben werden kann.
+- Berechnung der Ausfallzeit UFD korrigiert (war zu groß)
 
 1.4.0
 - Umstellung auf Maven-Build
