@@ -50,6 +50,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGue
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenMessStelle;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -66,7 +67,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Meteorologische Kontrolle in dieser Reihenfolge durch die Angabe eines Moduls
  * als Beobachterobjekt des jeweiligen Vorgängermoduls her.
  *
- * @author BitCtrl Systems GmbH, Thierfelder
+ * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
+ * @version $Id$
  */
 public class VerwaltungPlPruefungLogischUFD
 		extends AbstraktVerwaltungsAdapterMitGuete {
@@ -125,6 +127,8 @@ public class VerwaltungPlPruefungLogischUFD
 
 		final IStandardAspekte standardAspekte = new PlLogUFDStandardAspekteVersorger(
 				this).getStandardPubInfos();
+		
+		DUAUmfeldDatenMessStelle.initialisiere(this.verbindung, this.getSystemObjekte());
 
 		/**
 		 * Instanziierung
