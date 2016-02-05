@@ -28,6 +28,8 @@ Versionsgeschichte
 - Neues Kommandozeilenargument -fehlerhafteWertePublizieren, mit dem das Defaultverhalten, implausible Werte
   durch 'fehlerhaft' zu ersetzen, überschrieben werden kann.
 - Berechnung der Ausfallzeit UFD korrigiert (war zu groß)
+- Neues Kommandozeilenargument -meteorologischeKontrolle=[default,hs,aus], um die meteorologische
+  Kontrolle auf die Hauptsensoren zu beschränken oder gänzlich zu deaktivieren.
 
 1.4.0
 - Umstellung auf Maven-Build

@@ -42,10 +42,12 @@ import de.bsvrz.dua.pllogufd.testaufab.AnstiegAbfallKontrolle;
 import de.bsvrz.dua.pllogufd.testausfall.UFDAusfallUeberwachung;
 import de.bsvrz.dua.pllogufd.testdiff.UFDDifferenzialKontrolle;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolle;
+import de.bsvrz.dua.pllogufd.testmeteo.pub.Publikation;
 import de.bsvrz.sys.funclib.application.StandardApplicationRunner;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
+import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktBearbeitungsKnotenAdapter;
 import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGuete;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
@@ -104,10 +106,22 @@ public class VerwaltungPlPruefungLogischUFD
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
+		boolean doMeteorologischeKontrolle = true;
+		final AbstraktBearbeitungsKnotenAdapter tail;
 
-		final String arg = getArgument("fehlerhafteWertePublizieren");
-		if (null != arg) {
-			UmfeldDatenSensorWert.setFehlerhafteWertePublizieren(Boolean.parseBoolean(arg));
+		final String argFehlerhafteWertePublizieren = getArgument("fehlerhafteWertePublizieren");
+		if (null != argFehlerhafteWertePublizieren) {
+			UmfeldDatenSensorWert.setFehlerhafteWertePublizieren(Boolean.parseBoolean(argFehlerhafteWertePublizieren));
+		}
+		final String argMeteorologischeKontrolle = getArgument("meteorologischeKontrolle");
+		if (null != argMeteorologischeKontrolle) {
+			if ("hs".equals(argMeteorologischeKontrolle)) {
+				MeteorologischeKontrolle.setNurHauptsensoren(true);
+				VerwaltungPlPruefungLogischUFD.LOGGER.warning("Meteorologische Kontrolle wirkt nur auf Hauptsensoren");
+			} else if ("aus".equals(argMeteorologischeKontrolle)) {
+				doMeteorologischeKontrolle = false;
+				VerwaltungPlPruefungLogischUFD.LOGGER.warning("Meteorologische Kontrolle ist abgeschaltet");
+			}
 		}
 		UmfeldDatenArt.initialisiere(this.verbindung);
 
@@ -128,7 +142,10 @@ public class VerwaltungPlPruefungLogischUFD
 		final IStandardAspekte standardAspekte = new PlLogUFDStandardAspekteVersorger(
 				this).getStandardPubInfos();
 		
-		DUAUmfeldDatenMessStelle.initialisiere(this.verbindung, this.getSystemObjekte());
+		final Collection<SystemObject> messStellen = DUAUtensilien.getBasisInstanzen(this.verbindung.getDataModel().getType(DUAKonstanten.TYP_UFD_MESSSTELLE),
+				this.verbindung, this.getKonfigurationsBereiche());
+		
+		DUAUmfeldDatenMessStelle.initialisiere(this.verbindung, messStellen.toArray(new SystemObject[messStellen.size()]));
 
 		/**
 		 * Instanziierung
@@ -139,7 +156,12 @@ public class VerwaltungPlPruefungLogischUFD
 						.getStandardPubInfos());
 		this.diff = new UFDDifferenzialKontrolle();
 		this.aak = new AnstiegAbfallKontrolle();
-		this.mk = new MeteorologischeKontrolle(standardAspekte);
+		if (doMeteorologischeKontrolle) {
+			this.mk = new MeteorologischeKontrolle(standardAspekte);
+			tail = this.mk;
+		} else {
+			tail = new Publikation(standardAspekte);
+		}
 
 		/**
 		 * Initialisierung
@@ -153,13 +175,23 @@ public class VerwaltungPlPruefungLogischUFD
 
 		this.diff.setNaechstenBearbeitungsKnoten(this.aak);
 		this.diff.initialisiere(this);
+		
+		if (doMeteorologischeKontrolle) {
+			this.aak.setNaechstenBearbeitungsKnoten(this.mk);
+			this.aak.initialisiere(this);
 
-		this.aak.setNaechstenBearbeitungsKnoten(this.mk);
-		this.aak.initialisiere(this);
-
-		this.mk.setNaechstenBearbeitungsKnoten(null);
-		this.mk.setPublikation(true);
-		this.mk.initialisiere(this);
+			this.mk.setNaechstenBearbeitungsKnoten(null);
+			this.mk.setPublikation(true);
+			this.mk.initialisiere(this);
+		} else {
+			this.aak.setNaechstenBearbeitungsKnoten(tail);
+			this.aak.setPublikation(false);
+			this.aak.initialisiere(this);
+			
+			tail.setNaechstenBearbeitungsKnoten(null);
+			tail.setPublikation(true);
+			tail.initialisiere(this);
+		}
 
 		/**
 		 * Datenanmeldung

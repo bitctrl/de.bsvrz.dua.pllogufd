@@ -27,6 +27,7 @@
 package de.bsvrz.dua.pllogufd.testmeteo.wfd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,15 +35,16 @@ import java.util.List;
 import java.util.Map;
 
 import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.testmeteo.AbstraktMeteoMessstelle;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteorologischeKontrolle;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenMessStelle;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -54,7 +56,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * <code>{@link AbstraktMeteoMessstelle}</code> über die Methode
  * <code>aktualisiereDaten(..)</code> durchgeführt.
  *
- * @author BitCtrl Systems GmbH, Thierfelder
+ * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
+ * @version $Id$
  */
 public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 
@@ -121,45 +124,38 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	private WasserfilmDickeMessstelle(final SystemObject ufdmsObj)
 			throws DUAInitialisierungsException {
 		super(ufdmsObj);
-		if (ufdmsObj instanceof ConfigurationObject) {
-			final ConfigurationObject ufdmsConObj = (ConfigurationObject) ufdmsObj;
-			final ObjectSet sensorMengeAnMessStelle = ufdmsConObj
-					.getObjectSet("UmfeldDatenSensoren"); //$NON-NLS-1$
-
-			if (sensorMengeAnMessStelle != null) {
-				for (final SystemObject betrachtetesObjekt : AbstraktMeteoMessstelle.verwaltung
-						.getSystemObjekte()) {
-					if (betrachtetesObjekt.isValid()) {
-						if (sensorMengeAnMessStelle.getElements()
-								.contains(betrachtetesObjekt)) {
-							UmfeldDatenArt datenArt;
-							try {
-								datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(
-										betrachtetesObjekt);
-							} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-								WasserfilmDickeMessstelle.LOGGER
-										.warning("Unbekannter Sensor (" + //$NON-NLS-1$
-										betrachtetesObjekt
-										+ ") an Messstelle " //$NON-NLS-1$
-												+ ufdmsObj);
-								continue;
-							}
-
-							if (WasserfilmDickeMessstelle.datenArten
-									.contains(datenArt)) {
-								sensorenAnMessStelle.add(betrachtetesObjekt);
-							}
-						}
-					}
-				}
+		final DUAUmfeldDatenMessStelle duaufdms = DUAUmfeldDatenMessStelle.getInstanz(ufdmsObj);
+		final Collection<SystemObject> betrachteteObjekte = Arrays.asList(AbstraktMeteoMessstelle.verwaltung
+						.getSystemObjekte());
+		for (final DUAUmfeldDatenSensor sensor : duaufdms.getSensoren()) {
+			// M.E. kann das weg, da bei der Initialisierung der DUAUmfeldDatenMessStelle
+			// nur die zu betrachtenden Messstellen geladen werden!
+			if (!betrachteteObjekte.contains(sensor.getObjekt())) {
+				WasserfilmDickeMessstelle.LOGGER.config("Sensor '" + sensor
+						+ "' an Messstelle '" + duaufdms.getObjekt() + "' wird nicht betrachtet");
+				continue;
 			}
-		} else {
-			/**
-			 * sollte eigentlich nicht vorkommen
-			 */
-			throw new DUAInitialisierungsException(
-					ufdmsObj + " ist kein Konfigurationsobjekt"); //$NON-NLS-1$
+			try {
+				final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor.getObjekt());
+				if (WasserfilmDickeMessstelle.datenArten.contains(datenArt)) {
+					if (sensor.isHauptSensor() || !MeteorologischeKontrolle.getNurHauptsensoren()) {
+						WasserfilmDickeMessstelle.LOGGER.config("Sensor '" + sensor
+								+ "' an Messstelle '" + duaufdms.getObjekt() + "' wird benutzt!");
+						sensorenAnMessStelle.add(sensor.getObjekt());
+					} else {
+						WasserfilmDickeMessstelle.LOGGER.warning("Sensor '" + sensor
+								+ "' an Messstelle '" + duaufdms.getObjekt() + "' wird nicht benutzt, da er der Nebensensor ist");
+					}
+				} else {
+					WasserfilmDickeMessstelle.LOGGER.fine("Sensor '" + sensor
+							+ "' an Messstelle '" + duaufdms.getObjekt() + "' wird nicht benötigt");
+				}
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
+				WasserfilmDickeMessstelle.LOGGER.warning(e.getMessage());
+				continue;
+			}
 		}
+		LOGGER.config("Konstruiert: " + this);
 	}
 
 	/**
@@ -176,43 +172,44 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 			throws DUAInitialisierungsException {
 		AbstraktMeteoMessstelle.setVerwaltungsModul(verwaltung);
 
-		for (final SystemObject ufdmsObj : verwaltung.getVerbindung()
-				.getDataModel().getType("typ.umfeldDatenMessStelle") //$NON-NLS-1$
-				.getElements()) {
-			if (ufdmsObj.isValid()) {
-				final WasserfilmDickeMessstelle messStelle = new WasserfilmDickeMessstelle(
-						ufdmsObj);
-				if (messStelle.getSensoren().isEmpty()) {
+		for (final DUAUmfeldDatenMessStelle duaufdms : DUAUmfeldDatenMessStelle.getInstanzen()) {
+			final WasserfilmDickeMessstelle messStelle = new WasserfilmDickeMessstelle(
+					duaufdms.getObjekt());
+			if (messStelle.getSensoren().isEmpty()) {
+				WasserfilmDickeMessstelle.LOGGER
+						.config("Umfelddaten-Messstelle " + duaufdms + //$NON-NLS-1$
+								" wird nicht betrachtet"); //$NON-NLS-1$
+			} else {
+				for (final DUAUmfeldDatenSensor duaSensor : duaufdms.getSensoren()) {
+					final SystemObject umfeldDatenSensor = duaSensor.getObjekt();
+					if (!duaSensor.isHauptSensor()) {
+						LOGGER.config("Der Sensor '" + umfeldDatenSensor.getPid() + "' an Messstelle '" + duaufdms.getObjekt().getPid()
+								+ "' wird an der korrespondierenden WFD-Messstelle nicht benutzt, da er nicht der Hauptsensor ist.");
+						continue;
+					}
+					if (WasserfilmDickeMessstelle.ufdsAufUfdMs
+							.get(umfeldDatenSensor) != null) {
+						throw new DUAInitialisierungsException(
+								"Der Umfelddatensensor " + umfeldDatenSensor //$NON-NLS-1$
+										+
+										" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n"
+										+ WasserfilmDickeMessstelle.ufdsAufUfdMs
+												.get(umfeldDatenSensor)
+										+ " und\n" + messStelle); //$NON-NLS-1$
+					}
+					WasserfilmDickeMessstelle.ufdsAufUfdMs
+							.put(umfeldDatenSensor, messStelle);
+				}
+				try {
+					messStelle.initialisiereMessStelle();
+				} catch (final NoSuchSensorException e) {
 					WasserfilmDickeMessstelle.LOGGER
-							.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
+							.config("Umfelddaten-Messstelle " + duaufdms + //$NON-NLS-1$
 									" wird nicht betrachtet"); //$NON-NLS-1$
-				} else {
 					for (final SystemObject umfeldDatenSensor : messStelle
 							.getSensoren()) {
-						if (WasserfilmDickeMessstelle.ufdsAufUfdMs
-								.get(umfeldDatenSensor) != null) {
-							throw new DUAInitialisierungsException(
-									"Der Umfelddatensensor " + umfeldDatenSensor //$NON-NLS-1$
-											+
-											" ist gleichzeitig an mehr als einer Messstelle konfiguriert:\n"
-											+ WasserfilmDickeMessstelle.ufdsAufUfdMs
-													.get(umfeldDatenSensor)
-											+ " und\n" + messStelle); //$NON-NLS-1$
-						}
 						WasserfilmDickeMessstelle.ufdsAufUfdMs
-								.put(umfeldDatenSensor, messStelle);
-					}
-					try {
-						messStelle.initialisiereMessStelle();
-					} catch (final NoSuchSensorException e) {
-						WasserfilmDickeMessstelle.LOGGER
-								.config("Umfelddaten-Messstelle " + ufdmsObj + //$NON-NLS-1$
-										" wird nicht betrachtet"); //$NON-NLS-1$
-						for (final SystemObject umfeldDatenSensor : messStelle
-								.getSensoren()) {
-							WasserfilmDickeMessstelle.ufdsAufUfdMs
-							.remove(umfeldDatenSensor);
-						}
+						.remove(umfeldDatenSensor);
 					}
 				}
 			}

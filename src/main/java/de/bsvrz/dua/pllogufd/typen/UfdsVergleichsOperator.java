@@ -37,8 +37,14 @@ import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
  * gestellt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
+ * @version $Id$
  */
 public class UfdsVergleichsOperator extends AbstractDavZustand {
+
+	/**
+	 * Unbenutzt, vermeide Warnung.
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Der Wertebereich dieses DAV-Enumerationstypen

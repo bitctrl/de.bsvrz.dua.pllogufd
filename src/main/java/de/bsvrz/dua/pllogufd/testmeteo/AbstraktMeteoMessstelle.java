@@ -43,7 +43,8 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Abstrakte Klasse für Umfelddatenmessstellen, für die eine meteorologische
  * Kontrolle durchgeführt werden soll.
  *
- * @author BitCtrl Systems GmbH, Thierfelder
+ * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
+ * @version $Id$
  */
 public abstract class AbstraktMeteoMessstelle {
 
@@ -358,10 +359,20 @@ public abstract class AbstraktMeteoMessstelle {
 	 */
 	protected class NoSuchSensorException extends Exception {
 
+		/**
+		 * Not used, avoid warning.
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public NoSuchSensorException(final String nachricht) {
 			super(nachricht);
 		}
 
+	}
+
+	public String toString() {
+		return getClass().getSimpleName() + " von " + object.getName() +
+			", betrachtete Sensoren: " + sensorenAnMessStelle;
 	}
 
 }

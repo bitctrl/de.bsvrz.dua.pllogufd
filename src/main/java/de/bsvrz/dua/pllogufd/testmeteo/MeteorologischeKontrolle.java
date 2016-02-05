@@ -47,7 +47,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * plausibel erkannt, so wird der entsprechende Wert auf Fehlerhaft und
  * Implausibel gesetzt.
  *
- * @author BitCtrl Systems GmbH, Thierfelder
+ * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
+ * @version $Id$
  */
 public class MeteorologischeKontrolle
 extends AbstraktBearbeitungsKnotenAdapter {
@@ -76,6 +77,28 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	 * Submodul Publikation.
 	 */
 	private Publikation pub = null;
+
+	/**
+	 * Bestimmt, ob die Meteorologische Kontrolle nur auf die Hauptsensoren
+	 * arbeitet oder auf alle Sensoren (Defaultverhalten NERZ e.V.)
+	 */
+	private static boolean nurHauptsensoren = false;
+
+	/**
+	 * Bestimmt, ob die Meteorologische Kontrolle nur auf die Hauptsensoren
+	 * arbeitet oder auf alle Sensoren (Defaultverhalten NERZ e.V.)
+	 */
+	public static boolean getNurHauptsensoren() {
+		return nurHauptsensoren;
+	}
+
+	/**
+	 * Bestimmt, ob die Meteorologische Kontrolle nur auf die Hauptsensoren
+	 * arbeitet oder auf alle Sensoren (Defaultverhalten NERZ e.V.)
+	 */
+	public static void setNurHauptsensoren(final boolean nurHauptsensoren) {
+		MeteorologischeKontrolle.nurHauptsensoren = nurHauptsensoren;
+	}
 
 	/**
 	 * Standardkonstruktor.
