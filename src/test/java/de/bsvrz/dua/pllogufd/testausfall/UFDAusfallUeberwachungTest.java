@@ -95,7 +95,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  */
 @Ignore("Testdatenverteiler prüfen")
 public class UFDAusfallUeberwachungTest
-		implements ClientSenderInterface, ClientReceiverInterface {
+implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
 	 * Debugging Ausgaben anzeigen?
@@ -182,9 +182,9 @@ public class UFDAusfallUeberwachungTest
 
 			final DataDescription datenBeschreibung = new DataDescription(
 					dav.getDataModel()
-							.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+					.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 					dav.getDataModel()
-							.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+					.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -313,9 +313,8 @@ public class UFDAusfallUeberwachungTest
 					if (erfolgsErgebnis != null) {
 						System.out.println("Vergleiche (AUSFALL)" //$NON-NLS-1$
 								+ sensor.getPid() + ": Soll(" //$NON-NLS-1$
-								+ this.ergebnisSoll.get(sensor) +
-								"), Ist(" + erfolgsErgebnis
-								+ ") --> Ok"); //$NON-NLS-1$
+								+ this.ergebnisSoll.get(sensor) + "), Ist("
+								+ erfolgsErgebnis + ") --> Ok"); //$NON-NLS-1$
 					} else {
 						System.out.println(
 								"!!!!!!!!!!!!!!!!!!!!!!!!!!!Fehler!!!!!!!!!!!!!!!!!!!!!!!!!!!"); //$NON-NLS-1$
@@ -384,7 +383,7 @@ public class UFDAusfallUeberwachungTest
 			this.ergebnisUeberpruefen();
 
 			System.out
-					.println("---\nTestlauf Nr." + (testZaehler + 1) + "\n---"); //$NON-NLS-1$ //$NON-NLS-2$
+			.println("---\nTestlauf Nr." + (testZaehler + 1) + "\n---"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			/**
 			 * In dieser Schleife wird für jeden Sensor im stochastischen Takt
@@ -401,7 +400,7 @@ public class UFDAusfallUeberwachungTest
 				/**
 				 * Dieser Wert fällt komplett aus
 				 */
-				if (DAVTest.r
+				if (DAVTest.RANDOM
 						.nextInt(UFDAusfallUeberwachungTest.AUSFALL) == 0) {
 					final Ergebnis erwartetesErgebnis = new Ergebnis(sensor,
 							start - Constants.MILLIS_PER_MINUTE, true);
@@ -456,8 +455,9 @@ public class UFDAusfallUeberwachungTest
 						+ erwartetesErgebnis);
 
 				try {
-					Thread.sleep(UFDAusfallUeberwachungTest.ABSTAND + DAVTest.r
-							.nextInt(UFDAusfallUeberwachungTest.ABSTAND));
+					Thread.sleep(UFDAusfallUeberwachungTest.ABSTAND
+							+ DAVTest.RANDOM.nextInt(
+									UFDAusfallUeberwachungTest.ABSTAND));
 				} catch (final InterruptedException ex) {
 					//
 				}
@@ -592,8 +592,8 @@ public class UFDAusfallUeberwachungTest
 					DUAKonstanten.NUR_ZEIT_FORMAT_GENAU_STR);
 
 			return "Sensor: " + this.sensor.getPid() + ", Daten: "
-					+ dateFormat.format(new Date(this.datenZeit))
-					+ ", nicht Erfasst: " + nichtErfasstStr;
+			+ dateFormat.format(new Date(this.datenZeit))
+			+ ", nicht Erfasst: " + nichtErfasstStr;
 		}
 	}
 }

@@ -61,7 +61,7 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 	 *            Instanz des Moduls Pl-Prüfung logisch UFD
 	 */
 	public Publikation(final IStandardAspekte stdAspekte) {
-		this.standardAspekte = stdAspekte;
+		setStandardAspekte(stdAspekte);
 	}
 
 	@Override
@@ -69,26 +69,26 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 			throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 
-		if (this.publizieren) {
-			this.publikationsAnmeldungen.modifiziereObjektAnmeldung(
-					this.standardAspekte.getStandardAnmeldungen(
-							this.verwaltung.getSystemObjekte()));
+		if (isPublizieren()) {
+			getPublikationsAnmeldungen().modifiziereObjektAnmeldung(
+					getStandardAspekte().getStandardAnmeldungen(
+							getVerwaltung().getSystemObjekte()));
 		}
 	}
 
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
-		if (this.publizieren) {
+		if (isPublizieren()) {
 			if (resultate != null) {
 				for (final ResultData resultat : resultate) {
 					if (resultat != null/* && resultat.getData() != null */) {
 						final ResultData publikationsDatum = iDfsMod
 								.getPublikationsDatum(resultat,
-										resultat.getData(), standardAspekte
-												.getStandardAspekt(resultat));
+										resultat.getData(), getStandardAspekte()
+										.getStandardAspekt(resultat));
 						if (publikationsDatum != null) {
-							this.publikationsAnmeldungen
-									.sende(publikationsDatum);
+							getPublikationsAnmeldungen()
+							.sende(publikationsDatum);
 						}
 					}
 				}
@@ -103,24 +103,24 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung iDfs) {
-		this.iDfsMod = iDfs.getDFSFuerModul(this.verwaltung.getSWETyp(),
+		this.iDfsMod = iDfs.getDFSFuerModul(getVerwaltung().getSWETyp(),
 				this.getModulTyp());
 
-		if (this.publizieren) {
+		if (isPublizieren()) {
 			Collection<DAVObjektAnmeldung> anmeldungenStd = new ArrayList<>();
 
-			if (this.standardAspekte != null) {
-				anmeldungenStd = this.standardAspekte.getStandardAnmeldungen(
-						this.verwaltung.getSystemObjekte());
+			if (getStandardAspekte() != null) {
+				anmeldungenStd = getStandardAspekte().getStandardAnmeldungen(
+						getVerwaltung().getSystemObjekte());
 			}
 
 			final Collection<DAVObjektAnmeldung> anmeldungen = this.iDfsMod
-					.getDatenAnmeldungen(this.verwaltung.getSystemObjekte(),
+					.getDatenAnmeldungen(getVerwaltung().getSystemObjekte(),
 							anmeldungenStd);
 
 			synchronized (this) {
-				this.publikationsAnmeldungen
-						.modifiziereObjektAnmeldung(anmeldungen);
+				getPublikationsAnmeldungen()
+				.modifiziereObjektAnmeldung(anmeldungen);
 			}
 		}
 	}

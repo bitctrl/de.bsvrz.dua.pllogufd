@@ -73,7 +73,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * @version $Id$
  */
 public class VerwaltungPlPruefungLogischUFD
-		extends AbstraktVerwaltungsAdapterMitGuete {
+extends AbstraktVerwaltungsAdapterMitGuete {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -123,29 +123,29 @@ public class VerwaltungPlPruefungLogischUFD
 				VerwaltungPlPruefungLogischUFD.LOGGER.warning("Meteorologische Kontrolle ist abgeschaltet");
 			}
 		}
-		UmfeldDatenArt.initialisiere(this.verbindung);
+		UmfeldDatenArt.initialisiere(getVerbindung());
 
 		String infoStr = Constants.EMPTY_STRING;
 		final Collection<SystemObject> plLogLveObjekte = DUAUtensilien
 				.getBasisInstanzen(
-						this.verbindung.getDataModel()
-								.getType(DUAKonstanten.TYP_UFD_SENSOR),
-						this.verbindung, this.getKonfigurationsBereiche());
-		this.objekte = plLogLveObjekte.toArray(new SystemObject[0]);
+						getVerbindung().getDataModel()
+						.getType(DUAKonstanten.TYP_UFD_SENSOR),
+						getVerbindung(), this.getKonfigurationsBereiche());
+		setSystemObjekte(plLogLveObjekte);
 
-		for (final SystemObject obj : this.objekte) {
+		for (final SystemObject obj : getSystemObjekte()) {
 			infoStr += obj + "\n"; //$NON-NLS-1$
 		}
 		VerwaltungPlPruefungLogischUFD.LOGGER
-				.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final IStandardAspekte standardAspekte = new PlLogUFDStandardAspekteVersorger(
 				this).getStandardPubInfos();
-		
-		final Collection<SystemObject> messStellen = DUAUtensilien.getBasisInstanzen(this.verbindung.getDataModel().getType(DUAKonstanten.TYP_UFD_MESSSTELLE),
-				this.verbindung, this.getKonfigurationsBereiche());
-		
-		DUAUmfeldDatenMessStelle.initialisiere(this.verbindung, messStellen.toArray(new SystemObject[messStellen.size()]));
+
+		final Collection<SystemObject> messStellen = DUAUtensilien.getBasisInstanzen(getVerbindung().getDataModel().getType(DUAKonstanten.TYP_UFD_MESSSTELLE),
+				getVerbindung(), this.getKonfigurationsBereiche());
+
+		DUAUmfeldDatenMessStelle.initialisiere(getVerbindung(), messStellen);
 
 		/**
 		 * Instanziierung
@@ -153,7 +153,7 @@ public class VerwaltungPlPruefungLogischUFD
 		this.ausfall = new UFDAusfallUeberwachung();
 		this.formal = new PlPruefungFormal(
 				new PlFormUFDStandardAspekteVersorger(this)
-						.getStandardPubInfos());
+				.getStandardPubInfos());
 		this.diff = new UFDDifferenzialKontrolle();
 		this.aak = new AnstiegAbfallKontrolle();
 		if (doMeteorologischeKontrolle) {
@@ -175,7 +175,7 @@ public class VerwaltungPlPruefungLogischUFD
 
 		this.diff.setNaechstenBearbeitungsKnoten(this.aak);
 		this.diff.initialisiere(this);
-		
+
 		if (doMeteorologischeKontrolle) {
 			this.aak.setNaechstenBearbeitungsKnoten(this.mk);
 			this.aak.initialisiere(this);
@@ -187,7 +187,7 @@ public class VerwaltungPlPruefungLogischUFD
 			this.aak.setNaechstenBearbeitungsKnoten(tail);
 			this.aak.setPublikation(false);
 			this.aak.initialisiere(this);
-			
+
 			tail.setNaechstenBearbeitungsKnoten(null);
 			tail.setPublikation(true);
 			tail.initialisiere(this);
@@ -199,15 +199,15 @@ public class VerwaltungPlPruefungLogischUFD
 		for (final AttributeGroup atg : standardAspekte
 				.getAlleAttributGruppen()) {
 
-			for (final SystemObject obj : this.objekte) {
+			for (final SystemObject obj : getSystemObjekte()) {
 
 				if (obj.getType().getAttributeGroups().contains(atg)) {
 
 					final DataDescription datenBeschreibung = new DataDescription(
-							atg, verbindung.getDataModel().getAspect(
+							atg, getVerbindung().getDataModel().getAspect(
 									DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
-					this.verbindung.subscribeReceiver(this, obj,
+					getVerbindung().subscribeReceiver(this, obj,
 							datenBeschreibung, ReceiveOptions.delayed(),
 							ReceiverRole.receiver());
 

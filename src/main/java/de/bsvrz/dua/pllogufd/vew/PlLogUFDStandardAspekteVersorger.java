@@ -61,7 +61,7 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 
 	@Override
 	protected void init() throws DUAInitialisierungsException {
-		final StandardPublikationsZuordnung[] bekannteZuordnungen = 
+		final StandardPublikationsZuordnung[] bekannteZuordnungen =
 				new StandardPublikationsZuordnung[] {
 						new StandardPublikationsZuordnung(
 								"typ.ufdsFahrBahnFeuchte", //$NON-NLS-1$
@@ -173,8 +173,8 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 								"atg.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH)
-					};
-		
+		};
+
 		final List<StandardPublikationsZuordnung> zuordnungen = new ArrayList<StandardPublikationsZuordnung>();
 		zuordnungen.addAll(Arrays.asList(bekannteZuordnungen));
 
@@ -182,7 +182,7 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 		final String atgZg = "atg.ufdsZeitreserveGlätteVaisala";
 		try {
 			final StandardPublikationsZuordnung zuordnungZg = new StandardPublikationsZuordnung(
-				typZg, atgZg, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
+					typZg, atgZg, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
 			zuordnungen.add(zuordnungZg);
 		} catch (final Exception e) {
 			Debug.getLogger().warning("Zuordnung für " + typZg + " und " + atgZg + " nicht möglich: " + e);
@@ -192,13 +192,13 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 		final String atgTsq = "atg.ufdsTaustoffmenge";
 		try {
 			final StandardPublikationsZuordnung zuordnungTsq = new StandardPublikationsZuordnung(
-				typTsq, atgTsq, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
+					typTsq, atgTsq, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
 			zuordnungen.add(zuordnungTsq);
 		} catch (final Exception e) {
 			Debug.getLogger().warning("Zuordnung für " + typTsq + " und " + atgTsq + " nicht möglich: " + e);
 		}
-		
-		this.standardAspekte = new StandardAspekteAdapter(zuordnungen.toArray(new StandardPublikationsZuordnung[zuordnungen.size()]));
+
+		setStandardAspekte(new StandardAspekteAdapter(zuordnungen.toArray(new StandardPublikationsZuordnung[zuordnungen.size()])));
 	}
 
 }

@@ -111,8 +111,8 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 				}
 			}
 
-			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
-				this.knoten.aktualisiereDaten(
+			if ((getKnoten() != null) && !weiterzuleitendeResultate.isEmpty()) {
+				getKnoten().aktualisiereDaten(
 						weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}

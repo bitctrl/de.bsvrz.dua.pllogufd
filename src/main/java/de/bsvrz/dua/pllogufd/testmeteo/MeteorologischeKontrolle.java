@@ -89,7 +89,7 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	 * arbeitet oder auf alle Sensoren (Defaultverhalten NERZ e.V.)
 	 */
 	public static boolean getNurHauptsensoren() {
-		return nurHauptsensoren;
+		return MeteorologischeKontrolle.nurHauptsensoren;
 	}
 
 	/**
@@ -128,7 +128,7 @@ extends AbstraktBearbeitungsKnotenAdapter {
 		sw.setNaechstenBearbeitungsKnoten(pub);
 		sw.initialisiere(dieVerwaltung);
 
-		pub.setNaechstenBearbeitungsKnoten(this.knoten);
+		pub.setNaechstenBearbeitungsKnoten(getKnoten());
 		pub.setPublikation(true);
 		pub.initialisiere(dieVerwaltung);
 	}

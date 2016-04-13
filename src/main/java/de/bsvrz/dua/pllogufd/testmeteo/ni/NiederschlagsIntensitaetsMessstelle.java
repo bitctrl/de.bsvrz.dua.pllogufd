@@ -27,7 +27,6 @@
 package de.bsvrz.dua.pllogufd.testmeteo.ni;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -128,8 +127,8 @@ extends AbstraktMeteoMessstelle {
 			throws DUAInitialisierungsException {
 		super(ufdmsObj);
 		final DUAUmfeldDatenMessStelle duaufdms = DUAUmfeldDatenMessStelle.getInstanz(ufdmsObj);
-		final Collection<SystemObject> betrachteteObjekte = Arrays.asList(AbstraktMeteoMessstelle.verwaltung
-						.getSystemObjekte());
+		final Collection<SystemObject> betrachteteObjekte = AbstraktMeteoMessstelle.verwaltung
+				.getSystemObjekte();
 		for (final DUAUmfeldDatenSensor sensor : duaufdms.getSensoren()) {
 			// M.E. kann das weg, da bei der Initialisierung der DUAUmfeldDatenMessStelle
 			// nur die zu betrachtenden Messstellen geladen werden!
@@ -158,7 +157,7 @@ extends AbstraktMeteoMessstelle {
 				continue;
 			}
 		}
-		LOGGER.config("Konstruiert: " + this);
+		NiederschlagsIntensitaetsMessstelle.LOGGER.config("Konstruiert: " + this);
 	}
 
 	/**
@@ -186,7 +185,7 @@ extends AbstraktMeteoMessstelle {
 				for (final DUAUmfeldDatenSensor duaSensor : duaufdms.getSensoren()) {
 					final SystemObject umfeldDatenSensor = duaSensor.getObjekt();
 					if (!duaSensor.isHauptSensor()) {
-						LOGGER.config("Der Sensor '" + umfeldDatenSensor.getPid() + "' an Messstelle '" + duaufdms.getObjekt().getPid()
+						NiederschlagsIntensitaetsMessstelle.LOGGER.config("Der Sensor '" + umfeldDatenSensor.getPid() + "' an Messstelle '" + duaufdms.getObjekt().getPid()
 								+ "' wird an der korrespondierenden NI-Messstelle nicht benutzt, da er nicht der Hauptsensor ist.");
 						continue;
 					}
@@ -211,7 +210,7 @@ extends AbstraktMeteoMessstelle {
 					for (final SystemObject umfeldDatenSensor : messStelle
 							.getSensoren()) {
 						NiederschlagsIntensitaetsMessstelle.ufdsAufUfdMs
-								.remove(umfeldDatenSensor);
+						.remove(umfeldDatenSensor);
 					}
 				}
 			}
@@ -475,10 +474,10 @@ extends AbstraktMeteoMessstelle {
 				&& (this.letztesUfdRLFDatum != null)
 				&& (this.letztesUfdNIDatum
 						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-						&& (this.letztesUfdNSDatum
-								.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-								&& (this.letztesUfdRLFDatum
-										.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
+				&& (this.letztesUfdNSDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
+				&& (this.letztesUfdRLFDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
 			if (this.parameterSensor.isInitialisiert()
 					&& this.parameterSensor.getNIminNI().isOk()
 					&& this.parameterSensor.getNIGrenzTrockenRLF().isOk()
@@ -487,9 +486,9 @@ extends AbstraktMeteoMessstelle {
 						&& (this.letztesUfdNIDatum.getWert()
 								.getWert() > this.parameterSensor.getNIminNI()
 								.getWert())
-								&& (this.letztesUfdRLFDatum.getWert()
-										.getWert() < this.parameterSensor
-										.getNIGrenzTrockenRLF().getWert())) {
+						&& (this.letztesUfdRLFDatum.getWert()
+								.getWert() < this.parameterSensor
+								.getNIGrenzTrockenRLF().getWert())) {
 					this.letztesUfdNIDatum
 					.setStatusMessWertErsetzungImplausibel(
 							DUAKonstanten.JA);
@@ -514,10 +513,10 @@ extends AbstraktMeteoMessstelle {
 				&& (this.letztesUfdRLFDatum != null)
 				&& (this.letztesUfdNIDatum
 						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-						&& (this.letztesUfdWFDDatum
-								.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
-								&& (this.letztesUfdRLFDatum
-										.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
+				&& (this.letztesUfdWFDDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)
+				&& (this.letztesUfdRLFDatum
+						.getStatusMessWertErsetzungImplausibel() == DUAKonstanten.NEIN)) {
 			if (this.parameterSensor.isInitialisiert()
 					&& this.parameterSensor.getNIGrenzNassNI().isOk()
 					&& this.parameterSensor.getNIGrenzTrockenRLF().isOk()

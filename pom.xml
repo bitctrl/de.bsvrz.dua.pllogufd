@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.bsvrz.dua</groupId>
 	<artifactId>de.bsvrz.dua.pllogufd</artifactId>
-	<version>1.5.0-SNAPSHOT</version>
+	<version>1.6.0-SNAPSHOT</version>
 
 
 	<name>Segment 4 Datenübernahme und Aufbereitung (DUA), Pl-Logisch UFD (SWE 4.3)</name>
@@ -50,8 +50,8 @@
 		</dependency>
 		<dependency>
 			<groupId>de.bsvrz.sys</groupId>
-			<artifactId>de.bsvrz.sys.funclib.bitctrl</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
+			<artifactId>de.bsvrz.sys.funclib.bitctrl.dua</artifactId>
+			<version>[1.0,)</version>
 		</dependency>
 		<dependency>
 			<groupId>de.bsvrz.dua</groupId>

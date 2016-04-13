@@ -40,7 +40,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class PlFormUFDStandardAspekteVersorger
-		extends StandardAspekteVersorger {
+extends StandardAspekteVersorger {
 
 	/**
 	 * Standardkonstruktor.
@@ -58,7 +58,7 @@ public class PlFormUFDStandardAspekteVersorger
 	@Override
 	protected void init() throws DUAInitialisierungsException {
 
-		this.standardAspekte = new StandardAspekteAdapter(
+		setStandardAspekte(new StandardAspekteAdapter(
 				new StandardPublikationsZuordnung[] {
 						new StandardPublikationsZuordnung(
 								"typ.ufdsFahrBahnFeuchte", //$NON-NLS-1$
@@ -169,7 +169,7 @@ public class PlFormUFDStandardAspekteVersorger
 								"typ.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
 								"atg.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL), });
+								DUAKonstanten.ASP_PL_PRUEFUNG_FORMAL), }));
 
 	}
 

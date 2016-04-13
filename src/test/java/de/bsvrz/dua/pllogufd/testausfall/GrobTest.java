@@ -61,7 +61,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  */
 @Ignore("Testdatenverteiler prüfen")
 public class GrobTest
-		implements ClientSenderInterface, ClientReceiverInterface {
+implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
 	 * Die Zeit (in ms) die die erwartete Eintreffzeit eines Datums von der
@@ -172,9 +172,9 @@ public class GrobTest
 					.getUmfeldDatenArtVon(sensor);
 			final DataDescription datenBeschreibung = new DataDescription(
 					dav.getDataModel()
-							.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+					.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 					dav.getDataModel()
-							.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+					.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -208,33 +208,33 @@ public class GrobTest
 				.getUmfeldDatenArtVon(sensor);
 		final DataDescription datenBeschreibung = new DataDescription(
 				PlPruefungLogischUFDTest.dav.getDataModel()
-						.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
+				.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 				PlPruefungLogischUFDTest.dav.getDataModel()
-						.getAspect("asp.externeErfassung")); //$NON-NLS-1$
+				.getAspect("asp.externeErfassung")); //$NON-NLS-1$
 		final Data datum = PlPruefungLogischUFDTest.dav
 				.createData(PlPruefungLogischUFDTest.dav.getDataModel()
 						.getAttributeGroup("atg.ufds" + datenArt.getName())); //$NON-NLS-1$
 		datum.getTimeValue("T").setMillis(1L * 1000L); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getUnscaledValue("Wert").set(0); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getItem("Status").getItem("Erfassung") //$NON-NLS-1$ //$NON-NLS-2$
-				.
-				getUnscaledValue("NichtErfasst").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.
+		getUnscaledValue("NichtErfasst").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("WertMax").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		getUnscaledValue("WertMax").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getItem("Status").getItem("PlFormal").//$NON-NLS-1$ //$NON-NLS-2$
-				getUnscaledValue("WertMin").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		getUnscaledValue("WertMin").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
 		datum.getItem(datenArt.getName()).getItem("Status") //$NON-NLS-1$
-				.getItem("MessWertErsetzung").//$NON-NLS-1$
-				getUnscaledValue("Implausibel").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.getItem("MessWertErsetzung").//$NON-NLS-1$
+		getUnscaledValue("Implausibel").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getItem("Status") //$NON-NLS-1$
-				.getItem("MessWertErsetzung").//$NON-NLS-1$
-				getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
+		.getItem("MessWertErsetzung").//$NON-NLS-1$
+		getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
 		datum.getItem(datenArt.getName()).getItem("Güte") //$NON-NLS-1$
-				.getUnscaledValue("Index").set(10000); //$NON-NLS-1$
+		.getUnscaledValue("Index").set(10000); //$NON-NLS-1$
 		datum.getItem(datenArt.getName()).getItem("Güte") //$NON-NLS-1$
-				.getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$
+		.getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$
 
 		return new ResultData(sensor, datenBeschreibung,
 				System.currentTimeMillis(), datum);
@@ -319,7 +319,7 @@ public class GrobTest
 					continue;
 				}
 				try {
-					Thread.sleep(DAVTest.r.nextInt(700));
+					Thread.sleep(DAVTest.RANDOM.nextInt(700));
 				} catch (final InterruptedException ex) {
 					//
 				}
@@ -332,14 +332,14 @@ public class GrobTest
 					PlPruefungLogischUFDTest.sender.sende(resultat1);
 					System.out.println(ct() + ", Sende: " //$NON-NLS-1$
 							+ resultat1.getObject().getPid() + ", " + dateFormat //$NON-NLS-1$
-									.format(new Date(resultat1.getDataTime())));
+							.format(new Date(resultat1.getDataTime())));
 				}
 
 				if ((testZaehler % 7) == 0) {
 					continue;
 				}
 				try {
-					Thread.sleep(DAVTest.r.nextInt(10));
+					Thread.sleep(DAVTest.RANDOM.nextInt(10));
 				} catch (final InterruptedException ex) {
 					//
 				}
@@ -351,14 +351,14 @@ public class GrobTest
 					PlPruefungLogischUFDTest.sender.sende(resultat2);
 					System.out.println(ct() + ", Sende: " //$NON-NLS-1$
 							+ resultat2.getObject().getPid() + ", " + dateFormat //$NON-NLS-1$
-									.format(new Date(resultat2.getDataTime())));
+							.format(new Date(resultat2.getDataTime())));
 				}
 			} else {
 				if ((testZaehler % 13) == 0) {
 					continue;
 				}
 				try {
-					Thread.sleep(DAVTest.r.nextInt(700));
+					Thread.sleep(DAVTest.RANDOM.nextInt(700));
 				} catch (final InterruptedException ex) {
 					//
 				}
@@ -370,11 +370,11 @@ public class GrobTest
 					PlPruefungLogischUFDTest.sender.sende(resultat2);
 					System.out.println(ct() + ", Sende: " //$NON-NLS-1$
 							+ resultat2.getObject().getPid() + ", " + dateFormat //$NON-NLS-1$
-									.format(new Date(resultat2.getDataTime())));
+							.format(new Date(resultat2.getDataTime())));
 				}
 
 				try {
-					Thread.sleep(DAVTest.r.nextInt(5));
+					Thread.sleep(DAVTest.RANDOM.nextInt(5));
 				} catch (final InterruptedException ex) {
 					//
 				}
@@ -390,7 +390,7 @@ public class GrobTest
 					PlPruefungLogischUFDTest.sender.sende(resultat1);
 					System.out.println(ct() + ", Sende: " //$NON-NLS-1$
 							+ resultat1.getObject().getPid() + ", " + dateFormat //$NON-NLS-1$
-									.format(new Date(resultat1.getDataTime())));
+							.format(new Date(resultat1.getDataTime())));
 				}
 			}
 
@@ -424,7 +424,7 @@ public class GrobTest
 								.equals(PlPruefungLogischUFDTest.gt1)) {
 							final String implausibel = (ufdDatum
 									.getStatusErfassungNichtErfasst() == DUAKonstanten.JA
-											? "nicht erfasst" : "erfasst"); //$NON-NLS-1$ //$NON-NLS-2$
+									? "nicht erfasst" : "erfasst"); //$NON-NLS-1$ //$NON-NLS-2$
 							if (erg1 == null) {
 								erg1 = ufdDatum
 										.getStatusErfassungNichtErfasst() == DUAKonstanten.JA;
@@ -443,7 +443,7 @@ public class GrobTest
 								.equals(PlPruefungLogischUFDTest.gt2)) {
 							final String implausibel = (ufdDatum
 									.getStatusErfassungNichtErfasst() == DUAKonstanten.JA
-											? "nicht erfasst" : "erfasst"); //$NON-NLS-1$ //$NON-NLS-2$
+									? "nicht erfasst" : "erfasst"); //$NON-NLS-1$ //$NON-NLS-2$
 							if (erg2 == null) {
 								erg2 = ufdDatum
 										.getStatusErfassungNichtErfasst() == DUAKonstanten.JA;
@@ -472,6 +472,6 @@ public class GrobTest
 		final SimpleDateFormat dateFormat = new SimpleDateFormat(
 				DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 		return "(NOW:" + dateFormat.format(new Date(System.currentTimeMillis())) //$NON-NLS-1$
-				+ ")"; //$NON-NLS-1$
+		+ ")"; //$NON-NLS-1$
 	}
 }

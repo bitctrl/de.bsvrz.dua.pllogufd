@@ -54,7 +54,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
-		implements ClientReceiverInterface {
+implements ClientReceiverInterface {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
@@ -101,21 +101,20 @@ public class UFDAusfallUeberwachung extends AbstraktAusfallUeberwachung
 		if (resultate != null) {
 			for (final ResultData resultat : resultate) {
 				if ((resultat != null) && (resultat.getData() != null)) {
-					synchronized (this.objektWertErfassungVerzug) {
-						this.objektWertErfassungVerzug.put(resultat.getObject(),
-								new Long(resultat.getData()
-										.getTimeValue("maxZeitVerzug") //$NON-NLS-1$
-										.getMillis()));
-						UFDAusfallUeberwachung.LOGGER
-								.info("Neue Parameter: maxZeitVerzug(" //$NON-NLS-1$
-										+ resultat.getObject() + ") = " + //$NON-NLS-1$
-										resultat.getData()
-						.getTimeValue("maxZeitVerzug") //$NON-NLS-1$
-												.getMillis()
-										+ "ms"); //$NON-NLS-1$
-					}
+					setObjectWertErfassungVerzug(resultat.getObject(),
+							new Long(resultat.getData()
+									.getTimeValue("maxZeitVerzug")
+									.getMillis()));
+					UFDAusfallUeberwachung.LOGGER
+					.info("Neue Parameter: maxZeitVerzug("
+							+ resultat.getObject() + ") = "
+							+ resultat.getData()
+							.getTimeValue("maxZeitVerzug")
+							.getMillis()
+							+ "ms");
 				}
 			}
 		}
 	}
+
 }

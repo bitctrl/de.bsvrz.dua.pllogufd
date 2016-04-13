@@ -22,8 +22,11 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 Versionsgeschichte
 ==================
 
+1.6.0
+- Umstellung auf Funclib-Bitctrl-Dua
+
 1.5.0
-- Unterstützung für die Umfalddatenarten ZeitreserveGlätte (Vaisala) und Taustoffmenge je Quadratmeter (TLS2012)
+- Unterstützung für die Umfelddatenarten ZeitreserveGlätte (Vaisala) und Taustoffmenge je Quadratmeter (TLS2012)
 - Neues Kommandozeilenargument -fehlerhafteWertePublizieren, mit dem das Defaultverhalten, implausible Werte
   durch 'fehlerhaft' zu ersetzen, überschrieben werden kann.
 - Berechnung der Ausfallzeit UFD korrigiert (war zu groß)

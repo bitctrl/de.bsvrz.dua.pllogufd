@@ -73,7 +73,7 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 	/**
 	 * Testet implizit die Methode <code>regel1</code> aus
 	 * {@link SichtweitenMessstelle}.
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	@Test
 	public final void testRegel1() throws UmfeldDatenSensorUnbekannteDatenartException {
@@ -85,7 +85,7 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 		DAVTest.warteBis(zeitStempel + 50);
 
 		this.sendeDaten(swSensoren,
-				MeteoKonst.SW_GRENZ_SW - DAVTest.r.nextInt(2), zeitStempel
+				MeteoKonst.SW_GRENZ_SW - DAVTest.RANDOM.nextInt(2), zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(nsSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
@@ -111,7 +111,7 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 		DAVTest.warteBis(zeitStempel + 50);
 
 		this.sendeDaten(swSensoren,
-				MeteoKonst.SW_GRENZ_SW - DAVTest.r.nextInt(2), zeitStempel
+				MeteoKonst.SW_GRENZ_SW - DAVTest.RANDOM.nextInt(2), zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(nsSensoren, 0, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
@@ -138,7 +138,7 @@ public class SichtweiteTest extends MeteorologischeKontrolleTest {
 		DAVTest.warteBis(zeitStempel + 50);
 
 		this.sendeDaten(swSensoren,
-				MeteoKonst.SW_GRENZ_SW - DAVTest.r.nextInt(2), zeitStempel
+				MeteoKonst.SW_GRENZ_SW - DAVTest.RANDOM.nextInt(2), zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);
 		this.sendeDaten(nsSensoren, 40, zeitStempel
 				- PlPruefungLogischUFDTest.STANDARD_T);

@@ -41,7 +41,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public abstract class AbstraktMeteoSubModul
-		extends AbstraktBearbeitungsKnotenAdapter {
+extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Erfragt die Umfelddaten-Messstelle an der ein bestimmter Sensor
@@ -82,8 +82,8 @@ public abstract class AbstraktMeteoSubModul
 			/**
 			 * Resultate weitergeben
 			 */
-			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
-				this.knoten.aktualisiereDaten(
+			if ((getKnoten() != null) && !weiterzuleitendeResultate.isEmpty()) {
+				getKnoten().aktualisiereDaten(
 						weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}
