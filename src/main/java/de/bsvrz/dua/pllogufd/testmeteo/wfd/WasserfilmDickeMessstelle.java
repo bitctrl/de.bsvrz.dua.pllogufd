@@ -27,6 +27,7 @@
 package de.bsvrz.dua.pllogufd.testmeteo.wfd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,8 +127,8 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 		super(ufdmsObj);
 		final DUAUmfeldDatenMessStelle duaufdms = DUAUmfeldDatenMessStelle
 				.getInstanz(ufdmsObj);
-		final Collection<SystemObject> betrachteteObjekte = AbstraktMeteoMessstelle.verwaltung
-				.getSystemObjekte();
+		final Collection<SystemObject> betrachteteObjekte = new ArrayList<>(Arrays.asList(AbstraktMeteoMessstelle.verwaltung
+				.getSystemObjekte()));
 		for (final DUAUmfeldDatenSensor sensor : duaufdms.getSensoren()) {
 			// M.E. kann das weg, da bei der Initialisierung der
 			// DUAUmfeldDatenMessStelle

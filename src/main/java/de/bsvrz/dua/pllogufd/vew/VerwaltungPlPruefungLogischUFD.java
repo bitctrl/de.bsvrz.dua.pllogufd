@@ -145,7 +145,7 @@ extends AbstraktVerwaltungsAdapterMitGuete {
 		final Collection<SystemObject> messStellen = DUAUtensilien.getBasisInstanzen(getVerbindung().getDataModel().getType(DUAKonstanten.TYP_UFD_MESSSTELLE),
 				getVerbindung(), this.getKonfigurationsBereiche());
 
-		DUAUmfeldDatenMessStelle.initialisiere(getVerbindung(), messStellen);
+		DUAUmfeldDatenMessStelle.initialisiere(getVerbindung(), messStellen.toArray(new SystemObject[messStellen.size()]));
 
 		/**
 		 * Instanziierung
