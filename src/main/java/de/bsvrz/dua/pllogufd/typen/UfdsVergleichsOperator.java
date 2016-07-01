@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -32,8 +32,8 @@ import java.util.Map;
 import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
 
 /**
- * Über diese Klasse werden alle im DAV-Enumerationstyp
- * <code>att.ufdsVergleichsOperator</code> beschriebenen Werte zur Verfügung
+ * Ãœber diese Klasse werden alle im DAV-Enumerationstyp
+ * <code>att.ufdsVergleichsOperator</code> beschriebenen Werte zur VerfÃ¼gung
  * gestellt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -70,10 +70,10 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 			"gleich", 4); //$NON-NLS-1$
 
 	public static final UfdsVergleichsOperator GROESSER_GLEICH = new UfdsVergleichsOperator(
-			"größerGleich", 5); //$NON-NLS-1$
+			"grÃ¶ÃŸerGleich", 5); //$NON-NLS-1$
 
 	public static final UfdsVergleichsOperator GROESSER = new UfdsVergleichsOperator(
-			"größer", 6); //$NON-NLS-1$
+			"grÃ¶ÃŸer", 6); //$NON-NLS-1$
 
 	/**
 	 * Standardkonstruktor
@@ -89,7 +89,7 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 	}
 
 	/**
-	 * Erfragt den Wert dieses DAV-Enumerationstypen mit dem übergebenen Code
+	 * Erfragt den Wert dieses DAV-Enumerationstypen mit dem Ã¼bergebenen Code
 	 *
 	 * @param code
 	 *            der Code des Enumerations-Wertes

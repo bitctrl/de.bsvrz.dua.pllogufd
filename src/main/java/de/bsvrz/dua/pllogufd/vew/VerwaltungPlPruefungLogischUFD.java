@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -57,17 +57,17 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Dieses Modul Verwaltung ist die zentrale Steuereinheit der SWE PL-Prüfung
+ * Dieses Modul Verwaltung ist die zentrale Steuereinheit der SWE PL-PrÃ¼fung
  * logisch UFD. Seine Aufgabe besteht in der Auswertung der Aufrufparameter, der
  * Anmeldung beim Datenverteiler und der entsprechenden Initialisierung der
- * Module. Weiter ist das Modul Verwaltung für die Anmeldung der zu prüfenden
- * Daten zuständig. Die Verwaltung gibt ein Objekt des Moduls Ausfallüberwachun
- * als Beobachterobjekt an, an das die zu überprüfenden Daten durch den
+ * Module. Weiter ist das Modul Verwaltung fÃ¼r die Anmeldung der zu prÃ¼fenden
+ * Daten zustÃ¤ndig. Die Verwaltung gibt ein Objekt des Moduls AusfallÃ¼berwachun
+ * als Beobachterobjekt an, an das die zu Ã¼berprÃ¼fenden Daten durch den
  * Aktualisierungsmechanismus weitergeleitet werden. Weiterhin stellt die
- * Verwaltung die Verkettung der Module Ausfallüberwachung, PL-Prüfung formal,
+ * Verwaltung die Verkettung der Module AusfallÃ¼berwachung, PL-PrÃ¼fung formal,
  * Differenzialkontrolle, Anstieg-Abfall-Kontrolle und der Komponente
  * Meteorologische Kontrolle in dieser Reihenfolge durch die Angabe eines Moduls
- * als Beobachterobjekt des jeweiligen Vorgängermoduls her.
+ * als Beobachterobjekt des jeweiligen VorgÃ¤ngermoduls her.
  *
  * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
  * @version $Id$
@@ -78,12 +78,12 @@ extends AbstraktVerwaltungsAdapterMitGuete {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Modul Pl-Prüfung formal.
+	 * Modul Pl-PrÃ¼fung formal.
 	 */
 	private PlPruefungFormal formal = null;
 
 	/**
-	 * Modul UFD-Ausfallüberwachung..
+	 * Modul UFD-AusfallÃ¼berwachung..
 	 */
 	private UFDAusfallUeberwachung ausfall = null;
 

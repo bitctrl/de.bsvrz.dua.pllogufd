@@ -1,5 +1,5 @@
 /*
- * Segment 4 Daten¸bernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr¸fung logisch UFD
+ * Segment 4 Daten√ºbernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr√ºfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weiﬂenfelser Straﬂe 67<br>
+ * Wei√üenfelser Stra√üe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -39,13 +39,13 @@ import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
- * ‹berpr¸fung des Submoduls WasserFilmDicke aus der Komponente Meteorologische
- * Kontrolle. Diese ‹berpr¸fung richtet sich nach den Vorgaben von
+ * √úberpr√ºfung des Submoduls WasserFilmDicke aus der Komponente Meteorologische
+ * Kontrolle. Diese √úberpr√ºfung richtet sich nach den Vorgaben von
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.27-28
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler pr¸fen")
+@Ignore("Testdatenverteiler pr√ºfen")
 public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 
 	/**
@@ -80,7 +80,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		/**
 		 * Erste Zeile aus Tabelle auf Seite 27
 		 *
-		 * RLF = WFDgrenzNassRLF + 3, RLF > WFDgrenzNassRLF (f¸r = 1T)
+		 * RLF = WFDgrenzNassRLF + 3, RLF > WFDgrenzNassRLF (f√ºr = 1T)
 		 */
 		long zeitStempel = this.getTestBeginnIntervall();
 		DAVTest.warteBis(zeitStempel + 50);
@@ -108,7 +108,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = WFDgrenzNassRLF + 2, RLF > WFDgrenzNassRLF (f¸r = 2T)
+		 * RLF = WFDgrenzNassRLF + 2, RLF > WFDgrenzNassRLF (f√ºr = 2T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -136,7 +136,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = WFDgrenzNassRLF + 1, RLF > WFDgrenzNassRLF (f¸r = 3T)
+		 * RLF = WFDgrenzNassRLF + 1, RLF > WFDgrenzNassRLF (f√ºr = 3T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -192,10 +192,10 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * Lasse jetzt RLF wieder ansteigen bis f¸r mehr als 3T gilt: RLF >
+		 * Lasse jetzt RLF wieder ansteigen bis f√ºr mehr als 3T gilt: RLF >
 		 * WFDgrenzNassRLF
 		 *
-		 * RLF = WFDgrenzNassRLF + 1, RLF > WFDgrenzNassRLF (f¸r = 1T)
+		 * RLF = WFDgrenzNassRLF + 1, RLF > WFDgrenzNassRLF (f√ºr = 1T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -223,7 +223,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = WFDgrenzNassRLF + 2, RLF > WFDgrenzNassRLF (f¸r = 2T)
+		 * RLF = WFDgrenzNassRLF + 2, RLF > WFDgrenzNassRLF (f√ºr = 2T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -251,7 +251,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = WFDgrenzNassRLF + 3, RLF > WFDgrenzNassRLF (f¸r = 3T)
+		 * RLF = WFDgrenzNassRLF + 3, RLF > WFDgrenzNassRLF (f√ºr = 3T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -279,7 +279,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = WFDgrenzNassRLF + 4, RLF > WFDgrenzNassRLF (f¸r = 4T)
+		 * RLF = WFDgrenzNassRLF + 4, RLF > WFDgrenzNassRLF (f√ºr = 4T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -307,7 +307,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = WFDgrenzNassRLF + 4, RLF > WFDgrenzNassRLF (f¸r = 5T)
+		 * RLF = WFDgrenzNassRLF + 4, RLF > WFDgrenzNassRLF (f√ºr = 5T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -335,7 +335,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = WFDgrenzNassRLF + 5, RLF > WFDgrenzNassRLF (f¸r = 6T)
+		 * RLF = WFDgrenzNassRLF + 5, RLF > WFDgrenzNassRLF (f√ºr = 6T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -393,8 +393,8 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		/**
 		 * 2. Zeile aus Tabelle auf Seite 27-28
 		 *
-		 * lasse jetzt die Relative Luftfeuchte wieder 4T ¸ber WFDgrenzNassRLF
-		 * sein und ‰ndera dann auf WFD > 0
+		 * lasse jetzt die Relative Luftfeuchte wieder 4T √ºber WFDgrenzNassRLF
+		 * sein und √§ndera dann auf WFD > 0
 		 */
 
 		for (int i = 0; i < 3; i++) {
@@ -452,7 +452,7 @@ public class WasserFilmDickeTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * ƒndere jetzt WFD auf WFD > 0: Implausibilisierung wird aufgehoben
+		 * √Ñndere jetzt WFD auf WFD > 0: Implausibilisierung wird aufgehoben
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);

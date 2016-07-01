@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -40,16 +40,16 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Das Modul Ausfallüberwachung meldet sich auf alle Parameter an und führt mit
- * allen über die Methode aktualisiereDaten(ResultData[] arg0) übergebenen Daten
- * eine Prüfung durch. Die Prüfung überwacht, ob ein Messwert nach Ablauf des
- * dafür vorgesehenen Intervalls übertragen wurde. Der erwartete
- * Meldungszeitpunkt für einen zyklisch gelieferten Messwert ergibt sich aus dem
- * Intervallbeginn zuzüglich der Erfassungsintervalldauer. Ein nicht
- * übertragener Messwert wird intern als Datensatz mit dem erwarteten
+ * Das Modul AusfallÃ¼berwachung meldet sich auf alle Parameter an und fÃ¼hrt mit
+ * allen Ã¼ber die Methode aktualisiereDaten(ResultData[] arg0) Ã¼bergebenen Daten
+ * eine PrÃ¼fung durch. Die PrÃ¼fung Ã¼berwacht, ob ein Messwert nach Ablauf des
+ * dafÃ¼r vorgesehenen Intervalls Ã¼bertragen wurde. Der erwartete
+ * Meldungszeitpunkt fÃ¼r einen zyklisch gelieferten Messwert ergibt sich aus dem
+ * Intervallbeginn zuzÃ¼glich der Erfassungsintervalldauer. Ein nicht
+ * Ã¼bertragener Messwert wird intern als Datensatz mit dem erwarteten
  * Intervallbeginn angelegt, wobei die Messwerte jeweils auf den Status Nicht
- * erfasst gesetzt werden. Nach der Prüfung werden die Daten dann an den
- * nächsten Bearbeitungsknoten weitergereicht.
+ * erfasst gesetzt werden. Nach der PrÃ¼fung werden die Daten dann an den
+ * nÃ¤chsten Bearbeitungsknoten weitergereicht.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -65,7 +65,7 @@ implements ClientReceiverInterface {
 
 		final DataDescription parameterBeschreibung = new DataDescription(
 				dieVerwaltung.getVerbindung().getDataModel()
-				.getAttributeGroup("atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
+				.getAttributeGroup("atg.ufdsAusfallÃœberwachung"), //$NON-NLS-1$
 				dieVerwaltung.getVerbindung().getDataModel()
 				.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dieVerwaltung.getVerbindung().subscribeReceiver(this,

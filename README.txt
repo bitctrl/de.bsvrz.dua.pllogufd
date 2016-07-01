@@ -1,45 +1,49 @@
 *************************************************************************************
-*  Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD  *
+*  Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD  *
 *************************************************************************************
 
 Version: ${version}
 
-Übersicht
+Ãœbersicht
 =========
 
-Aufgabe der SWE PL-Prüfung logisch UFD besteht in der Durchführung der logischen
-Plausibilitätsprüfungen der von Umfelddatensensoren gelieferten Umfelddaten. Dazu
-wird eine Reihe von einzelnen Prüfungen durchgeführt. Dies sind
--	Ausfallüberwachung von Messwerten,
--	Wertebereichsprüfung,
+Aufgabe der SWE PL-PrÃ¼fung logisch UFD besteht in der DurchfÃ¼hrung der logischen
+PlausibilitÃ¤tsprÃ¼fungen der von Umfelddatensensoren gelieferten Umfelddaten. Dazu
+wird eine Reihe von einzelnen PrÃ¼fungen durchgefÃ¼hrt. Dies sind
+-	AusfallÃ¼berwachung von Messwerten,
+-	WertebereichsprÃ¼fung,
 -	Differentialkontrolle von Werten,
 -	Anstieg-Abstieg-Kontrolle und
 -	Meteorologische Kontrolle.
-Die genauen Prüfalgorithmen sind in den Anwenderforderungen aufgeführt. Nach der
-Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
+Die genauen PrÃ¼falgorithmen sind in den Anwenderforderungen aufgefÃ¼hrt. Nach der
+PrÃ¼fung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 
 Versionsgeschichte
 ==================
 
+1.7.0
+=====
+- Umstellung auf Java 8 und UTF-8
+
 1.6.1
-- Kompatibilität zu DuA-2.0 hergestellt
+- KompatibilitÃ¤t zu DuA-2.0 hergestellt
 
 1.6.0
 - Umstellung auf Funclib-Bitctrl-Dua
 
 1.5.0
-- Unterstützung für die Umfelddatenarten ZeitreserveGlätte (Vaisala) und Taustoffmenge je Quadratmeter (TLS2012)
+- UnterstÃ¼tzung fÃ¼r die Umfelddatenarten ZeitreserveGlÃ¤tte (Vaisala) und Taustoffmenge je Quadratmeter (TLS2012)
 - Neues Kommandozeilenargument -fehlerhafteWertePublizieren, mit dem das Defaultverhalten, implausible Werte
-  durch 'fehlerhaft' zu ersetzen, überschrieben werden kann.
-- Berechnung der Ausfallzeit UFD korrigiert (war zu groß)
+  durch 'fehlerhaft' zu ersetzen, Ã¼berschrieben werden kann.
+- Berechnung der Ausfallzeit UFD korrigiert (war zu groÃŸ)
 - Neues Kommandozeilenargument -meteorologischeKontrolle=[default,hs,aus], um die meteorologische
-  Kontrolle auf die Hauptsensoren zu beschränken oder gänzlich zu deaktivieren.
+  Kontrolle auf die Hauptsensoren zu beschrÃ¤nken oder gÃ¤nzlich zu deaktivieren.
 
 1.4.0
 - Umstellung auf Maven-Build
-- Behandlung nicht unterstützter Sensorarten über die 'UmfeldDatenSensorUnbekannteDatenartException'
-- benötigt SWE_de.bsvrz.sys.funclib.bitctrl_FREI_V1.2.3.zip oder höher 
+- Behandlung nicht unterstÃ¼tzter Sensorarten Ã¼ber die 'UmfeldDatenSensorUnbekannteDatenartException'
+- benÃ¶tigt SWE_de.bsvrz.sys.funclib.bitctrl_FREI_V1.2.3.zip oder hÃ¶her 
 
 
 1.3.3
@@ -47,11 +51,11 @@ Versionsgeschichte
   - Bei unbekannten Umfelddatenarten wird die neue Exception 'UmfeldDatenSensorUnbekannteDatenartException' 
   	derart behandelt, dass eine Warnung ausgegeben und der betroffene Sensor ignoriert wird
   	
-  - benötigt: de.bsvrz.sys.funclib.bitctrl_V20140612
+  - benÃ¶tigt: de.bsvrz.sys.funclib.bitctrl_V20140612
 
 1.3.2
 
-  - Sämtliche Konstruktoren DataDescription(atg, asp, sim)
+  - SÃ¤mtliche Konstruktoren DataDescription(atg, asp, sim)
     ersetzt durch DataDescription(atg, asp)
 
 1.3.1
@@ -88,9 +92,9 @@ Bemerkungen
 
 - Tests:
 
-	Die automatischen Tests, die in Zusammenhang mit der Prüfspezifikation durchgeführt
+	Die automatischen Tests, die in Zusammenhang mit der PrÃ¼fspezifikation durchgefÃ¼hrt
 	werden, sind analog der Package-Struktur der SWE selbst definiert. Die genaue
-	Durchführung der Tests dieser SWE ist im Dokument PrDok_SWE4.3_LosC1C2_VRZ3.doc
+	DurchfÃ¼hrung der Tests dieser SWE ist im Dokument PrDok_SWE4.3_LosC1C2_VRZ3.doc
 	(innerhalb von ...extra-src.zip) beschrieben.
 	
 
@@ -102,8 +106,8 @@ Bemerkungen
 	- Interne unerwartete Fehler
 	
 	WARNING:
-	- Fehler, die die Funktionalität grundsätzlich nicht
-	  beeinträchtigen, aber zum Datenverlust führen können
+	- Fehler, die die FunktionalitÃ¤t grundsÃ¤tzlich nicht
+	  beeintrÃ¤chtigen, aber zum Datenverlust fÃ¼hren kÃ¶nnen
 	- Nicht identifizierbare Konfigurationsbereiche
 	- Probleme beim Explorieren von Attributpfaden 
 	  (von Plausibilisierungsbeschreibungen)
@@ -111,8 +115,8 @@ Bemerkungen
 	  nur eine Instanz erwartet wird
 	- Wenn Parameter nicht korrekt ausgelesen werden konnten
 	  bzw. nicht interpretierbar sind
-	- Wenn inkompatible Parameter übergeben wurden
-	- Wenn Parameter unvollständig sind
+	- Wenn inkompatible Parameter Ã¼bergeben wurden
+	- Wenn Parameter unvollstÃ¤ndig sind
 	- Wenn ein Wert bzw. Status nicht gesetzt werden konnte
 	
 	INFO:
@@ -122,20 +126,20 @@ Bemerkungen
 	- Allgemeine Ausgaben, welche die Konfiguration betreffen
 	- Benutzte Konfigurationsbereiche der Applikation bzw.
 	  einzelner Funktionen innerhalb der Applikation
-	- Benutzte Objekte für Parametersteuerung von Applikationen
+	- Benutzte Objekte fÃ¼r Parametersteuerung von Applikationen
 	  (z.B. die Instanz der Datenflusssteuerung, die verwendet wird)
 	- An- und Abmeldungen von Daten beim Datenverteiler
 	
 	FINE:
 	- Wenn Daten empfangen wurden, die nicht weiterverarbeitet 
-	  (plausibilisiert) werden können (weil keine Parameter vorliegen)
+	  (plausibilisiert) werden kÃ¶nnen (weil keine Parameter vorliegen)
 	- Informationen, die nur zum Debugging interessant sind 
 
 
 Disclaimer
 ==========
 
-Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
 Copyright (C) 2007 BitCtrl Systems GmbH 
 
 This program is free software; you can redistribute it and/or modify it under
@@ -157,7 +161,7 @@ Kontakt
 =======
 
 BitCtrl Systems GmbH
-Weißenfelser Straße 67
+WeiÃŸenfelser StraÃŸe 67
 04229 Leipzig
 Phone: +49 341-490670
 mailto: info@bitctrl.de

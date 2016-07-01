@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -53,7 +53,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Basisklasse der Tests der SWE Pl-Prüfung logisch UFD.
+ * Basisklasse der Tests der SWE Pl-PrÃ¼fung logisch UFD.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -81,7 +81,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	// "-debugLevelStdErrText=INFO", //$NON-NLS-1$
 	// "-debugLevelFileText=OFF" }; //$NON-NLS-1$
 	/**
-	 * Standardintervalllänge der Testdaten für die meisten Tests (2s).
+	 * StandardintervalllÃ¤nge der Testdaten fÃ¼r die meisten Tests (2s).
 	 */
 	public static final long STANDARD_T = 2000L;
 
@@ -174,7 +174,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	public static ClientDavInterface dav;
 
 	/**
-	 * Parameterdatenbeschreibung für die Ausfallüberwachung.
+	 * Parameterdatenbeschreibung fÃ¼r die AusfallÃ¼berwachung.
 	 */
 	public static DataDescription paraAusfallUeberwachung;
 
@@ -205,7 +205,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		}
 
 		/**
-		 * Anmelden zum Senden von Parameter für die Meteorologische Kontrolle
+		 * Anmelden zum Senden von Parameter fÃ¼r die Meteorologische Kontrolle
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			UmfeldDatenArt datenArt;
@@ -236,11 +236,11 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 		}
 
 		/**
-		 * Anmeldung auf alle Parameter für die Ausfallkontrolle
+		 * Anmeldung auf alle Parameter fÃ¼r die Ausfallkontrolle
 		 */
 		PlPruefungLogischUFDTest.paraAusfallUeberwachung = new DataDescription(
 				PlPruefungLogischUFDTest.dav.getDataModel()
-						.getAttributeGroup("atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
+						.getAttributeGroup("atg.ufdsAusfallÃœberwachung"), //$NON-NLS-1$
 						PlPruefungLogischUFDTest.dav.getDataModel()
 						.getAspect(DaVKonstanten.ASP_PARAMETER_VORGABE));
 		PlPruefungLogischUFDTest.dav.subscribeSender(this,
@@ -545,7 +545,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 				try {
 					datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 				} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-					System.err.println("Wird nicht geprüft: " + e.getMessage());
+					System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 					continue;
 				}
 
@@ -855,7 +855,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 			final long verzugInMillis) {
 		final Data parameterData = PlPruefungLogischUFDTest.dav
 				.createData(PlPruefungLogischUFDTest.dav.getDataModel()
-						.getAttributeGroup("atg.ufdsAusfallÜberwachung")); //$NON-NLS-1$
+						.getAttributeGroup("atg.ufdsAusfallÃœberwachung")); //$NON-NLS-1$
 		parameterData.getTimeValue("maxZeitVerzug").setMillis(verzugInMillis); //$NON-NLS-1$
 		final ResultData parameter = new ResultData(obj,
 				PlPruefungLogischUFDTest.paraAusfallUeberwachung,
@@ -873,14 +873,14 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	}
 
 	/**
-	 * Setzt die Parameter eines Umfelddatensensors für de
+	 * Setzt die Parameter eines Umfelddatensensors fÃ¼r de
 	 * Differenzialkontrolle.
 	 *
 	 * @param sensor
 	 *            der Sensor
 	 * @param wert
-	 *            der Vergleichswert, demgegenüber der Sensorwert kleiner sein
-	 *            muss, damit die Differenzialkontrolle durchgeführt werden kann
+	 *            der Vergleichswert, demgegenÃ¼ber der Sensorwert kleiner sein
+	 *            muss, damit die Differenzialkontrolle durchgefÃ¼hrt werden kann
 	 * @param zeit
 	 *            die Zeit, die ein Wert maximal gleich bleiben darf
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException
@@ -920,7 +920,7 @@ public class PlPruefungLogischUFDTest implements ClientSenderInterface {
 	}
 
 	/**
-	 * Setzt die Parameter eines Umfelddatensensors für die
+	 * Setzt die Parameter eines Umfelddatensensors fÃ¼r die
 	 * Anstieg-Abfall-Kontrolle.
 	 *
 	 * @param sensor

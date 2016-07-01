@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -48,11 +48,11 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Analogon zur <code>NiederschlagsArtsTabelle</code> aus der Feinspezifikation
- * mit zugehörigen Funktionalitäten. In dieser Klasse wird je eine Messstelle
- * mit allen Sensoren, die für das Submodul "Niederschlagsart" interessant sind
+ * mit zugehÃ¶rigen FunktionalitÃ¤ten. In dieser Klasse wird je eine Messstelle
+ * mit allen Sensoren, die fÃ¼r das Submodul "Niederschlagsart" interessant sind
  * betrachtet. Die eigentliche Plausibilisierung wird innerhalb der Super-Klasse
- * <code>{@link AbstraktMeteoMessstelle}</code> über die Methode
- * <code>aktualisiereDaten(..)</code> durchgeführt.
+ * <code>{@link AbstraktMeteoMessstelle}</code> Ã¼ber die Methode
+ * <code>aktualisiereDaten(..)</code> durchgefÃ¼hrt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -79,7 +79,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	private static Map<SystemObject, NiederschlagsArtMessstelle> ufdsAufUfdMs = new HashMap<>();
 
 	/**
-	 * letztes Niederschlagsintensitäts-Datum.
+	 * letztes NiederschlagsintensitÃ¤ts-Datum.
 	 */
 	private UmfeldDatenSensorDatum letztesUfdNIDatum = null;
 
@@ -99,7 +99,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	private UmfeldDatenSensorDatum letztesUfdLTDatum = null;
 
 	/**
-	 * Parameter der Meteorologischen Kontrolle für den Niederschlagsart-Sensor.
+	 * Parameter der Meteorologischen Kontrolle fÃ¼r den Niederschlagsart-Sensor.
 	 */
 	private NiederschlagsArtParameter parameterSensor = null;
 
@@ -109,7 +109,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	 * @param ufdmsObj
 	 *            das Systemobjekt einer Umfelddaten-Messstelle
 	 * @throws DUAInitialisierungsException
-	 *             wenn die Umfelddaten-Messstelle nicht vollständig
+	 *             wenn die Umfelddaten-Messstelle nicht vollstÃ¤ndig
 	 *             initialisiert werden konnte (mit allen Sensoren usw.)
 	 */
 	private NiederschlagsArtMessstelle(final SystemObject ufdmsObj)
@@ -256,7 +256,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 
 		if (parameterSensorObj == null) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					" konnte kein Sensor für Niederschlagsart identifiziert werden"); //$NON-NLS-1$
+					" konnte kein Sensor fÃ¼r Niederschlagsart identifiziert werden"); //$NON-NLS-1$
 		}
 
 		try {
@@ -264,7 +264,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 					AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
 		} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					" konnte kein Sensor für Niederschlagsart identifiziert werden: " //$NON-NLS-1$
+					" konnte kein Sensor fÃ¼r Niederschlagsart identifiziert werden: " //$NON-NLS-1$
 					+ e.getMessage());
 		}
 	}
@@ -422,7 +422,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (NS == Regen) <b>und</b> (LT &lt; NSgrenzLT) <b>dann</b> (NS=implausibel)</code>
 	 * <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 */
 	private void regel1() {
 		if ((this.letztesUfdLTDatum != null) && (this.letztesUfdNSDatum != null)
@@ -443,7 +443,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 										DUAKonstanten.JA);
 						this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
 						NiederschlagsArtMessstelle.LOGGER
-								.fine("[NS.R1]Daten geändert:\n" //$NON-NLS-1$
+								.fine("[NS.R1]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 										+ this.letztesUfdNSDatum.toString());
 					}
 				}
@@ -455,7 +455,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI &gt; 0) <b>dann</b> (NI=implausibel, NS=implausibel)</code>
 	 * <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 *
 	 * @deprecated Regel soll nicht mehr verwendet werden
 	 *
@@ -481,7 +481,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 						DUAKonstanten.JA);
 				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
 				NiederschlagsArtMessstelle.LOGGER
-						.fine("[NS.R2]Daten geändert:\n" //$NON-NLS-1$
+						.fine("[NS.R2]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 								+ this.letztesUfdNIDatum.toString() + "\n"
 						+ this.letztesUfdNSDatum.toString());
 			}
@@ -493,7 +493,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	 * <b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI &gt; 0) <b>und</b> RLF ==
 	 * <code>nicht erfasst</code> <b>dann</b> (NI=implausibel, NS=implausibel)
 	 * <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 */
 	private void regel2() {
 		if ((this.letztesUfdNIDatum != null) && (this.letztesUfdNSDatum != null)
@@ -514,7 +514,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 						DUAKonstanten.JA);
 				this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
 				NiederschlagsArtMessstelle.LOGGER
-						.fine("[NS.R2]Daten geändert:\n" //$NON-NLS-1$
+						.fine("[NS.R2]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 								+ this.letztesUfdNIDatum.toString() + "\n"
 						+ this.letztesUfdNSDatum.toString());
 			}
@@ -525,7 +525,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF &lt; NSgrenzTrockenRLF)
 	 * <b>dann</b> (NS=implausibel)</code> <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 */
 	private void regel3() {
 		if ((this.letztesUfdNIDatum != null) && (this.letztesUfdNSDatum != null)
@@ -549,7 +549,7 @@ public final class NiederschlagsArtMessstelle extends AbstraktMeteoMessstelle {
 									DUAKonstanten.JA);
 					this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
 					NiederschlagsArtMessstelle.LOGGER
-							.fine("[NS.R3]Daten geändert:\n" //$NON-NLS-1$
+							.fine("[NS.R3]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 									+ this.letztesUfdNSDatum.toString());
 				}
 			}

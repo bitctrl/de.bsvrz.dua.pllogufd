@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -42,14 +42,14 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
  * In diesem Submodul findet lediglich die Publikation der Daten nach den
- * Vorgaben der Datenflusssteuerung für das Modul Pl-Prüfung logisch UFD statt.
+ * Vorgaben der Datenflusssteuerung fÃ¼r das Modul Pl-PrÃ¼fung logisch UFD statt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
-	 * Parameter zur Datenflusssteuerung für diese SWE und dieses Modul.
+	 * Parameter zur Datenflusssteuerung fÃ¼r diese SWE und dieses Modul.
 	 */
 	private IDatenFlussSteuerungFuerModul iDfsMod = DFSKonstanten.STANDARD;
 
@@ -57,8 +57,8 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 	 * Standardkonstruktor.
 	 *
 	 * @param stdAspekte
-	 *            Informationen zu den Standardpublikationsaspekten für diese
-	 *            Instanz des Moduls Pl-Prüfung logisch UFD
+	 *            Informationen zu den Standardpublikationsaspekten fÃ¼r diese
+	 *            Instanz des Moduls Pl-PrÃ¼fung logisch UFD
 	 */
 	public Publikation(final IStandardAspekte stdAspekte) {
 		setStandardAspekte(stdAspekte);

@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -38,8 +38,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Abstrakte Klasse für Umfelddatensensoren, die der Meteorologischen Kontrolle
- * zugeführt werden.
+ * Abstrakte Klasse fÃ¼r Umfelddatensensoren, die der Meteorologischen Kontrolle
+ * zugefÃ¼hrt werden.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -73,7 +73,7 @@ public abstract class AbstraktMeteoUmfeldDatenSensor
 			UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
-					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
+					"Parameter kÃ¶nnen nicht bestimmt werden," + //$NON-NLS-1$
 							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
@@ -89,7 +89,7 @@ public abstract class AbstraktMeteoUmfeldDatenSensor
 			parameterAtgs.add(atg);
 		} else {
 			throw new DUAInitialisierungsException(
-					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
+					"Es konnte keine Parameter-Attributgruppe fÃ¼r die " + //$NON-NLS-1$
 							"Meteorologische Kontrolle des Objektes "//$NON-NLS-1$
 							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$
 							"Atg-Name: " + atgPid); //$NON-NLS-1$

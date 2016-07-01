@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -37,7 +37,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Parameter für die meteorologische Kontrolle "Niederschlagsintensität".
+ * Parameter fÃ¼r die meteorologische Kontrolle "NiederschlagsintensitÃ¤t".
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -53,7 +53,7 @@ public class NiederschlagsIntensitaetsParameter
 	private final UmfeldDatenSensorWert niGrenzNassRLF;
 
 	/**
-	 * Überhalb dieses Wertes wird angenommen, dass Niederschlag herrscht.
+	 * Ãœberhalb dieses Wertes wird angenommen, dass Niederschlag herrscht.
 	 */
 	private final UmfeldDatenSensorWert niGrenzNassNI;
 
@@ -64,13 +64,13 @@ public class NiederschlagsIntensitaetsParameter
 	private final UmfeldDatenSensorWert niMinNI;
 
 	/**
-	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &lt; NIgrenzTrockenRLF für
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &lt; NIgrenzTrockenRLF fÃ¼r
 	 * Zeitraum &gt; NIminTrockenRLF, dann NI implausibel.
 	 */
 	private final UmfeldDatenSensorWert niGrenzTrockenRLF;
 
 	/**
-	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &lt; NIgrenzTrockenRLF für
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &lt; NIgrenzTrockenRLF fÃ¼r
 	 * Zeitraum &gt; NIminTrockenRLF, dann NI implausibel.
 	 */
 	private long niMinTrockenRLF = -1;
@@ -162,7 +162,7 @@ public class NiederschlagsIntensitaetsParameter
 						this.niMinTrockenRLF = resultat.getData()
 								.getTimeValue("NIminTrockenRLF").getMillis(); //$NON-NLS-1$
 						NiederschlagsIntensitaetsParameter.LOGGER
-								.info("Neue Parameter für (" //$NON-NLS-1$
+								.info("Neue Parameter fÃ¼r (" //$NON-NLS-1$
 										+ resultat.getObject() + "):\n" //$NON-NLS-1$
 										+ this);
 					}

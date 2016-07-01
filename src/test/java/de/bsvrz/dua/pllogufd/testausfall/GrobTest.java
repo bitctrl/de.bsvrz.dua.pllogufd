@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -59,28 +59,28 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prÃ¼fen")
 public class GrobTest
 implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
 	 * Die Zeit (in ms) die die erwartete Eintreffzeit eines Datums von der
-	 * tatsächlichen Eintreffzeit differieren darf.
+	 * tatsÃ¤chlichen Eintreffzeit differieren darf.
 	 */
 	protected static final long ERGEBNIS_TOLERANZ = 2000;
 
 	/**
-	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx1.
+	 * Parameter <code>maxZeitVerzug</code> fÃ¼r Sensoren xxx1.
 	 */
 	private static final long MAX_VERZUG_1 = 500L;
 
 	/**
-	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx2.
+	 * Parameter <code>maxZeitVerzug</code> fÃ¼r Sensoren xxx2.
 	 */
 	private static final long MAX_VERZUG_2 = 501L;
 
 	/**
-	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx3.
+	 * Parameter <code>maxZeitVerzug</code> fÃ¼r Sensoren xxx3.
 	 */
 	private static final long MAX_VERZUG_3 = 1500L;
 
@@ -143,8 +143,8 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		}
 
 		/**
-		 * Parameter setzen auf 10s (für Sensoren xxx1), 15s (für Sensoren xxx2)
-		 * und 20s (für Sensoren xxx3)
+		 * Parameter setzen auf 10s (fÃ¼r Sensoren xxx1), 15s (fÃ¼r Sensoren xxx2)
+		 * und 20s (fÃ¼r Sensoren xxx3)
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			if (sensor.getPid().endsWith("1")) { //$NON-NLS-1$
@@ -164,7 +164,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		 */
 
 		/**
-		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
+		 * Anmeldung auf alle Daten die aus der Applikation Pl-PrÃ¼fung logisch
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -174,7 +174,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 					dav.getDataModel()
 					.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 					dav.getDataModel()
-					.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+					.getAspect("asp.plausibilitÃ¤tsPrÃ¼fungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -194,11 +194,11 @@ implements ClientSenderInterface, ClientReceiverInterface {
 	 * <code>asp.externeErfassung</code>.
 	 *
 	 * @param sensor
-	 *            ein Umfelddatensensor, für den ein Messwert erzeugt werden
+	 *            ein Umfelddatensensor, fÃ¼r den ein Messwert erzeugt werden
 	 *            soll
-	 * @return ein (ausgefüllter) Umfelddaten-Messwert der zum übergebenen
-	 *         Systemobjekt passt. Alle Pl-Prüfungs-Flags sind auf
-	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall beträgt 1 min.
+	 * @return ein (ausgefÃ¼llter) Umfelddaten-Messwert der zum Ã¼bergebenen
+	 *         Systemobjekt passt. Alle Pl-PrÃ¼fungs-Flags sind auf
+	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall betrÃ¤gt 1 min.
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public static final ResultData getExterneErfassungDatum(
@@ -231,9 +231,9 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		.getItem("MessWertErsetzung").//$NON-NLS-1$
 		getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
-		datum.getItem(datenArt.getName()).getItem("Güte") //$NON-NLS-1$
+		datum.getItem(datenArt.getName()).getItem("GÃ¼te") //$NON-NLS-1$
 		.getUnscaledValue("Index").set(10000); //$NON-NLS-1$
-		datum.getItem(datenArt.getName()).getItem("Güte") //$NON-NLS-1$
+		datum.getItem(datenArt.getName()).getItem("GÃ¼te") //$NON-NLS-1$
 		.getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$
 
 		return new ResultData(sensor, datenBeschreibung,
@@ -241,7 +241,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 	}
 
 	/**
-	 * Anzahl der Intervalle, die der Test der Ausfallüberwachung laufen soll.
+	 * Anzahl der Intervalle, die der Test der AusfallÃ¼berwachung laufen soll.
 	 */
 	private static final long TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 30;
 
@@ -295,7 +295,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 
 			ersteDatenZeit = startAlles - 1000;
 			/**
-			 * Warte bis zum Anfang des nächsten Intervalls
+			 * Warte bis zum Anfang des nÃ¤chsten Intervalls
 			 */
 			while (startAlles > System.currentTimeMillis()) {
 				try {

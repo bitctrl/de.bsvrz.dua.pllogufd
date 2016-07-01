@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -50,11 +50,11 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Analogon zur <code>WasserfilmDickeTabelle</code> aus der Feinspezifikation
- * mit zugehörigen Funktionalitäten. In dieser Klasse wird je eine Messstelle
- * mit allen Sensoren, die für das Submodul "WasserfilmDicke" interessant sind
+ * mit zugehÃ¶rigen FunktionalitÃ¤ten. In dieser Klasse wird je eine Messstelle
+ * mit allen Sensoren, die fÃ¼r das Submodul "WasserfilmDicke" interessant sind
  * betrachtet. Die eigentliche Plausibilisierung wird innerhalb der Super-Klasse
- * <code>{@link AbstraktMeteoMessstelle}</code> über die Methode
- * <code>aktualisiereDaten(..)</code> durchgeführt.
+ * <code>{@link AbstraktMeteoMessstelle}</code> Ã¼ber die Methode
+ * <code>aktualisiereDaten(..)</code> durchgefÃ¼hrt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
  * @version $Id: WasserfilmDickeMessstelle.java 59643 2016-02-05 16:03:34Z
@@ -83,7 +83,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	private static Map<SystemObject, WasserfilmDickeMessstelle> ufdsAufUfdMs = new HashMap<>();
 
 	/**
-	 * letztes Niederschlagsintensitäts-Datum.
+	 * letztes NiederschlagsintensitÃ¤ts-Datum.
 	 */
 	private UmfeldDatenSensorDatum letztesUfdNIDatum = null;
 
@@ -98,7 +98,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	private UmfeldDatenSensorDatum letztesUfdRLFDatum = null;
 
 	/**
-	 * zählt die Millisekunden, die sich die relative Luftfeuchte schon
+	 * zÃ¤hlt die Millisekunden, die sich die relative Luftfeuchte schon
 	 * unterhalb von <code>WFDgrenzNassRLF</code> befindet.
 	 */
 	private long rlfUeberWfdgrenzNassFuerMS = 0;
@@ -109,7 +109,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	private UmfeldDatenSensorDatum letztesUfdWFDDatum = null;
 
 	/**
-	 * Parameter der Meteorologischen Kontrolle für den Wasserfilmdicke-Sensor.
+	 * Parameter der Meteorologischen Kontrolle fÃ¼r den Wasserfilmdicke-Sensor.
 	 */
 	private WasserFilmDickeParameter parameterSensor = null;
 
@@ -119,7 +119,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	 * @param ufdmsObj
 	 *            das Systemobjekt einer Umfelddaten-Messstelle
 	 * @throws DUAInitialisierungsException
-	 *             wenn die Umfelddaten-Messstelle nicht vollständig
+	 *             wenn die Umfelddaten-Messstelle nicht vollstÃ¤ndig
 	 *             initialisiert werden konnte (mit allen Sensoren usw.)
 	 */
 	private WasserfilmDickeMessstelle(final SystemObject ufdmsObj)
@@ -158,7 +158,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 				} else {
 					WasserfilmDickeMessstelle.LOGGER.fine("Sensor '" + sensor
 							+ "' an Messstelle '" + duaufdms.getObjekt()
-							+ "' wird nicht benötigt");
+							+ "' wird nicht benÃ¶tigt");
 				}
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				WasserfilmDickeMessstelle.LOGGER.warning(e.getMessage());
@@ -266,7 +266,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 
 		if (parameterSensorObj == null) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					" konnte kein Sensor für Wasserfilmdicke identifiziert werden"); //$NON-NLS-1$
+					" konnte kein Sensor fÃ¼r Wasserfilmdicke identifiziert werden"); //$NON-NLS-1$
 		}
 
 		try {
@@ -433,9 +433,9 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NI &gt; 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF &gt; WFDgrenzNassRLF für Zeitraum &gt; WFDminNassRLF)
+	 * <code><b>Wenn</b> (NI &gt; 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF &gt; WFDgrenzNassRLF fÃ¼r Zeitraum &gt; WFDminNassRLF)
 	 * <b>dann</b> (WFD=implausibel)</code> <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 */
 	private void regel1() {
 		if ((this.letztesUfdNIDatum != null)
@@ -461,7 +461,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 							DUAKonstanten.JA);
 					this.letztesUfdWFDDatum.getWert().setFehlerhaftAn();
 					WasserfilmDickeMessstelle.LOGGER
-					.fine("[WFD.R1]Daten geändert:\n" //$NON-NLS-1$
+					.fine("[WFD.R1]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 							+ this.letztesUfdWFDDatum.toString());
 				}
 			}
@@ -472,7 +472,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (WFD &gt; 0) <b>und</b> (FBZ == trocken) <b>dann</b> (WFD=implausibel, FBZ=implausibel)</code>
 	 * <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 */
 	private void regel2() {
 		if ((this.letztesUfdWFDDatum != null)
@@ -490,7 +490,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 						DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
 				WasserfilmDickeMessstelle.LOGGER
-				.fine("[WFD.R2]Daten geändert:\n" //$NON-NLS-1$
+				.fine("[WFD.R2]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 						+ this.letztesUfdWFDDatum.toString() + "\n"
 						+ this.letztesUfdFBZDatum.toString());
 			}
@@ -501,7 +501,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (WFD == 0) <b>und</b> (FBZ == nass) <b>dann</b> (WFD=implausibel, FBZ=implausibel)</code>
 	 * <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 */
 	private void regel3() {
 		if ((this.letztesUfdWFDDatum != null)
@@ -519,7 +519,7 @@ public final class WasserfilmDickeMessstelle extends AbstraktMeteoMessstelle {
 						DUAKonstanten.JA);
 				this.letztesUfdFBZDatum.getWert().setFehlerhaftAn();
 				WasserfilmDickeMessstelle.LOGGER
-				.fine("[WFD.R3]Daten geändert:\n" //$NON-NLS-1$
+				.fine("[WFD.R3]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 						+ this.letztesUfdWFDDatum.toString() + "\n"
 						+ this.letztesUfdFBZDatum.toString());
 			}

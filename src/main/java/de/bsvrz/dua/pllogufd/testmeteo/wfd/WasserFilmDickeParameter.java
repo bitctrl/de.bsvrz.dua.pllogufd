@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -37,7 +37,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Parameter für die meteorologische Kontrolle "Wasserfilmdicke".
+ * Parameter fÃ¼r die meteorologische Kontrolle "Wasserfilmdicke".
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -46,18 +46,18 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF fÃ¼r
 	 * Zeitraum &gt; WDFminNassRLF, dann WFD implausibel.
 	 */
 	private final UmfeldDatenSensorWert wfdGrenzNassRLF;;
 
 	/**
-	 * NI-Grenze überhalb der sicher von Niederschlag ausgegangen werden kann.
+	 * NI-Grenze Ã¼berhalb der sicher von Niederschlag ausgegangen werden kann.
 	 */
 	private final UmfeldDatenSensorWert wfdGrenzNassNI;
 
 	/**
-	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF für
+	 * Wenn NI &gt; 0,5 mm/h und WDF = 0 mm und RLF &gt; WFDgrenzNassRLF fÃ¼r
 	 * Zeitraum &gt; WDFminNassRLF, dann WFD implausibel.
 	 */
 	private long wfdMinNassRLF = -1;
@@ -125,7 +125,7 @@ public class WasserFilmDickeParameter extends AbstraktMeteoUmfeldDatenSensor {
 								.getUnscaledValue("WFDgrenzNassNI") //$NON-NLS-1$
 								.longValue());
 						WasserFilmDickeParameter.LOGGER
-								.info("Neue Parameter für (" //$NON-NLS-1$
+								.info("Neue Parameter fÃ¼r (" //$NON-NLS-1$
 										+ resultat.getObject() + "):\n" //$NON-NLS-1$
 										+ this);
 					}

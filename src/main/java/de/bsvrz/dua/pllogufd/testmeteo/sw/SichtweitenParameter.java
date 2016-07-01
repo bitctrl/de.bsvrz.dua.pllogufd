@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -37,7 +37,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Parameter für die meteorologische Kontrolle "Sichtweiten".
+ * Parameter fÃ¼r die meteorologische Kontrolle "Sichtweiten".
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -109,7 +109,7 @@ public class SichtweitenParameter extends AbstraktMeteoUmfeldDatenSensor {
 								.longValue());
 						this.swGrenzSW.setWert(resultat.getData()
 								.getUnscaledValue("SWgrenzSW").longValue()); //$NON-NLS-1$
-						SichtweitenParameter.LOGGER.info("Neue Parameter für (" //$NON-NLS-1$
+						SichtweitenParameter.LOGGER.info("Neue Parameter fÃ¼r (" //$NON-NLS-1$
 								+ resultat.getObject() + "):\n" //$NON-NLS-1$
 								+ this);
 					}

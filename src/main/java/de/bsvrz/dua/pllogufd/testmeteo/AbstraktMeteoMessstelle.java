@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -40,8 +40,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Abstrakte Klasse für Umfelddatenmessstellen, für die eine meteorologische
- * Kontrolle durchgeführt werden soll.
+ * Abstrakte Klasse fÃ¼r Umfelddatenmessstellen, fÃ¼r die eine meteorologische
+ * Kontrolle durchgefÃ¼hrt werden soll.
  *
  * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
  * @version $Id$
@@ -106,7 +106,7 @@ public abstract class AbstraktMeteoMessstelle {
 	/**
 	 * Arbeitet <b>alle</b> Regeln der Reihe nach ab, so die Voraussetzungen zur
 	 * Abarbeitung der jeweiligen Regel gegeben sind. Die Ergebnisse
-	 * überschreiben die Variablen mit den originalen Werten (lokaler Puffer).
+	 * Ã¼berschreiben die Variablen mit den originalen Werten (lokaler Puffer).
 	 *
 	 * @return das Ergebnis des Aufrufs der Methode
 	 *         <code>getAlleAktuellenWerte()</code>.
@@ -117,17 +117,17 @@ public abstract class AbstraktMeteoMessstelle {
 	 * Erfragt, ob alle Werte, die zur Abarbeitung <b>aller</b> Regeln dieses
 	 * Submoduls notwendig sind vorliegen.
 	 *
-	 * @return ob <b>alle</b> Werte für <b>ein</b> Intervall vorliegen
+	 * @return ob <b>alle</b> Werte fÃ¼r <b>ein</b> Intervall vorliegen
 	 */
 	protected abstract boolean sindAlleWerteFuerIntervallDa();
 
 	/**
-	 * Schreibt ein angekommenes Datum in die Member-Variable in die es gehört,
+	 * Schreibt ein angekommenes Datum in die Member-Variable in die es gehÃ¶rt,
 	 * so der aktuelle lokale Puffer entweder leer ist, oder der
-	 * Datenzeitstempel des übergebenen Datums mit den Zeitstempeln der bereits
-	 * gespeicherten Daten übereinstimmt.<br>
-	 * <b>Die heißt insbesondere, dass mit dieser Methode nur Daten in das Modul
-	 * gespeichert werden können, die den gleichen Zeitstempel haben</b>
+	 * Datenzeitstempel des Ã¼bergebenen Datums mit den Zeitstempeln der bereits
+	 * gespeicherten Daten Ã¼bereinstimmt.<br>
+	 * <b>Die heiÃŸt insbesondere, dass mit dieser Methode nur Daten in das Modul
+	 * gespeichert werden kÃ¶nnen, die den gleichen Zeitstempel haben</b>
 	 *
 	 * @param umfeldDatum
 	 *            ein Umfelddatum
@@ -140,7 +140,7 @@ public abstract class AbstraktMeteoMessstelle {
 			final ResultData umfeldDatum);
 
 	/**
-	 * Löscht alle Member-Variablen mit gespeicherten Umfelddaten im lokalen
+	 * LÃ¶scht alle Member-Variablen mit gespeicherten Umfelddaten im lokalen
 	 * Puffer.
 	 */
 	protected abstract void loescheAlleWerte();
@@ -168,13 +168,13 @@ public abstract class AbstraktMeteoMessstelle {
 			throws DUAInitialisierungsException, NoSuchSensorException;
 
 	/**
-	 * Erfragt, ob für einen bestimmten Umfelddatensensor bereits ein Datum im
-	 * lokalen Puffer steht und gibt dieses zurück. Dabei wird nicht überprüft,
-	 * ob das eingetroffene Datum überhaupt Daten enthält.
+	 * Erfragt, ob fÃ¼r einen bestimmten Umfelddatensensor bereits ein Datum im
+	 * lokalen Puffer steht und gibt dieses zurÃ¼ck. Dabei wird nicht Ã¼berprÃ¼ft,
+	 * ob das eingetroffene Datum Ã¼berhaupt Daten enthÃ¤lt.
 	 *
 	 * @param umfeldDatum
 	 *            ein Datum eines bestimmten Umfelddatensensors
-	 * @return das für einen bestimmten Umfelddatensensor bereits im lokalen
+	 * @return das fÃ¼r einen bestimmten Umfelddatensensor bereits im lokalen
 	 *         Puffer stehende Datum oder <code>null</code> wenn noch keins im
 	 *         Puffer steht
 	 */
@@ -194,8 +194,8 @@ public abstract class AbstraktMeteoMessstelle {
 	 *
 	 * @param umfeldDatum
 	 *            ein aktuelles Umfelddatum
-	 * @return die Ergebnisse der Überprüfung bzw. <code>null</code>, wenn das
-	 *         übergebene Umfelddatum nicht zur Berechnung von Werten geführt
+	 * @return die Ergebnisse der ÃœberprÃ¼fung bzw. <code>null</code>, wenn das
+	 *         Ã¼bergebene Umfelddatum nicht zur Berechnung von Werten gefÃ¼hrt
 	 *         hat
 	 */
 	public final ResultData[] aktualisiereDaten(final ResultData umfeldDatum) {
@@ -208,8 +208,8 @@ public abstract class AbstraktMeteoMessstelle {
 					if (umfeldDatum.getData() == null) {
 
 						/**
-						 * Keine Daten oder keine Quelle heißt hier: Mache FLUSH
-						 * und leitet den übergebenen Datensatz sofort weiter
+						 * Keine Daten oder keine Quelle heiÃŸt hier: Mache FLUSH
+						 * und leitet den Ã¼bergebenen Datensatz sofort weiter
 						 */
 						final Collection<ResultData> ergebnisListe = new ArrayList<>();
 						for (final ResultData berechnungsErgebnis : this
@@ -241,7 +241,7 @@ public abstract class AbstraktMeteoMessstelle {
 						} else {
 							/**
 							 * Es kann hier davon ausgegangen werden, dass noch
-							 * nicht alle Daten für das aktuelle Intevall da
+							 * nicht alle Daten fÃ¼r das aktuelle Intevall da
 							 * sind. Es fehlt mindestens noch das gerade
 							 * angekommene Datum.
 							 */
@@ -266,7 +266,7 @@ public abstract class AbstraktMeteoMessstelle {
 				} else {
 					/**
 					 * Das Datum interessiert hier nicht und wird direkt
-					 * zurückgegeben
+					 * zurÃ¼ckgegeben
 					 */
 					ergebnisse = new ResultData[] { umfeldDatum };
 				}
@@ -277,14 +277,14 @@ public abstract class AbstraktMeteoMessstelle {
 	}
 
 	/**
-	 * Erfragt, ob das empfangene Umfelddatum zu einem neuen Intervall gehört.<br>
+	 * Erfragt, ob das empfangene Umfelddatum zu einem neuen Intervall gehÃ¶rt.<br>
 	 * Dies ist der Fall, wenn der Zeitstempel des gerade empfangenen
-	 * Umfelddatums echt größer als <code>aktuellerZeitstempel</code> ist und in
-	 * der für das Datum vorgesehenen Member-Variable bereits ein Datum steht
+	 * Umfelddatums echt grÃ¶ÃŸer als <code>aktuellerZeitstempel</code> ist und in
+	 * der fÃ¼r das Datum vorgesehenen Member-Variable bereits ein Datum steht
 	 *
 	 * @param umfeldDatum
 	 *            ein Umfelddatum (muss <code>!= null</code> sein)
-	 * @return ob das empfangene Umfelddatum zu einem neuen Intervall gehört
+	 * @return ob das empfangene Umfelddatum zu einem neuen Intervall gehÃ¶rt
 	 */
 	private boolean isNeuesIntervall(final ResultData umfeldDatum) {
 		return (this.getDatumBereitsInPosition(umfeldDatum) != null)
@@ -292,18 +292,18 @@ public abstract class AbstraktMeteoMessstelle {
 	}
 
 	/**
-	 * Erfragt, ob ein übergebenes Umfelddatum in diesem Modul speicherbar ist.<br>
+	 * Erfragt, ob ein Ã¼bergebenes Umfelddatum in diesem Modul speicherbar ist.<br>
 	 * Ein Datum ist dann speicherbar, wenn
 	 * <code>aktuellerZeitstempel == -1</code> oder
 	 * <code>aktuellerZeitstempel == umfeldDatum.getDataTime()</code> oder der
 	 * lokale Speicher an sich leer ist.<br>
 	 * Ein Datum wird also nur als im Modul speicherbar erachtet (und dann
 	 * gespeichert), wenn noch keine Daten im Modul gespeichert sind, oder die
-	 * Daten im Modul zeitlich zum übergebenen Datum passen.
+	 * Daten im Modul zeitlich zum Ã¼bergebenen Datum passen.
 	 *
 	 * @param umfeldDatum
 	 *            ein Umfelddatum (muss <code>!= null</code> sein)
-	 * @return ob ein übergebenes Umfelddatum in diesem Modul speicherbar ist
+	 * @return ob ein Ã¼bergebenes Umfelddatum in diesem Modul speicherbar ist
 	 */
 	protected final boolean isDatumSpeicherbar(final ResultData umfeldDatum) {
 		return (this.aktuellerZeitstempel == -1)

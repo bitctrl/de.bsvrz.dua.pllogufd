@@ -1,5 +1,5 @@
 /*
- * Segment 4 Daten¸bernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr¸fung logisch UFD
+ * Segment 4 Daten√ºbernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr√ºfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weiﬂenfelser Straﬂe 67<br>
+ * Wei√üenfelser Stra√üe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -37,8 +37,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Diese Klasse repr‰sentiert die Versorgung des Moduls Pl-Pr¸fung logisch UFD
- * (innerhalb der SWE Pl-Pr¸fung logisch UFD) mit
+ * Diese Klasse repr√§sentiert die Versorgung des Moduls Pl-Pr√ºfung logisch UFD
+ * (innerhalb der SWE Pl-Pr√ºfung logisch UFD) mit
  * Standard-Publikationsinformationen (Zuordnung von
  * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  *
@@ -69,18 +69,18 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
 						new StandardPublikationsZuordnung(
-								"typ.ufdsFahrBahnGl‰tte", //$NON-NLS-1$
-								"atg.ufdsFahrBahnGl‰tte", //$NON-NLS-1$
+								"typ.ufdsFahrBahnGl√§tte", //$NON-NLS-1$
+								"atg.ufdsFahrBahnGl√§tte", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
 						new StandardPublikationsZuordnung(
-								"typ.ufdsFahrBahnOberFl‰chenTemperatur", //$NON-NLS-1$
-								"atg.ufdsFahrBahnOberFl‰chenTemperatur", //$NON-NLS-1$
+								"typ.ufdsFahrBahnOberFl√§chenTemperatur", //$NON-NLS-1$
+								"atg.ufdsFahrBahnOberFl√§chenTemperatur", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
 						new StandardPublikationsZuordnung(
-								"typ.ufdsFahrBahnOberFl‰chenZustand", //$NON-NLS-1$
-								"atg.ufdsFahrBahnOberFl‰chenZustand", //$NON-NLS-1$
+								"typ.ufdsFahrBahnOberFl√§chenZustand", //$NON-NLS-1$
+								"atg.ufdsFahrBahnOberFl√§chenZustand", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
 						new StandardPublikationsZuordnung(
@@ -107,8 +107,8 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
 						new StandardPublikationsZuordnung(
-								"typ.ufdsNiederschlagsIntensit‰t", //$NON-NLS-1$
-								"atg.ufdsNiederschlagsIntensit‰t", //$NON-NLS-1$
+								"typ.ufdsNiederschlagsIntensit√§t", //$NON-NLS-1$
+								"atg.ufdsNiederschlagsIntensit√§t", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
 						new StandardPublikationsZuordnung(
@@ -125,8 +125,8 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 								"atg.ufdsRestSalz", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-						new StandardPublikationsZuordnung("typ.ufdsSchneeHˆhe", //$NON-NLS-1$
-								"atg.ufdsSchneeHˆhe", //$NON-NLS-1$
+						new StandardPublikationsZuordnung("typ.ufdsSchneeH√∂he", //$NON-NLS-1$
+								"atg.ufdsSchneeH√∂he", //$NON-NLS-1$
 								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
 								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
 						new StandardPublikationsZuordnung("typ.ufdsSichtWeite", //$NON-NLS-1$
@@ -178,14 +178,14 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 		final List<StandardPublikationsZuordnung> zuordnungen = new ArrayList<StandardPublikationsZuordnung>();
 		zuordnungen.addAll(Arrays.asList(bekannteZuordnungen));
 
-		final String typZg = "typ.ufdsZeitreserveGl‰tteVaisala";
-		final String atgZg = "atg.ufdsZeitreserveGl‰tteVaisala";
+		final String typZg = "typ.ufdsZeitreserveGl√§tteVaisala";
+		final String atgZg = "atg.ufdsZeitreserveGl√§tteVaisala";
 		try {
 			final StandardPublikationsZuordnung zuordnungZg = new StandardPublikationsZuordnung(
 					typZg, atgZg, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
 			zuordnungen.add(zuordnungZg);
 		} catch (final Exception e) {
-			Debug.getLogger().warning("Zuordnung f¸r " + typZg + " und " + atgZg + " nicht mˆglich: " + e);
+			Debug.getLogger().warning("Zuordnung f√ºr " + typZg + " und " + atgZg + " nicht m√∂glich: " + e);
 		}
 
 		final String typTsq = "typ.ufdsTaustoffmenge";
@@ -195,7 +195,7 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 					typTsq, atgTsq, DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
 			zuordnungen.add(zuordnungTsq);
 		} catch (final Exception e) {
-			Debug.getLogger().warning("Zuordnung f¸r " + typTsq + " und " + atgTsq + " nicht mˆglich: " + e);
+			Debug.getLogger().warning("Zuordnung f√ºr " + typTsq + " und " + atgTsq + " nicht m√∂glich: " + e);
 		}
 
 		setStandardAspekte(new StandardAspekteAdapter(zuordnungen.toArray(new StandardPublikationsZuordnung[zuordnungen.size()])));

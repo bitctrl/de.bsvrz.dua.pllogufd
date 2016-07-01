@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -42,7 +42,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
- * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine Pl-Prüfung
+ * Abstrakter Umfelddatensensor, der sich auf die Parameter fÃ¼r seine Pl-PrÃ¼fung
  * logisch UFD anmeldet.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -107,7 +107,7 @@ public abstract class AbstraktUmfeldDatenSensor
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException
-	 *             die Datenart des übergebenen Sensors wird nicht unterstützt
+	 *             die Datenart des Ã¼bergebenen Sensors wird nicht unterstÃ¼tzt
 	 */
 	public void init() throws DUAInitialisierungsException,
 			UmfeldDatenSensorUnbekannteDatenartException {

@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -44,15 +44,15 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Implementierung des Moduls Anstieg-Abfall-Kontrolle. Dieses meldet sich auf
- * alle Parameter an und führt mit allen über die Methode
- * <code>aktualisiereDaten(..)</code> übergebenen Daten eine Prüfung durch. Es
+ * alle Parameter an und fÃ¼hrt mit allen Ã¼ber die Methode
+ * <code>aktualisiereDaten(..)</code> Ã¼bergebenen Daten eine PrÃ¼fung durch. Es
  * wird kontrolliert, ob die Differenz zweier zeitlich aufeinander folgender
  * Messwerte eine je Sensor parametrierbare maximale Messwertdifferenz (Betrag)
- * nicht übersteigt. Die Überprüfung wird aber nur vorgenommen, wenn eine Reihe
- * von Bedingungen erfüllt ist. Wird ein Messwert als über die
+ * nicht Ã¼bersteigt. Die ÃœberprÃ¼fung wird aber nur vorgenommen, wenn eine Reihe
+ * von Bedingungen erfÃ¼llt ist. Wird ein Messwert als Ã¼ber die
  * Anstieg-Abfall-Kontrolle als nicht plausibel erkannt, so wird der
- * entsprechende Wert auf Fehlerhaft und Implausibel zu setzen. Nach der Prüfung
- * werden die Daten an den nächsten Bearbeitungsknoten weitergereicht.
+ * entsprechende Wert auf Fehlerhaft und Implausibel zu setzen. Nach der PrÃ¼fung
+ * werden die Daten an den nÃ¤chsten Bearbeitungsknoten weitergereicht.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -60,7 +60,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 	/**
 	 * Mapt alle Systemobjekte aller erfassten Umfelddatensensoren auf
-	 * assoziierte Objekte mit allen für die Anstieg-Abfall-Kontrolle benötigten
+	 * assoziierte Objekte mit allen fÃ¼r die Anstieg-Abfall-Kontrolle benÃ¶tigten
 	 * Informationen.
 	 */
 	private final Map<SystemObject, AufAbUmfeldDatenSensor> sensoren = new HashMap<>();

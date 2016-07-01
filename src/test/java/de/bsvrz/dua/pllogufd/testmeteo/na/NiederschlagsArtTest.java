@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -47,13 +47,13 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Überprüfung des Submoduls NiederschlagsArt aus der Komponente Meteorologische
- * Kontrolle. Diese Überprüfung richtet sich nach den Vorgaben von
+ * ÃœberprÃ¼fung des Submoduls NiederschlagsArt aus der Komponente Meteorologische
+ * Kontrolle. Diese ÃœberprÃ¼fung richtet sich nach den Vorgaben von
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.26
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prÃ¼fen")
 public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 
 	private static final Debug LOGGER = Debug.getLogger();
@@ -266,9 +266,9 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 	 * Testet implizit die Methode <code>regel2</code> aus
 	 * {@link NiederschlagsArtMessstelle}<br>
 	 * <br>
-	 * <b>Achtung:</b> Der Überprüfung der letzten drei Tabellenspalten
-	 * ([QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.26) fällt weg, da diese die
-	 * Funktionalität der NS-Regel Nr.4 aus den AFo testen (S. 104). Diese Regel
+	 * <b>Achtung:</b> Der ÃœberprÃ¼fung der letzten drei Tabellenspalten
+	 * ([QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.26) fÃ¤llt weg, da diese die
+	 * FunktionalitÃ¤t der NS-Regel Nr.4 aus den AFo testen (S. 104). Diese Regel
 	 * wurde jedoch nicht implementiert.
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
@@ -366,7 +366,7 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 	}
 
 	/**
-	 * Schaltet die Ausfallüberwachung wieder aus und wartet fünf Sekunden.
+	 * Schaltet die AusfallÃ¼berwachung wieder aus und wartet fÃ¼nf Sekunden.
 	 *
 	 * @throws Exception
 	 *             wird weitergereicht
@@ -374,7 +374,7 @@ public class NiederschlagsArtTest extends MeteorologischeKontrolleTest {
 	@After
 	public void after() throws Exception {
 		/**
-		 * Ausfallüberwachung für alle Sensoren ausschalten
+		 * AusfallÃ¼berwachung fÃ¼r alle Sensoren ausschalten
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);

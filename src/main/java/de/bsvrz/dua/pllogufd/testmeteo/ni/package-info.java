@@ -1,5 +1,5 @@
 /*
- * Segment 4 Daten¸bernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr¸fung logisch UFD
+ * Segment 4 Daten√ºbernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr√ºfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,15 +18,15 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weiﬂenfelser Straﬂe 67<br>
+ * Wei√üenfelser Stra√üe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
  */
 
 /**
- * Klassen f¸r Submodul Niederschlagsintensit‰t der Komponente Meteorologische
- * Kontrolle innerhalb des Moduls Pl-Pr¸fung logisch UFD
+ * Klassen f√ºr Submodul Niederschlagsintensit√§t der Komponente Meteorologische
+ * Kontrolle innerhalb des Moduls Pl-Pr√ºfung logisch UFD
  */
 
 package de.bsvrz.dua.pllogufd.testmeteo.ni;

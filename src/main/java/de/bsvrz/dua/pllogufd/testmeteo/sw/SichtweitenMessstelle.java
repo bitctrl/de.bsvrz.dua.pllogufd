@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -49,11 +49,11 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Analogon zur <code>SichtweitenTabelle</code> aus der Feinspezifikation mit
- * zugehörigen Funktionalitäten. In dieser Klasse wird je eine Messstelle mit
- * allen Sensoren, die für das Submodul "Sichtweiten" interessant sind
+ * zugehÃ¶rigen FunktionalitÃ¤ten. In dieser Klasse wird je eine Messstelle mit
+ * allen Sensoren, die fÃ¼r das Submodul "Sichtweiten" interessant sind
  * betrachtet. Die eigentliche Plausibilisierung wird innerhalb der Super-Klasse
- * <code>{@link AbstraktMeteoMessstelle}</code> über die Methode
- * <code>aktualisiereDaten(..)</code> durchgeführt.
+ * <code>{@link AbstraktMeteoMessstelle}</code> Ã¼ber die Methode
+ * <code>aktualisiereDaten(..)</code> durchgefÃ¼hrt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -94,7 +94,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	private UmfeldDatenSensorDatum letztesUfdRLFDatum = null;
 
 	/**
-	 * Parameter der Meteorologischen Kontrolle für den Sichtweiten-Sensor.
+	 * Parameter der Meteorologischen Kontrolle fÃ¼r den Sichtweiten-Sensor.
 	 */
 	private SichtweitenParameter parameterSensor = null;
 
@@ -104,7 +104,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	 * @param ufdmsObj
 	 *            das Systemobjekt einer Umfelddaten-Messstelle
 	 * @throws DUAInitialisierungsException
-	 *             wenn die Umfelddaten-Messstelle nicht vollständig
+	 *             wenn die Umfelddaten-Messstelle nicht vollstÃ¤ndig
 	 *             initialisiert werden konnte (mit allen Sensoren usw.)
 	 * @throws DuplicateFormatFlagsException
 	 */
@@ -250,7 +250,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 
 		if (parameterSensorObj == null) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					" konnte kein Sensor für Sichtweiten identifiziert werden"); //$NON-NLS-1$
+					" konnte kein Sensor fÃ¼r Sichtweiten identifiziert werden"); //$NON-NLS-1$
 		}
 
 		try {
@@ -258,7 +258,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 					AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
 		} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					" konnte kein Sensor für Sichtweiten identifiziert werden: " //$NON-NLS-1$
+					" konnte kein Sensor fÃ¼r Sichtweiten identifiziert werden: " //$NON-NLS-1$
 					+ e.getMessage());
 		}
 	}
@@ -408,7 +408,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (SW &lt;= SWgrenz) <b>und</b> (NS == kein Niederschlag) <b>und</b> (RLF &lt; SWgrenzTrockenRLF)
 	 * <b>dann</b> (SW=implausibel)</code> <br>
-	 * . Die Ergebnisse werden zurück in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zurÃ¼ck in die lokalen Variablen geschrieben
 	 */
 	private void regel1() {
 		if ((this.letztesUfdSWDatum != null) && (this.letztesUfdNSDatum != null)
@@ -435,7 +435,7 @@ public final class SichtweitenMessstelle extends AbstraktMeteoMessstelle {
 							.setStatusMessWertErsetzungImplausibel(
 									DUAKonstanten.JA);
 					this.letztesUfdSWDatum.getWert().setFehlerhaftAn();
-					SichtweitenMessstelle.LOGGER.fine("[SW.R1]Daten geändert:\n" //$NON-NLS-1$
+					SichtweitenMessstelle.LOGGER.fine("[SW.R1]Daten geÃ¤ndert:\n" //$NON-NLS-1$
 							+ this.letztesUfdSWDatum.toString());
 				}
 			}

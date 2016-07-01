@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -39,17 +39,17 @@ import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
- * Überprüfung des Submoduls Sichtweite aus der Komponente Meteorologische
- * Kontrolle. Diese Überprüfung richtet sich nach den Vorgaben von
+ * ÃœberprÃ¼fung des Submoduls Sichtweite aus der Komponente Meteorologische
+ * Kontrolle. Diese ÃœberprÃ¼fung richtet sich nach den Vorgaben von
  * [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.28<br>
  * <b>Achtung:</b> Bei den Test-Vorgaben werden die Zeilen innerhalb der Tabelle
  * auf S. 28 ignoriert, in denen NI nicht auf "don't care" steht, da diese die
- * SW-Regel Nr.2 überprüfen sollten. Diese Regel ist hier allerdings nicht
+ * SW-Regel Nr.2 Ã¼berprÃ¼fen sollten. Diese Regel ist hier allerdings nicht
  * implementiert.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prÃ¼fen")
 public class SichtweiteTest extends MeteorologischeKontrolleTest {
 
 	/**

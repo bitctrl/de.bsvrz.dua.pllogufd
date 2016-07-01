@@ -1,5 +1,5 @@
 /*
- * Segment 4 Daten¸bernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr¸fung logisch UFD
+ * Segment 4 Daten√ºbernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr√ºfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weiﬂenfelser Straﬂe 67<br>
+ * Wei√üenfelser Stra√üe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -35,7 +35,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Klasse zum Auslesen von Parameters‰tzen der Attributgruppen
+ * Klasse zum Auslesen von Parameters√§tzen der Attributgruppen
  * <code>atg.ufdsDifferenzialKontrolle<b>*</b></code>.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -45,19 +45,19 @@ AllgemeinerDatenContainer {
 
 	/**
 	 * zu verwendender Operator zum Vergleich des Messwerts mit dem Grenzwert,
-	 * der eingehalten werden muss, damit Differenzialkontrolle durchgef¸hrt
+	 * der eingehalten werden muss, damit Differenzialkontrolle durchgef√ºhrt
 	 * werden darf.
 	 */
 	private UfdsVergleichsOperator operator = null;
 
 	/**
 	 * Grenzwert, der eingehalten werden muss, damit Differenzialkontrolle
-	 * durchgef¸hrt werden darf.
+	 * durchgef√ºhrt werden darf.
 	 */
 	private UmfeldDatenSensorWert grenz = null;
 
 	/**
-	 * maximal zul‰ssige Zeitdauer der Ergebniskonstanz.
+	 * maximal zul√§ssige Zeitdauer der Ergebniskonstanz.
 	 */
 	private long maxZeit = -1;
 
@@ -71,11 +71,11 @@ AllgemeinerDatenContainer {
 	 */
 	public UniversalAtgUfdsDifferenzialKontrolle(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
-			throw new NullPointerException("‹bergebener Parameter ist <<null>>"); //$NON-NLS-1$
+			throw new NullPointerException("√úbergebener Parameter ist <<null>>"); //$NON-NLS-1$
 		}
 		if (parameter.getData() == null) {
 			throw new NullPointerException(
-					"‹bergebener Parameter hat keine Daten"); //$NON-NLS-1$
+					"√úbergebener Parameter hat keine Daten"); //$NON-NLS-1$
 		}
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(parameter.getObject());
@@ -98,7 +98,7 @@ AllgemeinerDatenContainer {
 	/**
 	 * Erfragt den zu verwendenden Operator zum Vergleich des Messwerts mit dem
 	 * Grenzwert, der eingehalten werden muss, damit Differenzialkontrolle
-	 * durchgef¸hrt werden darf.
+	 * durchgef√ºhrt werden darf.
 	 *
 	 * @return der zu verwendende Operator
 	 */
@@ -108,19 +108,19 @@ AllgemeinerDatenContainer {
 
 	/**
 	 * Erfragt den Grenzwert, der eingehalten werden muss, damit
-	 * Differenzialkontrolle durchgef¸hrt werden darf.
+	 * Differenzialkontrolle durchgef√ºhrt werden darf.
 	 *
 	 * @return grenz der Grenzwert, der eingehalten werden muss, damit
-	 *         Differenzialkontrolle durchgef¸hrt werden darf
+	 *         Differenzialkontrolle durchgef√ºhrt werden darf
 	 */
 	public final UmfeldDatenSensorWert getGrenz() {
 		return this.grenz;
 	}
 
 	/**
-	 * Erfragt die maximal zul‰ssige Zeitdauer der Ergebniskonstanz.
+	 * Erfragt die maximal zul√§ssige Zeitdauer der Ergebniskonstanz.
 	 *
-	 * @return maxZeit maximal zul‰ssige Zeitdauer der Ergebniskonstanz
+	 * @return maxZeit maximal zul√§ssige Zeitdauer der Ergebniskonstanz
 	 */
 	public final long getMaxZeit() {
 		return this.maxZeit;

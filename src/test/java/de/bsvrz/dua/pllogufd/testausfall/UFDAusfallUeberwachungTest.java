@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -60,24 +60,24 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Test des Moduls Ausfallüberwachung.<br>
+ * Test des Moduls AusfallÃ¼berwachung.<br>
  * Voraussetzungen (Testbedingungen):<br>
  * 1.) Alle Sensoren im Konfigurationsbereich <code>kb.duaTestObjekteUFD</code>
- * werden überwacht<br>
+ * werden Ã¼berwacht<br>
  * 2.) Daten werden im Minutenintervall zur vollen Minute gesendet
  * (Datenzeitstempel)<br>
- * 3.) Datenverzug wird auf 10s (für Sensoren xxx1), 15s (für Sensoren xxx2) und
- * 20s (für Sensoren xxx3) gesetzt<br>
- * 4.) jedes zehnte Datum fällt komplett aus<br>
+ * 3.) Datenverzug wird auf 10s (fÃ¼r Sensoren xxx1), 15s (fÃ¼r Sensoren xxx2) und
+ * 20s (fÃ¼r Sensoren xxx3) gesetzt<br>
+ * 4.) jedes zehnte Datum fÃ¤llt komplett aus<br>
  * (Die Punkte 2.-4. werden durch den Test selbst realisiert)<br>
  * <br>
- * In diesem Test wird für alle Sensoren zunächst ein Datum mit dem
+ * In diesem Test wird fÃ¼r alle Sensoren zunÃ¤chst ein Datum mit dem
  * Datenzeitstempel der bereits vergangenen Minute gesendet (TS = Zeitpunkt
  * Teststart, 0=Zeitstempel der bereits vergangenen Minute) um die Applikation
- * zu initialisieren. Dann (nach Zeitpunkt 2) werden für alle Sensoren im
+ * zu initialisieren. Dann (nach Zeitpunkt 2) werden fÃ¼r alle Sensoren im
  * Sekundenintervall Daten gesendet, die <b>nicht</b> als
  * <code>nicht erfasst</code> markiert sind. Die Ausfall-Informationen zu den
- * Datensätzen werden beim Versand berechnet und gespeichert (jeweils Sensor und
+ * DatensÃ¤tzen werden beim Versand berechnet und gespeichert (jeweils Sensor und
  * erwarteter Zustand).<br>
  * <br>
  *
@@ -86,14 +86,14 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * <br>
  *
  * Sollten die empfangenen Daten von den je Sensor berechneten Informationen
- * abweichen, gilt der Test als nicht bestanden. (Der Test läuft
+ * abweichen, gilt der Test als nicht bestanden. (Der Test lÃ¤uft
  * <code>TEST_AUSFALL_UEBERWACHUNG_LAEUFE</code> mal) <br>
  * <br>
  * Alle Ergebnisse des Tests werden in die Konsole ausgegeben
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prÃ¼fen")
 public class UFDAusfallUeberwachungTest
 implements ClientSenderInterface, ClientReceiverInterface {
 
@@ -110,7 +110,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
 	 * Die Zeit (in ms) die die erwartete Eintreffzeit eines Datums von der
-	 * tatsächlichen Eintreffzeit differieren darf.
+	 * tatsÃ¤chlichen Eintreffzeit differieren darf.
 	 */
 	protected static final long ERGEBNIS_TOLERANZ = 500;
 
@@ -120,17 +120,17 @@ implements ClientSenderInterface, ClientReceiverInterface {
 	protected static final int AUSFALL = 5;
 
 	/**
-	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx1.
+	 * Parameter <code>maxZeitVerzug</code> fÃ¼r Sensoren xxx1.
 	 */
 	private static final long MAX_VERZUG_1 = 5000L;
 
 	/**
-	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx2.
+	 * Parameter <code>maxZeitVerzug</code> fÃ¼r Sensoren xxx2.
 	 */
 	private static final long MAX_VERZUG_2 = 10000L;
 
 	/**
-	 * Parameter <code>maxZeitVerzug</code> für Sensoren xxx3.
+	 * Parameter <code>maxZeitVerzug</code> fÃ¼r Sensoren xxx3.
 	 */
 	private static final long MAX_VERZUG_3 = 12000L;
 
@@ -146,7 +146,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
 	 * letzte Ist-Ergebnis-Werte von einem Sensor. Dies sind hier mehrere, da
-	 * ggf. auch mehrere Datensätze pro Intervall empfangen werden können, wenn
+	 * ggf. auch mehrere DatensÃ¤tze pro Intervall empfangen werden kÃ¶nnen, wenn
 	 * z.B. die Ausfallkontrolle <b>und</b> die Testapplikation einen Wert
 	 * senden.
 	 */
@@ -168,7 +168,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		PlPruefungLogischUFDTest.sender.setMeteoKontrolle(false);
 
 		/**
-		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
+		 * Anmeldung auf alle Daten die aus der Applikation Pl-PrÃ¼fung logisch
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -184,7 +184,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 					dav.getDataModel()
 					.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 					dav.getDataModel()
-					.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+					.getAspect("asp.plausibilitÃ¤tsPrÃ¼fungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -194,14 +194,14 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		 */
 
 		/**
-		 * Ausfallüberwachung für alle Sensoren ausschalten
+		 * AusfallÃ¼berwachung fÃ¼r alle Sensoren ausschalten
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
 		}
 
 		/**
-		 * Sende jetzt drei Datensätze, die nicht überprüft werden
+		 * Sende jetzt drei DatensÃ¤tze, die nicht Ã¼berprÃ¼ft werden
 		 */
 		long ersteDatenZeit = TestUtensilien.getBeginAktuellerSekunde()
 				+ (3 * Constants.MILLIS_PER_SECOND);
@@ -231,8 +231,8 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		}
 
 		/**
-		 * Ausfallüberwachung für alle Sensoren ausschalten Parameter setzen auf
-		 * 5s (für Sensoren xxx1), 10s (für Sensoren xxx2) und 12s (für Sensoren
+		 * AusfallÃ¼berwachung fÃ¼r alle Sensoren ausschalten Parameter setzen auf
+		 * 5s (fÃ¼r Sensoren xxx1), 10s (fÃ¼r Sensoren xxx2) und 12s (fÃ¼r Sensoren
 		 * xxx3)
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -249,7 +249,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		}
 
 		/**
-		 * Warte jetzt wenigstens bis zum Beginn der übernächsten Minute
+		 * Warte jetzt wenigstens bis zum Beginn der Ã¼bernÃ¤chsten Minute
 		 */
 		final GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
@@ -258,7 +258,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		DAVTest.warteBis(kal.getTimeInMillis());
 
 		/**
-		 * Sende initiale Daten für alle Sensoren mit dem Datenzeitstempel der
+		 * Sende initiale Daten fÃ¼r alle Sensoren mit dem Datenzeitstempel der
 		 * vergangenen Minute
 		 */
 		ersteDatenZeit = TestUtensilien.getBeginNaechsterMinute()
@@ -278,11 +278,11 @@ implements ClientSenderInterface, ClientReceiverInterface {
 	}
 
 	/**
-	 * Führt den Vergleich aller Ist-Werte mit allen Soll-Werten durch und zeigt
-	 * die Ergebnisse an. Gleichzeitig werden die Ergebnisse über
+	 * FÃ¼hrt den Vergleich aller Ist-Werte mit allen Soll-Werten durch und zeigt
+	 * die Ergebnisse an. Gleichzeitig werden die Ergebnisse Ã¼ber
 	 * <code>JUnit</code> getestet<br>
 	 * <br>
-	 * Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelöscht
+	 * Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelÃ¶scht
 	 */
 	private void ergebnisUeberpruefen() {
 		if (!this.ergebnisIst.isEmpty() && !this.ergebnisSoll.isEmpty()) {
@@ -291,7 +291,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 				try {
 					UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 				} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-					System.err.println("Nicht geprüft: " + e.getMessage());
+					System.err.println("Nicht geprÃ¼ft: " + e.getMessage());
 					continue;
 				}
 
@@ -342,14 +342,14 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		}
 
 		/**
-		 * Lösche Soll- und Ist-Ergebnissmenge vor nächstem Durchlauf
+		 * LÃ¶sche Soll- und Ist-Ergebnissmenge vor nÃ¤chstem Durchlauf
 		 */
 		this.ergebnisIst.clear();
 		this.ergebnisSoll.clear();
 	}
 
 	/**
-	 * Anzahl der Intervalle, die der Test der Ausfallüberwachung laufen soll.
+	 * Anzahl der Intervalle, die der Test der AusfallÃ¼berwachung laufen soll.
 	 */
 	private static final int TEST_AUSFALL_UEBERWACHUNG_LAEUFE = 10;
 
@@ -375,7 +375,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		for (int testZaehler = 0; testZaehler < UFDAusfallUeberwachungTest.TEST_AUSFALL_UEBERWACHUNG_LAEUFE; testZaehler++) {
 
 			/**
-			 * Warte bis zum Anfang der nächsten Minute
+			 * Warte bis zum Anfang der nÃ¤chsten Minute
 			 */
 			final long start = TestUtensilien.getBeginNaechsterMinute();
 			DAVTest.warteBis(start + 20);
@@ -386,9 +386,9 @@ implements ClientSenderInterface, ClientReceiverInterface {
 			.println("---\nTestlauf Nr." + (testZaehler + 1) + "\n---"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			/**
-			 * In dieser Schleife wird für jeden Sensor im stochastischen Takt
+			 * In dieser Schleife wird fÃ¼r jeden Sensor im stochastischen Takt
 			 * jeweils ein Datum gesendet. Die Reihenfolge der Sensoren wird
-			 * dabei vor jedem Durchlauf neu "ausgewürfelt". Jeder
+			 * dabei vor jedem Durchlauf neu "ausgewÃ¼rfelt". Jeder
 			 * <code>AUSFALL</code>-te Sensor wird ignoriert
 			 */
 			final int[] indexFeld = DAVTest.getZufaelligeZahlen(
@@ -398,7 +398,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 						.get(element);
 
 				/**
-				 * Dieser Wert fällt komplett aus
+				 * Dieser Wert fÃ¤llt komplett aus
 				 */
 				if (DAVTest.RANDOM
 						.nextInt(UFDAusfallUeberwachungTest.AUSFALL) == 0) {
@@ -510,8 +510,8 @@ implements ClientSenderInterface, ClientReceiverInterface {
 	}
 
 	/**
-	 * Für den Test der Ausfallkontrolle relevanter Teil der Informationen eines
-	 * Sensorwertes. Über Objekte dieser Klasse wird der Soll-Ist-Vergleich
+	 * FÃ¼r den Test der Ausfallkontrolle relevanter Teil der Informationen eines
+	 * Sensorwertes. Ãœber Objekte dieser Klasse wird der Soll-Ist-Vergleich
 	 * vorgenommen.
 	 *
 	 * @author BitCtrl Systems GmbH, Thierfelder
@@ -547,7 +547,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		 *            erwartet wird. <code>null</code> gilt als "egal"<br>
 		 *            <b>Achtung:</b> Die Markierung "egal" wird verwendet, wenn
 		 *            die Zeit, zu der das Datum verschickt wurde und die Zeit,
-		 *            zu der es die Ausfallkontrolle hätte ebenfalls verschicken
+		 *            zu der es die Ausfallkontrolle hÃ¤tte ebenfalls verschicken
 		 *            sollen, innerhalb des Toleranzbereichs
 		 *            <code>ERGEBNIS_TOLERANZ</code> liegen
 		 */
@@ -559,7 +559,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		}
 
 		/**
-		 * Zwei Ergebnisdatensätze gelten als gleich, wenn:<br>
+		 * Zwei ErgebnisdatensÃ¤tze gelten als gleich, wenn:<br>
 		 * - die Sensoren identisch sind,<br>
 		 * - die erwarteten Datenzeiten identisch sind und<br>
 		 * - die Markierungen als <code>nicht erfasst</code> identisch sind (so

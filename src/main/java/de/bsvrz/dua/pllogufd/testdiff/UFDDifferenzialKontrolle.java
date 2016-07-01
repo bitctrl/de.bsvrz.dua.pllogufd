@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -43,12 +43,12 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Das Modul Differenzialkontrolle meldet sich auf alle Parameter an und führt
- * mit allen über die Methode <code>aktualisiereDaten(..)</code> übergebenen
- * Daten eine Prüfung durch. Diese kontrolliert, ob bestimmte Werte innerhalb
+ * Das Modul Differenzialkontrolle meldet sich auf alle Parameter an und fÃ¼hrt
+ * mit allen Ã¼ber die Methode <code>aktualisiereDaten(..)</code> Ã¼bergebenen
+ * Daten eine PrÃ¼fung durch. Diese kontrolliert, ob bestimmte Werte innerhalb
  * eines bestimmten Intervalls konstant geblieben sind. Ist dies der Fall, so
- * werden diese als Implausibel und Fehlerhaft gesetzt. Nach der Prüfung werden
- * die Daten an den nächsten Bearbeitungsknoten weitergereicht
+ * werden diese als Implausibel und Fehlerhaft gesetzt. Nach der PrÃ¼fung werden
+ * die Daten an den nÃ¤chsten Bearbeitungsknoten weitergereicht
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -58,7 +58,7 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	private static final Debug LOGGER = Debug.getLogger();
 	/**
 	 * Mapt alle Systemobjekte aller erfassten Umfelddatensensoren auf
-	 * assoziierte Objekte mit allen für die Differentialkontrolle benötigten
+	 * assoziierte Objekte mit allen fÃ¼r die Differentialkontrolle benÃ¶tigten
 	 * Informationen.
 	 */
 	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<>();

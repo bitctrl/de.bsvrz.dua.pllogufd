@@ -1,5 +1,5 @@
 /*
- * Segment 4 Daten¸bernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr¸fung logisch UFD
+ * Segment 4 Daten√ºbernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr√ºfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weiﬂenfelser Straﬂe 67<br>
+ * Wei√üenfelser Stra√üe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -49,13 +49,13 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Analogon zur <code>NiederschlagsIntensit‰tsTabelle</code> aus der
- * Feinspezifikation mit zugehˆrigen Funktionalit‰ten. In dieser Klasse wird je
- * eine Messstelle mit allen Sensoren, die f¸r das Submodul
- * "Niederschlagsintensit‰t" interessant sind betrachtet. Die eigentliche
+ * Analogon zur <code>NiederschlagsIntensit√§tsTabelle</code> aus der
+ * Feinspezifikation mit zugeh√∂rigen Funktionalit√§ten. In dieser Klasse wird je
+ * eine Messstelle mit allen Sensoren, die f√ºr das Submodul
+ * "Niederschlagsintensit√§t" interessant sind betrachtet. Die eigentliche
  * Plausibilisierung wird innerhalb der Super-Klasse
- * <code>{@link AbstraktMeteoMessstelle}</code> ¸ber die Methode
- * <code>aktualisiereDaten(..)</code> durchgef¸hrt.
+ * <code>{@link AbstraktMeteoMessstelle}</code> √ºber die Methode
+ * <code>aktualisiereDaten(..)</code> durchgef√ºhrt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder, A. Uhlmann
  * @version $Id$
@@ -66,7 +66,7 @@ extends AbstraktMeteoMessstelle {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Im Submodul Niederschlagsintensit‰t betrachtete Datenarten.
+	 * Im Submodul Niederschlagsintensit√§t betrachtete Datenarten.
 	 */
 	private static Collection<UmfeldDatenArt> datenArten = new HashSet<>();
 
@@ -84,7 +84,7 @@ extends AbstraktMeteoMessstelle {
 	private static Map<SystemObject, NiederschlagsIntensitaetsMessstelle> ufdsAufUfdMs = new HashMap<>();
 
 	/**
-	 * letztes Niederschlagsintensit‰ts-Datum.
+	 * letztes Niederschlagsintensit√§ts-Datum.
 	 */
 	private UmfeldDatenSensorDatum letztesUfdNIDatum = null;
 
@@ -99,7 +99,7 @@ extends AbstraktMeteoMessstelle {
 	private UmfeldDatenSensorDatum letztesUfdRLFDatum = null;
 
 	/**
-	 * z‰hlt die Millisekunden, die sich die relative Luftfeuchte schon
+	 * z√§hlt die Millisekunden, die sich die relative Luftfeuchte schon
 	 * unterhalb von <code>NIgrenzTrockenRLF</code> befindet.
 	 */
 	private long rlfUnterNIgrenzTrockenFuerMS = 0;
@@ -110,8 +110,8 @@ extends AbstraktMeteoMessstelle {
 	private UmfeldDatenSensorDatum letztesUfdWFDDatum = null;
 
 	/**
-	 * Parameter der Meteorologischen Kontrolle f¸r den
-	 * Niederschlagsintensit‰ts-Sensor.
+	 * Parameter der Meteorologischen Kontrolle f√ºr den
+	 * Niederschlagsintensit√§ts-Sensor.
 	 */
 	private NiederschlagsIntensitaetsParameter parameterSensor = null;
 
@@ -121,7 +121,7 @@ extends AbstraktMeteoMessstelle {
 	 * @param ufdmsObj
 	 *            das Systemobjekt einer Umfelddaten-Messstelle
 	 * @throws DUAInitialisierungsException
-	 *             wenn die Umfelddaten-Messstelle nicht vollst‰ndig
+	 *             wenn die Umfelddaten-Messstelle nicht vollst√§ndig
 	 *             initialisiert werden konnte (mit allen Sensoren usw.)
 	 */
 	private NiederschlagsIntensitaetsMessstelle(final SystemObject ufdmsObj)
@@ -151,7 +151,7 @@ extends AbstraktMeteoMessstelle {
 					}
 				} else {
 					NiederschlagsIntensitaetsMessstelle.LOGGER.fine("Sensor '" + sensor
-							+ "' an Messstelle '" + duaufdms.getObjekt() + "' wird nicht benˆtigt");
+							+ "' an Messstelle '" + duaufdms.getObjekt() + "' wird nicht ben√∂tigt");
 				}
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 				NiederschlagsIntensitaetsMessstelle.LOGGER.warning(e.getMessage());
@@ -255,7 +255,7 @@ extends AbstraktMeteoMessstelle {
 
 		if (parameterSensorObj == null) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					" konnte kein Sensor f¸r Niederschlagsintensit‰t identifiziert werden"); //$NON-NLS-1$
+					" konnte kein Sensor f√ºr Niederschlagsintensit√§t identifiziert werden"); //$NON-NLS-1$
 		}
 
 		try {
@@ -263,7 +263,7 @@ extends AbstraktMeteoMessstelle {
 					AbstraktMeteoMessstelle.verwaltung, parameterSensorObj);
 		} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
 			throw new NoSuchSensorException("An Messstelle " + this + //$NON-NLS-1$
-					" konnte kein Sensor f¸r Niederschlagsintensit‰t identifiziert werden: " //$NON-NLS-1$
+					" konnte kein Sensor f√ºr Niederschlagsintensit√§t identifiziert werden: " //$NON-NLS-1$
 					+ e.getMessage());
 		}
 	}
@@ -271,10 +271,10 @@ extends AbstraktMeteoMessstelle {
 	@Override
 	protected ResultData[] berechneAlleRegeln() {
 		/**
-		 * Gerhard Kappich (19.07.2007) Bei der Pr¸fung ist mir aufgefallen,
+		 * Gerhard Kappich (19.07.2007) Bei der Pr√ºfung ist mir aufgefallen,
 		 * dass die 2. Regel zur Niederschlagsart der 1. Regel zur
-		 * Niederschlagsintensit‰t entspricht und somit die Regel zur
-		 * Niederschlagsintensit‰t wegfallen kann
+		 * Niederschlagsintensit√§t entspricht und somit die Regel zur
+		 * Niederschlagsintensit√§t wegfallen kann
 		 */
 		// regel1();
 		regel2();
@@ -441,7 +441,7 @@ extends AbstraktMeteoMessstelle {
 	// * Folgende Regel wird abgearbeitet:<br>
 	// * <code><b>Wenn</b> (NI > 0) <b>und</b> (NS == kein Niederschlag)
 	// <b>dann</b> (NS=implausibel, NI=implausibel)</code>
-	// * <br>Die Ergebnisse werden zur¸ck in die lokalen Variablen geschrieben
+	// * <br>Die Ergebnisse werden zur√ºck in die lokalen Variablen geschrieben
 	// */
 	// private final void regel1(){
 	// if(this.letztesUfdNIDatum != null &&
@@ -458,7 +458,7 @@ extends AbstraktMeteoMessstelle {
 	// this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
 	// this.letztesUfdNSDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 	// this.letztesUfdNSDatum.getWert().setFehlerhaftAn();
-	// LOGGER.fine("[NI.R1]Daten ge‰ndert:\n" +
+	// LOGGER.fine("[NI.R1]Daten ge√§ndert:\n" +
 	// this.letztesUfdNIDatum.toString() + //$NON-NLS-1$
 	// "\n" + this.letztesUfdNSDatum.toString()); //$NON-NLS-1$
 	// }
@@ -468,7 +468,7 @@ extends AbstraktMeteoMessstelle {
 	 * Folgende Regel wird abgearbeitet:<br>
 	 * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI &gt; NIminNI) <b>und</b> (RLF &lt; NIgrenzTrockenRLF)
 	 * <b>dann</b> (NI=implausibel)</code> <br>
-	 * . Die Ergebnisse werden zur¸ck in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zur√ºck in die lokalen Variablen geschrieben
 	 */
 	private void regel2() {
 		if ((this.letztesUfdNIDatum != null) && (this.letztesUfdNSDatum != null)
@@ -495,7 +495,7 @@ extends AbstraktMeteoMessstelle {
 							DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
 					NiederschlagsIntensitaetsMessstelle.LOGGER
-					.fine("[NI.R2]Daten ge‰ndert:\n" //$NON-NLS-1$
+					.fine("[NI.R2]Daten ge√§ndert:\n" //$NON-NLS-1$
 							+ this.letztesUfdNIDatum.toString());
 				}
 			}
@@ -504,9 +504,9 @@ extends AbstraktMeteoMessstelle {
 
 	/**
 	 * Folgende Regel wird abgearbeitet:<br>
-	 * <code><b>Wenn</b> (NI &gt; 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF &gt; WFDgrenzNassPLF f¸r Zeitraum &gt; WFDminNassRLF)
+	 * <code><b>Wenn</b> (NI &gt; 0.5) <b>und</b> (WFD == 0) <b>und</b> (RLF &gt; WFDgrenzNassPLF f√ºr Zeitraum &gt; WFDminNassRLF)
 	 * <b>dann</b> (NI=implausibel)</code> <br>
-	 * . Die Ergebnisse werden zur¸ck in die lokalen Variablen geschrieben
+	 * . Die Ergebnisse werden zur√ºck in die lokalen Variablen geschrieben
 	 */
 	private void regel3() {
 		if ((this.letztesUfdNIDatum != null)
@@ -533,7 +533,7 @@ extends AbstraktMeteoMessstelle {
 							DUAKonstanten.JA);
 					this.letztesUfdNIDatum.getWert().setFehlerhaftAn();
 					NiederschlagsIntensitaetsMessstelle.LOGGER
-					.fine("[NI.R3]Daten ge‰ndert:\n" //$NON-NLS-1$
+					.fine("[NI.R3]Daten ge√§ndert:\n" //$NON-NLS-1$
 							+ this.letztesUfdNIDatum.toString());
 				}
 			}

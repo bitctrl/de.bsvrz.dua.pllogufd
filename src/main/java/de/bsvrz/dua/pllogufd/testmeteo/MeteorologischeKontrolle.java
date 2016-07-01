@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -41,9 +41,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
  * Diese Klasse hat die Aufgabe vergleichbare oder meteorologisch sich
- * beeinflussende Messgrößen zueinander in Beziehung zu setzen, wenn diese in
- * den vorangegangenen Einzelprüfungen nicht als Implausibel gekennzeichnet
- * wurden. Wird ein Messwert über die Meteorologische Kontrolle als nicht
+ * beeinflussende MessgrÃ¶ÃŸen zueinander in Beziehung zu setzen, wenn diese in
+ * den vorangegangenen EinzelprÃ¼fungen nicht als Implausibel gekennzeichnet
+ * wurden. Wird ein Messwert Ã¼ber die Meteorologische Kontrolle als nicht
  * plausibel erkannt, so wird der entsprechende Wert auf Fehlerhaft und
  * Implausibel gesetzt.
  *
@@ -59,7 +59,7 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	private final NiederschlagsArt ns = new NiederschlagsArt();
 
 	/**
-	 * Submodul Niederschlagsintensität (NI).
+	 * Submodul NiederschlagsintensitÃ¤t (NI).
 	 */
 	private final NiederschlagsIntensitaet ni = new NiederschlagsIntensitaet();
 
@@ -104,8 +104,8 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	 * Standardkonstruktor.
 	 *
 	 * @param stdAspekte
-	 *            Informationen zu den Standardpublikationsaspekten für diese
-	 *            Instanz des Moduls Pl-Prüfung formal
+	 *            Informationen zu den Standardpublikationsaspekten fÃ¼r diese
+	 *            Instanz des Moduls Pl-PrÃ¼fung formal
 	 */
 	public MeteorologischeKontrolle(final IStandardAspekte stdAspekte) {
 		this.pub = new Publikation(stdAspekte);

@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -62,12 +62,12 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prÃ¼fen")
 public class UFDDifferenzialKontrolleTest
 		implements ClientSenderInterface, ClientReceiverInterface {
 
 	/**
-	 * standardmäßige maximal zulässige Ergebniskonstanz in Intervallen.
+	 * standardmÃ¤ÃŸige maximal zulÃ¤ssige Ergebniskonstanz in Intervallen.
 	 */
 	private static final long STANDARD_MAX_INTERVALLE = 3;
 
@@ -96,13 +96,13 @@ public class UFDDifferenzialKontrolleTest
 	private final Map<SystemObject, Boolean> ergebnisIst = new HashMap<>();
 
 	/**
-	 * letzter für einen Sensor eingetroffener Ergebnisdatensatz (für
+	 * letzter fÃ¼r einen Sensor eingetroffener Ergebnisdatensatz (fÃ¼r
 	 * Debugging).
 	 */
 	private final Map<SystemObject, ResultData> ergebnisEingetroffen = new HashMap<>();
 
 	/**
-	 * aktuelles Intervall für Testdaten.
+	 * aktuelles Intervall fÃ¼r Testdaten.
 	 */
 	private long aktuellesIntervall = -1;
 
@@ -129,7 +129,7 @@ public class UFDDifferenzialKontrolleTest
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 
@@ -139,9 +139,9 @@ public class UFDDifferenzialKontrolleTest
 		}
 
 		/**
-		 * maximal zulässige Zeitdauer der Ergebniskonstanz auf
+		 * maximal zulÃ¤ssige Zeitdauer der Ergebniskonstanz auf
 		 * <code>STANDARD_T * STANDARD_MAX_INTERVALLE</code> stellen Eine
-		 * Überprüfung findet nur statt, wenn ein eingetroffener Wert "<" als
+		 * ÃœberprÃ¼fung findet nur statt, wenn ein eingetroffener Wert "<" als
 		 * der Grenzwert von 5 ist
 		 */
 		for (final SystemObject sensor : this.untersuchteSensoren) {
@@ -151,7 +151,7 @@ public class UFDDifferenzialKontrolleTest
 		}
 
 		/**
-		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
+		 * Anmeldung auf alle Daten die aus der Applikation Pl-PrÃ¼fung logisch
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : this.untersuchteSensoren) {
@@ -159,20 +159,20 @@ public class UFDDifferenzialKontrolleTest
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			final DataDescription datenBeschreibung = new DataDescription(
 					dav.getDataModel()
 							.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 							dav.getDataModel()
-							.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+							.getAspect("asp.plausibilitÃ¤tsPrÃ¼fungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
 
 		/**
-		 * Stelle Ausfallüberwachung so ein, dass nach 0,5s nicht erfasste Werte
+		 * Stelle AusfallÃ¼berwachung so ein, dass nach 0,5s nicht erfasste Werte
 		 * produziert werden
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -182,7 +182,7 @@ public class UFDDifferenzialKontrolleTest
 
 		/**
 		 * Produziere initialie Werte, die noch nicht getestet werden, um
-		 * Seiteneffekte mit anderen Pl-Prüfungen innerhalb dieser SWE zu
+		 * Seiteneffekte mit anderen Pl-PrÃ¼fungen innerhalb dieser SWE zu
 		 * vermeiden. Es wird hier je Sensor ein Wert mit dem Zeitstempel dieser
 		 * Sekunden und dem Intervall von 2s geschickt
 		 */
@@ -201,7 +201,7 @@ public class UFDDifferenzialKontrolleTest
 			try {
 				resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 
@@ -220,11 +220,11 @@ public class UFDDifferenzialKontrolleTest
 	}
 
 	/**
-	 * Führt den Vergleich aller Ist-Werte mit allen Soll-Werten durch und zeigt
-	 * die Ergebnisse an. Gleichzeitig werden die Ergebnisse über
+	 * FÃ¼hrt den Vergleich aller Ist-Werte mit allen Soll-Werten durch und zeigt
+	 * die Ergebnisse an. Gleichzeitig werden die Ergebnisse Ã¼ber
 	 * <code>JUnit</code> getestet<br>
 	 * <br>
-	 * . Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelöscht
+	 * . Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelÃ¶scht
 	 */
 	private void ergebnisUeberpruefen() {
 		if (!this.ergebnisIst.isEmpty() && !this.ergebnisSoll.isEmpty()) {
@@ -267,42 +267,42 @@ public class UFDDifferenzialKontrolleTest
 	public void testUFDDifferenzialKontrolle() throws Exception {
 
 		/**
-		 * Konstanzzähler für Objekte, die als Implausibel zu markieren sind
+		 * KonstanzzÃ¤hler fÃ¼r Objekte, die als Implausibel zu markieren sind
 		 */
 		int konstanzZaehlerOK = 0;
 
 		/**
-		 * Konstanzzähler für Objekte, die als nicht als Implausbiel zu
+		 * KonstanzzÃ¤hler fÃ¼r Objekte, die als nicht als Implausbiel zu
 		 * markieren sind
 		 */
 		int konstanzZaehlerImpl = 0;
 
 		/**
 		 * Zeile 1 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0 [DUA])
-		 * Objekt für Folge von Messwerten, die sich (gerade) so häufig ändert,
+		 * Objekt fÃ¼r Folge von Messwerten, die sich (gerade) so hÃ¤ufig Ã¤ndert,
 		 * dass die maximale Zeitdauer der Ergebniskonstanz nicht erreichen
 		 */
 		final SystemObject objMaxGleichUndKontrolle = PlPruefungLogischUFDTest.fbt1;
 
 		/**
 		 * Zeile 2 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0 [DUA])
-		 * Objekt für Folge von Messwerten, die sich innerhalb der maximalen
-		 * Zeitdauer nicht ändert, dabei aber die Bedingung für die
-		 * Differentialkontrolle nicht erfüllt
+		 * Objekt fÃ¼r Folge von Messwerten, die sich innerhalb der maximalen
+		 * Zeitdauer nicht Ã¤ndert, dabei aber die Bedingung fÃ¼r die
+		 * Differentialkontrolle nicht erfÃ¼llt
 		 */
 		final SystemObject objImmerGleichUndKeineKontrolle = PlPruefungLogischUFDTest.hk1;
 
 		/**
 		 * Zeile 3=5 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0
-		 * [DUA]) Objekt für Folge von Messwerten, die sich innerhalb der
-		 * maximalen Zeitdauer nicht ändert und die eventuell vorhandene
-		 * Bedingung für die Differentialkontrolle erfüllt
+		 * [DUA]) Objekt fÃ¼r Folge von Messwerten, die sich innerhalb der
+		 * maximalen Zeitdauer nicht Ã¤ndert und die eventuell vorhandene
+		 * Bedingung fÃ¼r die Differentialkontrolle erfÃ¼llt
 		 */
 		final SystemObject objImmerGleichUndKontrolle = PlPruefungLogischUFDTest.rs1;
 
 		/**
 		 * Zeile 4 in Tabelle auf Seite 24 (QS-02.04.00.00.00-PrSpez-2.0 [DUA])
-		 * Messwert, der sich vom Vorgängerwert unterscheidet<br>
+		 * Messwert, der sich vom VorgÃ¤ngerwert unterscheidet<br>
 		 * Dies sind alle anderen Sensoren
 		 */
 
@@ -311,12 +311,12 @@ public class UFDDifferenzialKontrolleTest
 		for (int durchlauf = 0; durchlauf < UFDDifferenzialKontrolleTest.TEST_DIFF_KONTROLLE_LAEUFE; durchlauf++) {
 
 			/**
-			 * Ergebnisse überprüfen, so schon welche eingetroffen sind
+			 * Ergebnisse Ã¼berprÃ¼fen, so schon welche eingetroffen sind
 			 */
 			this.ergebnisUeberpruefen();
 
 			/**
-			 * nach dem Anfang des nächsten Intervalls geht es los
+			 * nach dem Anfang des nÃ¤chsten Intervalls geht es los
 			 */
 			DAVTest.warteBis(aktuellesIntervall
 					+ PlPruefungLogischUFDTest.STANDARD_T + 50);
@@ -325,8 +325,8 @@ public class UFDDifferenzialKontrolleTest
 			konstanzZaehlerOK++;
 
 			/**
-			 * Produziere Werte, die getestet werden und "unbeschädigt" durch
-			 * die Diff-Prüfung kommen
+			 * Produziere Werte, die getestet werden und "unbeschÃ¤digt" durch
+			 * die Diff-PrÃ¼fung kommen
 			 */
 			for (final SystemObject sensor : this.untersuchteSensoren) {
 				final ResultData resultat = TestUtensilien
@@ -377,7 +377,7 @@ public class UFDDifferenzialKontrolleTest
 			}
 
 			/**
-			 * Warte bis zum nächsten Intervall
+			 * Warte bis zum nÃ¤chsten Intervall
 			 */
 			aktuellesIntervall += PlPruefungLogischUFDTest.STANDARD_T;
 			DAVTest.warteBis(aktuellesIntervall

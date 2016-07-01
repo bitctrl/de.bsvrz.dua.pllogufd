@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,15 +18,15 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
  */
 
 /**
- * Klassen für Komponente Meteorologische Kontrolle
- * der SWE Pl-Prüfung logisch UFD
+ * Klassen fÃ¼r Komponente Meteorologische Kontrolle
+ * der SWE Pl-PrÃ¼fung logisch UFD
  */
 
 package de.bsvrz.dua.pllogufd;

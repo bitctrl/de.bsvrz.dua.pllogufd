@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -56,9 +56,9 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Super-Klasse für alle Tests der Meteorologischen Kontrolle. Sendet
- * Standardparameter und meldet sich als Empfänger auf alle Umfelddaten unter
- * dem Aspekt <code>asp.plausibilitätsPrüfungLogisch</code> an
+ * Super-Klasse fÃ¼r alle Tests der Meteorologischen Kontrolle. Sendet
+ * Standardparameter und meldet sich als EmpfÃ¤nger auf alle Umfelddaten unter
+ * dem Aspekt <code>asp.plausibilitÃ¤tsPrÃ¼fungLogisch</code> an
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -68,12 +68,12 @@ implements ClientSenderInterface, ClientReceiverInterface {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * Debug-Ausgaben über Standardausgabe.
+	 * Debug-Ausgaben Ã¼ber Standardausgabe.
 	 */
 	protected static final boolean DEBUG = false;
 
 	/**
-	 * Sollen die <code>Assert</code>-Statements ausgeführt werden?
+	 * Sollen die <code>Assert</code>-Statements ausgefÃ¼hrt werden?
 	 */
 	protected static final boolean TEST_AN = true;
 
@@ -135,8 +135,8 @@ implements ClientSenderInterface, ClientReceiverInterface {
 			MeteorologischeKontrolleTest.C);
 
 	/**
-	 * alle Sensoren, für die innerhalb dieses Tests nur Werte mit dem Status
-	 * "fehlerhaft" gesendet werden müssen, um das Ergebnis nicht zu
+	 * alle Sensoren, fÃ¼r die innerhalb dieses Tests nur Werte mit dem Status
+	 * "fehlerhaft" gesendet werden mÃ¼ssen, um das Ergebnis nicht zu
 	 * beeinflussen.
 	 */
 	protected HashSet<SystemObject> restSensoren = new HashSet<>();
@@ -161,7 +161,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		PlPruefungLogischUFDTest.sender.setMeteoKontrolle(true);
 
 		/**
-		 * Setzte Ausfallüberwachung für alle Sensoren AUS Differentialkontrolle
+		 * Setzte AusfallÃ¼berwachung fÃ¼r alle Sensoren AUS Differentialkontrolle
 		 * auf einen harmlosen Wert Anstieg-Abfall-Kontrolle aus
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -170,7 +170,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
@@ -183,7 +183,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 		}
 
 		/**
-		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
+		 * Anmeldung auf alle Daten die aus der Applikation Pl-PrÃ¼fung logisch
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -191,14 +191,14 @@ implements ClientSenderInterface, ClientReceiverInterface {
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			final DataDescription datenBeschreibung = new DataDescription(
 					dav.getDataModel()
 					.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 					dav.getDataModel()
-					.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+					.getAspect("asp.plausibilitÃ¤tsPrÃ¼fungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -211,7 +211,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			if (datenArt.equals(UmfeldDatenArt.ni)) {
@@ -326,7 +326,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(
@@ -412,9 +412,9 @@ implements ClientSenderInterface, ClientReceiverInterface {
 	}
 
 	/**
-	 * Senset ein fehlerhaftes Datum und wartet dann fünf Intervalle (Reset).
+	 * Senset ein fehlerhaftes Datum und wartet dann fÃ¼nf Intervalle (Reset).
 	 *
-	 * @return ein Zeitstempel, an dem für <b>alle</b> Sensoren sicher schon
+	 * @return ein Zeitstempel, an dem fÃ¼r <b>alle</b> Sensoren sicher schon
 	 *         seit mehreren Intervallen keine Werte mehr vorliegen
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
@@ -427,7 +427,7 @@ implements ClientSenderInterface, ClientReceiverInterface {
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(

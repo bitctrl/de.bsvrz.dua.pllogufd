@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -59,7 +59,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	private VariableMitKonstanzZaehler<Long> wert = null;
 
 	/**
-	 * aktuelle Parameter für die Differenzialkontrolle dieses
+	 * aktuelle Parameter fÃ¼r die Differenzialkontrolle dieses
 	 * Umfelddatensensors.
 	 */
 	private UniversalAtgUfdsDifferenzialKontrolle parameter = null;
@@ -98,7 +98,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
-					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
+					"Parameter kÃ¶nnen nicht bestimmt werden," + //$NON-NLS-1$
 							" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
@@ -113,7 +113,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			parameterAtgs.add(atg);
 		} else {
 			throw new DUAInitialisierungsException(
-					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
+					"Es konnte keine Parameter-Attributgruppe fÃ¼r die " + //$NON-NLS-1$
 							"Differenzialkontrolle des Objektes " + this.objekt//$NON-NLS-1$
 							+ " bestimmt werden\n" + //$NON-NLS-1$
 							"Atg-Name: " + atgPid); //$NON-NLS-1$
@@ -123,8 +123,8 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	}
 
 	/**
-	 * Für die empfangenen Daten wird geprüft, ob innerhalb eines definierenten
-	 * Zeitraums (parametrierbares Zeitfenster) eine Änderung des Messwerts
+	 * FÃ¼r die empfangenen Daten wird geprÃ¼ft, ob innerhalb eines definierenten
+	 * Zeitraums (parametrierbares Zeitfenster) eine Ã„nderung des Messwerts
 	 * vorliegt. Liegt eine Ergebniskonstanz in diesem Zeitfenster vor, so
 	 * erfolgt eine Kennzeichnung der Werte als Implausibel und Fehlerhaft.
 	 *
@@ -175,10 +175,10 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 						}
 					} else {
 						DiffUmfeldDatenSensor.LOGGER
-								.fine("Die Differenzialkontrolle für den Umfelddatensensor " //$NON-NLS-1$
+								.fine("Die Differenzialkontrolle fÃ¼r den Umfelddatensensor " //$NON-NLS-1$
 										+
 										this.objekt
-										+ " kann nicht durchgeführt werden, da der Parameter " //$NON-NLS-1$
+										+ " kann nicht durchgefÃ¼hrt werden, da der Parameter " //$NON-NLS-1$
 										+
 										"Grenz=" + this.parameter.getGrenz());
 					}
@@ -186,7 +186,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			} else {
 				DiffUmfeldDatenSensor.LOGGER.fine("Fuer Umfelddatensensor " //$NON-NLS-1$
 						+ this +
-						" wurden noch keine Parameter für die Differenzialkontrolle empfangen");
+						" wurden noch keine Parameter fÃ¼r die Differenzialkontrolle empfangen");
 			}
 		}
 
@@ -208,7 +208,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 									.warning(e.getMessage());
 							continue;
 						}
-						DiffUmfeldDatenSensor.LOGGER.info("Neue Parameter für (" //$NON-NLS-1$
+						DiffUmfeldDatenSensor.LOGGER.info("Neue Parameter fÃ¼r (" //$NON-NLS-1$
 								+ resultat.getObject() + "):\n" //$NON-NLS-1$
 								+ this.parameter);
 					}

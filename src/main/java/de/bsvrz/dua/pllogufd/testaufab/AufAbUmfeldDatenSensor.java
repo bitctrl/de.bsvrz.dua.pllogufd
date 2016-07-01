@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -53,13 +53,13 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
-	 * aktuelle Parameter für die Anstieg-Abfall-Kontrolle dieses
+	 * aktuelle Parameter fÃ¼r die Anstieg-Abfall-Kontrolle dieses
 	 * Umfelddatensensors.
 	 */
 	private UniversalAtgUfdsAnstiegAbstiegKontrolle parameter = null;
 
 	/**
-	 * letztes für diesen Umfelddatensesor empfangenes Datum.
+	 * letztes fÃ¼r diesen Umfelddatensesor empfangenes Datum.
 	 */
 	private UmfeldDatenSensorDatum letzterWert = null;
 
@@ -71,7 +71,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 * @param obj
 	 *            das Sensor-Objekt
 	 * @throws DUAInitialisierungsException
-	 *             wenn die Instaziierung fehlschlägt
+	 *             wenn die Instaziierung fehlschlÃ¤gt
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	protected AufAbUmfeldDatenSensor(final IVerwaltung verwaltung,
@@ -87,7 +87,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
-					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
+					"Parameter kÃ¶nnen nicht bestimmt werden," + //$NON-NLS-1$
 					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
 		}
 
@@ -112,7 +112,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			parameterAtgs.add(atg);
 		} else {
 			throw new DUAInitialisierungsException(
-					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
+					"Es konnte keine Parameter-Attributgruppe fÃ¼r die " + //$NON-NLS-1$
 							"Anstieg-Abfall-Kontrolle des Objektes "//$NON-NLS-1$
 							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$
 							"Atg-Name: " + atgPid); //$NON-NLS-1$
@@ -122,7 +122,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	}
 
 	/**
-	 * Hier findet die Prüfung eines Datums statt. Diese findet nur für den Fall
+	 * Hier findet die PrÃ¼fung eines Datums statt. Diese findet nur fÃ¼r den Fall
 	 * statt, dass das empfangene Datum weder als Implausibel, Fehlerhaft noch
 	 * Nicht ermittelbar gekennzeichnet ist. Das empfangene Datum wird
 	 * gespeichert
@@ -174,7 +174,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 					} else {
 						AufAbUmfeldDatenSensor.LOGGER
 						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
-								" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
+								" wurden noch keine Parameter fÃ¼r die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
 					}
 				}
 			}
@@ -200,7 +200,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							continue;
 						}
 						AufAbUmfeldDatenSensor.LOGGER
-						.info("Neue Parameter für (" //$NON-NLS-1$
+						.info("Neue Parameter fÃ¼r (" //$NON-NLS-1$
 								+ resultat.getObject() + "):\n" //$NON-NLS-1$
 								+ this.parameter);
 					}

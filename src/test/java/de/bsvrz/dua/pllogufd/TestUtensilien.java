@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -40,7 +40,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartE
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Einige Utensilien für die Tests der SWE 4.3.
+ * Einige Utensilien fÃ¼r die Tests der SWE 4.3.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -54,9 +54,9 @@ public final class TestUtensilien {
 	}
 
 	/**
-	 * Erfragt den Zeitpunkt des Beginns der nächsten Minute.
+	 * Erfragt den Zeitpunkt des Beginns der nÃ¤chsten Minute.
 	 *
-	 * @return den Zeitpunkt des Beginns der nächsten Minute in ms
+	 * @return den Zeitpunkt des Beginns der nÃ¤chsten Minute in ms
 	 */
 	public static long getBeginNaechsterMinute() {
 		final GregorianCalendar kal = new GregorianCalendar();
@@ -84,11 +84,11 @@ public final class TestUtensilien {
 	 * <code>asp.externeErfassung</code>.
 	 *
 	 * @param sensor
-	 *            ein Umfelddatensensor, für den ein Messwert erzeugt werden
+	 *            ein Umfelddatensensor, fÃ¼r den ein Messwert erzeugt werden
 	 *            soll
-	 * @return ein (ausgefüllter) Umfelddaten-Messwert der zum übergebenen
-	 *         Systemobjekt passt. Alle Pl-Prüfungs-Flags sind auf
-	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall beträgt 1 min.
+	 * @return ein (ausgefÃ¼llter) Umfelddaten-Messwert der zum Ã¼bergebenen
+	 *         Systemobjekt passt. Alle Pl-PrÃ¼fungs-Flags sind auf
+	 *         <code>NEIN</code> gesetzt. Der Daten-Intervall betrÃ¤gt 1 min.
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
 	public static ResultData getExterneErfassungDatum(final SystemObject sensor) throws UmfeldDatenSensorUnbekannteDatenartException {
@@ -122,9 +122,9 @@ public final class TestUtensilien {
 		getUnscaledValue("Interpoliert").set(DUAKonstanten.NEIN); //$NON-NLS-1$
 
 		datum.getItem(datenArt.getName())
-		.getItem("Güte").getUnscaledValue("Index").set(10000); //$NON-NLS-1$ //$NON-NLS-2$
+		.getItem("GÃ¼te").getUnscaledValue("Index").set(10000); //$NON-NLS-1$ //$NON-NLS-2$
 		datum.getItem(datenArt.getName())
-		.getItem("Güte").getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$ //$NON-NLS-2$
+		.getItem("GÃ¼te").getUnscaledValue("Verfahren").set(0); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return new ResultData(sensor, datenBeschreibung,
 				System.currentTimeMillis(), datum);

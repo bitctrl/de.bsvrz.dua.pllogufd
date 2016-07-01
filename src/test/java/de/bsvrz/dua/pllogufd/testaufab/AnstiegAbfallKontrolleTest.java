@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -66,7 +66,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prÃ¼fen")
 public class AnstiegAbfallKontrolleTest
 		implements ClientSenderInterface, ClientReceiverInterface {
 
@@ -93,7 +93,7 @@ public class AnstiegAbfallKontrolleTest
 	}
 
 	/**
-	 * Messwerte mit der Vorgänger-Nachfolger-Relation entsprechend der Graphik
+	 * Messwerte mit der VorgÃ¤nger-Nachfolger-Relation entsprechend der Graphik
 	 * in [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25 (bei maximaler Differenz
 	 * von 5)
 	 */
@@ -118,7 +118,7 @@ public class AnstiegAbfallKontrolleTest
 	private final Map<SystemObject, Boolean> ergebnisIst = new HashMap<>();
 
 	/**
-	 * aktuelles Intervall für Testdaten.
+	 * aktuelles Intervall fÃ¼r Testdaten.
 	 */
 	private long aktuellesIntervall = -1;
 
@@ -138,14 +138,14 @@ public class AnstiegAbfallKontrolleTest
 		PlPruefungLogischUFDTest.sender.setMeteoKontrolle(false);
 
 		/**
-		 * filtere FBZ heraus, da diese nicht sinnvoll überprüft werden können
+		 * filtere FBZ heraus, da diese nicht sinnvoll Ã¼berprÃ¼ft werden kÃ¶nnen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			UmfeldDatenArt datenArt;
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			if (!datenArt.equals(UmfeldDatenArt.fbz)) {
@@ -154,7 +154,7 @@ public class AnstiegAbfallKontrolleTest
 		}
 
 		/**
-		 * Setzte den maximalen Ausfall auf 1,0s Setzte die Parameter für die
+		 * Setzte den maximalen Ausfall auf 1,0s Setzte die Parameter fÃ¼r die
 		 * Differenzialkontrolle auf harmlose Werte
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -164,7 +164,7 @@ public class AnstiegAbfallKontrolleTest
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 
@@ -175,14 +175,14 @@ public class AnstiegAbfallKontrolleTest
 		}
 
 		/**
-		 * maximal zulässige Differenz auf pauschal 5 setzen
+		 * maximal zulÃ¤ssige Differenz auf pauschal 5 setzen
 		 */
 		for (final SystemObject sensor : this.untersuchteSensoren) {
 			PlPruefungLogischUFDTest.sender.setAnAbPara(sensor, 5);
 		}
 
 		/**
-		 * Anmeldung auf alle Daten die aus der Applikation Pl-Prüfung logisch
+		 * Anmeldung auf alle Daten die aus der Applikation Pl-PrÃ¼fung logisch
 		 * UFD kommen
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
@@ -190,14 +190,14 @@ public class AnstiegAbfallKontrolleTest
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 			final DataDescription datenBeschreibung = new DataDescription(
 					dav.getDataModel()
 							.getAttributeGroup("atg.ufds" + datenArt.getName()), //$NON-NLS-1$
 					dav.getDataModel()
-							.getAspect("asp.plausibilitätsPrüfungLogisch")); //$NON-NLS-1$
+							.getAspect("asp.plausibilitÃ¤tsPrÃ¼fungLogisch")); //$NON-NLS-1$
 			dav.subscribeReceiver(this, sensor, datenBeschreibung,
 					ReceiveOptions.delayed(), ReceiverRole.receiver());
 		}
@@ -213,9 +213,9 @@ public class AnstiegAbfallKontrolleTest
 
 		/**
 		 * Produziere initialie Werte, die noch nicht getestet werden, um
-		 * Seiteneffekte mit anderen Pl-Prüfungen innerhalb dieser SWE zu
+		 * Seiteneffekte mit anderen Pl-PrÃ¼fungen innerhalb dieser SWE zu
 		 * vermeiden. Es wird hier je Sensor ein Wert mit dem Zeitstempel der
-		 * nächsten Sekunden und dem Intervall von 1s geschickt
+		 * nÃ¤chsten Sekunden und dem Intervall von 1s geschickt
 		 */
 		final GregorianCalendar kal = new GregorianCalendar();
 		kal.setTimeInMillis(System.currentTimeMillis());
@@ -236,7 +236,7 @@ public class AnstiegAbfallKontrolleTest
 			try {
 				resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 
@@ -272,7 +272,7 @@ public class AnstiegAbfallKontrolleTest
 			try {
 				resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-				System.err.println("Wird nicht geprüft: " + e.getMessage());
+				System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 				continue;
 			}
 
@@ -298,7 +298,7 @@ public class AnstiegAbfallKontrolleTest
 		}
 
 		/**
-		 * Initialisierung der Messwerte mit der Vorgänger-Nachfolger-Relation
+		 * Initialisierung der Messwerte mit der VorgÃ¤nger-Nachfolger-Relation
 		 * entsprechend der Graphik 4-5 in [QS-02.04.00.00.00-PrSpez-2.0 (DUA)],
 		 * S. 25 (bei maximaler Differenz von 5)
 		 */
@@ -336,11 +336,11 @@ public class AnstiegAbfallKontrolleTest
 	}
 
 	/**
-	 * Führt den Vergleich aller Ist-Werte mit allen Soll-Werten durch und zeigt
-	 * die Ergebnisse an. Gleichzeitig werden die Ergebnisse über
+	 * FÃ¼hrt den Vergleich aller Ist-Werte mit allen Soll-Werten durch und zeigt
+	 * die Ergebnisse an. Gleichzeitig werden die Ergebnisse Ã¼ber
 	 * <code>JUnit</code> getestet<br>
 	 * <br>
-	 * Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelöscht
+	 * Nach dem Test werden die Mengen der Soll- und Ist-Werte wieder gelÃ¶scht
 	 *
 	 * @param durchlauf
 	 *            der Durchlauf
@@ -388,7 +388,7 @@ public class AnstiegAbfallKontrolleTest
 		for (int durchlauf = 0; durchlauf < AnstiegAbfallKontrolleTest.messWerte.length; durchlauf++) {
 
 			/**
-			 * nach dem Anfang des nächsten Intervalls geht es los
+			 * nach dem Anfang des nÃ¤chsten Intervalls geht es los
 			 */
 			DAVTest.warteBis(aktuellesIntervall
 					+ PlPruefungLogischUFDTest.STANDARD_T + 50);
@@ -397,15 +397,15 @@ public class AnstiegAbfallKontrolleTest
 					DUAKonstanten.ZEIT_FORMAT_GENAU_STR);
 
 			/**
-			 * Produziere Werte, die getestet werden und "unbeschädigt" durch
-			 * die Diff-Prüfung kommen
+			 * Produziere Werte, die getestet werden und "unbeschÃ¤digt" durch
+			 * die Diff-PrÃ¼fung kommen
 			 */
 			for (final SystemObject sensor : this.untersuchteSensoren) {
 				final ResultData resultat;
 				try {
 					resultat = TestUtensilien.getExterneErfassungDatum(sensor);
 				} catch (final UmfeldDatenSensorUnbekannteDatenartException e) {
-					System.err.println("Wird nicht geprüft: " + e.getMessage());
+					System.err.println("Wird nicht geprÃ¼ft: " + e.getMessage());
 					continue;
 				}
 
@@ -414,7 +414,7 @@ public class AnstiegAbfallKontrolleTest
 				datum.setT(PlPruefungLogischUFDTest.STANDARD_T);
 
 				/**
-				 * Setzte Prüfwert
+				 * Setzte PrÃ¼fwert
 				 */
 				datum.getWert()
 						.setWert(AnstiegAbfallKontrolleTest.messWerte[durchlauf]
@@ -451,14 +451,14 @@ public class AnstiegAbfallKontrolleTest
 			}
 
 			/**
-			 * Warte bis zum nächsten Intervall
+			 * Warte bis zum nÃ¤chsten Intervall
 			 */
 			aktuellesIntervall += PlPruefungLogischUFDTest.STANDARD_T;
 			DAVTest.warteBis(aktuellesIntervall
 					+ ((PlPruefungLogischUFDTest.STANDARD_T / 20) * 18));
 
 			/**
-			 * Überprüfe Ergebnisse
+			 * ÃœberprÃ¼fe Ergebnisse
 			 */
 			this.ergebnisUeberpruefen(durchlauf);
 		}
@@ -535,7 +535,7 @@ public class AnstiegAbfallKontrolleTest
 		private MARKIERUNG markierung = null;
 
 		/**
-		 * gibt an, ob das Pl-Ergebnis der Prüfung dieses Wertes als
+		 * gibt an, ob das Pl-Ergebnis der PrÃ¼fung dieses Wertes als
 		 * <code>implausibel</code> und <code>fehlerhaft</code>. gekennzeichnet
 		 * erwartet wird <code>null</code> wird als don't care interpretiert
 		 */
@@ -550,7 +550,7 @@ public class AnstiegAbfallKontrolleTest
 		 *            Markierung des Wertes (analog
 		 *            [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S. 25)
 		 * @param fehlerhaftUndImplausibel
-		 *            gibt an, ob das Pl-Ergebnis der Prüfung dieses Wertes als
+		 *            gibt an, ob das Pl-Ergebnis der PrÃ¼fung dieses Wertes als
 		 *            <code>implausibel</code> und <code>fehlerhaft</code>
 		 *            gekennzeichnet erwartet wird<br>
 		 *            <code>null</code> wird als don't care interpretiert
@@ -583,11 +583,11 @@ public class AnstiegAbfallKontrolleTest
 		}
 
 		/**
-		 * Erfragt, ob das Pl-Ergebnis der Prüfung dieses Wertes als
+		 * Erfragt, ob das Pl-Ergebnis der PrÃ¼fung dieses Wertes als
 		 * <code>implausibel</code> und <code>fehlerhaft</code> gekennzeichnet
 		 * erwartet wird.
 		 *
-		 * @return fehlerhaftUndImplausibel ob das Pl-Ergebnis der Prüfung
+		 * @return fehlerhaftUndImplausibel ob das Pl-Ergebnis der PrÃ¼fung
 		 *         dieses Wertes als <code>implausibel</code> und
 		 *         <code>fehlerhaft</code> gekennzeichnet erwartet wird<br>
 		 *         <code>null</code> wird als don't care interpretiert

@@ -1,5 +1,5 @@
 /*
- * Segment 4 Daten¸bernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr¸fung logisch UFD
+ * Segment 4 Daten√ºbernahme und Aufbereitung (DUA), SWE 4.3 Pl-Pr√ºfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weiﬂenfelser Straﬂe 67<br>
+ * Wei√üenfelser Stra√üe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -33,7 +33,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 /**
- * Klasse zum Auslesen von Parameters‰tzen der Attributgruppen
+ * Klasse zum Auslesen von Parameters√§tzen der Attributgruppen
  * <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
@@ -49,7 +49,7 @@ AllgemeinerDatenContainer {
 	/**
 	 * zeigt an, ob der Parameter <code>maxDiff</code> selbst einen semantisch
 	 * sinnvollen Zustand hat<br>
-	 * . Also auf keinem der folgenden Zust‰nde steht:<br>
+	 * . Also auf keinem der folgenden Zust√§nde steht:<br>
 	 * - <code>nicht ermittelbar</code><br>
 	 * - <code>fehlerhaft</code>, oder<br>
 	 * - <code>nicht ermittelbar/fehlerhaft</code><br>
@@ -66,11 +66,11 @@ AllgemeinerDatenContainer {
 	 */
 	public UniversalAtgUfdsAnstiegAbstiegKontrolle(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
-			throw new NullPointerException("‹bergebener Parameter ist <<null>>"); //$NON-NLS-1$
+			throw new NullPointerException("√úbergebener Parameter ist <<null>>"); //$NON-NLS-1$
 		}
 		if (parameter.getData() == null) {
 			throw new NullPointerException(
-					"‹bergebener Parameter hat keine Daten"); //$NON-NLS-1$
+					"√úbergebener Parameter hat keine Daten"); //$NON-NLS-1$
 		}
 
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
@@ -89,9 +89,9 @@ AllgemeinerDatenContainer {
 	}
 
 	/**
-	 * Erfragt den Vergleichswert f¸r die Anstiegs-Abfall-Kontrolle.
+	 * Erfragt den Vergleichswert f√ºr die Anstiegs-Abfall-Kontrolle.
 	 *
-	 * @return der Vergleichswert f¸r die Anstiegs-Abfall-Kontrolle
+	 * @return der Vergleichswert f√ºr die Anstiegs-Abfall-Kontrolle
 	 */
 	public final long getMaxDiff() {
 		return this.maxDiff;
@@ -100,12 +100,12 @@ AllgemeinerDatenContainer {
 	/**
 	 * Erfragt, ob der Parameter <code>maxDiff</code> selbst einen semantisch
 	 * sinnvollen Zustand hat<br>
-	 * . Also auf keinem der folgenden Zust‰nde steht:<br>
+	 * . Also auf keinem der folgenden Zust√§nde steht:<br>
 	 * - <code>nicht ermittelbar</code><br>
 	 * - <code>fehlerhaft</code>, oder<br>
 	 * - <code>nicht ermittelbar/fehlerhaft</code><br>
 	 *
-	 * @return ob der Parameter einen sinnvollen Wert enth‰lt
+	 * @return ob der Parameter einen sinnvollen Wert enth√§lt
 	 */
 	public final boolean isSinnvoll() {
 		return this.sinnvoll;

@@ -1,5 +1,5 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment 4 DatenÃ¼bernahme und Aufbereitung (DUA), SWE 4.3 Pl-PrÃ¼fung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,7 @@
  *
  * Contact Information:<br>
  * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
+ * WeiÃŸenfelser StraÃŸe 67<br>
  * 04229 Leipzig<br>
  * Phone: +49 341-490670<br>
  * mailto: info@bitctrl.de
@@ -43,18 +43,18 @@ import de.bsvrz.sys.funclib.bitctrl.dua.test.DAVTest;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
 /**
- * Überprüfung des Submoduls NiederschlagsIntensität aus der Komponente
- * Meteorologische Kontrolle. Diese Überprüfung richtet sich nach den Vorgaben
+ * ÃœberprÃ¼fung des Submoduls NiederschlagsIntensitÃ¤t aus der Komponente
+ * Meteorologische Kontrolle. Diese ÃœberprÃ¼fung richtet sich nach den Vorgaben
  * von [QS-02.04.00.00.00-PrSpez-2.0 (DUA)], S.27<br>
  * <b>Achtung:</b> Die ersten drei Zeilen der Tabelle werden hier nicht
- * berücksichtigt, da diese sich auf eine Regel beziehen, die nicht mehr zur
+ * berÃ¼cksichtigt, da diese sich auf eine Regel beziehen, die nicht mehr zur
  * Implementierung vorgesehen ist (
  * <code><b>Wenn</b> (NS == Niederschlag) <b>und</b> (NI == 0) <b>und</b> (RLF &gt; NIgrenzNassRLF)
  * <b>dann</b> (NI=implausibel)</code>)
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-@Ignore("Testdatenverteiler prüfen")
+@Ignore("Testdatenverteiler prÃ¼fen")
 public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 	/**
@@ -153,7 +153,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		/**
 		 * 6. Zeile aus Tabelle auf Seite 27
 		 *
-		 * RLF = NIgrenzTrockenRLF - 3, RLF < NIgrenzTrockenRLF (für = 1T)
+		 * RLF = NIgrenzTrockenRLF - 3, RLF < NIgrenzTrockenRLF (fÃ¼r = 1T)
 		 */
 		long zeitStempel = this.getTestBeginnIntervall();
 		DAVTest.warteBis(zeitStempel + 50);
@@ -182,7 +182,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = NIgrenzTrockenRLF - 2, RLF < NIgrenzTrockenRLF (für = 2T)
+		 * RLF = NIgrenzTrockenRLF - 2, RLF < NIgrenzTrockenRLF (fÃ¼r = 2T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -211,7 +211,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = NIgrenzTrockenRLF - 1, RLF < NIgrenzTrockenRLF (für = 3T)
+		 * RLF = NIgrenzTrockenRLF - 1, RLF < NIgrenzTrockenRLF (fÃ¼r = 3T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -269,10 +269,10 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * Lasse jetzt RLF wieder abfallen bis für mehr als 3T gilt: RLF <
+		 * Lasse jetzt RLF wieder abfallen bis fÃ¼r mehr als 3T gilt: RLF <
 		 * NIgrenzTrockenRLF
 		 *
-		 * RLF = NIgrenzTrockenRLF - 1, RLF < NIgrenzTrockenRLF (für = 1T)
+		 * RLF = NIgrenzTrockenRLF - 1, RLF < NIgrenzTrockenRLF (fÃ¼r = 1T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -301,7 +301,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = NIgrenzTrockenRLF - 2, RLF < NIgrenzTrockenRLF (für = 2T)
+		 * RLF = NIgrenzTrockenRLF - 2, RLF < NIgrenzTrockenRLF (fÃ¼r = 2T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -330,7 +330,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = NIgrenzTrockenRLF - 3, RLF < NIgrenzTrockenRLF (für = 3T)
+		 * RLF = NIgrenzTrockenRLF - 3, RLF < NIgrenzTrockenRLF (fÃ¼r = 3T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -359,7 +359,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = NIgrenzTrockenRLF - 4, RLF < NIgrenzTrockenRLF (für = 4T)
+		 * RLF = NIgrenzTrockenRLF - 4, RLF < NIgrenzTrockenRLF (fÃ¼r = 4T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -388,7 +388,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = NIgrenzTrockenRLF - 4, RLF < NIgrenzTrockenRLF (für = 5T)
+		 * RLF = NIgrenzTrockenRLF - 4, RLF < NIgrenzTrockenRLF (fÃ¼r = 5T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -417,7 +417,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * RLF = NIgrenzTrockenRLF - 5, RLF > NIgrenzTrockenRLF (für = 6T)
+		 * RLF = NIgrenzTrockenRLF - 5, RLF > NIgrenzTrockenRLF (fÃ¼r = 6T)
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -476,7 +476,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 
 		/**
 		 * lasse jetzt die Relative Luftfeuchte wieder 4T unter
-		 * NIgrenzTrockenRLF sein und änder dann auf WFD > 0
+		 * NIgrenzTrockenRLF sein und Ã¤nder dann auf WFD > 0
 		 */
 
 		for (int i = 0; i < 3; i++) {
@@ -535,7 +535,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 		}
 
 		/**
-		 * Ändere jetzt WFD auf WFD > 0: Implausibilisierung wird aufgehoben
+		 * Ã„ndere jetzt WFD auf WFD > 0: Implausibilisierung wird aufgehoben
 		 */
 		zeitStempel += PlPruefungLogischUFDTest.STANDARD_T;
 		DAVTest.warteBis(zeitStempel + 50);
@@ -690,7 +690,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 	}
 
 	/**
-	 * Schaltet die Ausfallüberwachung wieder aus und wartet fünf Sekunden.
+	 * Schaltet die AusfallÃ¼berwachung wieder aus und wartet fÃ¼nf Sekunden.
 	 *
 	 * @throws Exception
 	 *             wird weitergereicht
@@ -698,7 +698,7 @@ public class NiederschlagsIntensitaetTest extends MeteorologischeKontrolleTest {
 	@After
 	public void after() throws Exception {
 		/**
-		 * Ausfallüberwachung für alle Sensoren ausschalten
+		 * AusfallÃ¼berwachung fÃ¼r alle Sensoren ausschalten
 		 */
 		for (final SystemObject sensor : PlPruefungLogischUFDTest.SENSOREN) {
 			PlPruefungLogischUFDTest.sender.setMaxAusfallFuerSensor(sensor, -1);
