@@ -1,35 +1,32 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment Datenübernahme und Aufbereitung (DUA), SWE Pl-Prüfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- * Contact Information:<br>
- * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
- * 04229 Leipzig<br>
- * Phone: +49 341-490670<br>
- * mailto: info@bitctrl.de
+ * Copyright 2016 by Kappich Systemberatung Aachen
+ * 
+ * This file is part of de.bsvrz.dua.pllogufd.
+ * 
+ * de.bsvrz.dua.pllogufd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * de.bsvrz.dua.pllogufd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with de.bsvrz.dua.pllogufd.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Straße 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dua.pllogufd.testdiff;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
@@ -42,6 +39,11 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.debug.Debug;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Das Modul Differenzialkontrolle meldet sich auf alle Parameter an und führt
  * mit allen über die Methode <code>aktualisiereDaten(..)</code> übergebenen
@@ -51,9 +53,11 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * die Daten an den nächsten Bearbeitungsknoten weitergereicht
  *
  * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id: UFDDifferenzialKontrolle.java 53825 2015-03-18 09:36:42Z peuker
+ *          $
  */
-public class UFDDifferenzialKontrolle
-extends AbstraktBearbeitungsKnotenAdapter {
+public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 	private static final Debug LOGGER = Debug.getLogger();
 	/**
@@ -61,8 +65,11 @@ extends AbstraktBearbeitungsKnotenAdapter {
 	 * assoziierte Objekte mit allen für die Differentialkontrolle benötigten
 	 * Informationen.
 	 */
-	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<>();
+	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<SystemObject, DiffUmfeldDatenSensor>();
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -73,20 +80,34 @@ extends AbstraktBearbeitungsKnotenAdapter {
 			try {
 				sensor = new DiffUmfeldDatenSensor(dieVerwaltung, obj);
 			} catch (final UmfeldDatenSensorUnbekannteDatenartException ex) {
-				UFDDifferenzialKontrolle.LOGGER.warning("UmfeldDatenSensor '"
-						+ obj + "': wird nicht verarbeitet: "
-						+ ex.getMessage());
+				LOGGER.warning(
+						"UmfeldDatenSensor '" + obj
+								+ "': wird nicht verarbeitet: "
+								+ ex.getMessage());
 				continue;
 			}
 			this.sensoren.put(obj, sensor);
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
-			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<>();
+			final Collection<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
 
+			for (final ResultData resultat : resultate) {
+				if(resultat != null){
+					for(DiffUmfeldDatenSensor diffUmfeldDatenSensor : sensoren.values()) {
+						DiffUmfeldDatenSensor.SensorNA sensorNA = diffUmfeldDatenSensor.getSensorNA();
+						if(sensorNA != null && sensorNA.getSystemObject().equals(resultat.getObject())){
+							sensorNA.update(resultat);
+						}
+					}
+				}
+			}
 			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
 					if (resultat.getData() != null) {
@@ -113,20 +134,27 @@ extends AbstraktBearbeitungsKnotenAdapter {
 				}
 			}
 
-			if ((getKnoten() != null) && !weiterzuleitendeResultate.isEmpty()) {
-				getKnoten().aktualisiereDaten(
-						weiterzuleitendeResultate.toArray(new ResultData[0]));
+			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
+				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
+						.toArray(new ResultData[0]));
 			}
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
+
 }

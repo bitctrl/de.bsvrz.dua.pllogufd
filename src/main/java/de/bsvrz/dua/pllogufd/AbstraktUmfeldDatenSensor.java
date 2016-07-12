@@ -1,33 +1,32 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment Datenübernahme und Aufbereitung (DUA), SWE Pl-Prüfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- * Contact Information:<br>
- * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
- * 04229 Leipzig<br>
- * Phone: +49 341-490670<br>
- * mailto: info@bitctrl.de
+ * Copyright 2016 by Kappich Systemberatung Aachen
+ * 
+ * This file is part of de.bsvrz.dua.pllogufd.
+ * 
+ * de.bsvrz.dua.pllogufd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * de.bsvrz.dua.pllogufd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with de.bsvrz.dua.pllogufd.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Straße 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dua.pllogufd;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import de.bsvrz.dav.daf.main.ClientReceiverInterface;
 import de.bsvrz.dav.daf.main.DataDescription;
@@ -41,24 +40,30 @@ import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Abstrakter Umfelddatensensor, der sich auf die Parameter für seine Pl-Prüfung
  * logisch UFD anmeldet.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id: AbstraktUmfeldDatenSensor.java 53825 2015-03-18 09:36:42Z
+ *          peuker $
  */
-public abstract class AbstraktUmfeldDatenSensor
-		implements ClientReceiverInterface {
+public abstract class AbstraktUmfeldDatenSensor implements
+ClientReceiverInterface {
 
 	/**
 	 * <code>asp.parameterSoll</code>.
 	 */
-	protected static Aspect aspParameterSoll = null;
+	protected Aspect aspParameterSoll = null;
 
 	/**
-	 * statische Verbindung zum Verwaltungsmodul.
+	 * Verbindung zum Verwaltungsmodul.
 	 */
-	protected static IVerwaltung verwaltungsModul = null;
+	protected IVerwaltung verwaltungsModul = null;
 
 	/**
 	 * Systemobjekt.
@@ -80,9 +85,9 @@ public abstract class AbstraktUmfeldDatenSensor
 			final SystemObject obj) throws DUAInitialisierungsException {
 		this.objekt = obj;
 
-		if (AbstraktUmfeldDatenSensor.verwaltungsModul == null) {
-			AbstraktUmfeldDatenSensor.verwaltungsModul = verwaltung;
-			AbstraktUmfeldDatenSensor.aspParameterSoll = verwaltung
+		if (verwaltungsModul == null) {
+			verwaltungsModul = verwaltung;
+			aspParameterSoll = verwaltung
 					.getVerbindung().getDataModel()
 					.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
 		}
@@ -98,29 +103,27 @@ public abstract class AbstraktUmfeldDatenSensor
 	 *             auftritt
 	 */
 	protected abstract Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException,
-			UmfeldDatenSensorUnbekannteDatenartException;
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException ;
 
 	/**
 	 * Fuehrt die Empfangsanmeldung durch.
 	 *
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException
-	 *             die Datenart des übergebenen Sensors wird nicht unterstützt
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	public void init() throws DUAInitialisierungsException,
-			UmfeldDatenSensorUnbekannteDatenartException {
-		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<>();
+	public void init() throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
+		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
 		for (final AttributeGroup atg : this.getParameterAtgs()) {
 			parameterBeschreibungen.add(new DataDescription(atg,
-					AbstraktUmfeldDatenSensor.aspParameterSoll));
+					aspParameterSoll));
 		}
 
 		for (final DataDescription parameterBeschreibung : parameterBeschreibungen) {
-			AbstraktUmfeldDatenSensor.verwaltungsModul.getVerbindung()
-			.subscribeReceiver(this, this.objekt, parameterBeschreibung,
-							ReceiveOptions.normal(), ReceiverRole.receiver());
+			verwaltungsModul.getVerbindung()
+					.subscribeReceiver(this, this.objekt,
+							parameterBeschreibung, ReceiveOptions.normal(),
+							ReceiverRole.receiver());
 		}
 	}
 

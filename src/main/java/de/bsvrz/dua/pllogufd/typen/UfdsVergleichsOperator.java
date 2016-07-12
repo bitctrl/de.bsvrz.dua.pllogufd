@@ -1,35 +1,38 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment Datenübernahme und Aufbereitung (DUA), SWE Pl-Prüfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- * Contact Information:<br>
- * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
- * 04229 Leipzig<br>
- * Phone: +49 341-490670<br>
- * mailto: info@bitctrl.de
+ * Copyright 2016 by Kappich Systemberatung Aachen
+ * 
+ * This file is part of de.bsvrz.dua.pllogufd.
+ * 
+ * de.bsvrz.dua.pllogufd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * de.bsvrz.dua.pllogufd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with de.bsvrz.dua.pllogufd.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Straße 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dua.pllogufd.typen;
 
+import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
 
 /**
  * Über diese Klasse werden alle im DAV-Enumerationstyp
@@ -37,19 +40,15 @@ import de.bsvrz.sys.funclib.bitctrl.daf.AbstractDavZustand;
  * gestellt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
+ *
  * @version $Id$
  */
 public class UfdsVergleichsOperator extends AbstractDavZustand {
 
 	/**
-	 * Unbenutzt, vermeide Warnung.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Der Wertebereich dieses DAV-Enumerationstypen
 	 */
-	private static final Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = new HashMap<>();
+	private static final Map<Integer, UfdsVergleichsOperator> WERTE_BEREICH = new HashMap<Integer, UfdsVergleichsOperator>();
 
 	/**
 	 * Alle wirklichen Enumerationswerte
@@ -93,6 +92,7 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 	 *
 	 * @param code
 	 *            der Code des Enumerations-Wertes
+	 * @return UfdsVergleichsOperator
 	 */
 	public static final UfdsVergleichsOperator getZustand(final int code) {
 		return UfdsVergleichsOperator.WERTE_BEREICH.get(code);
@@ -107,23 +107,31 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 	 *            Wert Nr.2
 	 * @return das Vergleichsergebnis
 	 */
-	public final boolean vergleiche(final long wert1, final long wert2) {
+	public final boolean vergleiche(final UmfeldDatenSensorWert wert1, final UmfeldDatenSensorWert wert2) {
 		boolean ergebnis = false;
 
 		if (this.equals(UfdsVergleichsOperator.BEDINGUNG_IMMER_FALSCH)) {
 			ergebnis = false;
 		} else if (this.equals(UfdsVergleichsOperator.BEDINGUNG_IMMER_WAHR)) {
 			ergebnis = true;
-		} else if (this.equals(UfdsVergleichsOperator.KLEINER)) {
-			ergebnis = wert1 < wert2;
-		} else if (this.equals(UfdsVergleichsOperator.KLEINER_GLEICH)) {
-			ergebnis = wert1 <= wert2;
-		} else if (this.equals(UfdsVergleichsOperator.GLEICH)) {
-			ergebnis = wert1 == wert2;
-		} else if (this.equals(UfdsVergleichsOperator.GROESSER_GLEICH)) {
-			ergebnis = wert1 >= wert2;
-		} else if (this.equals(UfdsVergleichsOperator.GROESSER)) {
-			ergebnis = wert1 > wert2;
+		} else {
+			if(!wert1.isOk() || !wert2.isOk()) return false;
+			
+			if(this.equals(UfdsVergleichsOperator.KLEINER)) {
+				ergebnis = wert1.getWert() < wert2.getWert();
+			}
+			else if(this.equals(UfdsVergleichsOperator.KLEINER_GLEICH)) {
+				ergebnis = wert1.getWert() <= wert2.getWert();
+			}
+			else if(this.equals(UfdsVergleichsOperator.GLEICH)) {
+				ergebnis = wert1.getWert() == wert2.getWert();
+			}
+			else if(this.equals(UfdsVergleichsOperator.GROESSER_GLEICH)) {
+				ergebnis = wert1.getWert() >= wert2.getWert();
+			}
+			else if(this.equals(UfdsVergleichsOperator.GROESSER)) {
+				ergebnis = wert1.getWert() > wert2.getWert();
+			}
 		}
 
 		return ergebnis;

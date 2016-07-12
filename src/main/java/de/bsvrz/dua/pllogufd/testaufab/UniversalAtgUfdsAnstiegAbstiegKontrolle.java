@@ -1,27 +1,29 @@
 /*
- * Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
+ * Segment Datenübernahme und Aufbereitung (DUA), SWE Pl-Prüfung logisch UFD
  * Copyright (C) 2007-2015 BitCtrl Systems GmbH
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- * Contact Information:<br>
- * BitCtrl Systems GmbH<br>
- * Weißenfelser Straße 67<br>
- * 04229 Leipzig<br>
- * Phone: +49 341-490670<br>
- * mailto: info@bitctrl.de
+ * Copyright 2016 by Kappich Systemberatung Aachen
+ * 
+ * This file is part of de.bsvrz.dua.pllogufd.
+ * 
+ * de.bsvrz.dua.pllogufd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * de.bsvrz.dua.pllogufd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with de.bsvrz.dua.pllogufd.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Straße 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dua.pllogufd.testaufab;
@@ -37,10 +39,17 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
+ *
+ * @version $Id: UniversalAtgUfdsAnstiegAbstiegKontrolle.java 53825 2015-03-18
+ *          09:36:42Z peuker $
  */
 public class UniversalAtgUfdsAnstiegAbstiegKontrolle extends
 AllgemeinerDatenContainer {
 
+	/**
+	 * Skalierter maxDiff-Wert
+	 */
+	private double _scaledMax = Double.NaN;
 	/**
 	 * maximale Differenz zwischen zweier aufeinanderfolgender Messwerte.
 	 */
@@ -85,7 +94,12 @@ AllgemeinerDatenContainer {
 
 		this.sinnvoll = !wert.isFehlerhaft()
 				&& !wert.isFehlerhaftBzwNichtErmittelbar()
-				&& !wert.isNichtErmittelbar();
+				&& !wert.isNichtErmittelbar()
+				&& wert.getWert() > 0;
+
+		if(sinnvoll) {
+			_scaledMax = parameter.getData().getScaledValue(datenArt.getAbkuerzung() + "maxDiff").doubleValue();
+		}
 	}
 
 	/**
@@ -95,6 +109,14 @@ AllgemeinerDatenContainer {
 	 */
 	public final long getMaxDiff() {
 		return this.maxDiff;
+	}
+
+	/**
+	 * Gibt den skalierten MaxDiff-Wert zurück (für die Ausgabe in Meldungen u.ä.)
+	 * @return Skalierter MaxDiff-Wert
+	 */
+	public double getScaledMax() {
+		return _scaledMax;
 	}
 
 	/**

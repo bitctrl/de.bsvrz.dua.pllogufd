@@ -26,7 +26,7 @@
  * mail: <info@kappich.de>
  */
 
-package de.bsvrz.dua.pllogufd.testaufab;
+package de.bsvrz.dua.pllogufd.grenz;
 
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
@@ -45,33 +45,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Implementierung des Moduls Anstieg-Abfall-Kontrolle. Dieses meldet sich auf
- * alle Parameter an und führt mit allen über die Methode
- * <code>aktualisiereDaten(..)</code> übergebenen Daten eine Prüfung durch. Es
- * wird kontrolliert, ob die Differenz zweier zeitlich aufeinander folgender
- * Messwerte eine je Sensor parametrierbare maximale Messwertdifferenz (Betrag)
- * nicht übersteigt. Die Überprüfung wird aber nur vorgenommen, wenn eine Reihe
- * von Bedingungen erfüllt ist. Wird ein Messwert als über die
- * Anstieg-Abfall-Kontrolle als nicht plausibel erkannt, so wird der
- * entsprechende Wert auf Fehlerhaft und Implausibel zu setzen. Nach der Prüfung
- * werden die Daten an den nächsten Bearbeitungsknoten weitergereicht.
+ * TBD Dokumentation
  *
- * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id$
+ * @author Kappich Systemberatung
  */
-public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
+public class UFDGrenzwertpruefung  extends AbstraktBearbeitungsKnotenAdapter {
+
+	private static final Debug _debug = Debug.getLogger();
+
+	private final Map<SystemObject, GrenzUmfeldDatenSensor> sensoren = new HashMap<>();
 
 	/**
-	 * Mapt alle Systemobjekte aller erfassten Umfelddatensensoren auf
-	 * assoziierte Objekte mit allen für die Anstieg-Abfall-Kontrolle benötigten
-	 * Informationen.
-	 */
-	private final Map<SystemObject, AufAbUmfeldDatenSensor> sensoren = new HashMap<SystemObject, AufAbUmfeldDatenSensor>();
-
-	/**
-	 * {@inheritDoc}
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * {@inheritDoc}.
 	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
@@ -80,13 +65,14 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 		for (final SystemObject obj : dieVerwaltung.getSystemObjekte()) {
 			try {
-				this.sensoren.put(obj, new AufAbUmfeldDatenSensor(dieVerwaltung,
-						obj));
+				this.sensoren.put(obj, new GrenzUmfeldDatenSensor(dieVerwaltung,
+				                                                  obj));
 			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-				Debug.getLogger().warning(e.getMessage());
+				_debug.warning(e.getMessage());
 			}
 		}
 	}
+
 
 	/**
 	 * {@inheritDoc}
@@ -101,8 +87,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 					if (resultat.getData() != null) {
 						ResultData resultatNeu = resultat;
 
-						final AufAbUmfeldDatenSensor sensor = this.sensoren
-								.get(resultat.getObject());
+						final GrenzUmfeldDatenSensor sensor = this.sensoren.get(resultat.getObject());
 
 						Data data = null;
 						if (sensor != null) {
@@ -111,8 +96,8 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 						if (data != null) {
 							resultatNeu = new ResultData(resultat.getObject(),
-									resultat.getDataDescription(),
-									resultat.getDataTime(), data);
+							                             resultat.getDataDescription(),
+							                             resultat.getDataTime(), data);
 						}
 
 						weiterzuleitendeResultate.add(resultatNeu);
@@ -124,7 +109,7 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
 			if ((this.knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
 				this.knoten.aktualisiereDaten(weiterzuleitendeResultate
-						.toArray(new ResultData[0]));
+						                              .toArray(new ResultData[0]));
 			}
 		}
 	}
@@ -144,5 +129,5 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert
 	}
-
+	
 }

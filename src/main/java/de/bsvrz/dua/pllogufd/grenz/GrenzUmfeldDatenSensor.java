@@ -26,7 +26,7 @@
  * mail: <info@kappich.de>
  */
 
-package de.bsvrz.dua.pllogufd.testaufab;
+package de.bsvrz.dua.pllogufd.grenz;
 
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
@@ -35,10 +35,10 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.AbstraktUmfeldDatenSensor;
 import de.bsvrz.dua.pllogufd.vew.VerwaltungPlPruefungLogischUFD;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
-import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
@@ -52,48 +52,37 @@ import java.util.HashSet;
 
 /**
  * Assoziiert einen Umfelddatensensor mit dessen Parametern und Werten bzgl. der
- * Anstieg-Abfall-Kontrolle
+ * Grenzwertprüfung
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: AufAbUmfeldDatenSensor.java 54549 2015-04-17 13:40:51Z gieseler $
  */
-public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
+public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
-	private static final Debug LOGGER = Debug.getLogger();
-
-	/**
-	 * Verwaltungsmodul
-	 */
-	private final VerwaltungPlPruefungLogischUFD _verwaltung;
+	private static final Debug _debug = Debug.getLogger();
+	private final SystemObject _messstelle;
 
 	/**
-	 * aktuelle Parameter für die Anstieg-Abfall-Kontrolle dieses
+	 * aktuelle Parameter für die Grenzwertprüfung dieses
 	 * Umfelddatensensors.
 	 */
-	private UniversalAtgUfdsAnstiegAbstiegKontrolle parameter = null;
+	private UniversalAtgUfdsGrenzwerte parameter = null;
 
-	/**
-	 * letztes für diesen Umfelddatensensor empfangenes Datum.
-	 */
-	private UmfeldDatenSensorDatum letzterWert = null;
-
-	/**
-	 * Betriebsmeldungs-Template
-	 */
-	private static final MessageTemplate TEMPLATE = new MessageTemplate(
+	public static final MessageTemplate TEMPLATE_GRENZWERT = new MessageTemplate(
 			MessageGrade.INFORMATION,
 			MessageType.APPLICATION_DOMAIN,
-			MessageTemplate.fixed("Grenzwert für Messwertkonstanz bei Anstieg-Abfall-Kontrolle für "),
-			MessageTemplate.variable("attr"),
-			MessageTemplate.fixed(" an Messstelle "),
+			MessageTemplate.set("attr", " und ", "Attribut ", "Attribute "),
+			MessageTemplate.fixed(" durch Grenzwertprüfung auf fehlerhaft gesetzt am UFD-Sensor "),
 			MessageTemplate.object(),
-			MessageTemplate.fixed(" überschritten, da Differenz "),
+			MessageTemplate.fixed(" ("),
+			MessageTemplate.variable("messstelle"),
+			MessageTemplate.fixed("), da "),
 			MessageTemplate.set("values", ", "),
-			MessageTemplate.fixed(". Wert wird auf fehlerhaft gesetzt. "),
+			MessageTemplate.fixed(". "),
 			MessageTemplate.ids()
-	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UAK]");
-	
+	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UGW]");
+
 	/**
 	 * Standardkonstruktor.
 	 *
@@ -105,11 +94,11 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 *             wenn die Instaziierung fehlschlägt
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
 	 */
-	protected AufAbUmfeldDatenSensor(final IVerwaltung verwaltung,
+	protected GrenzUmfeldDatenSensor(final IVerwaltung verwaltung,
 			final SystemObject obj) throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
-		_verwaltung = (VerwaltungPlPruefungLogischUFD) verwaltung;
 		super.init();
+		_messstelle = ((VerwaltungPlPruefungLogischUFD)verwaltung).getBetriebsmeldungsObjekt(obj);
 	}
 
 	/**
@@ -135,7 +124,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
 		}
 
-		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName();
+		final String atgPid = "atg.ufdsGrenzwerte" + datenArt.getName();
 
 		final AttributeGroup atg = verwaltungsModul
 				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
@@ -143,9 +132,9 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		if (atg != null) {
 			parameterAtgs.add(atg);
 		} else {
-			throw new DUAInitialisierungsException(
+			_debug.fine(
 					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-							"Anstieg-Abfall-Kontrolle des Objektes "//$NON-NLS-1$
+							"Grenzwertprüfung des Objektes "//$NON-NLS-1$
 							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$
 							"Atg-Name: " + atgPid); //$NON-NLS-1$
 		}
@@ -164,126 +153,124 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 * @return das gekennzeichnete Datum oder <code>null</code> wenn das Datum
 	 *         plausibel ist
 	 */
-	public synchronized final Data plausibilisiere(final ResultData resultat) {
+	public final Data plausibilisiere(final ResultData resultat) {
 		Data copy = null;
 
 		if ((resultat != null) && (resultat.getData() != null)) {
 			final UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(
 					resultat);
-
-			final UmfeldDatenArt datenArt;
 			try {
-				datenArt = UmfeldDatenArt
+				final UmfeldDatenArt datenArt = UmfeldDatenArt
 						.getUmfeldDatenArtVon(resultat.getObject());
-
-
-				if((this.letzterWert != null)
-						&& !this.letzterWert.getWert().isFehlerhaft()
-						&& !this.letzterWert.getWert()
-						.isFehlerhaftBzwNichtErmittelbar()
-						&& !this.letzterWert.getWert().isNichtErmittelbar()
-						&& (this.letzterWert
-						.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA)) {
-
-					if(!wert.getWert().isFehlerhaft()
-							&& !wert.getWert().isFehlerhaftBzwNichtErmittelbar()
-							&& !wert.getWert().isNichtErmittelbar()
-							&& (wert.getStatusMessWertErsetzungImplausibel() != DUAKonstanten.JA)) {
-
-						if(this.parameter != null) {
-							if(this.parameter.isSinnvoll()) {
-								long diff = Math.abs(wert.getWert()
-										                    .getWert()
-										                    - this.letzterWert.getWert().getWert());		
-								
-								double diffScaled = Math.abs(wert.getWert()
-										                    .getSkaliertenWert()
-										                    - this.letzterWert.getWert().getSkaliertenWert());
-								final boolean fehler = diff > this.parameter
-										.getMaxDiff();
-								if(fehler) {
-									Data mainitem = wert.getDatum().getItem(datenArt.getName());
-									OperatingMessage message = TEMPLATE.newMessage(_verwaltung.getBetriebsmeldungsObjekt(objekt));
-									message.put("attr", datenArt.getName() + " " + datenArt.getAbkuerzung());
-									message.add("values", datenArt.getAbkuerzung() + " = "
-											+ formatValue(diffScaled, mainitem.getTextValue("Wert").getSuffixText())
+				
+				synchronized(this) {
+					if(parameter != null){
+						UmfeldDatenSensorWert w = wert.getWert();
+						long currentValue = w.getWert();
+						if(w.isOk()) {
+							OperatingMessage message = TEMPLATE_GRENZWERT.newMessage(objekt);
+							message.add("attr", datenArt.getAbkuerzung());
+							message.put("messstelle", _messstelle);
+							switch(datenArt.getAbkuerzung()) {
+								case "NI":
+									message.addId("[DUA-PP-UGW01]");
+									break;
+								case "WFD":
+									message.addId("[DUA-PP-UGW02]");
+									break;
+								case "LT":
+									message.addId("[DUA-PP-UGW03]");
+									break;
+								case "FBT":
+									message.addId("[DUA-PP-UGW04]");
+									break;
+								case "SW":
+									message.addId("[DUA-PP-UGW05]");
+									break;
+								case "HK":
+									message.addId("[DUA-PP-UGW06]");
+									break;
+								case "GT":
+									message.addId("[DUA-PP-UGW07]");
+									break;
+								case "TPT":
+									message.addId("[DUA-PP-UGW08]");
+									break;
+								case "TT1":
+									message.addId("[DUA-PP-UGW09]");
+									break;
+								case "TT3":
+									message.addId("[DUA-PP-UGW10]");
+									break;
+								case "WGS":
+									message.addId("[DUA-PP-UGW11]");
+									break;
+								case "WGM":
+									message.addId("[DUA-PP-UGW12]");
+									break;
+								default:
+									message.addId("[DUA-PP-UGW??]");
+									break;
+							}
+							if(parameter.isMaxSinnvoll() && currentValue > parameter.getMax()) {
+								Data mainitem = wert.getDatum().getItem(datenArt.getName());
+								if(parameter.getVerhalten() == OptionenPlausibilitaetsPruefungLogischUfd.WERT_REDUZIEREN) {
+									w.setWert(parameter.getMax());
+									mainitem.getItem("Status").getItem("PlLogisch").getTextValue("WertMaxLogisch").setText("Ja");
+								}
+								else if(parameter.getVerhalten() == OptionenPlausibilitaetsPruefungLogischUfd.AUF_FEHLERHAFT_SETZEN){
+									mainitem.getItem("Status").getItem("PlLogisch").getTextValue("WertMaxLogisch").setText("Ja");
+									wert.setGueteIndex(Math.round(wert.getGueteIndex().getWert() * .8));
+									message.add("values", datenArt.getAbkuerzung()
+											+ "="
+											+ formatValue(w.getSkaliertenWert(), mainitem.getTextValue("Wert").getSuffixText())
 											+ " > "
-											+ formatValue(parameter.getScaledMax(), mainitem.getTextValue("Wert").getSuffixText())
+											+ formatValue(parameter.getMaxSkaliert(), mainitem.getTextValue("Wert").getSuffixText())
 									);
-									switch(datenArt.getAbkuerzung()) {
-										case "WFD":
-											message.addId("[DUA-PP-UAK01]");
-											break;
-										case "LT":
-											message.addId("[DUA-PP-UAK02]");
-											break;
-										case "RLF":
-											message.addId("[DUA-PP-UAK03]");
-											break;
-										case "HK":
-											message.addId("[DUA-PP-UAK04]");
-											break;
-										case "FBT":
-											message.addId("[DUA-PP-UAK05]");
-											break;
-										case "TT1":
-											message.addId("[DUA-PP-UAK06]");
-											break;
-										case "TT3":
-											message.addId("[DUA-PP-UAK07]");
-											break;
-										case "TPT":
-											message.addId("[DUA-PP-UAK08]");
-											break;
-										case "WGS":
-											message.addId("[DUA-PP-UAK09]");
-											break;
-										case "WGM":
-											message.addId("[DUA-PP-UAK10]");
-											break;
-										default:
-											message.addId("[DUA-PP-UAK??]");
-											break;
-									}
+									
+									w.setFehlerhaftAn();
+									wert.setStatusMessWertErsetzungImplausibel(1);
 									message.send();
-
-									final UmfeldDatenSensorDatum neuerWert = new UmfeldDatenSensorDatum(
-											resultat);
-									neuerWert
-											.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-									neuerWert.getWert().setFehlerhaftAn();
-									copy = neuerWert.getDatum();
+								}
+							}
+							else if(parameter.isMinSinnvoll() && currentValue < parameter.getMin()) {
+								Data mainitem = wert.getDatum().getItem(datenArt.getName());
+								if(parameter.getVerhalten() == OptionenPlausibilitaetsPruefungLogischUfd.WERT_REDUZIEREN) {
+									w.setWert(parameter.getMin());
+									mainitem.getItem("Status").getItem("PlLogisch").getTextValue("WertMinLogisch").setText("Ja");
+								}
+								else if(parameter.getVerhalten() == OptionenPlausibilitaetsPruefungLogischUfd.AUF_FEHLERHAFT_SETZEN){
+									mainitem.getItem("Status").getItem("PlLogisch").getTextValue("WertMinLogisch").setText("Ja");
+									wert.setGueteIndex(Math.round(wert.getGueteIndex().getWert() * .8));
+									message.add("values", datenArt.getAbkuerzung()
+											+ "="
+											+ formatValue(w.getSkaliertenWert(), mainitem.getTextValue("Wert").getSuffixText())
+											+ " < "
+											+ formatValue(parameter.getMinSkaliert(), mainitem.getTextValue("Wert").getSuffixText())
+									);
+									
+									w.setFehlerhaftAn();
+									wert.setStatusMessWertErsetzungImplausibel(1);
+									message.send();
 								}
 							}
 						}
-						else {
-							LOGGER
-									.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
-											      " wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
-						}
 					}
 				}
-				this.letzterWert = wert;
+			} catch (final UmfeldDatenSensorUnbekannteDatenartException ex) {
 			}
-			catch(UmfeldDatenSensorUnbekannteDatenartException ignored) {
-
-			}
+			copy = wert.getDatum();
 		}
 
 		return copy;
 	}
 
-	/**
-	 * Formatiert einen Wert
-	 * @param w Wert
-	 * @param suffixText Einheit
-	 * @return Formatierte Zahl
-	 */
 	private static String formatValue(final double w, final String suffixText) {
 		NumberFormat numberInstance = NumberFormat.getNumberInstance();
 		numberInstance.setGroupingUsed(false);
 		return numberInstance.format(w) + " " + suffixText;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -294,13 +281,13 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
 						try {
-							this.parameter = new UniversalAtgUfdsAnstiegAbstiegKontrolle(
+							this.parameter = new UniversalAtgUfdsGrenzwerte(
 									resultat);
 						} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-							LOGGER.warning(e.getMessage());
+							_debug.warning(e.getMessage());
 							continue;
 						}
-						LOGGER
+						_debug
 						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
 								+ this.parameter);
 					}
@@ -309,8 +296,4 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return objekt.toString();
-	}
 }
