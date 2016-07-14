@@ -1,0 +1,30 @@
+,DUA-57 (Temperaturen),,,,,,,,,,,,,
+Zeile,Eingangsdaten,,,,,,,Soll erwartet,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,° C,Erfassung,Implausibel,,,,Minute,° C,,Erfassung,Implausibel,,
+27,1,"5,6",Nein,Nein,,,,1,"5,6",,Nein,Nein,,100 %
+28,1,"-1001",Ja,Nein,,"DUA-54, Ze. 8",,1,"-1001",,Ja,Nein,,100 %
+29,1,"7,6",Nein,Nein,,,,1,"7,6",,Nein,Nein,,100 %
+30,1,"7,7",Nein,Nein,,,,1,"7,7",,Nein,Nein,,100 %
+31,1,"5,6",Nein,Nein,,,,1,"-1002",,Nein,Ja,,100 %
+32,1,"5,6",Nein,Nein,,,,1,"5,6",,Nein,Nein,,100 %
+33,1,"-1003",Nein,Nein,,,,1,"-1003",,Nein,Nein,,100 %
+34,1,"3,4",Nein,Nein,,,,1,"3,4",,Nein,Nein,,100 %
+35,1,"5,3",Nein,Nein,,,,1,"-1002",,Nein,Ja,,100 %
+36,1,"7",Nein,Nein,,LTmaxDiff,,1,"7",,Nein,Nein,,100 %
+37,1,"4,9",Nein,Nein,,,,1,"-1002",,Nein,Ja,,100 %
+38,1,"-1002",Nein,Ja,,"DUA-56 T, Ze. 14",,1,"-1002",,Nein,Ja,,100 %
+39,1,"5,4",Nein,Nein,,,,1,"5,4",,Nein,Nein,,100 %
+40,1,"7,3",Nein,Nein,,,,1,"-1002",,Nein,Ja,,100 %
+41,1,"9,2",Nein,Nein,,,,1,"-1002",,Nein,Ja,,100 %
+42,1,"8,5",Nein,Nein,,,,1,"8,5",,Nein,Nein,,100 %
+43,1,"6,6",Nein,Nein,,,,1,"-1002",,Nein,Ja,,100 %
+44,1,"4,7",Nein,Nein,,,,1,"-1002",,Nein,Ja,,100 %
+45,1,"5,2",Nein,Nein,,,,1,"5,2",,Nein,Nein,,100 %
+46,1,"-1003",Nein,Nein,,,,1,"-1003",,Nein,Nein,,100 %
+47,1,"-3,3",Nein,Nein,,,,1,"-3,3",,Nein,Nein,,100 %
+48,1,"-3,6",Nein,Nein,,,,1,"-3,6",,Nein,Nein,,100 %
+49,1,"-1,9",Nein,Nein,,LTmaxDiff,,1,"-1,9",,Nein,Nein,,100 %
+50,1,"-0,5",Nein,Nein,,,,1,"-0,5",,Nein,Nein,,100 %
+51,1,"0",Nein,Nein,,,,1,"0",,Nein,Nein,,100 %
+52,1,"-1,7",Nein,Nein,,LTmaxDiff,,1,"-1,7",,Nein,Nein,,100 %

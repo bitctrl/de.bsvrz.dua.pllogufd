@@ -1,0 +1,26 @@
+,DUA-57,,,,,,,,,,,,,
+Zeile,Eingangsdaten,,,,,,,Soll erwartet,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,% rF,Erfassung,Implausibel,,,,Minute,% rF,,Erfassung,Implausibel,,
+35,1,82,Nein,Nein,,,,1,82,,Nein,Nein,,100 %
+36,1,-1,Ja,Nein,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+37,1,60,Nein,Nein,,,,1,60,,Nein,Nein,,100 %
+38,1,44,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+39,1,32,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+40,1,21,Nein,Nein,,RLFmaxDiff,,1,21,,Nein,Nein,,100 %
+41,1,19,Nein,Nein,,,,1,19,,Nein,Nein,,100 %
+42,1,31,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+43,1,44,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+44,1,55,Nein,Nein,,RLFmaxDiff,,1,55,,Nein,Nein,,100 %
+45,1,-2,Nein,Ja,,"DUA-56, Ze. 83",,1,-2,,Nein,Ja,,100 %
+46,1,-2,Nein,Ja,,"DUA-56, Ze. 84",,1,-2,,Nein,Ja,,100 %
+47,1,22,Nein,Nein,,,,1,22,,Nein,Nein,,100 %
+48,1,19,Nein,Nein,,,,1,19,,Nein,Nein,,100 %
+49,1,-3,Nein,Nein,,,,1,-3,,Nein,Nein,,100 %
+50,1,36,Nein,Nein,,,,1,36,,Nein,Nein,,100 %
+51,1,19,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+52,1,21,Nein,Nein,,,,1,21,,Nein,Nein,,100 %
+53,1,28,Nein,Nein,,,,1,28,,Nein,Nein,,100 %
+54,1,41,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+55,1,43,Nein,Nein,,,,1,43,,Nein,Nein,,100 %
+56,1,44,Nein,Nein,,,,1,44,,Nein,Nein,,100 %

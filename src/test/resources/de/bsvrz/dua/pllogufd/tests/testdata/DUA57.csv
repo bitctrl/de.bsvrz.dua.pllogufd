@@ -1,0 +1,167 @@
+,DUA-57,,,,,,,,,,,,,
+Zeile,Eingangsdaten,,,,,,,Soll erwartet,,,,,,
+,Wasserfilmdicke,,,,,,,,,,,,,
+,Parameter,,,,,,,,,,,,,
+,WFDmaxDiff,,"0,80",mm,,,,,,,,,,
+,,,,,,,,,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,mm,Erfassung,Implausibel,,,,Minute,mm,,Erfassung,Implausibel,,
+1,1,"1,00",Nein,Nein,,,,1,"1,00",,Nein,Nein,,100 %
+2,1,"1,20",Nein,Nein,,,,1,"1,20",,Nein,Nein,,100 %
+3,1,"1,20",Nein,Nein,,,,1,"1,20",,Nein,Nein,,100 %
+4,1,"1,10",Nein,Nein,,,,1,"1,10",,Nein,Nein,,100 %
+5,1,"1,10",Nein,Nein,,,,1,"1,10",,Nein,Nein,,100 %
+6,1,"1,10",Nein,Nein,,,,1,"1,10",,Nein,Nein,,100 %
+7,1,"1,90",Nein,Nein,,WFDmaxDiff,,1,"1,90",,Nein,Nein,,100 %
+8,1,"1,70",Nein,Nein,,,,1,"1,70",,Nein,Nein,,100 %
+9,1,"1,60",Nein,Nein,,,,1,"1,60",,Nein,Nein,,100 %
+10,1,"1,80",Nein,Nein,,,,1,"1,80",,Nein,Nein,,100 %
+11,1,"1,00",Nein,Nein,,WFDmaxDiff,,1,"1,00",,Nein,Nein,,100 %
+12,1,"1,10",Nein,Nein,,,,1,"1,10",,Nein,Nein,,100 %
+13,1,"2,20",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+14,1,"2,30",Nein,Nein,,,,1,"2,30",,Nein,Nein,,100 %
+15,1,"0,90",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+16,1,"0,90",Nein,Nein,,,,1,"0,90",,Nein,Nein,,100 %
+17,1,"0,40",Nein,Nein,,,,1,"0,40",,Nein,Nein,,100 %
+18,1,"0,10",Nein,Nein,,,,1,"0,10",,Nein,Nein,,100 %
+19,1,"1,00",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+20,1,"1,90",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+21,1,"2,40",Nein,Nein,,,,1,"2,40",,Nein,Nein,,100 %
+22,1,"1,40",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+23,1,"0,40",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+24,1,"0,50",Nein,Nein,,,,1,"0,5",,Nein,Nein,,100 %
+25,1,-3,Nein,Nein,,,,1,-3,,Nein,Nein,,100 %
+26,1,"2,50",Nein,Nein,,,,1,"2,50",,Nein,Nein,,100 %
+27,1,"2,60",Nein,Nein,,,,1,"2,60",,Nein,Nein,,100 %
+28,1,-2,Nein,Ja,,"DUA-56, Ze. 39",,1,-2,,Nein,Ja,,100 %
+29,1,"1,40",Nein,Nein,,,,1,"1,40",,Nein,Nein,,100 %
+30,1,"1,30",Nein,Nein,,,,1,"1,30",,Nein,Nein,,100 %
+31,1,"1,30",Nein,Nein,,,,1,"1,30",,Nein,Nein,,100 %
+32,1,-1,Ja,Nein,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+33,1,"0,12",Nein,Nein,,,,1,"0,12",,Nein,Nein,,100 %
+34,1,"0,20",Nein,Nein,,,,1,"0,20",,Nein,Nein,,100 %
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,Relative Luftfeuchte,,,,,,,,,,,,,
+,Parameter,,,,,,,,,,,,,
+,RLFmaxDiff,,11,% rF,,,,,,,,,,
+,,,,,,,,,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,% rF,Erfassung,Implausibel,,,,Minute,% rF,,Erfassung,Implausibel,,
+35,1,82,Nein,Nein,,,,1,82,,Nein,Nein,,100 %
+36,1,-1,Ja,Nein,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+37,1,60,Nein,Nein,,,,1,60,,Nein,Nein,,100 %
+38,1,44,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+39,1,32,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+40,1,21,Nein,Nein,,RLFmaxDiff,,1,21,,Nein,Nein,,100 %
+41,1,19,Nein,Nein,,,,1,19,,Nein,Nein,,100 %
+42,1,31,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+43,1,44,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+44,1,55,Nein,Nein,,RLFmaxDiff,,1,55,,Nein,Nein,,100 %
+45,1,-2,Nein,Ja,,"DUA-56, Ze. 83",,1,-2,,Nein,Ja,,100 %
+46,1,-2,Nein,Ja,,"DUA-56, Ze. 84",,1,-2,,Nein,Ja,,100 %
+47,1,22,Nein,Nein,,,,1,22,,Nein,Nein,,100 %
+48,1,19,Nein,Nein,,,,1,19,,Nein,Nein,,100 %
+49,1,-3,Nein,Nein,,,,1,-3,,Nein,Nein,,100 %
+50,1,36,Nein,Nein,,,,1,36,,Nein,Nein,,100 %
+51,1,19,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+52,1,21,Nein,Nein,,,,1,21,,Nein,Nein,,100 %
+53,1,28,Nein,Nein,,,,1,28,,Nein,Nein,,100 %
+54,1,41,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+55,1,43,Nein,Nein,,,,1,43,,Nein,Nein,,100 %
+56,1,44,Nein,Nein,,,,1,44,,Nein,Nein,,100 %
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,Helligkeit,,,,,,,,,,,,,
+,Parameter,,,,,,,,,,,,,
+,HKmaxDiff,,5432,Lx,,,,,,,,,,
+,,,,,,,,,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,Lx,Erfassung,Implausibel,,,,Minute,Lx,,Erfassung,Implausibel,,
+57,1,9533,Nein,Nein,,,,1,9533,,Nein,Nein,,100 %
+58,1,9503,Nein,Nein,,,,1,9503,,Nein,Nein,,100 %
+59,1,4071,Nein,Nein,,HKmaxDiff,,1,4071,,Nein,Nein,,100 %
+60,1,3061,Nein,Nein,,,,1,3061,,Nein,Nein,,100 %
+61,1,-3,Nein,Nein,,,,1,-3,,Nein,Nein,,100 %
+62,1,2856,Nein,Nein,,,,1,2856,,Nein,Nein,,100 %
+63,1,8356,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+64,1,13871,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+65,1,-2,Nein,Ja,,"DUA-56, Ze. 138",,1,-2,,Nein,Ja,,100 %
+66,1,2496,Nein,Nein,,,,1,2496,,Nein,Nein,,100 %
+67,1,7928,Nein,Nein,,HKmaxDiff,,1,7928,,Nein,Nein,,100 %
+68,1,-1,Ja,Nein,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+69,1,1589,Nein,Nein,,,,1,1589,,Nein,Nein,,100 %
+70,1,11589,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+71,1,12524,Nein,Nein,,,,1,12524,,Nein,Nein,,100 %
+72,1,2524,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+73,1,4488,Nein,Nein,,,,1,4488,,Nein,Nein,,100 %
+74,1,34951,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+75,1,28762,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+76,1,21227,Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+77,1,17679,Nein,Nein,,,,1,17679,,Nein,Nein,,100 %
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,Windgeschwindigkeit Mittel,,,,,,,,,,,,,
+,Parameter,,,,,,,,,,,,,
+,WGMmaxDiff,,"13,1",m/s,,,,,,,,,,
+,,,,,,,,,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,m/s,Erfassung,Implausibel,,,,Minute,m/s,,Erfassung,Implausibel,,
+78,1,"2,5",Nein,Nein,,,,1,"2,5",,Nein,Nein,,100 %
+79,1,"2,6",Nein,Nein,,,,1,"2,6",,Nein,Nein,,100 %
+80,1,"22,6",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+81,1,-1,Ja,Nein,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+82,1,"2,6",Nein,Nein,,,,1,"2,6",,Nein,Nein,,100 %
+83,1,"12,5",Nein,Nein,,,,1,"12,5",,Nein,Nein,,100 %
+84,1,"23,7",Nein,Nein,,,,1,"23,7",,Nein,Nein,,100 %
+85,1,-3,Nein,Nein,,,,1,-3,,Nein,Nein,,100 %
+86,1,"36,8",Nein,Nein,,,,1,"36,8",,Nein,Nein,,100 %
+87,1,"22,3",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+88,1,"8,7",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+89,1,"8,4",Nein,Nein,,,,1,"8,4",,Nein,Nein,,100 %
+90,1,-2,Nein,Ja,,"DUA-56, Ze. 190",,1,-2,,Nein,Ja,,100 %
+91,1,"22,2",Nein,Nein,,,,1,"22,2",,Nein,Nein,,100 %
+92,1,"38,3",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+93,1,"54,9",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+94,1,"50,6",Nein,Nein,,,,1,"50,6",,Nein,Nein,,100 %
+95,1,"5,4",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+96,1,"4,2",Nein,Nein,,,,1,"4,2",,Nein,Nein,,100 %
+97,1,"17,3",Nein,Nein,,WGMmaxDiff,,1,"17,3",,Nein,Nein,,100 %
+98,1,"15,2",Nein,Nein,,,,1,"15,2",,Nein,Nein,,100 %
+99,1,"11,8",Nein,Nein,,,,1,"11,8",,Nein,Nein,,100 %
+100,1,"14,6",Nein,Nein,,,,1,"14,6",,Nein,Nein,,100 %
+101,1,"1,5",Nein,Nein,,WGMmaxDiff,,1,"1,5",,Nein,Nein,,100 %
+102,1,"2,4",Nein,Nein,,,,1,"2,4",,Nein,Nein,,100 %
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,Windgeschwindigkeit Spitze,,,,,,,,,,,,,
+,Parameter,,,,,,,,,,,,,
+,WGSmaxDiff,,"15",m/s,,,,,,,,,,
+,,,,,,,,,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,m/s,Erfassung,Implausibel,,,,Minute,m/s,,Erfassung,Implausibel,,
+103,1,"2,5",Nein,Nein,,,,1,"2,5",,Nein,Nein,,100 %
+104,1,"2,6",Nein,Nein,,,,1,"2,6",,Nein,Nein,,100 %
+105,1,"22,6",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+106,1,-1,Ja,Nein,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+107,1,"2,6",Nein,Nein,,,,1,"2,6",,Nein,Nein,,100 %
+108,1,"12,5",Nein,Nein,,,,1,"12,5",,Nein,Nein,,100 %
+109,1,"23,7",Nein,Nein,,,,1,"23,7",,Nein,Nein,,100 %
+110,1,-3,Nein,Nein,,,,1,-3,,Nein,Nein,,100 %
+111,1,"39,8",Nein,Nein,,,,1,"39,8",,Nein,Nein,,100 %
+112,1,"22,3",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+113,1,"5,7",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+114,1,"8,4",Nein,Nein,,,,1,"8,4",,Nein,Nein,,100 %
+115,1,-2,Nein,Ja,,"DUA-56, Ze. 190",,1,-2,,Nein,Nein,,100 %
+116,1,"24,2",Nein,Nein,,,,1,"24,2",,Nein,Nein,,100 %
+117,1,"39,3",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+118,1,"54,4",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+119,1,"50,6",Nein,Nein,,,,1,"50,6",,Nein,Nein,,100 %
+120,1,"5,4",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+121,1,"4,2",Nein,Nein,,,,1,"4,2",,Nein,Nein,,100 %
+122,1,"19,2",Nein,Nein,,WGMmaxDiff,,1,"19,2",,Nein,Nein,,100 %
+123,1,"15,2",Nein,Nein,,,,1,"15,2",,Nein,Nein,,100 %
+124,1,"11,8",Nein,Nein,,,,1,"11,8",,Nein,Nein,,100 %
+125,1,"16,6",Nein,Nein,,,,1,"16,6",,Nein,Nein,,100 %
+126,1,"1,6",Nein,Nein,,WGMmaxDiff,,1,"1,6",,Nein,Nein,,100 %
+127,1,"2,4",Nein,Nein,,,,1,"2,4",,Nein,Nein,,100 %

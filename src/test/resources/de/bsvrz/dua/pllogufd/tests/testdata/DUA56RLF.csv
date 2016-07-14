@@ -1,0 +1,28 @@
+,DUA-56,,,,,,,,,,,
+Zeile,Eingangsdaten,,,,,Soll erwartet,,,,,,
+,T,Wert,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,% rF,,,,Minute,% rF,,Erfassung,Implausibel,,
+70,1,82,,,,1,82,,Nein,Nein,,100 %
+71,1,-1,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+72,1,80,,,,1,80,,Nein,Nein,,100 %
+73,1,79,,,,1,79,,Nein,Nein,,100 %
+74,1,79,,,,1,79,,Nein,Nein,,100 %
+75,1,79,,RLFmaxZeit,,1,79,,Nein,Nein,,100 %
+76,1,78,,,,1,78,,Nein,Nein,,100 %
+77,1,75,,,,1,75,,Nein,Nein,,100 %
+78,1,-3,,,,1,-3,,Nein,Nein,,100 %
+79,1,73,,,,1,73,,Nein,Nein,,100 %
+80,1,72,,,,1,72,,Nein,Nein,,100 %
+81,1,72,,,,1,72,,Nein,Nein,,100 %
+82,1,72,,,,1,72,,Nein,Nein,,100 %
+83,1,72,,,,1,-2,,Nein,Ja,,100 %
+84,1,72,,,,1,-2,,Nein,Ja,,100 %
+85,1,71,,,,1,71,,Nein,Nein,,100 %
+86,1,69,,,,1,69,,Nein,Nein,,100 %
+87,1,89,,,,1,89,,Nein,Nein,,100 %
+88,1,100,,,,1,100,,Nein,Nein,,100 %
+89,1,100,,,,1,100,,Nein,Nein,,100 %
+90,1,100,,,,1,100,,Nein,Nein,,100 %
+91,1,100,,RLFgrenz,,1,100,,Nein,Nein,,100 %
+92,1,95,,,,1,95,,Nein,Nein,,100 %
+93,1,92,,,,1,92,,Nein,Nein,,100 %

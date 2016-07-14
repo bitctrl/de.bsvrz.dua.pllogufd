@@ -1,0 +1,21 @@
+,DUA-56,,,,,,,,,,,
+Zeile,Eingangsdaten,,,,,Soll erwartet,,,,,,
+,T,Wert,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,°,,,,Minute,°,,Erfassung,Implausibel,,
+231,1,84,,,,1,84,,Nein,Nein,,100 %
+232,1,-1,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+233,1,82,,,,1,82,,Nein,Nein,,100 %
+234,1,-3,,,,1,-3,,Nein,Nein,,100 %
+235,1,86,,,,1,86,,Nein,Nein,,100 %
+236,1,85,,,,1,85,,Nein,Nein,,100 %
+237,1,85,,WRmaxZeit,,1,85,,Nein,Nein,,100 %
+238,1,96,,,,1,96,,Nein,Nein,,100 %
+239,1,96,,,,1,96,,Nein,Nein,,100 %
+240,1,96,,,,1,-2,,Nein,Ja,,100 %
+241,1,96,,,,1,-2,,Nein,Ja,,100 %
+242,1,96,,,,1,-2,,Nein,Ja,,100 %
+243,1,96,,,,1,-2,,Nein,Ja,,100 %
+244,1,92,,,,1,92,,Nein,Nein,,100 %
+245,1,104,,,,1,104,,Nein,Nein,,100 %
+246,1,102,,,,1,102,,Nein,Nein,,100 %
+247,1,96,,,,1,96,,Nein,Nein,,100 %

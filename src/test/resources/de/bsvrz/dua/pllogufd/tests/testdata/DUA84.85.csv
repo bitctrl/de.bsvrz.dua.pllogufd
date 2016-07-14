@@ -1,0 +1,12 @@
+,"DUA-84, -85",,,,,,,,,,,
+,Parameter,,,,,,,,,,,
+,SWmax,,502,m,,,,,,,,
+Zeile,Eingangsdaten,,,,Soll erwartet,,,,,,,
+,T,SichtWeite,,,SichtWeite,,Status,,,Güte,,Betriebsmeldung
+,Minute,m,,,m,,WMLog,Impl.,,,,
+1,1,400,,,400,,Nein,Nein,,100 %,,Nein
+2,1,480,,,480,,Nein,Nein,,100 %,,Nein
+3,1,500,,,500,,Nein,Nein,,100 %,,Nein
+4,1,502,,,502,,Nein,Nein,,100 %,,Nein
+5,1,510,,,502,,Ja,Nein,,100 %,,Nein
+6,1,490,,,490,,Nein,Nein,,100 %,,Nein

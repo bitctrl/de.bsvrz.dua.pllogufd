@@ -1,0 +1,29 @@
+,DUA-57,,,,,,,,,,,,,
+Zeile,Eingangsdaten,,,,,,,Soll erwartet,,,,,,
+,T,Wert,Status,MWE,,Bemerkung,,T,Wert,,Status,MWE,,Güte
+,Minute,m/s,Erfassung,Implausibel,,,,Minute,m/s,,Erfassung,Implausibel,,
+78,1,"2,5",Nein,Nein,,,,1,"2,5",,Nein,Nein,,100 %
+79,1,"2,6",Nein,Nein,,,,1,"2,6",,Nein,Nein,,100 %
+80,1,"22,6",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+81,1,-1,Ja,Nein,,"DUA-54, Ze. 8",,1,-1,,Ja,Nein,,100 %
+82,1,"2,6",Nein,Nein,,,,1,"2,6",,Nein,Nein,,100 %
+83,1,"12,5",Nein,Nein,,,,1,"12,5",,Nein,Nein,,100 %
+84,1,"23,7",Nein,Nein,,,,1,"23,7",,Nein,Nein,,100 %
+85,1,-3,Nein,Nein,,,,1,-3,,Nein,Nein,,100 %
+86,1,"36,8",Nein,Nein,,,,1,"36,8",,Nein,Nein,,100 %
+87,1,"22,3",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+88,1,"8,7",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+89,1,"8,4",Nein,Nein,,,,1,"8,4",,Nein,Nein,,100 %
+90,1,-2,Nein,Ja,,"DUA-56, Ze. 190",,1,-2,,Nein,Ja,,100 %
+91,1,"22,2",Nein,Nein,,,,1,"22,2",,Nein,Nein,,100 %
+92,1,"38,3",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+93,1,"54,9",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+94,1,"50,6",Nein,Nein,,,,1,"50,6",,Nein,Nein,,100 %
+95,1,"5,4",Nein,Nein,,,,1,-2,,Nein,Ja,,100 %
+96,1,"4,2",Nein,Nein,,,,1,"4,2",,Nein,Nein,,100 %
+97,1,"17,3",Nein,Nein,,WGMmaxDiff,,1,"17,3",,Nein,Nein,,100 %
+98,1,"15,2",Nein,Nein,,,,1,"15,2",,Nein,Nein,,100 %
+99,1,"11,8",Nein,Nein,,,,1,"11,8",,Nein,Nein,,100 %
+100,1,"14,6",Nein,Nein,,,,1,"14,6",,Nein,Nein,,100 %
+101,1,"1,5",Nein,Nein,,WGMmaxDiff,,1,"1,5",,Nein,Nein,,100 %
+102,1,"2,4",Nein,Nein,,,,1,"2,4",,Nein,Nein,,100 %
