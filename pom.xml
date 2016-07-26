@@ -363,7 +363,9 @@
 								com.bitctrl,
 								commons-codec,
 								junit,
-								org.hamcrest
+								org.hamcrest,
+								de.kappich,
+								com.google.guava
 							</excludeGroupIds>
 						</configuration>
 					</execution>
@@ -391,7 +393,10 @@
 								com.bitctrl,
 								commons-codec,
 								junit,
-								org.hamcrest</excludeGroupIds>
+								org.hamcrest,
+								de.kappich,
+								com.google.guava
+								</excludeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

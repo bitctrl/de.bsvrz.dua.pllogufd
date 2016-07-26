@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd.svg?branch=master)](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd)
+[![Build Status](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd.svg?branch=develop)](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd)
 [![Build Status](https://api.bintray.com/packages/bitctrl/maven/de.bsvrz.dua.pllogufd/images/download.svg)](https://bintray.com/bitctrl/maven/de.bsvrz.dua.pllogufd)
 
 # Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
@@ -20,6 +20,61 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 
 ## Versionsgeschichte
+
+### 2.0.0
+
+Release-Datum: 31.05.2016
+
+#### Neue Abhängigkeiten
+
+Die SWE benötigt nun das Distributionspaket de.bsvrz.sys.funclib.bitctrl.dua
+in Mindestversion 1.5.0 und de.bsvrz.sys.funclib.bitctrl in Mindestversion 1.4.0,
+sowie die Kernsoftware in Mindestversion 3.8.0.
+
+#### Datenmodelländerungen
+
+Folgende Änderungen an Konfigurationsbereichen wurden durchgeführt:
+
+##### kb.tmUmfeldDatenGlobal Version 25
+
+– Neue Parameterattributgruppen für die Grenzwertprüfung UFD
+  atg.ufdsGrenzwerte<Umfelddatenart>.
+– Erweiterung der bestehenden Parameterattributgruppen für die Klassifizierung
+  der Niederschlagsart, Niederschlagsintensität und Wasserfilmdicke um
+  Attributlisten, um die Parameter abhängig von der NI-WFD-Klasse festlegen
+  zu können.
+– Ergänzung eines neuen Parameters für die Meteorologische Kontrolle an der
+  Umfelddatenmesstelle: atg.ufdmsParameterMeteorologischeKontrolle.
+– Die Online-Datensätze der Sensordaten wurden um Attribute für die logische
+  Grenzwertprüfung ergänzt. (Achtung: Hierdurch kann es beispielsweise beim
+  Zugriff auf Archivdaten zu Problemen kommen!)
+
+#### Änderungen
+
+Folgende Änderungen gegenüber vorhergehenden Versionen wurden durchgeführt:
+
+- Überarbeitung der erzeugten Betriebsmeldungen gemäß neuen Anwenderforderungen.
+- Eine Grenzwertprüfung wurde ergänzt, mit denen die Attribute logisch auf Maximalwerte
+  (und zusätzlich Minimalwerte für Temperaturen) geprüft werden können.
+- Die meteorologische Kontrolle wurde komplett ersetzt durch ein neues Modul mit
+  neuen Prüfungen.
+- Die Differenzialkontrolle der Fahrbahnoberflächentemperatur wird nicht mehr
+  durchgeführt, falls Niederschlagsart=Schnee.
+- Die SWE ermittelt jetzt die Messstelle die zu einem Sensor gehört, und erzeugt
+  bei einem Sensor ohne zugehörige Messstelle eine Warnung.
+- Die SWE erzeugt bei unbekannten Sensortypen jetzt eine Betriebsmeldung.
+- Folgende Sensorarten werden nicht mehr verarbeitet: Luftdruck, Fahrbahnglätte,
+  Fahrbahnfeuchte, Niederschlagsmenge, Schneehöhe, Temperatur in Tiefe 2.
+
+#### Fehlerkorrekturen
+
+Folgende Fehler gegenüber vorhergehenden Versionen wurden korrigiert:
+
+- Verschiedene Betriebsmeldungen und Prüfungen verwenden jetzt korrekt skalierte
+  Werte, bisher wurden teilweise falsche, unskalierte Werte in Meldungen ausgegeben,
+  wodurch beispielsweise Temperaturabweichungen mit Faktor 10 berechnet
+  und in Betriebsmeldungen ausgegeben wurden.
+
 
 ### 1.7.0
 - Umstellung auf Java 8 und UTF-8
