@@ -48,7 +48,7 @@ import java.util.Collection;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: Publikation.java 53837 2015-03-18 11:45:45Z peuker $
  */
 public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 

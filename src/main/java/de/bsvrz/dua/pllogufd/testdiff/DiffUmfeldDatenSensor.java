@@ -58,7 +58,7 @@ import java.util.HashSet;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: DiffUmfeldDatenSensor.java 54549 2015-04-17 13:40:51Z gieseler $
  */
 public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
@@ -79,7 +79,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 * Vorlage für die Betriebsmeldung
 	 */
 	private static final MessageTemplate TEMPLATE_DIFF = new MessageTemplate(
-			MessageGrade.INFORMATION,
+			MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 			MessageTemplate.fixed("Grenzwert für Messwertkonstanz bei Differenzialkontrolle für "),
 			MessageTemplate.variable("attr"),
@@ -89,7 +89,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			MessageTemplate.set("values", ", "),
 			MessageTemplate.fixed(". Wert wird auf fehlerhaft gesetzt. "),
 			MessageTemplate.ids()
-	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UDK]");
+	);
 
 	/**
 	 * Niederschlags-Art-Sensor (für den Spezialfall FBT)

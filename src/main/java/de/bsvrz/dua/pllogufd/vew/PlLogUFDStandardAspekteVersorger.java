@@ -38,7 +38,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * (Zuordnung von Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- * @version $Id$
+ * @version $Id: PlLogUFDStandardAspekteVersorger.java 53825 2015-03-18 09:36:42Z peuker $
  */
 public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 

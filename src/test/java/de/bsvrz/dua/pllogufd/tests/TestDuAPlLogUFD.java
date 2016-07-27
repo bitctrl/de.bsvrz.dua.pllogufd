@@ -29,8 +29,6 @@ package de.bsvrz.dua.pllogufd.tests;
 import com.google.common.collect.ImmutableList;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
@@ -57,7 +55,6 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 	private Aspect _aspReceive;
 	private DataDescription _ddIn;
 	private DataDescription _ddOut;
-	private boolean sleep = false;
 
 	@Override
 	@Before
@@ -69,7 +66,6 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 		_aspReceive = _dataModel.getAspect("asp.plausibilitätsPrüfungLogisch");
 		_ddIn = new DataDescription(_atg, _aspSend);
 		_ddOut = new DataDescription(_atg, _aspReceive);
-		sleep = false;
 	}
 
 	@Test
@@ -457,7 +453,6 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 				new DuADataIdentification(rlf, ddrlfReceive),
 				new DuADataIdentification(sw, ddswReceive)
 		);
-		sleep = true;
 		startTestCase("DUA58.59.csv", send, rec, new Dua58Layout());
 	}
 	
@@ -694,16 +689,4 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 		}
 	}
 
-
-	@Override
-	public void sendData(final ResultData... resultDatas) throws SendSubscriptionNotConfirmed {
-		if(sleep) {
-			try {
-				Thread.sleep(1000);
-			}
-			catch(InterruptedException e) {
-			}
-		}
-		super.sendData(resultDatas);
-	}
 }

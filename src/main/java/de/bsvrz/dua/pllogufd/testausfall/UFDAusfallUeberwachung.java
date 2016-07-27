@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: UFDAusfallUeberwachung.java 53837 2015-03-18 11:45:45Z peuker $
  */
 public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 		implements ClientReceiverInterface {
@@ -89,7 +89,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 	private ClockScheduler kontrollProzess = null;
 	
 	private static final MessageTemplate TEMPLATE = new MessageTemplate(
-			MessageGrade.WARNING,
+			MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 	        MessageTemplate.fixed("Datensatz mit Zeitstempel "),
 	        MessageTemplate.variable("timestamp"),
@@ -97,7 +97,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 	        MessageTemplate.object(),
 	        MessageTemplate.fixed(". "),
 	        MessageTemplate.ids()
-	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UA]");
+	);
 	
 	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 

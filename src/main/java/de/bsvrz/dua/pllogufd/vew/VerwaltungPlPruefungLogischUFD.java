@@ -54,7 +54,10 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenMessStelle;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.sys.funclib.operatingMessage.*;
+import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
+import de.bsvrz.sys.funclib.operatingMessage.MessageTemplate;
+import de.bsvrz.sys.funclib.operatingMessage.MessageType;
+import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
 
 import java.util.*;
 
@@ -85,7 +88,7 @@ public class VerwaltungPlPruefungLogischUFD extends
 	 * Betriebsmeldungs-Template für unbekannte Sensoren mit Messstelle
 	 */
 	public static final MessageTemplate TEMPLATE_WITH_MS = new MessageTemplate(
-			MessageGrade.INFORMATION,
+			MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 
 			MessageTemplate.fixed("Unbekannter Umfelddatensensor "),
@@ -94,20 +97,20 @@ public class VerwaltungPlPruefungLogischUFD extends
 			MessageTemplate.variable("messstelle"),
 			MessageTemplate.fixed(" entdeckt. Sensor wird ignoriert. "),
 			MessageTemplate.ids()
-	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UU]");
+	);
 
 	/**
 	 * Betriebsmeldungs-Template für unbekannte Sensoren ohne Messstelle
 	 */
 	public static final MessageTemplate TEMPLATE_NO_MS = new MessageTemplate(
-			MessageGrade.INFORMATION,
+			MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 
 			MessageTemplate.fixed("Unbekannter Umfelddatensensor "),
 			MessageTemplate.object(),
 			MessageTemplate.fixed(" entdeckt. Sensor wird ignoriert. "),
 			MessageTemplate.ids()
-	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UU]");
+	);
 
 	/**
 	 * Verwendete Uhr, verwendet normalerweise die Systemzeit, kann aber von Testfällen anders gesetzt werden.
@@ -177,8 +180,6 @@ public class VerwaltungPlPruefungLogischUFD extends
 
 		super.initialisiere();
 
-		MessageSender.getInstance().setApplicationLabel("PL-Logisch UFD");
-		
 		UmfeldDatenArt.initialisiere(this.verbindung);
 		
 		String infoStr = "";

@@ -40,11 +40,12 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenMessStelle;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.sys.funclib.operatingMessage.*;
+import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
+import de.bsvrz.sys.funclib.operatingMessage.MessageTemplate;
+import de.bsvrz.sys.funclib.operatingMessage.MessageType;
+import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
 
 import java.text.NumberFormat;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -52,54 +53,20 @@ import java.util.Set;
  * Eine konkrete Messstelle für die Meteorologische Kontrolle
  *
  * @author Kappich Systemberatung
- */
+ */                                                                                                     
 public class MeteoMessstelle implements ClientReceiverInterface {
 
-	/**
-	 * Logger
-	 */
-	private static final Debug _debug = Debug.getLogger();
-	/**
-	 * Template für Betriebsmeldungstext
-	 */
-	private static final MessageTemplate MESSAGE_TEMPLATE = new MessageTemplate(
-			MessageGrade.INFORMATION,
-			MessageType.APPLICATION_DOMAIN,
-			MessageTemplate.set("attr", ", ", "Messwert ", "Messwerte "),
-			MessageTemplate.fixed(" bei meteorologischer Kontrolle an Messstelle "),
-			MessageTemplate.object(),
-			MessageTemplate.fixed(" auf fehlerhaft gesetzt, da "),
-			MessageTemplate.set("values", ", "),
-			MessageTemplate.fixed(". "),
-			MessageTemplate.ids()
-	).withIdFactory(new MessageIdFactory() {
-		@Override
-		public String generateMessageId(final OperatingMessage q) {
-			return q.getObject().getPidOrId() + " [DUA-PP-MK]";
-		}
-	});
 	/**
 	 * Messstellen-Objekt
 	 */
 	private final DUAUmfeldDatenMessStelle _messStelle;
-	/**
-	 * Aktuelle Datenarten, die implausible Daten liefern
-	 */
-	private final Set<UmfeldDatenArt> _implausibleDatenArten = new LinkedHashSet<>();
-	/**
-	 * Aktuelle verletze Bedingungen (für die Ausgabe in der Betriebsmeldung)
-	 */
-	private final Set<String> _verletzteBedingungen = new LinkedHashSet<>();
-	/**
-	 * Aktuell vorliegende Betriebsmeldungs-IDs
-	 */
-	private final Set<String> _ids = new LinkedHashSet<>();
+
 	/**
 	 * NiederschlagsIntensitäts-Sensor oder null
 	 */
 	private SystemObject _niSensor = null;
 	/**
-	 * NiederschlagsArt-Sensor oder null
+	 * NiederschlagsArt-Sensor oder null 
 	 */
 	private SystemObject _nsSensor = null;
 	/**
@@ -107,7 +74,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 	 */
 	private SystemObject _wfdSensor = null;
 	/**
-	 * Fahrbahnoberflächenzustand-Sensor oder null
+	 * Fahrbahnoberflächenzustand-Sensor oder null 
 	 */
 	private SystemObject _fbzSensor = null;
 	/**
@@ -122,85 +89,101 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 	 * Sichtweitensensor oder null
 	 */
 	private SystemObject _swSensor = null;
+
 	/**
 	 * Aktueller NI-Wert
 	 */
 	private UmfeldDatenSensorWert _niWert = null;
 	/**
 	 * Aktueller NS-Wert
-	 */
-	private UmfeldDatenSensorWert _nsWert = null;
+	 */	private UmfeldDatenSensorWert _nsWert = null;
 	/**
 	 * Aktueller WFD-Wert
-	 */
-	private UmfeldDatenSensorWert _wfdWert = null;
+	 */	private UmfeldDatenSensorWert _wfdWert = null;
 	/**
 	 * Aktueller FBZ-Wert
-	 */
-	private UmfeldDatenSensorWert _fbzWert = null;
+	 */	private UmfeldDatenSensorWert _fbzWert = null;
 	/**
 	 * Aktueller LT-Wert
-	 */
-	private UmfeldDatenSensorWert _ltWert = null;
+	 */	private UmfeldDatenSensorWert _ltWert = null;
 	/**
 	 * Aktueller RLF-Wert
-	 */
-	private UmfeldDatenSensorWert _rlfWert = null;
+	 */	private UmfeldDatenSensorWert _rlfWert = null;
 	/**
 	 * Aktueller SW-Wert
+	 */private UmfeldDatenSensorWert _swWert = null;
+
+	/**
+	 * Aktuelle Datenarten, die implausible Daten liefern
 	 */
-	private UmfeldDatenSensorWert _swWert = null;
+	private final Set<UmfeldDatenArt> _implausibleDatenArten =  new LinkedHashSet<>();
+	/**
+	 * Aktuelle verletze Bedingungen (für die Ausgabe in der Betriebsmeldung)
+	 */
+	private final Set<String> _verletzteBedingungen = new LinkedHashSet<>();
+	/**
+	 * Aktuell vorliegende Betriebsmeldungs-IDs
+	 */
+	private final Set<String> _ids = new LinkedHashSet<>();
+
 	/**
 	 * Aktueller Parameterwert  _niGrenzNs
 	 */
 	private UmfeldDatenSensorWert _niGrenzNs;
 	/**
 	 * Aktueller Parameterwert  _niGrenzWfd
-	 */
-	private UmfeldDatenSensorWert _niGrenzWfd;
+	 */	private UmfeldDatenSensorWert _niGrenzWfd;
 	/**
 	 * Aktueller Parameterwert      _wfdGrenzTrocken
-	 */
-	private UmfeldDatenSensorWert _wfdGrenzTrocken;
+	 */	private UmfeldDatenSensorWert _wfdGrenzTrocken;
 	/**
 	 * Aktueller Parameterwert      _ltGrenzRegen
-	 */
-	private UmfeldDatenSensorWert _ltGrenzRegen;
+	 */	private UmfeldDatenSensorWert _ltGrenzRegen;
 	/**
 	 * Aktueller Parameterwert        _ltGrenzSchnee
-	 */
-	private UmfeldDatenSensorWert _ltGrenzSchnee;
+	 */	private UmfeldDatenSensorWert _ltGrenzSchnee;
 	/**
 	 * Aktueller Parameterwert        _rlfGrenzTrocken
-	 */
-	private UmfeldDatenSensorWert _rlfGrenzTrocken;
+	 */	private UmfeldDatenSensorWert _rlfGrenzTrocken;
 	/**
 	 * Aktueller Parameterwert         _rlfGrenzNass
-	 */
-	private UmfeldDatenSensorWert _rlfGrenzNass;
+	 */	private UmfeldDatenSensorWert _rlfGrenzNass;
 	/**
 	 * Aktueller Parameterwert      _swGrenz
-	 */
-	private UmfeldDatenSensorWert _swGrenz;
+	 */	private UmfeldDatenSensorWert _swGrenz;
+
 	/**
 	 * Sollen Betriebsmeldungen versendet werden?
 	 */
 	private boolean _sendMessage = true;
+
 	/**
 	 * Wurden die aktuellen Eingangsdaten bereits geprüft? Verhindert, dass Meldungen doppelt verschickt werden, obwohl sich nichts ändert.
 	 */
 	private boolean _geprueft = false;
+
 	/**
-	 * Die zuletzt versendete Betriebsmeldung oder null falls noch keine für diese Messstelle versendet wurde
+	 * Logger
 	 */
-	private OperatingMessage _lastMessage = null;
-
-	/** Zeitpunkt der zuletzt versendeten Meldung */
-	private Instant _lastMessageTime = null;
+	private static final Debug _debug = Debug.getLogger();
 
 	/**
+	 * Template für Betriebsmeldungstext
+	 */
+	private final MessageTemplate MESSAGE_TEMPLATE = new MessageTemplate(
+			MessageGrade.ERROR, 
+			MessageType.APPLICATION_DOMAIN,
+	        MessageTemplate.set("attr", ", ", "Messwert ", "Messwerte "),
+	        MessageTemplate.fixed(" bei meteorologischer Kontrolle an Messstelle "),
+	        MessageTemplate.object(),
+	        MessageTemplate.fixed(" auf fehlerhaft gesetzt, da "),
+	        MessageTemplate.set("values", ", "),
+	        MessageTemplate.fixed(". "),
+	        MessageTemplate.ids()
+			);
+	
+	/** 
 	 * Erstellt eine neue MeteoMessstelle
-	 *
 	 * @param connection Verbindung
 	 * @param messStelle Messstellen-Objekt
 	 */
@@ -217,26 +200,20 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		String atgPid = "atg.ufdmsParameterMeteorologischeKontrolle";
 		AttributeGroup attributeGroup = dataModel.getAttributeGroup(atgPid);
 		Aspect aspect = dataModel.getAspect("asp.parameterSoll");
-
+		
 		if(attributeGroup == null) {
 			_debug.fine(
-					"Es konnte keine Parameter-Attributgruppe für die " +
+					"Es konnte keine Parameter-Attributgruppe für die " + 
 							"Meteorologische Kontrolle des Objektes "
-							+ messStelle + " bestimmt werden\n" +
-							"Atg-Name: " + atgPid);
+							+ messStelle + " bestimmt werden\n" + 
+							"Atg-Name: " + atgPid); 			
 			return;
 		}
-
+		
 		connection.subscribeReceiver(this, messStelle.getObjekt(), new DataDescription(
 				attributeGroup,
 				aspect
 		), ReceiveOptions.normal(), ReceiverRole.receiver());
-	}
-
-	private static UmfeldDatenSensorWert get(final Data data, final String name, final UmfeldDatenArt art) {
-		UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(art);
-		wert.setWert(data.getUnscaledValue(name).longValue());
-		return wert;
 	}
 
 	protected SystemObject getObjekt(final DUAUmfeldDatenMessStelle messStelle, final UmfeldDatenArt datenArt) {
@@ -253,26 +230,26 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		else {
 			data = null;
 		}
-
-		if(resultData.getObject().equals(_niSensor)) {
+		
+		if(resultData.getObject().equals(_niSensor)){
 			_niWert = data;
-		}
-		else if(resultData.getObject().equals(_nsSensor)) {
+		}	
+		else if(resultData.getObject().equals(_nsSensor)){
 			_nsWert = data;
-		}
-		else if(resultData.getObject().equals(_wfdSensor)) {
+		}	
+		else if(resultData.getObject().equals(_wfdSensor)){
 			_wfdWert = data;
-		}
-		else if(resultData.getObject().equals(_fbzSensor)) {
+		}	
+		else if(resultData.getObject().equals(_fbzSensor)){
 			_fbzWert = data;
-		}
-		else if(resultData.getObject().equals(_ltSensor)) {
+		}	
+		else if(resultData.getObject().equals(_ltSensor)){
 			_ltWert = data;
-		}
-		else if(resultData.getObject().equals(_rlfSensor)) {
+		}	
+		else if(resultData.getObject().equals(_rlfSensor)){
 			_rlfWert = data;
-		}
-		else if(resultData.getObject().equals(_swSensor)) {
+		}	
+		else if(resultData.getObject().equals(_swSensor)){
 			_swWert = data;
 		}
 		_geprueft = false;
@@ -290,10 +267,10 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 			catch(UmfeldDatenSensorUnbekannteDatenartException e) {
 				return resultData;
 			}
-
+			
 			pruefe();
-
-			if(_implausibleDatenArten.contains(datenArt)) {
+			
+			if(_implausibleDatenArten.contains(datenArt)){
 				UmfeldDatenSensorDatum umfeldDatenSensorDatum = new UmfeldDatenSensorDatum(resultData);
 				umfeldDatenSensorDatum.getWert().setFehlerhaftAn();
 				umfeldDatenSensorDatum.getDatum(); // Workaround fehlende Aktualisierung
@@ -310,23 +287,23 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		_verletzteBedingungen.clear();
 		_implausibleDatenArten.clear();
 		_ids.clear();
-
+		
 		// Prüfung 1
 		if(isOk(_nsWert) && keinNiederschlag()
 				&& isOk(_niWert) && isOk(_niGrenzNs) && _niWert.getWert() > _niGrenzNs.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()) {
+				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.ns);
 			_verletzteBedingungen.add("NS=Kein Niederschlag, "
 					                          + "NI=" + formatWert(_niWert) + " mm/h > " + formatWert(_niGrenzNs) + " mm/h, "
 					                          + "RLF=" + formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF"
 			);
 			_ids.add("[DUA-PP-MK01]");
-		}
-
+		}	
+		
 		// Prüfung 2
 		if(isOk(_nsWert) && niederschlag()
 				&& isOk(_niWert) && _niWert.getWert() == 0
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()) {
+				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.ns);
 			_verletzteBedingungen.add("NS=Niederschlag, "
 					                          + "NI=" + formatWert(_niWert) + " mm/h, "
@@ -338,7 +315,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		// Prüfung 3
 		if(isOk(_nsWert) && keinNiederschlag()
 				&& isOk(_niWert) && isOk(_niGrenzNs) && _niWert.getWert() > _niGrenzNs.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()) {
+				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.ni);
 			_verletzteBedingungen.add("NS=Kein Niederschlag, "
 					                          + "NI=" + formatWert(_niWert) + " mm/h > " + formatWert(_niGrenzNs) + " mm/h, "
@@ -350,7 +327,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		// Prüfung 4
 		if(isOk(_nsWert) && niederschlag()
 				&& isOk(_niWert) && _niWert.getWert() == 0
-				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()) {
+				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.ni);
 			_verletzteBedingungen.add("NS=Niederschlag, "
 					                          + "NI=" + formatWert(_niWert) + " mm/h, "
@@ -358,77 +335,77 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 			);
 			_ids.add("[DUA-PP-MK04]");
 		}
-
+		
 		// Prüfung 5
 		if(isOk(_niWert) && isOk(_niGrenzWfd) && _niWert.getWert() > _niGrenzWfd.getWert()
 				&& isOk(_wfdWert) && isOk(_wfdGrenzTrocken) && _wfdWert.getWert() <= _wfdGrenzTrocken.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()) {
+				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.ni);
 			_verletzteBedingungen.add("NI=" + formatWert(_niWert) + " mm/h, "
 					                          + "WFD=" + formatWert(_wfdWert) + " mm <= " + formatWert(_wfdGrenzTrocken) + " mm, "
 					                          + "RLF=" + formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF"
 			);
 			_ids.add("[DUA-PP-MK05]");
-		}
-
+		}	
+		
 		// Prüfung 6
 		if(isOk(_niWert) && isOk(_niGrenzWfd) && _niWert.getWert() > _niGrenzWfd.getWert()
 				&& isOk(_wfdWert) && isOk(_wfdGrenzTrocken) && _wfdWert.getWert() <= _wfdGrenzTrocken.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()) {
+				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.wfd);
 			_verletzteBedingungen.add("NI=" + formatWert(_niWert) + " mm/h, "
 					                          + "WFD=" + formatWert(_wfdWert) + " mm <= " + formatWert(_wfdGrenzTrocken) + " mm, "
 					                          + "RLF=" + formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF"
 			);
 			_ids.add("[DUA-PP-MK06]");
-		}
-
+		}	
+		
 		// Prüfung 7
 		if(isOk(_swWert) && isOk(_swGrenz) && _swWert.getWert() <= _swGrenz.getWert()
 				&& isOk(_nsWert) && keinNiederschlag()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()) {
+				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.sw);
 			_verletzteBedingungen.add("SW=" + formatWert(_swWert) + " m <= " + formatWert(_swGrenz) + " m, "
 					                          + "NS=Kein Niederschlag, "
 					                          + "RLF=" + formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF"
 			);
 			_ids.add("[DUA-PP-MK07]");
-		}
-
+		}	
+		
 		// Prüfung 8
 		if(isOk(_nsWert) && regen()
-				&& isOk(_ltWert) && isOk(_ltGrenzRegen) && _ltWert.getWert() < _ltGrenzRegen.getWert()) {
+				&& isOk(_ltWert) && isOk(_ltGrenzRegen) && _ltWert.getWert() < _ltGrenzRegen.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.ns);
 			_verletzteBedingungen.add("NS=Regen, "
 					                          + "LT=" + formatWert(_ltWert) + " °C < " + formatWert(_ltGrenzRegen) + " °C"
 			);
 			_ids.add("[DUA-PP-MK08]");
-		}
-
+		}	
+		
 		// Prüfung 9
 		if(isOk(_nsWert) && schnee()
-				&& isOk(_ltWert) && isOk(_ltGrenzSchnee) && _ltWert.getWert() > _ltGrenzSchnee.getWert()) {
+				&& isOk(_ltWert) && isOk(_ltGrenzSchnee) && _ltWert.getWert() > _ltGrenzSchnee.getWert()){
 			_implausibleDatenArten.add(UmfeldDatenArt.ns);
 			_verletzteBedingungen.add("NS=Schnee, "
 					                          + "LT=" + formatWert(_ltWert) + " °C > " + formatWert(_ltGrenzSchnee) + " °C"
 			);
 			_ids.add("[DUA-PP-MK09]");
-		}
-
+		}		
+		
 		// Prüfung 10
 		if(isOk(_wfdWert) && _wfdWert.getWert() > 0
-				&& isOk(_fbzWert) && _fbzWert.getWert() == 0) {
+				&& isOk(_fbzWert) && _fbzWert.getWert() == 0){
 			_implausibleDatenArten.add(UmfeldDatenArt.wfd);
 			_implausibleDatenArten.add(UmfeldDatenArt.fbz);
 			_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm > 0,0 mm, "
 					                          + "FBZ=Trocken"
 			);
 			_ids.add("[DUA-PP-MK10]");
-		}
-
+		}	
+		
 		// Prüfung 11
 		if(isOk(_wfdWert) && _wfdWert.getWert() == 0
-				&& isOk(_fbzWert) && _fbzWert.getWert() != 0) {
+				&& isOk(_fbzWert) && _fbzWert.getWert() != 0){
 			_implausibleDatenArten.add(UmfeldDatenArt.wfd);
 			_implausibleDatenArten.add(UmfeldDatenArt.fbz);
 			_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm, "
@@ -442,11 +419,11 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 						&& _rlfWert.getWert() >= _rlfGrenzTrocken.getWert()
 						&& _rlfWert.getWert() <= _rlfGrenzNass.getWert()
 				);
-
+		
 		// Prüfung 12
 		if(isOk(_nsWert) && keinNiederschlag()
 				&& isOk(_niWert) && isOk(_niGrenzNs) && _niWert.getWert() > _niGrenzNs.getWert()
-				&& rlfUndef) {
+				&& rlfUndef){
 			_implausibleDatenArten.add(UmfeldDatenArt.ns);
 			_implausibleDatenArten.add(UmfeldDatenArt.ni);
 			_verletzteBedingungen.add("NS=Kein Niederschlag, "
@@ -458,7 +435,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		// Prüfung 13
 		if(isOk(_nsWert) && niederschlag()
 				&& isOk(_niWert) && _niWert.getWert() == 0
-				&& rlfUndef) {
+				&& rlfUndef){
 			_implausibleDatenArten.add(UmfeldDatenArt.ns);
 			_implausibleDatenArten.add(UmfeldDatenArt.ni);
 			_verletzteBedingungen.add("NS=Niederschlag, "
@@ -468,8 +445,6 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		}
 
 		if(!_ids.isEmpty()) {
-			// Es sind Prüfbedingungen verletzt
-
 			OperatingMessage message = MESSAGE_TEMPLATE.newMessage(_messStelle.getObjekt());
 			for(String id : _ids) {
 				message.addId(id);
@@ -481,19 +456,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 				message.add("values", s);
 			}
 			if(_sendMessage) {
-				Instant now = Instant.now();
-				if(_lastMessage != null && _lastMessageTime != null) {
-					if(Duration.between(_lastMessageTime, now).getSeconds() < 1
-							&& message.getMessage().equals(_lastMessage.getMessage())) {
-						// Es handelt sich um eine identische Meldung innerhalb der gleichen Sekunde, sodass diese unterdrückt wird
-						return;
-					}
-				}
 				message.send();
-
-				// Meldung merken zum erneuten Vergleich
-				_lastMessage = message;
-				_lastMessageTime = now;
 			}
 			else {
 				_debug.info(message.toString());
@@ -508,11 +471,11 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 	private boolean niederschlag() {
 		return _nsWert.getWert() >= 50 && _nsWert.getWert() <= 69;
 	}
-
+	
 	private boolean regen() {
 		return (_nsWert.getWert() >= 40 && _nsWert.getWert() <= 69) || (_nsWert.getWert() >= 80 && _nsWert.getWert() <= 84);
 	}
-
+	
 	private boolean schnee() {
 		return (_nsWert.getWert() >= 70 && _nsWert.getWert() <= 78) || (_nsWert.getWert() >= 85 && _nsWert.getWert() <= 87);
 	}
@@ -530,7 +493,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 	@Override
 	public void update(final ResultData[] results) {
 		for(ResultData result : results) {
-			if(result.hasData()) {
+			if(result.hasData()){
 				Data data = result.getData();
 				_sendMessage = data.getTextValue("erzeugeBetriebsmeldungMeteorologischeKontrolle").getValueText().equals("Ja");
 				_niGrenzNs = get(data, "NIgrenzNS", UmfeldDatenArt.ni);
@@ -543,5 +506,11 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 				_swGrenz = get(data, "SWgrenz", UmfeldDatenArt.sw);
 			}
 		}
+	}
+
+	private static UmfeldDatenSensorWert get(final Data data, final String name, final UmfeldDatenArt art) {
+		UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(art);
+		wert.setWert(data.getUnscaledValue(name).longValue());
+		return wert;
 	}
 }
