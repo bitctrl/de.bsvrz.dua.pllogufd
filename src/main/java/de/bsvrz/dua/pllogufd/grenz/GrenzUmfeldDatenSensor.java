@@ -70,7 +70,7 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	private UniversalAtgUfdsGrenzwerte parameter = null;
 
 	public static final MessageTemplate TEMPLATE_GRENZWERT = new MessageTemplate(
-			MessageGrade.INFORMATION,
+			MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 			MessageTemplate.set("attr", " und ", "Attribut ", "Attribute "),
 			MessageTemplate.fixed(" durch Grenzwertprüfung auf fehlerhaft gesetzt am UFD-Sensor "),
@@ -81,7 +81,7 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			MessageTemplate.set("values", ", "),
 			MessageTemplate.fixed(". "),
 			MessageTemplate.ids()
-	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UGW]");
+	);
 
 	/**
 	 * Standardkonstruktor.

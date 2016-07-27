@@ -56,7 +56,7 @@ import java.util.HashSet;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  *
- * @version $Id$
+ * @version $Id: AufAbUmfeldDatenSensor.java 54549 2015-04-17 13:40:51Z gieseler $
  */
 public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
@@ -82,7 +82,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 * Betriebsmeldungs-Template
 	 */
 	private static final MessageTemplate TEMPLATE = new MessageTemplate(
-			MessageGrade.INFORMATION,
+			MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 			MessageTemplate.fixed("Grenzwert für Messwertkonstanz bei Anstieg-Abfall-Kontrolle für "),
 			MessageTemplate.variable("attr"),
@@ -92,7 +92,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			MessageTemplate.set("values", ", "),
 			MessageTemplate.fixed(". Wert wird auf fehlerhaft gesetzt. "),
 			MessageTemplate.ids()
-	).withIdFactory(message -> message.getObject().getPidOrId() + " [DUA-PP-UAK]");
+	);
 	
 	/**
 	 * Standardkonstruktor.
