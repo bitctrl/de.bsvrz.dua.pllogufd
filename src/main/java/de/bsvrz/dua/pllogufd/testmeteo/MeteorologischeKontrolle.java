@@ -52,9 +52,6 @@ import java.util.Map;
  * Implausibel gesetzt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: MeteorologischeKontrolle.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -69,9 +66,6 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	 */
 	private VerwaltungPlPruefungLogischUFD _verwaltung;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -82,9 +76,6 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		final List<ResultData> weiterzuleitendeResultate = new ArrayList<>();
@@ -118,17 +109,11 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert

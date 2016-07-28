@@ -47,8 +47,6 @@ import java.util.Collection;
  * Vorgaben der Datenflusssteuerung für das Modul Pl-Prüfung logisch UFD statt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: Publikation.java 53837 2015-03-18 11:45:45Z peuker $
  */
 public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -68,9 +66,6 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 		this.standardAspekte = stdAspekte;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -84,9 +79,6 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (this.publizieren) {
@@ -107,17 +99,11 @@ public class Publikation extends AbstraktBearbeitungsKnotenAdapter {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return ModulTyp.PL_PRUEFUNG_LOGISCH_UFD;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung iDfs) {
 		this.iDfsMod = iDfs.getDFSFuerModul(this.verwaltung.getSWETyp(),

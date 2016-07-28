@@ -48,7 +48,7 @@ public class ClockScheduler {
 	private final ClockTimer _clockTimer;
 
 	/**
-	 * Map mit Zeitpunkt -> Zu diesem Zeitpunkt geplante Aufgaben
+	 * Map mit Zeitpunkt -&gt; Zu diesem Zeitpunkt geplante Aufgaben
 	 */
 	private final NavigableMap<Instant, List<Runnable>> _scheduledTasks = new TreeMap<>();
 

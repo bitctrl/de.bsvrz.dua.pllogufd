@@ -40,8 +40,6 @@ import java.util.Map;
  * gestellt.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UfdsVergleichsOperator.java 53851 2015-03-18 15:19:43Z peuker $
  */
 public class UfdsVergleichsOperator extends AbstractDavZustand {
 

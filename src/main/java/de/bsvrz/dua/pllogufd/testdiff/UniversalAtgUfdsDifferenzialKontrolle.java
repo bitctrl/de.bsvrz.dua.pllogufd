@@ -41,9 +41,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * <code>atg.ufdsDifferenzialKontrolle<b>*</b></code>.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UniversalAtgUfdsDifferenzialKontrolle.java 53825 2015-03-18
- *          09:36:42Z peuker $
  */
 public class UniversalAtgUfdsDifferenzialKontrolle extends
 AllgemeinerDatenContainer {

@@ -55,8 +55,6 @@ import java.util.HashSet;
  * Grenzwertprüfung
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: AufAbUmfeldDatenSensor.java 54549 2015-04-17 13:40:51Z gieseler $
  */
 public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
@@ -101,10 +99,6 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		_messstelle = ((VerwaltungPlPruefungLogischUFD)verwaltung).getBetriebsmeldungsObjekt(obj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
-	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
 			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
@@ -271,9 +265,6 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		return numberInstance.format(w) + " " + suffixText;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {

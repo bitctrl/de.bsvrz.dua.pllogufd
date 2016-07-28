@@ -66,8 +66,6 @@ import java.util.*;
  * nächsten Bearbeitungsknoten weitergereicht.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UFDAusfallUeberwachung.java 53837 2015-03-18 11:45:45Z peuker $
  */
 public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 		implements ClientReceiverInterface {
@@ -101,9 +99,6 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 	
 	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
-	/**
-		 * {@inheritDoc}.
-		 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -169,9 +164,6 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 		return datum.getT();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -194,9 +186,6 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public synchronized void aktualisiereDaten(final ResultData... resultate) {
 		if (resultate != null) {
@@ -317,17 +306,11 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 		return kontrollZeitpunkt;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert

@@ -26,7 +26,6 @@
 		<distributionspaket.status>FREI</distributionspaket.status>
 		<distributionspaket.standDatum>2016-07-22</distributionspaket.standDatum>
 		<distributionspaket.lizenz>GPLv3.0</distributionspaket.lizenz>
-		<additionalparam>-Xdoclint:none</additionalparam>
 	</properties>
 
 	<licenses>
@@ -179,7 +178,7 @@
 		<dependency>
 			<groupId>de.bsvrz.sys</groupId>
 			<artifactId>de.bsvrz.sys.funclib.bitctrl.dua</artifactId>
-			<version>1.6.0</version>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>de.bsvrz.dua</groupId>

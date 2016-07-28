@@ -39,9 +39,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * <code>atg.ufdsGrenzwerte<b>*</b></code>.
  *
  * @author Kappich Systemberatung
- *
- * @version $Id: UniversalAtgUfdsAnstiegAbstiegKontrolle.java 53825 2015-03-18
- *          09:36:42Z peuker $
  */
 public class UniversalAtgUfdsGrenzwerte extends
 AllgemeinerDatenContainer {
