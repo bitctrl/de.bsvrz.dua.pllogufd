@@ -29,7 +29,6 @@
 package de.bsvrz.dua.pllogufd.grenz;
 
 import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -40,8 +39,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  *
  * @author Kappich Systemberatung
  */
-public class UniversalAtgUfdsGrenzwerte extends
-AllgemeinerDatenContainer {
+public class UniversalAtgUfdsGrenzwerte {
 
 	/**
 	 * Max-Grenzwert
@@ -50,14 +48,18 @@ AllgemeinerDatenContainer {
 	/**
 	 * Max-Grenzwert unskaliert
 	 */
-	private long max = -1;
+	private final long max;  //  = -1;
 
 	/**
 	 * Min-Grenzwert
+	 * 
+	 * TODO Wert ist quasi-final, weil es keine Setter gibt
 	 */
 	private double minSkaliert = Double.NaN;
 	/**
 	 * Min-Grenzwert unskaliert
+	 * 
+	 * TODO Wert ist quasi-final, weil es keine Setter gibt
 	 */
 	private long min = -1;
 
@@ -65,7 +67,7 @@ AllgemeinerDatenContainer {
 	/**
 	 * Aktuelles Verhalten der Grenzwertprüfung
 	 */
-	private OptionenPlausibilitaetsPruefungLogischUfd _verhalten = OptionenPlausibilitaetsPruefungLogischUfd.KEINE_PRUEFUNG;
+	private final  OptionenPlausibilitaetsPruefungLogischUfd _verhalten; // = OptionenPlausibilitaetsPruefungLogischUfd.KEINE_PRUEFUNG;
 	
 	/**
 	 * zeigt an, ob der Parameter <code>max</code> selbst einen semantisch
@@ -75,7 +77,7 @@ AllgemeinerDatenContainer {
 	 * - <code>fehlerhaft</code>, oder<br>
 	 * - <code>nicht ermittelbar/fehlerhaft</code><br>
 	 */
-	private boolean maxsinnvoll = false;	
+	private boolean maxsinnvoll  = false;	
 	
 	/**
 	 * zeigt an, ob der Parameter <code>min</code> selbst einen semantisch
@@ -121,7 +123,7 @@ AllgemeinerDatenContainer {
 		try {
 			wert.setWert(parameter
 					             .getData()
-					             .getUnscaledValue(datenArt.getAbkuerzung() + "min").longValue()); //$NON-NLS-1$
+					             .getUnscaledValue(datenArt.getAbkuerzung() + "min").longValue());
 
 			this.min = wert.getWert();
 			this.minSkaliert = wert.getSkaliertenWert();
@@ -130,7 +132,8 @@ AllgemeinerDatenContainer {
 					&& !wert.isFehlerhaftBzwNichtErmittelbar()
 					&& !wert.isNichtErmittelbar();
 		}
-		catch(Exception ignored){}
+		catch(Exception ignored){
+		}
 		
 		this._verhalten = OptionenPlausibilitaetsPruefungLogischUfd.getZustand(parameter.getData().getUnscaledValue("Verhalten").intValue());
 	}
@@ -201,5 +204,45 @@ AllgemeinerDatenContainer {
 	 */
 	public double getMinSkaliert() {
 		return minSkaliert;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((_verhalten == null) ? 0 : _verhalten.hashCode());
+		result = prime * result + (int) (max ^ (max >>> 32));
+		long temp;
+		temp = Double.doubleToLongBits(maxSkaliert);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (int) (min ^ (min >>> 32));
+		temp = Double.doubleToLongBits(minSkaliert);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UniversalAtgUfdsGrenzwerte other = (UniversalAtgUfdsGrenzwerte) obj;
+		if (_verhalten == null) {
+			if (other._verhalten != null)
+				return false;
+		} else if (!_verhalten.equals(other._verhalten))
+			return false;
+		if (max != other.max)
+			return false;
+		if (Double.doubleToLongBits(maxSkaliert) != Double.doubleToLongBits(other.maxSkaliert))
+			return false;
+		if (min != other.min)
+			return false;
+		if (Double.doubleToLongBits(minSkaliert) != Double.doubleToLongBits(other.minSkaliert))
+			return false;
+		return true;
 	}
 }

@@ -21,6 +21,22 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
+### 2.0.2
+
+Release-Datum: 28.07.2016
+
+de.bsvrz.dua.pllogufd.grenz.UniversalAtgUfdsGrenzwerte.java
+de.bsvrz.dua.pllogufd.testaufab.UniversalAtgUfdsAnstiegAbstiegKontrolle
+de.bsvrz.dua.pllogufd.testdiff.UniversalAtgUfdsDifferenzialKontrolle
+- die Klassen erweitert nicht mehr de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer
+- equals und hashCode sind konform implementiert
+
+de.bsvrz.dua.pllogufd.tests.DuAPlLogUfdTestBase
+- der Member "_pruefungLogischUFD" sollte nicht statisch sein, der er bei jedem Test neu initialisiert wird
+
+- Obsolete SVN-Tags aus Kommentaren entfernt
+- Obsolete inheritDoc-Kommentare entfernt
+
 ### 2.0.1
 
 Release-Datum: 22.07.2016

@@ -31,7 +31,6 @@ package de.bsvrz.dua.pllogufd.testdiff;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dua.pllogufd.typen.UfdsVergleichsOperator;
-import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -42,26 +41,25 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public class UniversalAtgUfdsDifferenzialKontrolle extends
-AllgemeinerDatenContainer {
+public class UniversalAtgUfdsDifferenzialKontrolle {
 
 	/**
 	 * zu verwendender Operator zum Vergleich des Messwerts mit dem Grenzwert,
 	 * der eingehalten werden muss, damit Differenzialkontrolle durchgeführt
 	 * werden darf.
 	 */
-	private UfdsVergleichsOperator operator = null;
+	private final UfdsVergleichsOperator operator;//  = null;
 
 	/**
 	 * Grenzwert, der eingehalten werden muss, damit Differenzialkontrolle
 	 * durchgeführt werden darf.
 	 */
-	private UmfeldDatenSensorWert grenz = null;
+	private final UmfeldDatenSensorWert grenz; //  = null;
 
 	/**
 	 * maximal zulässige Zeitdauer der Ergebniskonstanz.
 	 */
-	private long maxZeit = -1;
+	private final  long maxZeit; // = -1;
 
 	/**
 	 * Standardkonstruktor.
@@ -87,7 +85,10 @@ AllgemeinerDatenContainer {
 		if (oparatorValue != null) {
 			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue
 					.intValue());
+		} else {
+			operator = null;
 		}
+		
 		this.grenz = new UmfeldDatenSensorWert(datenArt);
 		this.grenz
 				.setWert(parameter
@@ -126,6 +127,40 @@ AllgemeinerDatenContainer {
 	 */
 	public final long getMaxZeit() {
 		return this.maxZeit;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((grenz == null) ? 0 : grenz.hashCode());
+		result = prime * result + (int) (maxZeit ^ (maxZeit >>> 32));
+		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UniversalAtgUfdsDifferenzialKontrolle other = (UniversalAtgUfdsDifferenzialKontrolle) obj;
+		if (grenz == null) {
+			if (other.grenz != null)
+				return false;
+		} else if (!grenz.equals(other.grenz))
+			return false;
+		if (maxZeit != other.maxZeit)
+			return false;
+		if (operator == null) {
+			if (other.operator != null)
+				return false;
+		} else if (!operator.equals(other.operator))
+			return false;
+		return true;
 	}
 
 }
