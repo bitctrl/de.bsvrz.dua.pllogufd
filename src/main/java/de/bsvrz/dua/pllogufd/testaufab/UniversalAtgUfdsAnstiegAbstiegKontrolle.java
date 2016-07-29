@@ -129,33 +129,4 @@ public class UniversalAtgUfdsAnstiegAbstiegKontrolle {
 	public final boolean isSinnvoll() {
 		return this.sinnvoll;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(_scaledMax);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + (int) (maxDiff ^ (maxDiff >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UniversalAtgUfdsAnstiegAbstiegKontrolle other = (UniversalAtgUfdsAnstiegAbstiegKontrolle) obj;
-		if (Double.doubleToLongBits(_scaledMax) != Double.doubleToLongBits(other._scaledMax))
-			return false;
-		if (maxDiff != other.maxDiff)
-			return false;
-		return true;
-	}
-
-
 }

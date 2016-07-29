@@ -29,7 +29,7 @@ de.bsvrz.dua.pllogufd.grenz.UniversalAtgUfdsGrenzwerte.java
 de.bsvrz.dua.pllogufd.testaufab.UniversalAtgUfdsAnstiegAbstiegKontrolle
 de.bsvrz.dua.pllogufd.testdiff.UniversalAtgUfdsDifferenzialKontrolle
 - die Klassen erweitert nicht mehr de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer
-- equals und hashCode sind konform implementiert
+- equals und hashCode werden nicht implementiert
 
 de.bsvrz.dua.pllogufd.tests.DuAPlLogUfdTestBase
 - der Member "_pruefungLogischUFD" sollte nicht statisch sein, der er bei jedem Test neu initialisiert wird
