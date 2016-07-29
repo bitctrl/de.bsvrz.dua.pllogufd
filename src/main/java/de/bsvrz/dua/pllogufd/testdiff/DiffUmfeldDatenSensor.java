@@ -57,8 +57,6 @@ import java.util.HashSet;
  * Differenzialkontrolle
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: DiffUmfeldDatenSensor.java 54549 2015-04-17 13:40:51Z gieseler $
  */
 public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
@@ -135,10 +133,6 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		this.init();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
-	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
 			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
@@ -303,9 +297,6 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {

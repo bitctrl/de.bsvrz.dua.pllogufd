@@ -40,7 +40,7 @@ import org.junit.Before;
  * @author Kappich Systemberatung
  */
 public class DuAPlLogUfdTestBase extends DuATestBase {
-	protected static VerwaltungPlPruefungLogischUFD _pruefungLogischUFD;
+	protected VerwaltungPlPruefungLogischUFD _pruefungLogischUFD;
 
 	protected String[] getUfdArgs() {
 		return new String[]{"-KonfigurationsBereichsPid=kb.duaTestUfd"};

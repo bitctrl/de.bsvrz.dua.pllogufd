@@ -48,9 +48,6 @@ import java.util.Collection;
  * logisch UFD anmeldet.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: AbstraktUmfeldDatenSensor.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public abstract class AbstraktUmfeldDatenSensor implements
 ClientReceiverInterface {
