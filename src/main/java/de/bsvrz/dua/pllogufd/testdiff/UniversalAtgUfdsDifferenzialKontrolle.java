@@ -133,6 +133,9 @@ public class UniversalAtgUfdsDifferenzialKontrolle {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		
+		// TODO grenz.hashCode wirft UnsupportedOperationException
+		
 		result = prime * result + ((grenz == null) ? 0 : grenz.hashCode());
 		result = prime * result + (int) (maxZeit ^ (maxZeit >>> 32));
 		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
@@ -163,4 +166,12 @@ public class UniversalAtgUfdsDifferenzialKontrolle {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "UniversalAtgUfdsDifferenzialKontrolle [operator=" + operator + ", grenz=" + grenz + ", maxZeit="
+				+ maxZeit + "]";
+	}
+
+	
+	
 }
