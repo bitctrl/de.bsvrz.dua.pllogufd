@@ -53,9 +53,6 @@ import java.util.Map;
  * die Daten an den nächsten Bearbeitungsknoten weitergereicht
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UFDDifferenzialKontrolle.java 53825 2015-03-18 09:36:42Z peuker
- *          $
  */
 public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 
@@ -67,9 +64,6 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	 */
 	private final Map<SystemObject, DiffUmfeldDatenSensor> sensoren = new HashMap<SystemObject, DiffUmfeldDatenSensor>();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -90,9 +84,6 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -141,17 +132,11 @@ public class UFDDifferenzialKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert

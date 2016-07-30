@@ -75,9 +75,6 @@ import java.util.*;
  * als Beobachterobjekt des jeweiligen Vorgängermoduls her.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: VerwaltungPlPruefungLogischUFD.java 53825 2015-03-18 09:36:42Z
- *          peuker $
  */
 public class VerwaltungPlPruefungLogischUFD extends
 		AbstraktVerwaltungsAdapterMitGuete {
@@ -153,12 +150,12 @@ public class VerwaltungPlPruefungLogischUFD extends
 	private final Set<DUAUmfeldDatenSensor> _sensoren = new HashSet<>();
 
 	/**
-	 * Map Systemobjekt -> Sensor
+	 * Map Systemobjekt -&gt; Sensor
 	 */
 	private final Map<SystemObject, DUAUmfeldDatenSensor> _objectZuSensor = new IdentityHashMap<>();
 
 	/**
-	 * Map Sensor -> Messstelle
+	 * Map Sensor -&gt; Messstelle
 	 */
 	private final Map<DUAUmfeldDatenSensor, DUAUmfeldDatenMessStelle> _sensorZuMessstelle = new IdentityHashMap<>();
 
@@ -172,9 +169,6 @@ public class VerwaltungPlPruefungLogischUFD extends
 	 */
 	private IBearbeitungsKnoten pub;
 
-	/**
-	 * {@inheritDoc}.
-	 */
 	@Override
 	protected void initialisiere() throws DUAInitialisierungsException {
 
@@ -316,17 +310,11 @@ public class VerwaltungPlPruefungLogischUFD extends
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public SWETyp getSWETyp() {
 		return SWETyp.SWE_PL_PRUEFUNG_LOGISCH_UFD;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		this.ausfall.aktualisiereDaten(resultate);
@@ -343,9 +331,6 @@ public class VerwaltungPlPruefungLogischUFD extends
 				argumente);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public double getStandardGueteFaktor() {
 		return 0.9;

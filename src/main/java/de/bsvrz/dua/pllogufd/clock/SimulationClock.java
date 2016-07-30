@@ -36,8 +36,9 @@ import java.time.ZoneId;
 import java.util.Objects;
 
 /**
- * Implementierung von {@link WaitableClock} als simulierte Uhr, die einen beliebigen Startzeitpunkt hat und
- * auch schneller oder langsamer gehen kann, als die reale Systemzeit.
+ * Implementierung von {@link WaitableClock} als simulierte Uhr, die einen
+ * beliebigen Startzeitpunkt hat und auch schneller oder langsamer gehen kann,
+ * als die reale Systemzeit.
  *
  * @author Kappich Systemberatung
  */
@@ -48,22 +49,37 @@ public final class SimulationClock extends WaitableClock {
 	private Instant _startSimulation;
 	private Instant _startRealTime;
 
-	/** 
+	/**
 	 * Erstellt eine neue SimulationClock
-	 * @param startState Startzeitpunkt der Uhr
-	 * @param simulationSpeed Simulationsgeschwindigkeit (1 = reale Geschwindigkeit, 10 = die Uhr geht 10 mal schneller, als die reale Zeit, usw.)
+	 * 
+	 * @param startState
+	 *            Startzeitpunkt der Uhr
+	 * @param simulationSpeed
+	 *            Simulationsgeschwindigkeit (1 = reale Geschwindigkeit, 10 =
+	 *            die Uhr geht 10 mal schneller, als die reale Zeit, usw.)
 	 */
 	public SimulationClock(Instant startState, double simulationSpeed) {
 		this(startState, simulationSpeed, ZoneId.systemDefault(), Instant.now());
 	}
 
-	
-	/** 
+	/**
 	 * Interner Hilfskonstruktor für die {@link #withZone(ZoneId)}-Methode.
+	 * 
+	 * @param startSimulation
+	 *            der Startzeitpunkt der Simulation
+	 * @param simulationSpeed
+	 *            die Simulationsgeschwindigkeit
+	 * @param zone
+	 *            die Id der Zeitzone
+	 * @param startRealTime
+	 *            der Startzeitpunkt in Realzeit
+	 * 
 	 */
-	private SimulationClock(final Instant startSimulation, double simulationSpeed, final ZoneId zone, final Instant startRealTime) {
+	private SimulationClock(final Instant startSimulation, double simulationSpeed, final ZoneId zone,
+			final Instant startRealTime) {
 		Objects.requireNonNull(startSimulation, "startSimulation == null");
-		if(simulationSpeed <= 0) throw new IllegalArgumentException("simulationSpeed");
+		if (simulationSpeed <= 0)
+			throw new IllegalArgumentException("simulationSpeed");
 		_startSimulation = startSimulation;
 		_simulationSpeed = simulationSpeed;
 		_zone = zone;
@@ -71,25 +87,30 @@ public final class SimulationClock extends WaitableClock {
 	}
 
 	/**
-	 * Verstellt den aktuellen Zeitpunkt. Dies hat keinen Einfluss auf aktuell laufende Wartedauern.
-	 * @param start Neue aktuelle Uhrzeit. 
+	 * Verstellt den aktuellen Zeitpunkt. Dies hat keinen Einfluss auf aktuell
+	 * laufende Wartedauern.
+	 * 
+	 * @param start
+	 *            Neue aktuelle Uhrzeit.
 	 */
 	public void setInstant(final Instant start) {
 		_startSimulation = start;
 		_startRealTime = Instant.now();
 	}
-	
+
 	@Override
 	public void sleep(long millis) throws InterruptedException {
 		millis = (long) (millis / _simulationSpeed);
-		if(millis <= 0) return;
+		if (millis <= 0)
+			return;
 		Thread.sleep(millis);
 	}
 
 	@Override
 	public Duration wait(final Object obj, long millis) throws InterruptedException {
 		millis = (long) (millis / _simulationSpeed);
-		if(millis <= 0) return Duration.ZERO;
+		if (millis <= 0)
+			return Duration.ZERO;
 		Instant start = instant();
 		obj.wait(millis);
 		Instant end = instant();

@@ -55,8 +55,6 @@ import java.util.HashSet;
  * Anstieg-Abfall-Kontrolle
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: AufAbUmfeldDatenSensor.java 54549 2015-04-17 13:40:51Z gieseler $
  */
 public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
@@ -112,10 +110,6 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		super.init();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
-	 */
 	@Override
 	protected Collection<AttributeGroup> getParameterAtgs()
 			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
@@ -284,9 +278,6 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		numberInstance.setGroupingUsed(false);
 		return numberInstance.format(w) + " " + suffixText;
 	}
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void update(final ResultData[] resultate) {
 		if (resultate != null) {

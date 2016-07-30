@@ -55,9 +55,6 @@ public class UFDGrenzwertpruefung  extends AbstraktBearbeitungsKnotenAdapter {
 
 	private final Map<SystemObject, GrenzUmfeldDatenSensor> sensoren = new HashMap<>();
 
-	/**
-	 * {@inheritDoc}.
-	 */
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung)
 			throws DUAInitialisierungsException {
@@ -74,9 +71,6 @@ public class UFDGrenzwertpruefung  extends AbstraktBearbeitungsKnotenAdapter {
 	}
 
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
@@ -114,17 +108,11 @@ public class UFDGrenzwertpruefung  extends AbstraktBearbeitungsKnotenAdapter {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ModulTyp getModulTyp() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void aktualisierePublikation(final IDatenFlussSteuerung dfs) {
 		// hier wird nicht publiziert

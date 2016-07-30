@@ -29,7 +29,6 @@
 package de.bsvrz.dua.pllogufd.testaufab;
 
 import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.sys.funclib.bitctrl.dua.AllgemeinerDatenContainer;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
@@ -39,21 +38,17 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
  * <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>.
  *
  * @author BitCtrl Systems GmbH, Thierfelder
- *
- * @version $Id: UniversalAtgUfdsAnstiegAbstiegKontrolle.java 53825 2015-03-18
- *          09:36:42Z peuker $
  */
-public class UniversalAtgUfdsAnstiegAbstiegKontrolle extends
-AllgemeinerDatenContainer {
+public class UniversalAtgUfdsAnstiegAbstiegKontrolle {
 
 	/**
 	 * Skalierter maxDiff-Wert
 	 */
-	private double _scaledMax = Double.NaN;
+	private final double _scaledMax; // = Double.NaN;
 	/**
 	 * maximale Differenz zwischen zweier aufeinanderfolgender Messwerte.
 	 */
-	private long maxDiff = -1;
+	private final long maxDiff; // = -1;
 
 	/**
 	 * zeigt an, ob der Parameter <code>maxDiff</code> selbst einen semantisch
@@ -99,6 +94,8 @@ AllgemeinerDatenContainer {
 
 		if(sinnvoll) {
 			_scaledMax = parameter.getData().getScaledValue(datenArt.getAbkuerzung() + "maxDiff").doubleValue();
+		} else {
+			_scaledMax = Double.NaN;
 		}
 	}
 
