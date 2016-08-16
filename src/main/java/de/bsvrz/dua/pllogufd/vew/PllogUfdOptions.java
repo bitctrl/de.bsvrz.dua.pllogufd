@@ -42,6 +42,7 @@ public class PllogUfdOptions {
 	 * verwendet wird (Unterstützung der TLS2002 und nicht konformer Systeme).
 	 */
 	private boolean useWfdTrockenGrenzwert = false;
+	private boolean fehlerhafteWertePublizieren = false;
 
 	public void update(VerwaltungPlPruefungLogischUFD verwaltung) {
 
@@ -49,9 +50,19 @@ public class PllogUfdOptions {
 		if (argument != null) {
 			useWfdTrockenGrenzwert = Boolean.valueOf(argument);
 		}
+
+		argument = verwaltung.getArgument("fehlerhafteWertePublizieren");
+		if (argument != null) {
+			fehlerhafteWertePublizieren  = Boolean.valueOf(argument);
+		}
+
 	}
 
 	public boolean isUseWfdTrockenGrenzwert() {
 		return useWfdTrockenGrenzwert;
+	}
+
+	public boolean isFehlerhafteWertePublizieren() {
+		return fehlerhafteWertePublizieren;
 	}
 }

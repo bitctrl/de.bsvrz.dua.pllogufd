@@ -1,0 +1,20 @@
+,"DUA-58, -59",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Parameter,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,NIgrenzNS,,,"0,2",mm/h,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,NIgrenzWFD,,,"0,4",mm/h,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,WFDgrenzTrocken,,,"0,02",mm/h,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,LTgrenzRegen,,,"-4,5",° C,,,,,,,,,,,,,,NS = kein Niederschlag,NI > NIgrenzNS,RLF > RLFgrenzNass,NS = Niederschlag,"NI = 0,0",RLF < RLFgrenzTrocken,NI > NIgrenzWFD,WFD <= WFDgrenzTrocken,SW <= SWgrenz,NS = Regen,LT < LTgrenzRegen,NS = Schnee,LT > LTgrenzSchnee,"WFD > 0,0",FBZ = Trocken,"WFD = 0,0",FBZ = Nass,Keine RLF-Sensordaten,Trocken <= RLF <= Nass,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,LTgrenzSchnee,,,"4,5",° C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,RLFgrenzTrocken,,,58,% rF,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,RLFgrenzNass,,,80,% rF,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,SWgrenz,,,555,mm/h,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Zeile,Eingangsdaten,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Soll erwartet,,,,,,,,,,,,,,
+,T,NI,,NS,,WFD,,FBZ,,LT,,RLF,,SW,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T,NI,,NS,,WFD,,FBZ,,LT,,RLF,,SW,
+,T,NiederschlagsIntensität,MWE,NiederschlagsArt,MWE,WasserFilmDicke,MWE,FahrBahnOberFlächenZustand,MWE,LuftTemperatur,MWE,RelativeLuftFeuchte,MWE,SichtWeite,MWE,,Bemerkung,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T,NiederschlagsIntensität,MWE,NiederschlagsArt,MWE,WasserFilmDicke,MWE,FahrBahnOberFlächenZustand,MWE,LuftTemperatur,MWE,RelativeLuftFeuchte,MWE,SichtWeite,MWE
+,Minute,mm/h,Implausibel,-,Implausibel,mm,Implausibel,-,Implausibel,°C,Implausibel,% rF,Implausibel,m,Implausibel,,,,,,,,,,,,,,,,,,,,,,,,P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,P13,,Minute,mm/h,Implausibel,-,Implausibel,mm,Implausibel,-,Implausibel,°C,Implausibel,% rF,Implausibel,m,Implausibel
+1,1,"1,0",Nein,40,Nein,"0,8",Nein,32,Nein,"3,2",Nein,83,Nein,570,Nein,,,,-,X,X,-,-,-,X,-,-,X,-,-,-,X,-,-,X,-,-,,-,-,-,-,-,-,-,-,-,-,-,-,-,,1,"1,00",Nein,40,Nein,"0,8",Nein,32,Nein,"3,2",Nein,83,Nein,570,Nein
+2,1,"0,0",Nein,40,Nein,"0,01",Nein,0,Nein,"3,2",Nein,83,Nein,570,Nein,,,,-,X,X,-,-,-,X,-,-,X,-,-,-,X,-,-,X,-,-,,-,-,-,-,-,-,-,-,-,-,-,-,-,,1,"0,00",Nein,40,Nein,"0,01",Nein,0,Nein,"3,2",Nein,83,Nein,570,Nein
+3,1,"0,0",Nein,40,Nein,"0,03",Nein,0,Nein,"3,2",Nein,83,Nein,570,Nein,,,,-,X,X,-,-,-,X,-,-,X,-,-,-,X,-,-,X,-,-,,-,-,-,-,-,-,-,-,-,X,-,-,-,,1,"0,00",Nein,40,Nein,"0,03",Ja,0,Ja,"3,2",Nein,83,Nein,570,Nein
+4,1,"0,0",Nein,40,Nein,"0,02",Nein,0,Nein,"3,2",Nein,83,Nein,570,Nein,,,,-,X,X,-,-,-,X,-,-,X,-,-,-,X,-,-,X,-,-,,-,-,-,-,-,-,-,-,-,-,-,-,-,,1,"0,00",Nein,40,Nein,"0,02",Nein,0,Nein,"3,2",Nein,83,Nein,570,Nein
+5,1,"0,0",Nein,40,Nein,"0,02",Nein,1,Nein,"3,2",Nein,83,Nein,570,Nein,,,,-,X,X,-,-,-,X,-,-,X,-,-,-,X,-,-,X,-,-,,-,-,-,-,-,-,-,-,-,-,-,-,-,,1,"0,00",Nein,40,Nein,"0,02",Nein,1,Nein,"3,2",Nein,83,Nein,570,Nein
+6,1,"0,0",Nein,40,Nein,"0,01",Nein,1,Nein,"3,2",Nein,83,Nein,570,Nein,,,,-,X,X,-,-,-,X,-,-,X,-,-,-,X,-,-,X,-,-,,-,-,-,-,-,-,-,-,-,-,X,-,-,,1,"0,00",Nein,40,Nein,"0,01",Ja,1,Ja,"3,2",Nein,83,Nein,570,Nein
