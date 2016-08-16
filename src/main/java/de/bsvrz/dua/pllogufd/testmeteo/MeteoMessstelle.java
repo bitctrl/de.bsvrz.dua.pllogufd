@@ -396,7 +396,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 					&& _fbzWert.getWert() == 0) {
 				_implausibleDatenArten.add(UmfeldDatenArt.wfd);
 				_implausibleDatenArten.add(UmfeldDatenArt.fbz);
-				_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm > 0,0 mm, " + "FBZ=Trocken");
+				_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm > " + formatWert(_wfdGrenzTrocken) + " mm, " + "FBZ=Trocken");
 				_ids.add("[DUA-PP-MK10]");
 			}
 
