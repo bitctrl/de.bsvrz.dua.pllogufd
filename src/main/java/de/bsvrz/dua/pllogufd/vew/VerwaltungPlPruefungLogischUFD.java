@@ -109,6 +109,8 @@ public class VerwaltungPlPruefungLogischUFD extends
 			MessageTemplate.ids()
 	);
 
+	private PllogUfdOptions options = new PllogUfdOptions();
+	
 	/**
 	 * Verwendete Uhr, verwendet normalerweise die Systemzeit, kann aber von Testfällen anders gesetzt werden.
 	 */
@@ -173,7 +175,9 @@ public class VerwaltungPlPruefungLogischUFD extends
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
-
+		options.update(this);
+		
+		
 		UmfeldDatenArt.initialisiere(this.verbindung);
 		
 		String infoStr = "";
@@ -409,5 +413,9 @@ public class VerwaltungPlPruefungLogischUFD extends
 	 */
 	public Collection<DUAUmfeldDatenMessStelle> getMessstellen() {
 		return _sensorZuMessstelle.values();
+	}
+
+	public PllogUfdOptions getPllogUfdOptions() {
+		return options;
 	}
 }
