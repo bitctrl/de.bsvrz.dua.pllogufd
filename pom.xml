@@ -44,11 +44,11 @@
 		</developer>
 		<developer>
 			<id>kappich</id>
-            <email>info@kappich.de</email>
-            <organization>Kappich Systemberatung</organization>
-            <organizationUrl>http://www.kappich.de</organizationUrl>
+			<email>info@kappich.de</email>
+			<organization>Kappich Systemberatung</organization>
+			<organizationUrl>http://www.kappich.de</organizationUrl>
 		</developer>
-   	</developers>
+	</developers>
 
 	<scm>
 		<connection>scm:git:https://github.com/bitctrl/${project.artifactId}.git</connection>
@@ -388,7 +388,7 @@
 								org.hamcrest,
 								de.kappich,
 								com.google.guava
-								</excludeGroupIds>
+							</excludeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

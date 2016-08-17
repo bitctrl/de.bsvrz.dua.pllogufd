@@ -71,17 +71,17 @@ public class UniversalAtgUfdsDifferenzialKontrolle {
 	 */
 	public UniversalAtgUfdsDifferenzialKontrolle(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
-			throw new NullPointerException("Übergebener Parameter ist <<null>>"); //$NON-NLS-1$
+			throw new NullPointerException("Übergebener Parameter ist <<null>>"); 
 		}
 		if (parameter.getData() == null) {
 			throw new NullPointerException(
-					"Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
+					"Übergebener Parameter hat keine Daten"); 
 		}
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
 				.getUmfeldDatenArtVon(parameter.getObject());
 
 		final Data.NumberValue oparatorValue = parameter.getData()
-				.getUnscaledValue("Operator"); //$NON-NLS-1$
+				.getUnscaledValue("Operator"); 
 		if (oparatorValue != null) {
 			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue
 					.intValue());
@@ -93,9 +93,9 @@ public class UniversalAtgUfdsDifferenzialKontrolle {
 		this.grenz
 				.setWert(parameter
 						.getData()
-						.getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue()); //$NON-NLS-1$
+						.getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue()); 
 		this.maxZeit = parameter.getData()
-				.getTimeValue(datenArt.getAbkuerzung() + "maxZeit").getMillis(); //$NON-NLS-1$
+				.getTimeValue(datenArt.getAbkuerzung() + "maxZeit").getMillis(); 
 	}
 
 	/**

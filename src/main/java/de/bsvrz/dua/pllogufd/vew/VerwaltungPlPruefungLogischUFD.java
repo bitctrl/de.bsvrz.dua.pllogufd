@@ -28,6 +28,15 @@
 
 package de.bsvrz.dua.pllogufd.vew;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.ReceiveOptions;
 import de.bsvrz.dav.daf.main.ReceiverRole;
@@ -50,7 +59,6 @@ import de.bsvrz.sys.funclib.bitctrl.dua.adapter.AbstraktVerwaltungsAdapterMitGue
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.SWETyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IBearbeitungsKnoten;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IStandardAspekte;
-import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenMessStelle;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenSensor;
@@ -60,8 +68,6 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
 import de.bsvrz.sys.funclib.operatingMessage.MessageTemplate;
 import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
-
-import java.util.*;
 
 /**
  * Dieses Modul Verwaltung ist die zentrale Steuereinheit der SWE PL-Prüfung
@@ -198,10 +204,10 @@ public class VerwaltungPlPruefungLogischUFD extends
 		DUAUmfeldDatenMessStelle.initialisiere(this.verbindung, messstellen);
 
 		for (final SystemObject obj : messstellen) {
-			infoStr += obj + "\n"; //$NON-NLS-1$
+			infoStr += obj + "\n"; 
 		}
 		LOGGER.config(
-				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); //$NON-NLS-1$ //$NON-NLS-2$
+				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); 
 
 		_standardAspekte = new PlLogUFDStandardAspekteVersorger(
 				this).getStandardPubInfos();

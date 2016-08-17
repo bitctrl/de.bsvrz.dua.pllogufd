@@ -108,16 +108,16 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	protected Collection<AttributeGroup> getParameterAtgs()
 			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
-			throw new NullPointerException("Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+			throw new NullPointerException("Parameter können nicht bestimmt werden," + 
+					" da noch kein Objekt festgelegt ist"); 
 		}
 
 		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 
 		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt);
 		if (datenArt == null) {
-			throw new UmfeldDatenSensorUnbekannteDatenartException("Datenart von Umfelddatensensor " + this.objekt + //$NON-NLS-1$
-					" (" + objekt.getType() + ") konnte nicht identifiziert werden"); //$NON-NLS-2$
+			throw new UmfeldDatenSensorUnbekannteDatenartException("Datenart von Umfelddatensensor " + this.objekt + 
+					" (" + objekt.getType() + ") konnte nicht identifiziert werden"); 
 		}
 
 		final String atgPid = "atg.ufdsAnstiegAbstiegKontrolle" + datenArt.getName();
@@ -127,10 +127,10 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		if (atg != null) {
 			parameterAtgs.add(atg);
 		} else {
-			throw new DUAInitialisierungsException("Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-					"Anstieg-Abfall-Kontrolle des Objektes "//$NON-NLS-1$
-					+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$
-					"Atg-Name: " + atgPid); //$NON-NLS-1$
+			throw new DUAInitialisierungsException("Es konnte keine Parameter-Attributgruppe für die " + 
+					"Anstieg-Abfall-Kontrolle des Objektes "
+					+ this.objekt + " bestimmt werden\n" + 
+					"Atg-Name: " + atgPid); 
 		}
 
 		return parameterAtgs;
@@ -235,8 +235,8 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 								}
 							}
 						} else {
-							LOGGER.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
-									" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); //$NON-NLS-1$
+							LOGGER.fine("Fuer Umfelddatensensor " + this + 
+									" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); 
 						}
 					}
 				}
@@ -292,7 +292,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							LOGGER.warning(e.getMessage());
 							continue;
 						}
-						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" 
 								+ this.parameter);
 					}
 				}

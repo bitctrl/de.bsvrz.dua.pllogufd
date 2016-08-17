@@ -114,9 +114,9 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 				.getUmfeldDatenArtVon(obj);
 		if (datenArt == null) {
 			throw new UmfeldDatenSensorUnbekannteDatenartException(
-					"Datenart von Umfelddatensensor " + obj + //$NON-NLS-1$
+					"Datenart von Umfelddatensensor " + obj + 
 					" (" + obj.getType()
-					+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
+					+ ") konnte nicht identifiziert werden"); 
 		}
 		this.wert = new VariableMitKonstanzZaehler<>(datenArt.getName());
 		
@@ -138,13 +138,13 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
-					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+					"Parameter können nicht bestimmt werden," + 
+					" da noch kein Objekt festgelegt ist"); 
 		}
 
 		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 
-		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt.//$NON-NLS-1$
+		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt.
 				getUmfeldDatenArtVon(this.objekt).getName();
 		final AttributeGroup atg = verwaltungsModul
 				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
@@ -153,10 +153,10 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			parameterAtgs.add(atg);
 		} else {
 			throw new DUAInitialisierungsException(
-					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-							"Differenzialkontrolle des Objektes " + this.objekt//$NON-NLS-1$
-							+ " bestimmt werden\n" + //$NON-NLS-1$
-							"Atg-Name: " + atgPid); //$NON-NLS-1$
+					"Es konnte keine Parameter-Attributgruppe für die " + 
+							"Differenzialkontrolle des Objektes " + this.objekt
+							+ " bestimmt werden\n" + 
+							"Atg-Name: " + atgPid); 
 		}
 
 		return parameterAtgs;
@@ -288,8 +288,8 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			}
 			else {
 				_debug
-						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
-								      " wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
+						.fine("Fuer Umfelddatensensor " + this + 
+								      " wurden noch keine Parameter für die Differenzialkontrolle empfangen"); 
 			}
 		}
 
@@ -311,7 +311,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							continue;
 						}
 						_debug
-						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+						.info("Neue Parameter für (" + resultat.getObject() + "):\n"
 								+ this.parameter);
 					}
 				}

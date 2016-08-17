@@ -49,8 +49,7 @@ import java.util.Collection;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public abstract class AbstraktUmfeldDatenSensor implements
-ClientReceiverInterface {
+public abstract class AbstraktUmfeldDatenSensor implements ClientReceiverInterface {
 
 	/**
 	 * <code>asp.parameterSoll</code>.
@@ -78,14 +77,12 @@ ClientReceiverInterface {
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
 	 */
-	protected AbstraktUmfeldDatenSensor(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException {
+	protected AbstraktUmfeldDatenSensor(final IVerwaltung verwaltung, final SystemObject obj)
+			throws DUAInitialisierungsException {
 		this.objekt = obj;
-
-		if (verwaltungsModul == null) {
-			verwaltungsModul = verwaltung;
-			aspParameterSoll = verwaltung
-					.getVerbindung().getDataModel()
+		verwaltungsModul = verwaltung;
+		if (verwaltungsModul != null) {
+			aspParameterSoll = verwaltungsModul.getVerbindung().getDataModel()
 					.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL);
 		}
 	}
@@ -100,27 +97,24 @@ ClientReceiverInterface {
 	 *             auftritt
 	 */
 	protected abstract Collection<AttributeGroup> getParameterAtgs()
-			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException ;
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException;
 
 	/**
 	 * Fuehrt die Empfangsanmeldung durch.
 	 *
 	 * @throws DUAInitialisierungsException
 	 *             wird weitergereicht
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public void init() throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		final Collection<DataDescription> parameterBeschreibungen = new ArrayList<DataDescription>();
 		for (final AttributeGroup atg : this.getParameterAtgs()) {
-			parameterBeschreibungen.add(new DataDescription(atg,
-					aspParameterSoll));
+			parameterBeschreibungen.add(new DataDescription(atg, aspParameterSoll));
 		}
 
 		for (final DataDescription parameterBeschreibung : parameterBeschreibungen) {
-			verwaltungsModul.getVerbindung()
-					.subscribeReceiver(this, this.objekt,
-							parameterBeschreibung, ReceiveOptions.normal(),
-							ReceiverRole.receiver());
+			verwaltungsModul.getVerbindung().subscribeReceiver(this, this.objekt, parameterBeschreibung,
+					ReceiveOptions.normal(), ReceiverRole.receiver());
 		}
 	}
 

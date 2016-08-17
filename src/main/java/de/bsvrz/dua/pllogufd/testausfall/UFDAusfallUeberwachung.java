@@ -67,8 +67,7 @@ import java.util.*;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
-		implements ClientReceiverInterface {
+public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter implements ClientReceiverInterface {
 
 	private static final Debug LOGGER = Debug.getLogger();
 	/**
@@ -85,23 +84,17 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 	 * interner Kontrollprozess.
 	 */
 	private ClockScheduler kontrollProzess = null;
-	
-	private static final MessageTemplate TEMPLATE = new MessageTemplate(
-			MessageGrade.ERROR,
-			MessageType.APPLICATION_DOMAIN,
-	        MessageTemplate.fixed("Datensatz mit Zeitstempel "),
-	        MessageTemplate.variable("timestamp"),
-	        MessageTemplate.fixed(" Uhr durch PL-Ausfallüberwachung UFD angelegt bei Messstelle "),
-	        MessageTemplate.object(),
-	        MessageTemplate.fixed(". "),
-	        MessageTemplate.ids()
-	);
-	
+
+	private static final MessageTemplate TEMPLATE = new MessageTemplate(MessageGrade.ERROR,
+			MessageType.APPLICATION_DOMAIN, MessageTemplate.fixed("Datensatz mit Zeitstempel "),
+			MessageTemplate.variable("timestamp"),
+			MessageTemplate.fixed(" Uhr durch PL-Ausfallüberwachung UFD angelegt bei Messstelle "),
+			MessageTemplate.object(), MessageTemplate.fixed(". "), MessageTemplate.ids());
+
 	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
 	@Override
-	public void initialisiere(final IVerwaltung dieVerwaltung)
-			throws DUAInitialisierungsException {
+	public void initialisiere(final IVerwaltung dieVerwaltung) throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
 		kontrollProzess = new ClockScheduler(VerwaltungPlPruefungLogischUFD.clock);
 
@@ -111,56 +104,49 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 				kontrollProzess.terminate();
 			}
 		});
-		
+
 		for (final SystemObject objekt : verwaltung.getSystemObjekte()) {
 			letzteEmpfangeneDatenZeitProObj.put(objekt, (long) -1);
 		}
-		
+
 		final DataDescription parameterBeschreibung = new DataDescription(
-				dieVerwaltung.getVerbindung().getDataModel()
-						.getAttributeGroup("atg.ufdsAusfallÜberwachung"), //$NON-NLS-1$
-						dieVerwaltung.getVerbindung().getDataModel()
-						.getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
-		dieVerwaltung.getVerbindung().subscribeReceiver(this,
-				dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
+				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.ufdsAusfallÜberwachung"),
+				dieVerwaltung.getVerbindung().getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
+		dieVerwaltung.getVerbindung().subscribeReceiver(this, dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
 	/**
-		 * Erfragt das ausgefallene Datum, dass sich aus dem übergebenen Datum
-		 * ergibt.
-		 *
-		 * @param originalResultat
-		 *            ein Datum
-		 * @return das ausgefallene Datum, dass sich aus dem übergebenen Datum
-		 *         ergibt
-		 */
+	 * Erfragt das ausgefallene Datum, dass sich aus dem übergebenen Datum
+	 * ergibt.
+	 *
+	 * @param originalResultat
+	 *            ein Datum
+	 * @return das ausgefallene Datum, dass sich aus dem übergebenen Datum
+	 *         ergibt
+	 */
 	protected ResultData getAusfallDatumVon(final ResultData originalResultat) {
-		final UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(
-				originalResultat);
+		final UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(originalResultat);
 		wert.setStatusErfassungNichtErfasst(DUAKonstanten.JA);
 		wert.getWert().setNichtErmittelbarAn();
 
 		final long zeitStempel = wert.getDatenZeit() + wert.getT();
 
-		final ResultData resultat = new ResultData(
-				originalResultat.getObject(),
-				originalResultat.getDataDescription(), zeitStempel,
-				wert.getDatum());
+		final ResultData resultat = new ResultData(originalResultat.getObject(), originalResultat.getDataDescription(),
+				zeitStempel, wert.getDatum());
 
 		return resultat;
 	}
 
 	/**
-		 * Erfragt die Intervalllänge T eines Datums.
-		 *
-		 * @param resultat
-		 *            ein Datum
-		 * @return die im übergebenen Datum enthaltene Intervalllänge T
-		 */
+	 * Erfragt die Intervalllänge T eines Datums.
+	 *
+	 * @param resultat
+	 *            ein Datum
+	 * @return die im übergebenen Datum enthaltene Intervalllänge T
+	 */
 	protected long getTVon(final ResultData resultat) {
-		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
-				resultat);
+		final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
 		return datum.getT();
 	}
 
@@ -170,16 +156,10 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 			for (final ResultData resultat : resultate) {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this.objektWertErfassungVerzug) {
-						this.objektWertErfassungVerzug
-								.put(resultat.getObject(),
-										new Long(
-												resultat.getData()
-														.getTimeValue(
-																"maxZeitVerzug").getMillis())); //$NON-NLS-1$
-						LOGGER
-						.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = " + //$NON-NLS-1$ //$NON-NLS-2$
-								resultat.getData()
-												.getTimeValue("maxZeitVerzug").getMillis() + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+						this.objektWertErfassungVerzug.put(resultat.getObject(),
+								resultat.getData().getTimeValue("maxZeitVerzug").getMillis());
+						LOGGER.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = "
+								+ resultat.getData().getTimeValue("maxZeitVerzug").getMillis() + "ms");
 					}
 				}
 			}
@@ -187,54 +167,59 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 	}
 
 	@Override
-	public synchronized void aktualisiereDaten(final ResultData... resultate) {
+	public synchronized void aktualisiereDaten(final ResultData[] resultate) {
 		if (resultate != null) {
 			final List<ResultData> weiterzuleitendeResultate = new ArrayList<ResultData>();
 
 			for (final ResultData resultat : resultate) {
 				if (resultat != null) {
 
-					if(getMaxZeitVerzug(resultat.getObject()) <= 0) {
+					if (getMaxZeitVerzug(resultat.getObject()) <= 0) {
 						/**
 						 * Datum wird nicht ueberwacht
 						 */
 						weiterzuleitendeResultate.add(resultat);
-					}
-					else {
+					} else {
 						/**
 						 * Hier werden die Daten herausgefiltert, die von der
 						 * Ausfallkontrolle quasi zu unrecht generiert wurden,
 						 * da das Datum nur minimal zu spät kam.
 						 */
-						if(letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < resultat.getDataTime()) {
+						if (letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < resultat.getDataTime()) {
 
 							/**
 							 * Zeitstempel ist echt neu!
 							 */
 							weiterzuleitendeResultate.add(resultat);
 
-							letzteEmpfangeneDatenZeitProObj.put(
-									resultat.getObject(), resultat.getDataTime());
+							letzteEmpfangeneDatenZeitProObj.put(resultat.getObject(), resultat.getDataTime());
 						}
-						if(resultat.getData() != null) {
+						if (resultat.getData() != null) {
 							final long kontrollZeitpunkt = getKontrollZeitpunktVon(resultat);
-							if(!kontrollProzess.isTerminated()) {
+							if (!kontrollProzess.isTerminated()) {
 								// Timer starten zur Ausfallüberwachung
 								kontrollProzess.schedule(Instant.ofEpochMilli(kontrollZeitpunkt), new Runnable() {
 									@Override
 									public void run() {
-										// Schon mal vorab einen leeren Datensatz erstellen
+										// Schon mal vorab einen leeren
+										// Datensatz erstellen
 										ResultData ausfallDatum = getAusfallDatumVon(resultat);
-										
-										if(letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < ausfallDatum.getDataTime()) {
-											// Datum nicht rechtzeitig angekommen, da der leere Datensatz hinter dem zuletzt empfangenen Datensatz liegt
-											
-											aktualisiereDaten(ausfallDatum);
-											
+
+										if (letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < ausfallDatum
+												.getDataTime()) {
+											// Datum nicht rechtzeitig
+											// angekommen, da der leere
+											// Datensatz hinter dem zuletzt
+											// empfangenen Datensatz liegt
+
+											aktualisiereDaten(new ResultData[] { ausfallDatum });
+
 											// Betriebsmeldung erzeugen
 											VerwaltungPlPruefungLogischUFD verwaltung = (VerwaltungPlPruefungLogischUFD) getVerwaltung();
-											OperatingMessage message = TEMPLATE.newMessage(verwaltung.getBetriebsmeldungsObjekt(resultat.getObject()));
-											LocalTime localTime = Instant.ofEpochMilli(ausfallDatum.getDataTime()).atZone(ZoneId.systemDefault()).toLocalTime();
+											OperatingMessage message = TEMPLATE.newMessage(
+													verwaltung.getBetriebsmeldungsObjekt(resultat.getObject()));
+											LocalTime localTime = Instant.ofEpochMilli(ausfallDatum.getDataTime())
+													.atZone(ZoneId.systemDefault()).toLocalTime();
 											message.put("timestamp", TIME_FORMAT.format(localTime));
 											message.addId("[DUA-PP-UA01]");
 										}
@@ -247,8 +232,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 			}
 
 			if ((knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
-				knoten.aktualisiereDaten(weiterzuleitendeResultate
-						.toArray(new ResultData[0]));
+				knoten.aktualisiereDaten(weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
 		}
 	}
@@ -275,7 +259,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 
 		return maxZeitVerzug;
 	}
-	
+
 	/**
 	 * Erfragt den Zeitpunkt, zu dem von dem Objekt, das mit diesem Datensatz
 	 * assoziiert ist, ein neuer Datensatz (spätestens) erwartet wird.
@@ -289,18 +273,16 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter
 	private long getKontrollZeitpunktVon(final ResultData empfangenesResultat) {
 		long kontrollZeitpunkt = -1;
 
-		final long maxZeitVerzug = getMaxZeitVerzug(empfangenesResultat
-				.getObject());
+		final long maxZeitVerzug = getMaxZeitVerzug(empfangenesResultat.getObject());
 
 		if (maxZeitVerzug >= 0) {
-			// Zeitpunkt bis Eintreffen: Zeitstempel des letzen Datensatzen + Intervallänge + MaxZeitverzug
+			// Zeitpunkt bis Eintreffen: Zeitstempel des letzen Datensatzen +
+			// Intervallänge + MaxZeitverzug
 			// Denn der Datenzeitstempel markiert das Intervallende.
-			kontrollZeitpunkt = empfangenesResultat.getDataTime()
-					+ getTVon(empfangenesResultat) + maxZeitVerzug;
+			kontrollZeitpunkt = empfangenesResultat.getDataTime() + getTVon(empfangenesResultat) + maxZeitVerzug;
 		} else {
-			Debug.getLogger().fine(
-					"Es wurden noch keine (sinnvollen) Parameter empfangen: " //$NON-NLS-1$
-							+ empfangenesResultat.getObject());
+			Debug.getLogger()
+					.fine("Es wurden noch keine (sinnvollen) Parameter empfangen: " + empfangenesResultat.getObject());
 		}
 
 		return kontrollZeitpunkt;

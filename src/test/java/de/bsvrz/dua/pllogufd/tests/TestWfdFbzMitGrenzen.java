@@ -26,7 +26,13 @@
 
 package de.bsvrz.dua.pllogufd.tests;
 
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.google.common.collect.ImmutableList;
+
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.config.Aspect;
@@ -34,13 +40,6 @@ import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.tests.ColumnLayout;
 import de.bsvrz.dua.tests.DuADataIdentification;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * TBD Dokumentation
@@ -49,12 +48,8 @@ import java.util.NoSuchElementException;
  */
 public class TestWfdFbzMitGrenzen extends DuAPlLogUfdTestBase {
 
-	private SystemObject _sensor;
-	private AttributeGroup _atg;
 	private Aspect _aspSend;
 	private Aspect _aspReceive;
-	private DataDescription _ddIn;
-	private DataDescription _ddOut;
 
 	@Override
 	protected String[] getUfdArgs() {
@@ -65,12 +60,8 @@ public class TestWfdFbzMitGrenzen extends DuAPlLogUfdTestBase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		_sensor = _dataModel.getObject("ufd.sw");
-		_atg = _dataModel.getAttributeGroup("atg.ufdsSichtWeite");
 		_aspSend = _dataModel.getAspect("asp.externeErfassung");
 		_aspReceive = _dataModel.getAspect("asp.plausibilitätsPrüfungLogisch");
-		_ddIn = new DataDescription(_atg, _aspSend);
-		_ddOut = new DataDescription(_atg, _aspReceive);
 	}
 
 	@Test

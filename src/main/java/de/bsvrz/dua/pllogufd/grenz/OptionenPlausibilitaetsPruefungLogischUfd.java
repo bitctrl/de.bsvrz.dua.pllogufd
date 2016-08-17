@@ -52,14 +52,14 @@ public final class OptionenPlausibilitaetsPruefungLogischUfd extends
 	 * es werden keine Statusflags gesetzt.
 	 */
 	public static final OptionenPlausibilitaetsPruefungLogischUfd KEINE_PRUEFUNG = new OptionenPlausibilitaetsPruefungLogischUfd(
-			"Keine Prüfung", 0); //$NON-NLS-1$
+			"Keine Prüfung", 0); 
 
 	/**
 	 * Wertebereichsprüfung wird durchgeführt. Bei Messwertüberschreibung wird der Wert auf den maximalen Wert gesetzt und mit dem
 	 * Flag MaxWertLogisch versehen.
 	 */
 	public static final OptionenPlausibilitaetsPruefungLogischUfd WERT_REDUZIEREN = new OptionenPlausibilitaetsPruefungLogischUfd(
-			"Wert reduzieren", 1); //$NON-NLS-1$
+			"Wert reduzieren", 1); 
 
 	/**
 	 * Wertebereichsprüfung wird durchgeführt. Bei Messwertüberschreitung wird der wert als Implausibel und MaxWertLogisch
@@ -67,7 +67,7 @@ public final class OptionenPlausibilitaetsPruefungLogischUfd extends
 	 * betrachtet. Die Güte der Werte wird um 20% reduziert. Es wird eine Betriebsmeldugn erzeugt.
 	 */
 	public static final OptionenPlausibilitaetsPruefungLogischUfd AUF_FEHLERHAFT_SETZEN = new OptionenPlausibilitaetsPruefungLogischUfd(
-			"Auf fehlerhaft setzen", 2); //$NON-NLS-1$
+			"Auf fehlerhaft setzen", 2); 
 
 	/**
 	 * Standardkonstruktor.

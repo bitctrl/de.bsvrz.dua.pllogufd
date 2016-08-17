@@ -30,37 +30,17 @@
 	</fileSets>
 
 	<files>
-<!-- 
-		<file>
-			<source>${project.build.directory}/${artifactId}-runtime.jar</source>
-			<outputDirectory>${artifactId}</outputDirectory>
-		</file>
-		<file>
-			<source>${project.build.directory}/${artifactId}-${version}.jar</source>
-			<outputDirectory>${artifactId}</outputDirectory>
-			<destName>${artifactId}.jar</destName>
-		</file>
-		<file>
-			<source>${project.build.directory}/${artifactId}-${version}-doc-api-javadoc.jar</source>
-			<outputDirectory>${artifactId}</outputDirectory>
-			<destName>${artifactId}-doc-api.zip</destName>
-		</file>
-		<file>
-			<source>${project.build.directory}/${artifactId}-${version}-doc-design-javadoc.jar</source>
-			<outputDirectory>${artifactId}</outputDirectory>
-			<destName>${artifactId}-doc-design.zip</destName>
-		</file>
-		<file>
-			<source>${project.build.directory}/${artifactId}-${version}-sources.jar</source>
-			<outputDirectory>${artifactId}</outputDirectory>
-			<destName>${artifactId}-src.zip</destName>
-		</file>
-		<file>
-			<source>LICENSE.txt</source>
-			<outputDirectory>${artifactId}</outputDirectory>
-			<destName>${artifactId}-Lizenz.txt</destName>
-		</file>
- -->	
+		<!-- <file> <source>${project.build.directory}/${artifactId}-runtime.jar</source> 
+			<outputDirectory>${artifactId}</outputDirectory> </file> <file> <source>${project.build.directory}/${artifactId}-${version}.jar</source> 
+			<outputDirectory>${artifactId}</outputDirectory> <destName>${artifactId}.jar</destName> 
+			</file> <file> <source>${project.build.directory}/${artifactId}-${version}-doc-api-javadoc.jar</source> 
+			<outputDirectory>${artifactId}</outputDirectory> <destName>${artifactId}-doc-api.zip</destName> 
+			</file> <file> <source>${project.build.directory}/${artifactId}-${version}-doc-design-javadoc.jar</source> 
+			<outputDirectory>${artifactId}</outputDirectory> <destName>${artifactId}-doc-design.zip</destName> 
+			</file> <file> <source>${project.build.directory}/${artifactId}-${version}-sources.jar</source> 
+			<outputDirectory>${artifactId}</outputDirectory> <destName>${artifactId}-src.zip</destName> 
+			</file> <file> <source>LICENSE.txt</source> <outputDirectory>${artifactId}</outputDirectory> 
+			<destName>${artifactId}-Lizenz.txt</destName> </file> -->
 		<file>
 			<source>README.txt</source>
 			<outputDirectory>${artifactId}</outputDirectory>

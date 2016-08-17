@@ -52,25 +52,25 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 	 * Alle wirklichen Enumerationswerte
 	 */
 	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_FALSCH = new UfdsVergleichsOperator(
-			"BedingungImmerFalsch", 0); //$NON-NLS-1$
+			"BedingungImmerFalsch", 0); 
 
 	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_WAHR = new UfdsVergleichsOperator(
-			"BedingungImmerWahr", 1); //$NON-NLS-1$
+			"BedingungImmerWahr", 1); 
 
 	public static final UfdsVergleichsOperator KLEINER = new UfdsVergleichsOperator(
-			"kleiner", 2); //$NON-NLS-1$
+			"kleiner", 2); 
 
 	public static final UfdsVergleichsOperator KLEINER_GLEICH = new UfdsVergleichsOperator(
-			"kleinerGleich", 3); //$NON-NLS-1$
+			"kleinerGleich", 3); 
 
 	public static final UfdsVergleichsOperator GLEICH = new UfdsVergleichsOperator(
-			"gleich", 4); //$NON-NLS-1$
+			"gleich", 4); 
 
 	public static final UfdsVergleichsOperator GROESSER_GLEICH = new UfdsVergleichsOperator(
-			"größerGleich", 5); //$NON-NLS-1$
+			"größerGleich", 5); 
 
 	public static final UfdsVergleichsOperator GROESSER = new UfdsVergleichsOperator(
-			"größer", 6); //$NON-NLS-1$
+			"größer", 6); 
 
 	/**
 	 * Standardkonstruktor

@@ -27,14 +27,23 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
-import de.bsvrz.dav.daf.main.*;
+import java.text.NumberFormat;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import de.bsvrz.dav.daf.main.ClientDavInterface;
+import de.bsvrz.dav.daf.main.ClientReceiverInterface;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.DataDescription;
+import de.bsvrz.dav.daf.main.ReceiveOptions;
+import de.bsvrz.dav.daf.main.ReceiverRole;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.DataModel;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.vew.PllogUfdOptions;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
-import de.bsvrz.sys.funclib.bitctrl.dua.DUAUtensilien;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
@@ -46,10 +55,6 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
 import de.bsvrz.sys.funclib.operatingMessage.MessageTemplate;
 import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
-
-import java.text.NumberFormat;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Eine konkrete Messstelle für die Meteorologische Kontrolle
@@ -285,8 +290,6 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 			return resultData;
 		}
 	}
-
-	static int run = 1;
 
 	private void pruefe() {
 		if (_geprueft)

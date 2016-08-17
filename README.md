@@ -21,6 +21,23 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
+### 2.0.3-SNAPSHOT (Kein Release)
+
+- Für die Datenarten Niederschlagsintensität, Niederschlagsart, Fahrbahnzustand, Sichtweite,
+  Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß Anforderungen keine
+  Anstiegs-Abstiegs-Plausibilisierung mehr durchgeführt
+- Über den neuen Parameter:
+      -fehlerhafteWertePublizieren=true/**false**
+  kann definiert werden, dass bei der logischen Prüfung als implausibel erkannte Attribute
+  mit dem Flag "Implausible" gekennzeichnet werden, der Wert aber unverändert weitergereicht 
+  wird statt ihn aus "fehlerhaft" zu setzen
+- Über den neuen Parameter:
+      -useWfdTrockenGrenzwert=true/**false**
+  kann definiert werden, das der an einer Umfelddaten-Messstelle parametrierbare Grenzwert
+  "WFDgrenztrocken" verwendet wird, um die Kombination von FBZ und WFD-Sensoren zu
+  plausibilisieren (in den aktuellen Anforderungen: Regeln 10 und 11 der meteorologischen
+  Kontrolle 
+      
 ### 2.0.2
 
 Release-Datum: 28.07.2016

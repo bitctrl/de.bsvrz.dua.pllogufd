@@ -104,8 +104,8 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
-					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+					"Parameter können nicht bestimmt werden," + 
+					" da noch kein Objekt festgelegt ist"); 
 		}
 
 		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
@@ -113,9 +113,9 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt);
 		if (datenArt == null) {
 			throw new UmfeldDatenSensorUnbekannteDatenartException(
-					"Datenart von Umfelddatensensor " + this.objekt + //$NON-NLS-1$ 
+					"Datenart von Umfelddatensensor " + this.objekt +  
 							" (" + objekt.getType()
-							+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
+							+ ") konnte nicht identifiziert werden"); 
 		}
 
 		final String atgPid = "atg.ufdsGrenzwerte" + datenArt.getName();
@@ -127,10 +127,10 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			parameterAtgs.add(atg);
 		} else {
 			_debug.fine(
-					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-							"Grenzwertprüfung des Objektes "//$NON-NLS-1$
-							+ this.objekt + " bestimmt werden\n" + //$NON-NLS-1$
-							"Atg-Name: " + atgPid); //$NON-NLS-1$
+					"Es konnte keine Parameter-Attributgruppe für die " + 
+							"Grenzwertprüfung des Objektes "
+							+ this.objekt + " bestimmt werden\n" + 
+							"Atg-Name: " + atgPid); 
 		}
 
 		return parameterAtgs;
@@ -279,7 +279,7 @@ public class GrenzUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							continue;
 						}
 						_debug
-						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
+						.info("Neue Parameter für (" + resultat.getObject() + "):\n"
 								+ this.parameter);
 					}
 				}

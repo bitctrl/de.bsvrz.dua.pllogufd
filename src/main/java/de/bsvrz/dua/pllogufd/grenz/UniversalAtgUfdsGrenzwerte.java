@@ -99,11 +99,11 @@ public class UniversalAtgUfdsGrenzwerte {
 	 */
 	public UniversalAtgUfdsGrenzwerte(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
-			throw new NullPointerException("Übergebener Parameter ist <<null>>"); //$NON-NLS-1$
+			throw new NullPointerException("Übergebener Parameter ist <<null>>"); 
 		}
 		if (parameter.getData() == null) {
 			throw new NullPointerException(
-					"Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
+					"Übergebener Parameter hat keine Daten"); 
 		}
 
 		final UmfeldDatenArt datenArt = UmfeldDatenArt
@@ -112,7 +112,7 @@ public class UniversalAtgUfdsGrenzwerte {
 		final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
 		wert.setWert(parameter
 				.getData()
-				.getUnscaledValue(datenArt.getAbkuerzung() + "max").longValue()); //$NON-NLS-1$
+				.getUnscaledValue(datenArt.getAbkuerzung() + "max").longValue()); 
 
 		this.max = wert.getWert();
 		this.maxSkaliert = wert.getSkaliertenWert();
