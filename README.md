@@ -37,6 +37,8 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
   "WFDgrenztrocken" verwendet wird, um die Kombination von FBZ und WFD-Sensoren zu
   plausibilisieren (in den aktuellen Anforderungen: Regeln 10 und 11 der meteorologischen
   Kontrolle 
+- die Datenarten "Taustoffmenge", "Zeitreserve-Eisglätte" und "Zeitreserve-Reifglätte" 
+  wurden ergänzt
       
 ### 2.0.2
 
