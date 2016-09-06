@@ -21,7 +21,9 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
-### 2.0.3-SNAPSHOT (Kein Release)
+### Version 2.0.3-SNAPSHOT (Kein Release)
+
+- Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
 
 - Für die Datenarten Niederschlagsintensität, Niederschlagsart, Fahrbahnzustand, Sichtweite,
   Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß Anforderungen keine
@@ -40,7 +42,7 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 - die Datenarten "Taustoffmenge", "Zeitreserve-Eisglätte" und "Zeitreserve-Reifglätte" 
   wurden ergänzt
       
-### 2.0.2
+### Version 2.0.2
 
 Release-Datum: 28.07.2016
 
@@ -56,13 +58,13 @@ de.bsvrz.dua.pllogufd.tests.DuAPlLogUfdTestBase
 - Obsolete SVN-Tags aus Kommentaren entfernt
 - Obsolete inheritDoc-Kommentare entfernt
 
-### 2.0.1
+### Version 2.0.1
 
 Release-Datum: 22.07.2016
 
   - Umpacketierung gemäß NERZ-Konvention
   
-### 2.0.0
+### Version 2.0.0
 
 Release-Datum: 31.05.2016
 
@@ -117,16 +119,16 @@ Folgende Fehler gegenüber vorhergehenden Versionen wurden korrigiert:
   und in Betriebsmeldungen ausgegeben wurden.
 
 
-### 1.7.0
+### Version 1.7.0
 - Umstellung auf Java 8 und UTF-8
 
-### 1.6.1
+### Version 1.6.1
 - Kompatibilität zu DuA-2.0 hergestellt
 
-### 1.6.0
+### Version 1.6.0
 - Umstellung auf Funclib-Bitctrl-Dua
 
-### 1.5.0
+### Version 1.5.0
 - Unterstützung für die Umfelddatenarten ZeitreserveGlätte (Vaisala) und Taustoffmenge je Quadratmeter (TLS2012)
 - Neues Kommandozeilenargument -fehlerhafteWertePublizieren, mit dem das Defaultverhalten, implausible Werte
   durch 'fehlerhaft' zu ersetzen, überschrieben werden kann.
@@ -134,48 +136,48 @@ Folgende Fehler gegenüber vorhergehenden Versionen wurden korrigiert:
 - Neues Kommandozeilenargument -meteorologischeKontrolle=[default,hs,aus], um die meteorologische
   Kontrolle auf die Hauptsensoren zu beschränken oder gänzlich zu deaktivieren.
 
-### 1.4.0
+### Version 1.4.0
 - Umstellung auf Maven-Build
 - Behandlung nicht unterstützter Sensorarten über die 'UmfeldDatenSensorUnbekannteDatenartException'
 - benötigt SWE_de.bsvrz.sys.funclib.bitctrl_FREI_V1.2.3.zip oder höher 
 
 
-### 1.3.3
+### Version 1.3.3
 
   - Bei unbekannten Umfelddatenarten wird die neue Exception 'UmfeldDatenSensorUnbekannteDatenartException' 
   	derart behandelt, dass eine Warnung ausgegeben und der betroffene Sensor ignoriert wird
   	
   - benötigt: de.bsvrz.sys.funclib.bitctrl_V20140612
 
-### 1.3.2
+### Version 1.3.2
 
   - Sämtliche Konstruktoren DataDescription(atg, asp, sim)
     ersetzt durch DataDescription(atg, asp)
 
-### 1.3.1
+### Version 1.3.1
 
   - Debug: Probleme beim Betrieb von Messstellen mit fehlenden Umfelddatensensoren
     beseitigt.
     
-### 1.3.0
+### Version 1.3.0
 
   - Debug: Probleme beim Auslesen der Parameter fuer die Differentialkontrolle
     beseitigt.
 
-### 1.2.1
+### Version 1.2.1
 
   - Bash-Startskript hinzu
   
-### 1.2.0
+### Version 1.2.0
 
   - Debug: Gueteinitialisierung war fehlerhaft wurde veraendert.
     Code wurde verschlankt.
 
-### 1.1.0
+### Version 1.1.0
 
   - Umpacketierung
 
-### 1.0.0
+### Version 1.0.0
 
   - Erste Auslieferung
   

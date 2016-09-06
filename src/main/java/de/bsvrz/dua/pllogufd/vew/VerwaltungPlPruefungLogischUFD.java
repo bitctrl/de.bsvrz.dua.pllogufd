@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.ReceiveOptions;
 import de.bsvrz.dav.daf.main.ReceiverRole;
@@ -65,6 +66,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenSensor;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
+import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
 import de.bsvrz.sys.funclib.operatingMessage.MessageTemplate;
 import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
@@ -179,6 +181,12 @@ public class VerwaltungPlPruefungLogischUFD extends
 	 */
 	private IBearbeitungsKnoten pub;
 
+	@Override
+	public void initialize(ClientDavInterface dieVerbindung) throws Exception {
+		MessageSender.getInstance().setApplicationLabel("PLPruefung logisch UFD");
+		super.initialize(dieVerbindung);
+	}
+	
 	@Override
 	protected void initialisiere() throws DUAInitialisierungsException {
 
