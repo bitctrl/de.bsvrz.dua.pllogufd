@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd.svg?branch=develop)](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd)
-[![Build Status](https://api.bintray.com/packages/bitctrl/maven/de.bsvrz.dua.pllogufd/images/download.svg)](https://bintray.com/bitctrl/maven/de.bsvrz.dua.pllogufd)
+[![Build Status](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd.svg?branch=version_sh)](https://travis-ci.org/bitctrl/de.bsvrz.dua.pllogufd)
 
 # Segment 4 Datenübernahme und Aufbereitung (DUA), SWE 4.3 Pl-Prüfung logisch UFD
 
@@ -21,7 +20,7 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
-### Version 2.0.3-SNAPSHOT (Kein Release)
+### Version 2.0.3
 
 - Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
 
@@ -29,16 +28,21 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
   Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß Anforderungen keine
   Anstiegs-Abstiegs-Plausibilisierung mehr durchgeführt
 - Über den neuen Parameter:
-      -fehlerhafteWertePublizieren=true/**false**
+      -**fehlerhafteWertePublizieren**=true/**false**
   kann definiert werden, dass bei der logischen Prüfung als implausibel erkannte Attribute
   mit dem Flag "Implausible" gekennzeichnet werden, der Wert aber unverändert weitergereicht 
   wird statt ihn aus "fehlerhaft" zu setzen
 - Über den neuen Parameter:
-      -useWfdTrockenGrenzwert=true/**false**
-  kann definiert werden, das der an einer Umfelddaten-Messstelle parametrierbare Grenzwert
+      -**useWfdTrockenGrenzwert**=true/**false**
+  kann definiert werden, dass der an einer Umfelddaten-Messstelle parametrierbare Grenzwert
   "WFDgrenztrocken" verwendet wird, um die Kombination von FBZ und WFD-Sensoren zu
   plausibilisieren (in den aktuellen Anforderungen: Regeln 10 und 11 der meteorologischen
   Kontrolle 
+- Über den neuen Parameter:
+      -**useNiGrenzNS**=true/**false**
+  kann definiert werden, dass der an einer Umfelddaten-Messstelle parametrierbare Grenzwert
+  "NIgrenzNS" verwendet wird, um die Prüfungen der meteorologischen Kontrolle zu durchlaufen
+  (Regeln 2, 4, und 13)
 - die Datenarten "Taustoffmenge", "Zeitreserve-Eisglätte" und "Zeitreserve-Reifglätte" 
   wurden ergänzt
       

@@ -311,12 +311,23 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		}
 
 		// Prüfung 2
-		if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() == 0 && isOk(_rlfWert)
-				&& isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()) {
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h, " + "RLF="
-					+ formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF");
-			_ids.add("[DUA-PP-MK02]");
+		// Auswahl des Grenzwertes für SH-Version
+		if (options.isUseNiGrenzNS() && isOk(_niGrenzNs)) {
+			if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() < _niGrenzNs.getWert() && isOk(_rlfWert)
+					&& isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()) {
+				_implausibleDatenArten.add(UmfeldDatenArt.ns);
+				_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h, " + "RLF="
+						+ formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF");
+				_ids.add("[DUA-PP-MK02]");
+			}
+		} else {
+			if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() == 0 && isOk(_rlfWert)
+					&& isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()) {
+				_implausibleDatenArten.add(UmfeldDatenArt.ns);
+				_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h, " + "RLF="
+						+ formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF");
+				_ids.add("[DUA-PP-MK02]");
+			}
 		}
 
 		// Prüfung 3
@@ -331,12 +342,23 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		}
 
 		// Prüfung 4
-		if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() == 0 && isOk(_rlfWert)
-				&& isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()) {
-			_implausibleDatenArten.add(UmfeldDatenArt.ni);
-			_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h, " + "RLF="
-					+ formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF");
-			_ids.add("[DUA-PP-MK04]");
+		// Auswahl des Grenzwertes für SH-Version
+		if (options.isUseNiGrenzNS() && isOk(_niGrenzNs)) {
+			if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() < _niGrenzNs.getWert() && isOk(_rlfWert)
+					&& isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()) {
+				_implausibleDatenArten.add(UmfeldDatenArt.ni);
+				_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h, " + "RLF="
+						+ formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF");
+				_ids.add("[DUA-PP-MK04]");
+			}
+		} else {
+			if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() == 0 && isOk(_rlfWert)
+					&& isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()) {
+				_implausibleDatenArten.add(UmfeldDatenArt.ni);
+				_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h, " + "RLF="
+						+ formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF");
+				_ids.add("[DUA-PP-MK04]");
+			}
 		}
 
 		// Prüfung 5
@@ -399,7 +421,8 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 					&& _fbzWert.getWert() == 0) {
 				_implausibleDatenArten.add(UmfeldDatenArt.wfd);
 				_implausibleDatenArten.add(UmfeldDatenArt.fbz);
-				_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm > " + formatWert(_wfdGrenzTrocken) + " mm, " + "FBZ=Trocken");
+				_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm > " + formatWert(_wfdGrenzTrocken)
+						+ " mm, " + "FBZ=Trocken");
 				_ids.add("[DUA-PP-MK10]");
 			}
 
@@ -413,8 +436,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 			}
 		} else {
 			// Prüfung 10
-			if (isOk(_wfdWert) && _wfdWert.getSkaliertenWert() > 0 && isOk(_fbzWert)
-					&& _fbzWert.getWert() == 0) {
+			if (isOk(_wfdWert) && _wfdWert.getSkaliertenWert() > 0 && isOk(_fbzWert) && _fbzWert.getWert() == 0) {
 				_implausibleDatenArten.add(UmfeldDatenArt.wfd);
 				_implausibleDatenArten.add(UmfeldDatenArt.fbz);
 				_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm > 0,0 mm, " + "FBZ=Trocken");
@@ -422,8 +444,7 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 			}
 
 			// Prüfung 11
-			if (isOk(_wfdWert) && _wfdWert.getSkaliertenWert() == 0 && isOk(_fbzWert)
-					&& _fbzWert.getWert() != 0) {
+			if (isOk(_wfdWert) && _wfdWert.getSkaliertenWert() == 0 && isOk(_fbzWert) && _fbzWert.getWert() != 0) {
 				_implausibleDatenArten.add(UmfeldDatenArt.wfd);
 				_implausibleDatenArten.add(UmfeldDatenArt.fbz);
 				_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm, " + "FBZ=Nass");
@@ -431,7 +452,6 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 			}
 
 		}
-
 
 		boolean rlfUndef = !isOk(_rlfWert) || (isOk(_rlfGrenzNass) && isOk(_rlfGrenzTrocken)
 				&& _rlfWert.getWert() >= _rlfGrenzTrocken.getWert() && _rlfWert.getWert() <= _rlfGrenzNass.getWert());
@@ -447,11 +467,20 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 		}
 
 		// Prüfung 13
-		if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() == 0 && rlfUndef) {
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_implausibleDatenArten.add(UmfeldDatenArt.ni);
-			_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h");
-			_ids.add("[DUA-PP-MK13]");
+		if (options.isUseNiGrenzNS() && isOk(_niGrenzNs)) {
+			if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() < _niGrenzNs.getWert() && rlfUndef) {
+				_implausibleDatenArten.add(UmfeldDatenArt.ns);
+				_implausibleDatenArten.add(UmfeldDatenArt.ni);
+				_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h");
+				_ids.add("[DUA-PP-MK13]");
+			}
+		} else {
+			if (isOk(_nsWert) && niederschlag() && isOk(_niWert) && _niWert.getWert() == 0 && rlfUndef) {
+				_implausibleDatenArten.add(UmfeldDatenArt.ns);
+				_implausibleDatenArten.add(UmfeldDatenArt.ni);
+				_verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(_niWert) + " mm/h");
+				_ids.add("[DUA-PP-MK13]");
+			}
 		}
 
 		if (!_ids.isEmpty()) {

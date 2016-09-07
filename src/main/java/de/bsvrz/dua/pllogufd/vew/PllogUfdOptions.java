@@ -42,6 +42,15 @@ public class PllogUfdOptions {
 	 * verwendet wird (Unterstützung der TLS2002 und nicht konformer Systeme).
 	 */
 	private boolean useWfdTrockenGrenzwert = false;
+
+	/**
+	 * bestimmt, ob für die Plausibilitätsprüfung der Niederschlagsintensität, der
+	 * Grenzwert 0 (Standard in TLS2012) oder der im Parameter
+	 * "atg.ufdmsParameterMeteorologischeKontrolle" festgelegte Grenzwert
+	 * verwendet wird (Unterstützung der TLS2002 und nicht konformer Systeme).
+	 */
+	private boolean useNiGrenzNS = false;
+	
 	private boolean fehlerhafteWertePublizieren = false;
 
 	public void update(VerwaltungPlPruefungLogischUFD verwaltung) {
@@ -51,11 +60,20 @@ public class PllogUfdOptions {
 			useWfdTrockenGrenzwert = Boolean.valueOf(argument);
 		}
 
+		argument = verwaltung.getArgument("useNiGrenzNS");
+		if (argument != null) {
+			useNiGrenzNS = Boolean.valueOf(argument);
+		}
+		
 		argument = verwaltung.getArgument("fehlerhafteWertePublizieren");
 		if (argument != null) {
 			fehlerhafteWertePublizieren  = Boolean.valueOf(argument);
 		}
 
+	}
+
+	public boolean isUseNiGrenzNS() {
+		return useNiGrenzNS;
 	}
 
 	public boolean isUseWfdTrockenGrenzwert() {
