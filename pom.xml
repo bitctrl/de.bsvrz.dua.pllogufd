@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.bsvrz.dua</groupId>
-	<artifactId>de.bsvrz.dua.pllogufd</artifactId>
+	<artifactId>de.bsvrz.dua.pllogufd.sh</artifactId>
 	<version>2.0.3-SNAPSHOT</version>
 
-	<name>Segment 4 Datenübernahme und Aufbereitung (DUA), Pl-Logisch UFD (SWE 4.3)</name>
+	<name>Segment 4 DuA, Pl-Logisch UFD (SWE 4.3), Version Schleswig-Holstein</name>
 
 	<organization>
 		<name>BitCtrl Systems GmbH</name>
