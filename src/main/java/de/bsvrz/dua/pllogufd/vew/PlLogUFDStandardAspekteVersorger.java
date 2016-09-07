@@ -34,8 +34,10 @@ import de.bsvrz.sys.funclib.bitctrl.dua.StandardAspekteVersorger;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 
 /**
- * Diese Klasse repräsentiert die Versorgung des Moduls Pl-Prüfung logisch UFD (innerhalb der SWE Pl-Prüfung logisch UFD) mit Standard-Publikationsinformationen
- * (Zuordnung von Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
+ * Diese Klasse repräsentiert die Versorgung des Moduls Pl-Prüfung logisch UFD
+ * (innerhalb der SWE Pl-Prüfung logisch UFD) mit
+ * Standard-Publikationsinformationen (Zuordnung von
+ * Objekt-Datenbeschreibung-Kombination zu Standard- Publikationsaspekt).
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
@@ -44,122 +46,57 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 	/**
 	 * Standardkonstruktor.
 	 *
-	 * @param verwaltung Verbindung zum Verwaltungsmodul
-	 * @throws DUAInitialisierungsException wird weitergereicht
+	 * @param verwaltung
+	 *            Verbindung zum Verwaltungsmodul
+	 * @throws DUAInitialisierungsException
+	 *             wird weitergereicht
 	 */
-	public PlLogUFDStandardAspekteVersorger(final IVerwaltung verwaltung)
-			throws DUAInitialisierungsException {
+	public PlLogUFDStandardAspekteVersorger(final IVerwaltung verwaltung) throws DUAInitialisierungsException {
 		super(verwaltung);
 	}
 
 	@Override
 	protected void init() throws DUAInitialisierungsException {
 
-		this.standardAspekte = new StandardAspekteAdapter(
-				new StandardPublikationsZuordnung[]{
-						new StandardPublikationsZuordnung(
-								"typ.ufdsFahrBahnOberFlächenTemperatur", //$NON-NLS-1$
-								"atg.ufdsFahrBahnOberFlächenTemperatur", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsFahrBahnOberFlächenZustand", //$NON-NLS-1$
-								"atg.ufdsFahrBahnOberFlächenZustand", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsGefrierTemperatur", //$NON-NLS-1$
-								"atg.ufdsGefrierTemperatur", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsHelligkeit", //$NON-NLS-1$
-								"atg.ufdsHelligkeit", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsLuftTemperatur", //$NON-NLS-1$
-								"atg.ufdsLuftTemperatur", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsNiederschlagsArt", //$NON-NLS-1$
-								"atg.ufdsNiederschlagsArt", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsNiederschlagsIntensität", //$NON-NLS-1$
-								"atg.ufdsNiederschlagsIntensität", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsRelativeLuftFeuchte", //$NON-NLS-1$
-								"atg.ufdsRelativeLuftFeuchte", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsRestSalz", //$NON-NLS-1$
-								"atg.ufdsRestSalz", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsSichtWeite", //$NON-NLS-1$
-								"atg.ufdsSichtWeite", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsTaupunktTemperatur", //$NON-NLS-1$
-								"atg.ufdsTaupunktTemperatur", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsTemperaturInTiefe1", //$NON-NLS-1$
-								"atg.ufdsTemperaturInTiefe1", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsTemperaturInTiefe3", //$NON-NLS-1$
-								"atg.ufdsTemperaturInTiefe3", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsWasserFilmDicke", //$NON-NLS-1$
-								"atg.ufdsWasserFilmDicke", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsWindRichtung", //$NON-NLS-1$
-								"atg.ufdsWindRichtung", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsWindGeschwindigkeitMittelWert", //$NON-NLS-1$
-								"atg.ufdsWindGeschwindigkeitMittelWert", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-						new StandardPublikationsZuordnung(
-								"typ.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
-								"atg.ufdsWindGeschwindigkeitSpitzenWert", //$NON-NLS-1$
-								DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-								DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH
-						),
-				});
+		this.standardAspekte = new StandardAspekteAdapter(new StandardPublikationsZuordnung[] {
+				new StandardPublikationsZuordnung("typ.ufdsFahrBahnOberFlächenTemperatur",
+						"atg.ufdsFahrBahnOberFlächenTemperatur", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsFahrBahnOberFlächenZustand",
+						"atg.ufdsFahrBahnOberFlächenZustand", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsGefrierTemperatur", "atg.ufdsGefrierTemperatur",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsHelligkeit", "atg.ufdsHelligkeit",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsLuftTemperatur", "atg.ufdsLuftTemperatur",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsNiederschlagsArt", "atg.ufdsNiederschlagsArt",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsNiederschlagsIntensität", "atg.ufdsNiederschlagsIntensität",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsRelativeLuftFeuchte", "atg.ufdsRelativeLuftFeuchte",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsRestSalz", "atg.ufdsRestSalz",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsSichtWeite", "atg.ufdsSichtWeite",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsTaupunktTemperatur", "atg.ufdsTaupunktTemperatur",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsTemperaturInTiefe1", "atg.ufdsTemperaturInTiefe1",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsTemperaturInTiefe3", "atg.ufdsTemperaturInTiefe3",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsWasserFilmDicke", "atg.ufdsWasserFilmDicke",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsWindRichtung", "atg.ufdsWindRichtung",
+						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsWindGeschwindigkeitMittelWert",
+						"atg.ufdsWindGeschwindigkeitMittelWert", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
+				new StandardPublikationsZuordnung("typ.ufdsWindGeschwindigkeitSpitzenWert",
+						"atg.ufdsWindGeschwindigkeitSpitzenWert", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH), });
 
 	}
 

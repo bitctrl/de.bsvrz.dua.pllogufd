@@ -21,6 +21,14 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
+### Version 2.0.3
+
+- Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
+- Für die Datenarten Niederschlagsintensität, Niederschlagsart, Fahrbahnzustand, 
+  Sichtweite, Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß 
+  Anforderungen keine Anstiegs-Abstiegs-Plausibilisierung mehr durchgeführt
+- Sourcecode-Bereinigung      
+
 ### 2.0.2
 
 Release-Datum: 28.07.2016

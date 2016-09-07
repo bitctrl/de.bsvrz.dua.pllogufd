@@ -76,18 +76,12 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	/**
 	 * Vorlage für die Betriebsmeldung
 	 */
-	private static final MessageTemplate TEMPLATE_DIFF = new MessageTemplate(
-			MessageGrade.ERROR,
+	private static final MessageTemplate TEMPLATE_DIFF = new MessageTemplate(MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 			MessageTemplate.fixed("Grenzwert für Messwertkonstanz bei Differenzialkontrolle für "),
-			MessageTemplate.variable("attr"),
-			MessageTemplate.fixed(" an Messstelle "),
-			MessageTemplate.object(),
-			MessageTemplate.fixed(" überschritten, da "),
-			MessageTemplate.set("values", ", "),
-			MessageTemplate.fixed(". Wert wird auf fehlerhaft gesetzt. "),
-			MessageTemplate.ids()
-	);
+			MessageTemplate.variable("attr"), MessageTemplate.fixed(" an Messstelle "), MessageTemplate.object(),
+			MessageTemplate.fixed(" überschritten, da "), MessageTemplate.set("values", ", "),
+			MessageTemplate.fixed(". Wert wird auf fehlerhaft gesetzt. "), MessageTemplate.ids());
 
 	/**
 	 * Niederschlags-Art-Sensor (für den Spezialfall FBT)
@@ -106,30 +100,26 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	 *             wird weitergereicht
 	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
-	protected DiffUmfeldDatenSensor(final IVerwaltung verwaltung,
-			final SystemObject obj) throws DUAInitialisierungsException,
-			UmfeldDatenSensorUnbekannteDatenartException {
+	protected DiffUmfeldDatenSensor(final IVerwaltung verwaltung, final SystemObject obj)
+			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		super(verwaltung, obj);
-		final UmfeldDatenArt datenArt = UmfeldDatenArt
-				.getUmfeldDatenArtVon(obj);
+		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(obj);
 		if (datenArt == null) {
-			throw new UmfeldDatenSensorUnbekannteDatenartException(
-					"Datenart von Umfelddatensensor " + obj + //$NON-NLS-1$
-					" (" + obj.getType()
-					+ ") konnte nicht identifiziert werden"); //$NON-NLS-1$
+			throw new UmfeldDatenSensorUnbekannteDatenartException("Datenart von Umfelddatensensor " + obj + " ("
+					+ obj.getType() + ") konnte nicht identifiziert werden");
 		}
 		this.wert = new VariableMitKonstanzZaehler<>(datenArt.getName());
-		
-		if(datenArt.getAbkuerzung().equals("FBT")){
-			DUAUmfeldDatenMessStelle messstelle = ((VerwaltungPlPruefungLogischUFD)verwaltung).getMessstelle(objekt);
-			if(messstelle != null) {
+
+		if (datenArt.getAbkuerzung().equals("FBT")) {
+			DUAUmfeldDatenMessStelle messstelle = ((VerwaltungPlPruefungLogischUFD) verwaltung).getMessstelle(objekt);
+			if (messstelle != null) {
 				DUAUmfeldDatenSensor hauptSensorNS = messstelle.getHauptSensor(UmfeldDatenArt.ns);
-				if(hauptSensorNS != null) {
+				if (hauptSensorNS != null) {
 					sensorNA = new SensorNA(hauptSensorNS.getObjekt());
 				}
 			}
 		}
-		
+
 		this.init();
 	}
 
@@ -138,25 +128,21 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			throws DUAInitialisierungsException, UmfeldDatenSensorUnbekannteDatenartException {
 		if (this.objekt == null) {
 			throw new NullPointerException(
-					"Parameter können nicht bestimmt werden," + //$NON-NLS-1$
-					" da noch kein Objekt festgelegt ist"); //$NON-NLS-1$
+					"Parameter können nicht bestimmt werden," + " da noch kein Objekt festgelegt ist");
 		}
 
 		final Collection<AttributeGroup> parameterAtgs = new HashSet<AttributeGroup>();
 
-		final String atgPid = "atg.ufdsDifferenzialKontrolle" + UmfeldDatenArt.//$NON-NLS-1$
-				getUmfeldDatenArtVon(this.objekt).getName();
-		final AttributeGroup atg = verwaltungsModul
-				.getVerbindung().getDataModel().getAttributeGroup(atgPid);
+		final String atgPid = "atg.ufdsDifferenzialKontrolle"
+				+ UmfeldDatenArt.getUmfeldDatenArtVon(this.objekt).getName();
+		final AttributeGroup atg = verwaltungsModul.getVerbindung().getDataModel().getAttributeGroup(atgPid);
 
 		if (atg != null) {
 			parameterAtgs.add(atg);
 		} else {
 			throw new DUAInitialisierungsException(
-					"Es konnte keine Parameter-Attributgruppe für die " + //$NON-NLS-1$
-							"Differenzialkontrolle des Objektes " + this.objekt//$NON-NLS-1$
-							+ " bestimmt werden\n" + //$NON-NLS-1$
-							"Atg-Name: " + atgPid); //$NON-NLS-1$
+					"Es konnte keine Parameter-Attributgruppe für die " + "Differenzialkontrolle des Objektes "
+							+ this.objekt + " bestimmt werden\n" + "Atg-Name: " + atgPid);
 		}
 
 		return parameterAtgs;
@@ -176,120 +162,116 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 	public final Data plausibilisiere(final ResultData resultat) {
 		Data copy = null;
 
-		if((resultat != null) && (resultat.getData() != null)) {
-			if(this.parameter != null) {
+		if ((resultat != null) && (resultat.getData() != null)) {
+			if (this.parameter != null) {
 				try {
-					final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(
-							resultat);
+					final UmfeldDatenSensorDatum datum = new UmfeldDatenSensorDatum(resultat);
 
-					final UmfeldDatenArt datenArt = UmfeldDatenArt
-							.getUmfeldDatenArtVon(resultat.getObject());
+					final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(resultat.getObject());
 
 					final long aktuellerWert = datum.getWert().getWert();
 					final long t = datum.getT();
 					this.wert.aktualisiere(aktuellerWert, t);
 
-					synchronized(this.parameter) {
+					synchronized (this.parameter) {
 						boolean vergleichDurchfuehren;
-						if(this.parameter.getOperator() != null) {
-							vergleichDurchfuehren = this.parameter
-									.getOperator()
-									.vergleiche(
-											datum.getWert(),
-											this.parameter.getGrenz()
-									);
+						if (this.parameter.getOperator() != null) {
+							vergleichDurchfuehren = this.parameter.getOperator().vergleiche(datum.getWert(),
+									this.parameter.getGrenz());
 
-						}
-						else {
-							vergleichDurchfuehren = aktuellerWert <= this.parameter
-									.getGrenz().getWert();
+						} else {
+							vergleichDurchfuehren = aktuellerWert <= this.parameter.getGrenz().getWert();
 						}
 
 						long maxZeit = this.parameter.getMaxZeit();
-						if(maxZeit <= 0) {
+						if (maxZeit <= 0) {
 							vergleichDurchfuehren = false;
 						}
-						if(vergleichDurchfuehren && datenArt.getAbkuerzung().equals("FBT")){
+						if (vergleichDurchfuehren && datenArt.getAbkuerzung().equals("FBT")) {
 							// Bedingung != Schnee
-							if(sensorNA != null){
+							if (sensorNA != null) {
 								String nawert = sensorNA.nawert;
-								if(nawert != null && nawert.contains("Schnee")){
-									_debug.fine("Differenzialkontrolle für FBT wird nicht durchgeführt, da NA-Sensor Schnee meldet", objekt);
+								if (nawert != null && nawert.contains("Schnee")) {
+									_debug.fine(
+											"Differenzialkontrolle für FBT wird nicht durchgeführt, da NA-Sensor Schnee meldet",
+											objekt);
 									vergleichDurchfuehren = false;
 								}
 							}
 						}
-						if(vergleichDurchfuehren) {
-							if(this.wert.getWertIstKonstantSeit() > maxZeit) {
-								OperatingMessage message = TEMPLATE_DIFF.newMessage(((VerwaltungPlPruefungLogischUFD)verwaltungsModul).getBetriebsmeldungsObjekt(objekt));
+						if (vergleichDurchfuehren) {
+							if (this.wert.getWertIstKonstantSeit() > maxZeit) {
+								OperatingMessage message = TEMPLATE_DIFF
+										.newMessage(((VerwaltungPlPruefungLogischUFD) verwaltungsModul)
+												.getBetriebsmeldungsObjekt(objekt));
 								message.put("attr", datenArt.getName() + " " + datenArt.getAbkuerzung());
-								message.add("values", datenArt.getAbkuerzung() + " konstant " + formatDuration(this.wert.getWertIstKonstantSeit()) + " > " + formatDuration(maxZeit) + " maximal");
-								switch(datenArt.getAbkuerzung()) {
-									case "NI":
-										message.addId("[DUA-PP-UDK01]");
-										break;
-									case "WFD":
-										message.addId("[DUA-PP-UDK02]");
-										break;
-									case "LT":
-										message.addId("[DUA-PP-UDK03]");
-										break;
-									case "RLF":
-										message.addId("[DUA-PP-UDK04]");
-										break;
-									case "SW":
-										message.addId("[DUA-PP-UDK05]");
-										break;
-									case "HK":
-										message.addId("[DUA-PP-UDK06]");
-										break;
-									case "FBT":
-										message.addId("[DUA-PP-UDK07]");
-										break;
-									case "TT1":
-										message.addId("[DUA-PP-UDK08]");
-										break;
-									case "TT3":
-										message.addId("[DUA-PP-UDK09]");
-										break;
-									case "RS":
-										message.addId("[DUA-PP-UDK10]");
-										break;
-									case "GT":
-										message.addId("[DUA-PP-UDK11]");
-										break;
-									case "TPT":
-										message.addId("[DUA-PP-UDK12]");
-										break;
-									case "WGS":
-										message.addId("[DUA-PP-UDK13]");
-										break;
-									case "WGM":
-										message.addId("[DUA-PP-UDK14]");
-										break;
-									case "WR":
-										message.addId("[DUA-PP-UDK15]");
-										break;
-									default:
-										message.addId("[DUA-PP-UDK??]");
-										break;
+								message.add("values",
+										datenArt.getAbkuerzung() + " konstant "
+												+ formatDuration(this.wert.getWertIstKonstantSeit()) + " > "
+												+ formatDuration(maxZeit) + " maximal");
+								switch (datenArt.getAbkuerzung()) {
+								case "NI":
+									message.addId("[DUA-PP-UDK01]");
+									break;
+								case "WFD":
+									message.addId("[DUA-PP-UDK02]");
+									break;
+								case "LT":
+									message.addId("[DUA-PP-UDK03]");
+									break;
+								case "RLF":
+									message.addId("[DUA-PP-UDK04]");
+									break;
+								case "SW":
+									message.addId("[DUA-PP-UDK05]");
+									break;
+								case "HK":
+									message.addId("[DUA-PP-UDK06]");
+									break;
+								case "FBT":
+									message.addId("[DUA-PP-UDK07]");
+									break;
+								case "TT1":
+									message.addId("[DUA-PP-UDK08]");
+									break;
+								case "TT3":
+									message.addId("[DUA-PP-UDK09]");
+									break;
+								case "RS":
+									message.addId("[DUA-PP-UDK10]");
+									break;
+								case "GT":
+									message.addId("[DUA-PP-UDK11]");
+									break;
+								case "TPT":
+									message.addId("[DUA-PP-UDK12]");
+									break;
+								case "WGS":
+									message.addId("[DUA-PP-UDK13]");
+									break;
+								case "WGM":
+									message.addId("[DUA-PP-UDK14]");
+									break;
+								case "WR":
+									message.addId("[DUA-PP-UDK15]");
+									break;
+								default:
+									message.addId("[DUA-PP-UDK??]");
+									break;
 								}
 								message.send();
-								
+
 								datum.getWert().setFehlerhaftAn();
 								datum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
 								copy = datum.getDatum();
 							}
 						}
 					}
+				} catch (UmfeldDatenSensorUnbekannteDatenartException ignored) {
 				}
-				catch(UmfeldDatenSensorUnbekannteDatenartException ignored) {
-				}
-			}
-			else {
-				_debug
-						.fine("Fuer Umfelddatensensor " + this + //$NON-NLS-1$
-								      " wurden noch keine Parameter für die Differenzialkontrolle empfangen"); //$NON-NLS-1$
+			} else {
+				_debug.fine("Fuer Umfelddatensensor " + this
+						+ " wurden noch keine Parameter für die Differenzialkontrolle empfangen");
 			}
 		}
 
@@ -304,21 +286,17 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this) {
 						try {
-							this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(
-									resultat);
+							this.parameter = new UniversalAtgUfdsDifferenzialKontrolle(resultat);
 						} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
 							_debug.warning(e.getMessage());
 							continue;
 						}
-						_debug
-						.info("Neue Parameter für (" + resultat.getObject() + "):\n" //$NON-NLS-1$ //$NON-NLS-2$
-								+ this.parameter);
+						_debug.info("Neue Parameter für (" + resultat.getObject() + "):\n" + this.parameter);
 					}
 				}
 			}
 		}
 	}
-
 
 	public static String formatDuration(long tmp) {
 		long ms = tmp % 1000;
@@ -329,44 +307,41 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		tmp /= 60;
 		long h = tmp;
 		StringBuilder stringBuilder = new StringBuilder();
-		if(h >= 1){
-			if(h == 1){
+		if (h >= 1) {
+			if (h == 1) {
 				stringBuilder.append("1 Stunde ");
-			}
-			else {
+			} else {
 				stringBuilder.append(h).append(" Stunden ");
 			}
 		}
-		if(min >= 1){
-			if(min == 1){
+		if (min >= 1) {
+			if (min == 1) {
 				stringBuilder.append("1 Minute ");
-			}
-			else {
+			} else {
 				stringBuilder.append(min).append(" Minuten ");
 			}
 		}
-		if(sec >= 1){
-			if(sec == 1){
+		if (sec >= 1) {
+			if (sec == 1) {
 				stringBuilder.append("1 Sekunde ");
-			}
-			else {
+			} else {
 				stringBuilder.append(sec).append(" Sekunden ");
 			}
 		}
-		if(ms >= 1){
-			if(ms == 1){
+		if (ms >= 1) {
+			if (ms == 1) {
 				stringBuilder.append("1 Millisekunde ");
-			}
-			else {
+			} else {
 				stringBuilder.append(ms).append(" Millisekunden ");
 			}
 		}
-		stringBuilder.setLength(stringBuilder.length()-1);
+		stringBuilder.setLength(stringBuilder.length() - 1);
 		return stringBuilder.toString();
 	}
 
-	/** 
+	/**
 	 * Gibt den NS-Sensor zurück zurück
+	 * 
 	 * @return den NS-Sensor zurück
 	 */
 	public SensorNA getSensorNA() {
@@ -387,15 +362,16 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		 */
 		private String nawert = null;
 
-		/** 
+		/**
 		 * Erstellt einen neuen SensorNA
 		 */
 		public SensorNA(final SystemObject systemObject) {
 			_systemObject = systemObject;
 		}
 
-		/** 
+		/**
 		 * Gibt das Objekt zurück
+		 * 
 		 * @return das Objekt
 		 */
 		public SystemObject getSystemObject() {
@@ -404,16 +380,17 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 
 		/**
 		 * Aktualisiert die Daten
-		 * @param resultat Neue Daten
+		 * 
+		 * @param resultat
+		 *            Neue Daten
 		 */
 		public void update(final ResultData resultat) {
-			if(resultat.hasData()){
+			if (resultat.hasData()) {
 				nawert = resultat.getData().getItem("NiederschlagsArt").getTextValue("Wert").getValueText();
-			}
-			else {
+			} else {
 				nawert = null;
 			}
-			
+
 		}
 	}
 
