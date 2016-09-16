@@ -209,6 +209,7 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 						if(maxZeit <= 0) {
 							vergleichDurchfuehren = false;
 						}
+						
 						if(vergleichDurchfuehren && datenArt.getAbkuerzung().equals("FBT")){
 							// Bedingung != Schnee
 							if(sensorNA != null){
@@ -219,6 +220,14 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 								}
 							}
 						}
+						
+						// Sonderfall SH: Restsalz == 255 (aus physikalischen Gründen nicht ermittelbar)
+						if (vergleichDurchfuehren && (datenArt == UmfeldDatenArt.rs)) {
+							if( wert.getWert() == 255) {
+								vergleichDurchfuehren = false;
+							}
+						}
+						
 						if(vergleichDurchfuehren) {
 							if(this.wert.getWertIstKonstantSeit() > maxZeit) {
 								OperatingMessage message = TEMPLATE_DIFF.newMessage(((VerwaltungPlPruefungLogischUFD)verwaltungsModul).getBetriebsmeldungsObjekt(objekt));

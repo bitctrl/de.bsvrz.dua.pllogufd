@@ -24,6 +24,7 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 - Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
 
+- Bei der Datenart "Restsalz" wird der Wert 255 (Restsalz nicht bestimmbar) bei der Differentialkontrolle nicht berücksichtigt
 - Für die Datenarten Niederschlagsintensität, Niederschlagsart, Fahrbahnzustand, Sichtweite,
   Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß Anforderungen keine
   Anstiegs-Abstiegs-Plausibilisierung mehr durchgeführt
