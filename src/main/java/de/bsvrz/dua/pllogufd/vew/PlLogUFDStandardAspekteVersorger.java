@@ -68,7 +68,7 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 				"GefrierTemperatur", "Helligkeit", "LuftTemperatur", "NiederschlagsArt", "NiederschlagsIntensität",
 				"RelativeLuftFeuchte", "RestSalz", "SichtWeite", "Taustoffmenge", "TaupunktTemperatur", "TemperaturInTiefe1",
 				"TemperaturInTiefe3", "WasserFilmDicke", "WindRichtung", "WindGeschwindigkeitMittelWert",
-				"WindGeschwindigkeitSpitzenWert", "ZeitReserveEisGlätte", "ZeitReserveReifGlätte" };
+				"WindGeschwindigkeitSpitzenWert", "ZeitReserveEisGlätte", "ZeitReserveReifGlätte", "GlätteAlarmStatus" };
 
 		Collection<StandardPublikationsZuordnung> zuordnungen = new ArrayList<>();
 

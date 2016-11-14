@@ -37,6 +37,7 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.util.ArrayList;
@@ -92,9 +93,22 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 					if (resultat.getData() != null) {
 						ResultData resultatNeu = resultat;
 
-						final AufAbUmfeldDatenSensor sensor = this.sensoren
+						AufAbUmfeldDatenSensor sensor = this.sensoren
 								.get(resultat.getObject());
 
+						try {
+							UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(resultat.getObject());
+
+							// BUG: NERZ FM-226
+							// Laut Afo DuA vom 24.5.2016 wird für bestimmte Datenarten
+							// keine Anstieg-Abfall-Kontrolle ausgeführt
+							if (!aufAbPlausibilisierungAnwenden(datenArt)) {
+								sensor = null;
+							}
+						} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+							sensor = null;
+						}
+						
 						Data data = null;
 						if (sensor != null) {
 							data = sensor.plausibilisiere(resultat);
@@ -130,4 +144,21 @@ public class AnstiegAbfallKontrolle extends AbstraktBearbeitungsKnotenAdapter {
 		// hier wird nicht publiziert
 	}
 
+	private boolean aufAbPlausibilisierungAnwenden(UmfeldDatenArt datenArt) {
+		switch (datenArt) {
+		case ni:
+		case ns:
+		case fbz:
+		case sw:
+		case rs:
+		case gt:
+		case wr:
+		case gas:
+			return false;
+		default:
+			break;
+		}
+		return true;
+	}
+	
 }
