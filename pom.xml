@@ -26,6 +26,7 @@
 		<distributionspaket.status>FREI</distributionspaket.status>
 		<distributionspaket.standDatum>${maven.build.timestamp}</distributionspaket.standDatum>
 		<distributionspaket.lizenz>GPLv3.0</distributionspaket.lizenz>
+		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
 
 	<licenses>
