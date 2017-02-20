@@ -199,6 +199,14 @@ public class DiffUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 								}
 							}
 						}
+						
+						// Sonderfall: Restsalz == 255 (aus physikalischen Gründen nicht ermittelbar)
+						if (vergleichDurchfuehren && (datenArt == UmfeldDatenArt.rs)) {
+							if( wert.getWert() == 255) {
+								vergleichDurchfuehren = false;
+							}
+						}
+						
 						if (vergleichDurchfuehren) {
 							if (this.wert.getWertIstKonstantSeit() > maxZeit) {
 								OperatingMessage message = TEMPLATE_DIFF

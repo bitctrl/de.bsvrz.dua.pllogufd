@@ -27,7 +27,9 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 - Für die Datenarten Niederschlagsintensität, Niederschlagsart, Fahrbahnzustand, 
   Sichtweite, Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß 
   Anforderungen keine Anstiegs-Abstiegs-Plausibilisierung mehr durchgeführt
-- Sourcecode-Bereinigung      
+- Sourcecode-Bereinigung
+- NERZ-Fehler 226: Sonderbehandlung der Restsalz-Wertes 255 (physikalisch nicht messbar)
+  bei der Anstiegs-Abstiegs-Kontrolle
 
 ### 2.0.2
 
