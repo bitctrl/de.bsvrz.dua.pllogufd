@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
@@ -45,7 +46,29 @@ public abstract class MeteoRule {
 		return true;
 	}
 
-	public abstract void pruefe(MeteoWerte werte, Set<String> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids);
+	public Set<UmfeldDatenArt> pruefe(MeteoWerte werte, Set<String> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
+
+		Set<UmfeldDatenArt> result = new LinkedHashSet<>();
+
+		for( UmfeldDatenArt art : inputTypes) {
+			if( werte.hasData(art)) {
+				result.add(art);
+			}
+		}
+
+		for( UmfeldDatenArt art : resultTypes) {
+			if( werte.hasData(art)) {
+				result.add(art);
+			}
+		}
+
+		checkRule(werte, verletzteBedingungen, implausibleDatenArten, ids);
+		result.removeAll(implausibleDatenArten);
+		
+		return result;
+	}
+
+	public abstract void checkRule(MeteoWerte werte, Set<String> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids);
 
 	protected boolean isOk(final UmfeldDatenSensorWert wert) {
 		return wert != null && wert.isOk();
@@ -55,5 +78,29 @@ public abstract class MeteoRule {
 		NumberFormat numberInstance = NumberFormat.getNumberInstance();
 		numberInstance.setGroupingUsed(false);
 		return numberInstance.format(wert.getSkaliertenWert());
+	}
+
+	public boolean isEvaluableFor(MeteoWerte meteoWerte) {
+		for( UmfeldDatenArt art : inputTypes) {
+			if (!meteoWerte.hasData(art)) {
+				return false;
+			}
+		}
+
+		for( UmfeldDatenArt art : resultTypes) {
+			if (!meteoWerte.hasData(art)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	protected Set<UmfeldDatenArt> getInputTypes() {
+		return inputTypes;
+	}
+
+	protected Set<UmfeldDatenArt> getResultTypes() {
+		return resultTypes;
 	}
 }

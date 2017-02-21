@@ -27,7 +27,11 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
+import static org.hamcrest.Matchers.comparesEqualTo;
+
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -82,16 +86,6 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 	private final MeteoWerte meteoWerte;
 	
 
-	/**
-	 * Sollen Betriebsmeldungen versendet werden?
-	 */
-	private boolean _sendMessage = true;
-
-	/**
-	 * Wurden die aktuellen Eingangsdaten bereits geprüft? Verhindert, dass
-	 * Meldungen doppelt verschickt werden, obwohl sich nichts ändert.
-	 */
-	private boolean _geprueft = false;
 
 	/**
 	 * Logger
@@ -135,78 +129,85 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 	}
 
 
-	public void updateData(final ResultData resultData) {
-		UmfeldDatenSensorWert data;
+	public Collection<ResultData> updateData(final ResultData resultData) {
+
+		Collection<ResultData> resultList = new ArrayList<>();
+		
+		if( !meteoWerte.containsSensor(resultData.getObject())) {
+			resultList.add(resultData);
+			return resultList;
+		}
+		
+		ResultData data;
 		if (resultData.hasData()) {
-			data = new UmfeldDatenSensorDatum(resultData).getWert();
+			data = resultData;
 		} else {
 			data = null;
 		}
 
-		meteoWerte.setData(resultData.getObject(), data);
-		_geprueft = false;
+		long timeStamp = resultData.getDataTime();
+//		long meteoTime = meteoWerte.getDataTime();
+//		if(( meteoTime > 0) && ( meteoTime < timeStamp)) {
+//			resultList.addAll(pruefe(false));
+//			meteoWerte.reset();
+//		}
+		resultList.addAll(meteoWerte.setData(resultData.getObject(), timeStamp, data));
+		return resultList;
 	}
 
-	public ResultData plausibilisiere(final ResultData resultData) {
-		if (!resultData.hasData()) {
-			return resultData;
-		} else {
-			UmfeldDatenArt datenArt;
-			try {
-				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(resultData.getObject());
-			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
-				return resultData;
-			}
+//	public ResultData plausibilisiere(final ResultData resultData) { 
+//		if (!resultData.hasData()) {
+//			return resultData;
+//		} else {
+//			UmfeldDatenArt datenArt;
+//			try {
+//				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(resultData.getObject());
+//			} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+//				return resultData;
+//			}
+//
+//			pruefe();
+//
+//			if (_implausibleDatenArten.contains(datenArt)) {
+//				UmfeldDatenSensorDatum umfeldDatenSensorDatum = new UmfeldDatenSensorDatum(resultData);
+//				umfeldDatenSensorDatum.getWert().setFehlerhaftAn();
+//				umfeldDatenSensorDatum.getDatum(); // Workaround fehlende
+//													// Aktualisierung
+//				umfeldDatenSensorDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+//				return umfeldDatenSensorDatum.getVeraendertesOriginalDatum();
+//			}
+//			return resultData;
+//		}
+//	}
 
-			pruefe();
-
-			if (_implausibleDatenArten.contains(datenArt)) {
-				UmfeldDatenSensorDatum umfeldDatenSensorDatum = new UmfeldDatenSensorDatum(resultData);
-				umfeldDatenSensorDatum.getWert().setFehlerhaftAn();
-				umfeldDatenSensorDatum.getDatum(); // Workaround fehlende
-													// Aktualisierung
-				umfeldDatenSensorDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-				return umfeldDatenSensorDatum.getVeraendertesOriginalDatum();
-			}
-			return resultData;
-		}
-	}
-
-	private void pruefe() {
-		if (_geprueft)
-			return;
-		_geprueft = true;
-		_verletzteBedingungen.clear();
-		_implausibleDatenArten.clear();
-		_ids.clear();
-
-		UmfeldDatenSensorWert niWert = meteoWerte.getData(UmfeldDatenArt.ni);
-		UmfeldDatenSensorWert rlfWert = meteoWerte.getData(UmfeldDatenArt.rlf);
-		UmfeldDatenSensorWert wfdWert = meteoWerte.getData(UmfeldDatenArt.wfd);
-		UmfeldDatenSensorWert fbzWert = meteoWerte.getData(UmfeldDatenArt.fbz);
-		UmfeldDatenSensorWert swWert = meteoWerte.getData(UmfeldDatenArt.sw);
-		UmfeldDatenSensorWert ltWert = meteoWerte.getData(UmfeldDatenArt.lt);
-
-		meteoWerte.pruefe(_verletzteBedingungen, _implausibleDatenArten, _ids);
-
-		if (!_ids.isEmpty()) {
-			OperatingMessage message = MESSAGE_TEMPLATE.newMessage(_messStelle.getObjekt());
-			for (String id : _ids) {
-				message.addId(id);
-			}
-			for (UmfeldDatenArt art : _implausibleDatenArten) {
-				message.add("attr", art.getName() + " " + art.getAbkuerzung());
-			}
-			for (String s : _verletzteBedingungen) {
-				message.add("values", s);
-			}
-			if (_sendMessage) {
-				message.send();
-			} else {
-				_debug.info(message.toString());
-			}
-		}
-	}
+//	private Collection<ResultData> pruefe(boolean checkRules) {
+//
+//		_verletzteBedingungen.clear();
+//		_implausibleDatenArten.clear();
+//		_ids.clear();
+//
+//		Collection<ResultData> resultList = meteoWerte.pruefe(_verletzteBedingungen, _implausibleDatenArten, _ids);
+//		
+//		if (!_ids.isEmpty()) {
+//			OperatingMessage message = MESSAGE_TEMPLATE.newMessage(_messStelle.getObjekt());
+//			for (String id : _ids) {
+//				message.addId(id);
+//			}
+//			for (UmfeldDatenArt art : _implausibleDatenArten) {
+//				message.add("attr", art.getName() + " " + art.getAbkuerzung());
+//			}
+//			for (String s : _verletzteBedingungen) {
+//				message.add("values", s);
+//			}
+//			if (_sendMessage) {
+//				message.send();
+//			} else {
+//				_debug.info(message.toString());
+//			}
+//		}
+//
+//		return resultList;
+//	}
 
 	@Override
 	public void update(final ResultData[] results) {
@@ -214,9 +215,6 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 			if (result.hasData()) {
 				Data data = result.getData();
 				meteoWerte.updateGrenzwerte(data);
-				
-				_sendMessage = data.getTextValue("erzeugeBetriebsmeldungMeteorologischeKontrolle").getValueText()
-						.equals("Ja");
 			}
 		}
 	}

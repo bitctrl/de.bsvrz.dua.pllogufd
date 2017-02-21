@@ -1,7 +1,10 @@
 package de.bsvrz.dua.pllogufd.testmeteo.rules;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoRule;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoWerte;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
@@ -14,7 +17,7 @@ public class MeteoRule8 extends MeteoRule {
 	}
 
 	@Override
-	public void pruefe(MeteoWerte werte, Set<String> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
+	public void checkRule(MeteoWerte werte, Set<String> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
 
 		UmfeldDatenSensorWert ltWert = werte.getData(UmfeldDatenArt.lt);
 
@@ -25,6 +28,5 @@ public class MeteoRule8 extends MeteoRule {
 					.add("NS=Regen, " + "LT=" + formatWert(ltWert) + " °C < " + formatWert(werte.getLtGrenzRegen()) + " °C");
 			ids.add("[DUA-PP-MK08]");
 		}
-		
 	}
 }
