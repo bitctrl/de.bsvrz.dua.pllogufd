@@ -1,31 +1,32 @@
 package de.bsvrz.dua.pllogufd.testmeteo.rules;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
-import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteoMessstelle;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoRule;
-import de.bsvrz.dua.pllogufd.testmeteo.MeteoWerte;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteoRuleCondition;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteoParameter.MeteoParameterType;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 public class MeteoRule10 extends MeteoRule {
 
+	private static final MeteoRuleCondition CONDITION = new MeteoRuleCondition("WFD={0} mm > 0,0 mm, FBZ=Trocken",
+			new Object[]{UmfeldDatenArt.wfd});
+
 	public MeteoRule10() {
-		super(new UmfeldDatenArt[]{UmfeldDatenArt.wfd, UmfeldDatenArt.fbz}, new UmfeldDatenArt[]{UmfeldDatenArt.wfd, UmfeldDatenArt.fbz});
+		super(new UmfeldDatenArt[] { UmfeldDatenArt.wfd, UmfeldDatenArt.fbz },
+				new UmfeldDatenArt[] { UmfeldDatenArt.wfd, UmfeldDatenArt.fbz });
 	}
 
 	@Override
-	public void checkRule(MeteoWerte werte, Set<String> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
+	public void checkRule(MeteoMessstelle messStelle, Set<MeteoRuleCondition> verletzteBedingungen,
+			Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
 
-		UmfeldDatenSensorWert fbzWert = werte.getData(UmfeldDatenArt.fbz);
-		UmfeldDatenSensorWert wfdWert = werte.getData(UmfeldDatenArt.wfd);
-
-		if (isOk(wfdWert) && wfdWert.getWert() > 0 && isOk(fbzWert) && fbzWert.getWert() == 0) {
+		if (messStelle.wfdGroesserNull() && messStelle.fbzTrocken()) {
 			implausibleDatenArten.add(UmfeldDatenArt.wfd);
 			implausibleDatenArten.add(UmfeldDatenArt.fbz);
-			verletzteBedingungen.add("WFD=" + formatWert(wfdWert) + " mm > 0,0 mm, " + "FBZ=Trocken");
+			verletzteBedingungen.add(CONDITION);
 			ids.add("[DUA-PP-MK10]");
 		}
 	}

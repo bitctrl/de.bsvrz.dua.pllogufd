@@ -1,32 +1,32 @@
 package de.bsvrz.dua.pllogufd.testmeteo.rules;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
-import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteoMessstelle;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteoParameter.MeteoParameterType;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoRule;
-import de.bsvrz.dua.pllogufd.testmeteo.MeteoWerte;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteoRuleCondition;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 public class MeteoRule4 extends MeteoRule {
 
+	private static final MeteoRuleCondition CONDITION = new MeteoRuleCondition(
+			"NS=Niederschlag, NI={0} mm/h, " + "RLF={1} % rF > {2} % rF",
+			new Object[] { UmfeldDatenArt.ni, UmfeldDatenArt.rlf, MeteoParameterType.RLF_GRENZ_NASS });
+
 	public MeteoRule4() {
-		super(new UmfeldDatenArt[]{UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf}, new UmfeldDatenArt[]{UmfeldDatenArt.ni});
+		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
+				new UmfeldDatenArt[] { UmfeldDatenArt.ni });
 	}
 
 	@Override
-	public void checkRule(MeteoWerte werte, Set<String> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
+	public void checkRule(MeteoMessstelle messStelle, Set<MeteoRuleCondition> verletzteBedingungen,
+			Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
 
-		UmfeldDatenSensorWert niWert = werte.getData(UmfeldDatenArt.ni);
-		UmfeldDatenSensorWert rlfWert = werte.getData(UmfeldDatenArt.rlf);
-
-		if (werte.niederschlag() && isOk(niWert) && niWert.getWert() == 0 && isOk(rlfWert)
-				&& isOk(werte.getRlfGrenzNass()) && rlfWert.getWert() > werte.getRlfGrenzNass().getWert()) {
+		if (messStelle.niederschlag() && messStelle.niIsNull() && messStelle.rlfGroesserNass()) {
 			implausibleDatenArten.add(UmfeldDatenArt.ni);
-			verletzteBedingungen.add("NS=Niederschlag, " + "NI=" + formatWert(niWert) + " mm/h, " + "RLF="
-					+ formatWert(rlfWert) + " % rF > " + formatWert(werte.getRlfGrenzNass()) + " % rF");
+			verletzteBedingungen.add(CONDITION);
 			ids.add("[DUA-PP-MK04]");
 		}
 	}
