@@ -5,7 +5,6 @@ import java.util.Set;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoMessstelle;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoRule;
 import de.bsvrz.dua.pllogufd.testmeteo.MeteoRuleCondition;
-import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 public class MeteoRule11 extends MeteoRule {

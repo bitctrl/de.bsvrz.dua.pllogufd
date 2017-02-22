@@ -27,8 +27,6 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
-import static org.hamcrest.Matchers.instanceOf;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
