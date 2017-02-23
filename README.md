@@ -20,6 +20,13 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
+### Version 2.0.5
+
+- NERZ-Fehler 231,232: Für die Auswertung der Regeln der meteorologischen Kontrolle werden nur Werte
+  mit identischem Zeitstempel verwendet (Testfall ergänzt)
+
+### Version 2.0.4
+
 ### Version 2.0.3
 
 - Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt

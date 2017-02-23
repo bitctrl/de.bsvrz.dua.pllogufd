@@ -39,8 +39,7 @@ import java.util.Map;
  * 
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public final class OptionenPlausibilitaetsPruefungLogischUfd extends
-		AbstractDavZustand {
+public final class OptionenPlausibilitaetsPruefungLogischUfd extends AbstractDavZustand {
 
 	/**
 	 * Der Wertebereich dieses DAV-Enumerationstypen.
@@ -55,16 +54,19 @@ public final class OptionenPlausibilitaetsPruefungLogischUfd extends
 			"Keine Prüfung", 0); 
 
 	/**
-	 * Wertebereichsprüfung wird durchgeführt. Bei Messwertüberschreibung wird der Wert auf den maximalen Wert gesetzt und mit dem
-	 * Flag MaxWertLogisch versehen.
+	 * Wertebereichsprüfung wird durchgeführt. Bei Messwertüberschreibung wird
+	 * der Wert auf den maximalen Wert gesetzt und mit dem Flag MaxWertLogisch
+	 * versehen.
 	 */
 	public static final OptionenPlausibilitaetsPruefungLogischUfd WERT_REDUZIEREN = new OptionenPlausibilitaetsPruefungLogischUfd(
 			"Wert reduzieren", 1); 
 
 	/**
-	 * Wertebereichsprüfung wird durchgeführt. Bei Messwertüberschreitung wird der wert als Implausibel und MaxWertLogisch
-	 * gekennzeichnet und auf fehlerhaft gesetzt. Bei Geschwindigkeitswerten werden alle Geschwindigkeitswerte gleichzeitig
-	 * betrachtet. Die Güte der Werte wird um 20% reduziert. Es wird eine Betriebsmeldugn erzeugt.
+	 * Wertebereichsprüfung wird durchgeführt. Bei Messwertüberschreitung wird
+	 * der wert als Implausibel und MaxWertLogisch gekennzeichnet und auf
+	 * fehlerhaft gesetzt. Bei Geschwindigkeitswerten werden alle
+	 * Geschwindigkeitswerte gleichzeitig betrachtet. Die Güte der Werte wird um
+	 * 20% reduziert. Es wird eine Betriebsmeldugn erzeugt.
 	 */
 	public static final OptionenPlausibilitaetsPruefungLogischUfd AUF_FEHLERHAFT_SETZEN = new OptionenPlausibilitaetsPruefungLogischUfd(
 			"Auf fehlerhaft setzen", 2); 
@@ -89,8 +91,7 @@ public final class OptionenPlausibilitaetsPruefungLogischUfd extends
 	 *            der Kode des Zustands
 	 * @return der Code des Enumerations-Wertes
 	 */
-	public static OptionenPlausibilitaetsPruefungLogischUfd getZustand(
-			int code) {
+	public static OptionenPlausibilitaetsPruefungLogischUfd getZustand(int code) {
 		return werteBereich.get(code);
 	}
 }

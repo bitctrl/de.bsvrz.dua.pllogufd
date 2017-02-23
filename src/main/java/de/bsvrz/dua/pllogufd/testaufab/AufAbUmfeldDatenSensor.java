@@ -157,6 +157,13 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 			try {
 				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(resultat.getObject());
 
+				// BUG: NERZ FM-226
+				// Laut Afo DuA vom 24.5.2016 wird für bestimmte Datenarten
+				// keine Anstieg-Abfall-Kontrolle ausgeführt
+				if (!aufAbPlausibilisierungAnwenden(datenArt)) {
+					return null;
+				}
+
 				if ((this.letzterWert != null) && !this.letzterWert.getWert().isFehlerhaft()
 						&& !this.letzterWert.getWert().isFehlerhaftBzwNichtErmittelbar()
 						&& !this.letzterWert.getWert().isNichtErmittelbar()
@@ -228,8 +235,8 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 								}
 							}
 						} else {
-							LOGGER.fine("Fuer Umfelddatensensor " + this + 
-									" wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen"); 
+							LOGGER.fine("Fuer Umfelddatensensor " + this
+									+ " wurden noch keine Parameter für die Anstieg-Abfall-Kontrolle empfangen");
 						}
 					}
 				}
@@ -242,6 +249,21 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 		return copy;
 	}
 
+	private boolean aufAbPlausibilisierungAnwenden(UmfeldDatenArt datenArt) {
+		switch (datenArt) {
+		case ni:
+		case ns:
+		case fbz:
+		case sw:
+		case rs:
+		case gt:
+		case wr:
+			return false;
+		default:
+			break;
+		}
+		return true;
+	}
 
 	/**
 	 * Formatiert einen Wert
@@ -270,8 +292,7 @@ public class AufAbUmfeldDatenSensor extends AbstraktUmfeldDatenSensor {
 							LOGGER.warning(e.getMessage());
 							continue;
 						}
-						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" 
-								+ this.parameter);
+						LOGGER.info("Neue Parameter für (" + resultat.getObject() + "):\n" + this.parameter);
 					}
 				}
 			}

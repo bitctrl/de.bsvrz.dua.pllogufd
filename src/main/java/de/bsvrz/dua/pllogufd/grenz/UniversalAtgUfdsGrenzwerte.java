@@ -48,7 +48,7 @@ public class UniversalAtgUfdsGrenzwerte {
 	/**
 	 * Max-Grenzwert unskaliert
 	 */
-	private final long max;  //  = -1;
+	private final long max; // = -1;
 
 	/**
 	 * Min-Grenzwert
@@ -63,12 +63,12 @@ public class UniversalAtgUfdsGrenzwerte {
 	 */
 	private long min = -1;
 
-
 	/**
 	 * Aktuelles Verhalten der Grenzwertprüfung
 	 */
-	private final  OptionenPlausibilitaetsPruefungLogischUfd _verhalten; // = OptionenPlausibilitaetsPruefungLogischUfd.KEINE_PRUEFUNG;
-	
+	private final OptionenPlausibilitaetsPruefungLogischUfd _verhalten; // =
+																		// OptionenPlausibilitaetsPruefungLogischUfd.KEINE_PRUEFUNG;
+
 	/**
 	 * zeigt an, ob der Parameter <code>max</code> selbst einen semantisch
 	 * sinnvollen Zustand hat<br>
@@ -77,8 +77,8 @@ public class UniversalAtgUfdsGrenzwerte {
 	 * - <code>fehlerhaft</code>, oder<br>
 	 * - <code>nicht ermittelbar/fehlerhaft</code><br>
 	 */
-	private boolean maxsinnvoll  = false;	
-	
+	private boolean maxsinnvoll = false;
+
 	/**
 	 * zeigt an, ob der Parameter <code>min</code> selbst einen semantisch
 	 * sinnvollen Zustand hat<br>
@@ -95,7 +95,7 @@ public class UniversalAtgUfdsGrenzwerte {
 	 * @param parameter
 	 *            ein Parameterdatensatz der Attributgruppe
 	 *            <code>atg.ufdsGrenzwerte<b>*</b></code>
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
 	public UniversalAtgUfdsGrenzwerte(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
@@ -106,8 +106,7 @@ public class UniversalAtgUfdsGrenzwerte {
 					"Übergebener Parameter hat keine Daten"); 
 		}
 
-		final UmfeldDatenArt datenArt = UmfeldDatenArt
-				.getUmfeldDatenArtVon(parameter.getObject());
+		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject());
 
 		final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
 		wert.setWert(parameter
@@ -116,43 +115,42 @@ public class UniversalAtgUfdsGrenzwerte {
 
 		this.max = wert.getWert();
 		this.maxSkaliert = wert.getSkaliertenWert();
-		this.maxsinnvoll = !wert.isFehlerhaft()
-				&& !wert.isFehlerhaftBzwNichtErmittelbar()
+		this.maxsinnvoll = !wert.isFehlerhaft() && !wert.isFehlerhaftBzwNichtErmittelbar()
 				&& !wert.isNichtErmittelbar();
-		
+
 		try {
-			wert.setWert(parameter
-					             .getData()
-					             .getUnscaledValue(datenArt.getAbkuerzung() + "min").longValue());
+			wert.setWert(parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "min").longValue());
 
 			this.min = wert.getWert();
 			this.minSkaliert = wert.getSkaliertenWert();
 
-			this.minsinnvoll = !wert.isFehlerhaft()
-					&& !wert.isFehlerhaftBzwNichtErmittelbar()
+			this.minsinnvoll = !wert.isFehlerhaft() && !wert.isFehlerhaftBzwNichtErmittelbar()
 					&& !wert.isNichtErmittelbar();
+		} catch (Exception ignored) {
 		}
-		catch(Exception ignored){
-		}
-		
-		this._verhalten = OptionenPlausibilitaetsPruefungLogischUfd.getZustand(parameter.getData().getUnscaledValue("Verhalten").intValue());
+
+		this._verhalten = OptionenPlausibilitaetsPruefungLogischUfd
+				.getZustand(parameter.getData().getUnscaledValue("Verhalten").intValue());
 	}
 
-	/** 
+	/**
 	 * Gibt den unskalierten Max-Wert zurück
+	 * 
 	 * @return den Max-Wert
 	 */
 	public final long getMax() {
 		return this.max;
 	}
 
-	/** 
+	/**
 	 * Gibt den skalierten Max-Wert zurück
+	 * 
 	 * @return den skalierten Max-Wert
 	 */
 	public double getMaxSkaliert() {
 		return maxSkaliert;
 	}
+
 	/**
 	 * Erfragt, ob der Parameter <code>max</code> selbst einen semantisch
 	 * sinnvollen Zustand hat<br>
@@ -166,6 +164,7 @@ public class UniversalAtgUfdsGrenzwerte {
 	public boolean isMaxSinnvoll() {
 		return maxsinnvoll;
 	}
+
 	/**
 	 * Erfragt, ob der Parameter <code>min</code> selbst einen semantisch
 	 * sinnvollen Zustand hat<br>
@@ -173,7 +172,7 @@ public class UniversalAtgUfdsGrenzwerte {
 	 * - <code>nicht ermittelbar</code><br>
 	 * - <code>fehlerhaft</code>, oder<br>
 	 * - <code>nicht ermittelbar/fehlerhaft</code><br>
-	 *    
+	 * 
 	 * Falls der Parameter nicht vorhanden ist, wird false zurückgegeben.
 	 *
 	 * @return ob der Parameter einen sinnvollen Wert enthält
@@ -182,24 +181,27 @@ public class UniversalAtgUfdsGrenzwerte {
 		return minsinnvoll;
 	}
 
-	/** 
+	/**
 	 * Gibt das Verhalten zurück
+	 * 
 	 * @return das Verhalten
 	 */
 	public OptionenPlausibilitaetsPruefungLogischUfd getVerhalten() {
 		return _verhalten;
 	}
 
-	/** 
+	/**
 	 * Gibt den unskalierten Minimalwert zurück
+	 * 
 	 * @return den Minimalwert
 	 */
 	public long getMin() {
 		return this.min;
 	}
 
-	/** 
+	/**
 	 * Gibt den skalierten Minimalwert zurück
+	 * 
 	 * @return den skalierten Minimalwert
 	 */
 	public double getMinSkaliert() {

@@ -48,18 +48,18 @@ public class UniversalAtgUfdsDifferenzialKontrolle {
 	 * der eingehalten werden muss, damit Differenzialkontrolle durchgeführt
 	 * werden darf.
 	 */
-	private final UfdsVergleichsOperator operator;//  = null;
+	private final UfdsVergleichsOperator operator;// = null;
 
 	/**
 	 * Grenzwert, der eingehalten werden muss, damit Differenzialkontrolle
 	 * durchgeführt werden darf.
 	 */
-	private final UmfeldDatenSensorWert grenz; //  = null;
+	private final UmfeldDatenSensorWert grenz; // = null;
 
 	/**
 	 * maximal zulässige Zeitdauer der Ergebniskonstanz.
 	 */
-	private final  long maxZeit; // = -1;
+	private final long maxZeit; // = -1;
 
 	/**
 	 * Standardkonstruktor.
@@ -67,35 +67,28 @@ public class UniversalAtgUfdsDifferenzialKontrolle {
 	 * @param parameter
 	 *            ein Parameterdatensatz der Attributgruppe
 	 *            <code>atg.ufdsDifferenzialKontrolle<b>*</b></code>
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
-	public UniversalAtgUfdsDifferenzialKontrolle(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
+	public UniversalAtgUfdsDifferenzialKontrolle(final ResultData parameter)
+			throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
-			throw new NullPointerException("Übergebener Parameter ist <<null>>"); 
+			throw new NullPointerException("Übergebener Parameter ist <<null>>");
 		}
 		if (parameter.getData() == null) {
-			throw new NullPointerException(
-					"Übergebener Parameter hat keine Daten"); 
+			throw new NullPointerException("Übergebener Parameter hat keine Daten");
 		}
-		final UmfeldDatenArt datenArt = UmfeldDatenArt
-				.getUmfeldDatenArtVon(parameter.getObject());
+		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject());
 
-		final Data.NumberValue oparatorValue = parameter.getData()
-				.getUnscaledValue("Operator"); 
+		final Data.NumberValue oparatorValue = parameter.getData().getUnscaledValue("Operator");
 		if (oparatorValue != null) {
-			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue
-					.intValue());
+			this.operator = UfdsVergleichsOperator.getZustand(oparatorValue.intValue());
 		} else {
 			operator = null;
 		}
-		
+
 		this.grenz = new UmfeldDatenSensorWert(datenArt);
-		this.grenz
-				.setWert(parameter
-						.getData()
-						.getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue()); 
-		this.maxZeit = parameter.getData()
-				.getTimeValue(datenArt.getAbkuerzung() + "maxZeit").getMillis(); 
+		this.grenz.setWert(parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "Grenz").longValue());
+		this.maxZeit = parameter.getData().getTimeValue(datenArt.getAbkuerzung() + "maxZeit").getMillis();
 	}
 
 	/**

@@ -79,7 +79,6 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 	@Override
 	public void aktualisiereDaten(final ResultData[] resultate) {
 		final List<ResultData> weiterzuleitendeResultate = new ArrayList<>();
-		final List<ResultData> testData = new ArrayList<>();
 
 		for(ResultData resultData : resultate) {
 			DUAUmfeldDatenSensor sensor = _verwaltung.getSensor(resultData.getObject());
@@ -90,17 +89,8 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 			else {
 				MeteoMessstelle meteoMessstelle = _meteoMessstellen.get(messstelle);
 				if(meteoMessstelle == null) throw new AssertionError();
-				meteoMessstelle.updateData(resultData);
-				testData.add(resultData);
+				weiterzuleitendeResultate.addAll(meteoMessstelle.updateData(resultData));
 			}
-		}
-
-		for(ResultData resultData : testData) {
-			DUAUmfeldDatenSensor sensor = _verwaltung.getSensor(resultData.getObject());
-			DUAUmfeldDatenMessStelle messstelle = _verwaltung.getMessstelle(sensor);
-			MeteoMessstelle meteoMessstelle = _meteoMessstellen.get(messstelle);
-			if(meteoMessstelle == null) throw new AssertionError();
-			weiterzuleitendeResultate.add(meteoMessstelle.plausibilisiere(resultData));
 		}
 		
 		if ((knoten != null) && !weiterzuleitendeResultate.isEmpty()) {

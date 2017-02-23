@@ -157,7 +157,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 				if ((resultat != null) && (resultat.getData() != null)) {
 					synchronized (this.objektWertErfassungVerzug) {
 						this.objektWertErfassungVerzug.put(resultat.getObject(),
-								resultat.getData().getTimeValue("maxZeitVerzug").getMillis());
+								new Long(resultat.getData().getTimeValue("maxZeitVerzug").getMillis()));
 						LOGGER.info("Neue Parameter: maxZeitVerzug(" + resultat.getObject() + ") = "
 								+ resultat.getData().getTimeValue("maxZeitVerzug").getMillis() + "ms");
 					}
@@ -212,7 +212,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 											// Datensatz hinter dem zuletzt
 											// empfangenen Datensatz liegt
 
-											aktualisiereDaten(new ResultData[] { ausfallDatum });
+											aktualisiereDaten(ausfallDatum);
 
 											// Betriebsmeldung erzeugen
 											VerwaltungPlPruefungLogischUFD verwaltung = (VerwaltungPlPruefungLogischUFD) getVerwaltung();

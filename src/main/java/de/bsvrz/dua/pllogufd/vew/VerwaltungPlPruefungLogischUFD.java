@@ -86,43 +86,34 @@ import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
  *
  * @author BitCtrl Systems GmbH, Thierfelder
  */
-public class VerwaltungPlPruefungLogischUFD extends
-		AbstraktVerwaltungsAdapterMitGuete {
+public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMitGuete {
 
 	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Betriebsmeldungs-Template für unbekannte Sensoren mit Messstelle
 	 */
-	public static final MessageTemplate TEMPLATE_WITH_MS = new MessageTemplate(
-			MessageGrade.ERROR,
+	public static final MessageTemplate TEMPLATE_WITH_MS = new MessageTemplate(MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 
-			MessageTemplate.fixed("Unbekannter Umfelddatensensor "),
-			MessageTemplate.object(),
-			MessageTemplate.fixed(" bei Messstelle "),
-			MessageTemplate.variable("messstelle"),
-			MessageTemplate.fixed(" entdeckt. Sensor wird ignoriert. "),
-			MessageTemplate.ids()
-	);
+			MessageTemplate.fixed("Unbekannter Umfelddatensensor "), MessageTemplate.object(),
+			MessageTemplate.fixed(" bei Messstelle "), MessageTemplate.variable("messstelle"),
+			MessageTemplate.fixed(" entdeckt. Sensor wird ignoriert. "), MessageTemplate.ids());
 
 	/**
 	 * Betriebsmeldungs-Template für unbekannte Sensoren ohne Messstelle
 	 */
-	public static final MessageTemplate TEMPLATE_NO_MS = new MessageTemplate(
-			MessageGrade.ERROR,
+	public static final MessageTemplate TEMPLATE_NO_MS = new MessageTemplate(MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN,
 
-			MessageTemplate.fixed("Unbekannter Umfelddatensensor "),
-			MessageTemplate.object(),
-			MessageTemplate.fixed(" entdeckt. Sensor wird ignoriert. "),
-			MessageTemplate.ids()
-	);
+			MessageTemplate.fixed("Unbekannter Umfelddatensensor "), MessageTemplate.object(),
+			MessageTemplate.fixed(" entdeckt. Sensor wird ignoriert. "), MessageTemplate.ids());
 
 	private PllogUfdOptions options = new PllogUfdOptions();
 	
 	/**
-	 * Verwendete Uhr, verwendet normalerweise die Systemzeit, kann aber von Testfällen anders gesetzt werden.
+	 * Verwendete Uhr, verwendet normalerweise die Systemzeit, kann aber von
+	 * Testfällen anders gesetzt werden.
 	 */
 	public static WaitableClock clock = WaitableClock.systemClock();
 
@@ -182,11 +173,11 @@ public class VerwaltungPlPruefungLogischUFD extends
 	private IBearbeitungsKnoten pub;
 
 	@Override
-	public void initialize(ClientDavInterface dieVerbindung) throws Exception {
-		MessageSender.getInstance().setApplicationLabel("PLPruefung logisch UFD");
-		super.initialize(dieVerbindung);
-	}
-	
+    public void initialize(ClientDavInterface dieVerbindung) throws Exception {
+        MessageSender.getInstance().setApplicationLabel("PLPruefung logisch UFD");
+        super.initialize(dieVerbindung);
+    }
+
 	@Override
 	protected void initialisiere() throws DUAInitialisierungsException {
 
@@ -195,47 +186,43 @@ public class VerwaltungPlPruefungLogischUFD extends
 		
 		UmfeldDatenSensorWert.setFehlerhafteWertePublizieren(options.isFehlerhafteWertePublizieren());
 		UmfeldDatenArt.initialisiere(this.verbindung);
-		
+
 		String infoStr = "";
-		final Collection<SystemObject> plSensoren = DUAUtensilien
-				.getBasisInstanzen(
-						this.verbindung.getDataModel().getType(
-								DUAKonstanten.TYP_UFD_SENSOR), this.verbindung,
-						this.getKonfigurationsBereiche());	
-		final Collection<SystemObject> plMessstellen = DUAUtensilien
-				.getBasisInstanzen(
-						this.verbindung.getDataModel().getType(
-								DUAKonstanten.TYP_UFD_MESSSTELLE), this.verbindung,
-						this.getKonfigurationsBereiche());
+		final Collection<SystemObject> plSensoren = DUAUtensilien.getBasisInstanzen(
+				this.verbindung.getDataModel().getType(DUAKonstanten.TYP_UFD_SENSOR), this.verbindung,
+				this.getKonfigurationsBereiche());
+		final Collection<SystemObject> plMessstellen = DUAUtensilien.getBasisInstanzen(
+				this.verbindung.getDataModel().getType(DUAKonstanten.TYP_UFD_MESSSTELLE), this.verbindung,
+				this.getKonfigurationsBereiche());
 		SystemObject[] messstellen = plMessstellen.toArray(new SystemObject[0]);
-		
+
 		DUAUmfeldDatenMessStelle.initialisiere(this.verbindung, messstellen);
 
 		for (final SystemObject obj : messstellen) {
-			infoStr += obj + "\n"; 
+			infoStr += obj + "\n";
 		}
-		LOGGER.config(
-				"---\nBetrachtete Objekte:\n" + infoStr + "---\n"); 
+		LOGGER.config("---\nBetrachtete Objekte:\n" + infoStr + "---\n");
 
-		_standardAspekte = new PlLogUFDStandardAspekteVersorger(
-				this).getStandardPubInfos();
+		_standardAspekte = new PlLogUFDStandardAspekteVersorger(this).getStandardPubInfos();
 
 		final Set<SystemObject> sensoren = new HashSet<>();
-		for(SystemObject object : messstellen) {
+		for (SystemObject object : messstellen) {
 			DUAUmfeldDatenMessStelle messStelle = DUAUmfeldDatenMessStelle.getInstanz(object);
 			_messtellen.add(messStelle);
 			// "Gültige" Sensoren ermitteln
-			for(DUAUmfeldDatenSensor sensor : messStelle.getSensoren()) {
+			for (DUAUmfeldDatenSensor sensor : messStelle.getSensoren()) {
 				_sensoren.add(sensor);
 				_sensorZuMessstelle.put(sensor, messStelle);
 				sensoren.add(sensor.getObjekt());
 				_objectZuSensor.put(sensor.getObjekt(), sensor);
-			}		
-			// Alle konfigurierten Sensoren ermitteln, auch die unbekannten (kann die oben verwendete Bitctrl-Klasse nicht)
+			}
+			// Alle konfigurierten Sensoren ermitteln, auch die unbekannten
+			// (kann die oben verwendete Bitctrl-Klasse nicht)
 			// Für Betriebsmeldung
-			for(SystemObject sensor : ((ConfigurationObject)object).getNonMutableSet("UmfeldDatenSensoren").getElements()) {
+			for (SystemObject sensor : ((ConfigurationObject) object).getNonMutableSet("UmfeldDatenSensoren")
+					.getElements()) {
 				sensoren.add(sensor);
-				if(!isSupportedSensor(sensor)){
+				if (!isSupportedSensor(sensor)) {
 					OperatingMessage operatingMessage = TEMPLATE_WITH_MS.newMessage(sensor);
 					operatingMessage.addId("[DUA-PP-UU01]");
 					operatingMessage.put("messstelle", object);
@@ -245,17 +232,17 @@ public class VerwaltungPlPruefungLogischUFD extends
 		}
 		objekte = sensoren.toArray(new SystemObject[sensoren.size()]);
 
-		for(SystemObject object : plSensoren) {
-			if(!sensoren.contains(object)){
+		for (SystemObject object : plSensoren) {
+			if (!sensoren.contains(object)) {
 				LOGGER.warning("Sensor ohne Messstelle", object);
-				if(!isSupportedSensor(object)){
+				if (!isSupportedSensor(object)) {
 					OperatingMessage operatingMessage = TEMPLATE_NO_MS.newMessage(object);
 					operatingMessage.addId("[DUA-PP-UU02]");
 					operatingMessage.send();
 				}
 			}
 		}
-		
+
 		/**
 		 * Instanziierung
 		 */
@@ -266,7 +253,7 @@ public class VerwaltungPlPruefungLogischUFD extends
 		this.mk = new MeteorologischeKontrolle();
 
 		this.pub = new Publikation(_standardAspekte);
-		
+
 		/**
 		 * Initialisierung
 		 */
@@ -290,23 +277,20 @@ public class VerwaltungPlPruefungLogischUFD extends
 		this.pub.setNaechstenBearbeitungsKnoten(null);
 		this.pub.setPublikation(true);
 		this.pub.initialisiere(this);
-		
+
 		/**
 		 * Datenanmeldung
 		 */
-		for (final AttributeGroup atg : _standardAspekte
-				.getAlleAttributGruppen()) {
+		for (final AttributeGroup atg : _standardAspekte.getAlleAttributGruppen()) {
 
 			for (final SystemObject obj : this.objekte) {
 
 				if (obj.getType().getAttributeGroups().contains(atg)) {
 
-					final DataDescription datenBeschreibung = new DataDescription(
-							atg, verbindung.getDataModel().getAspect(
-									DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
+					final DataDescription datenBeschreibung = new DataDescription(atg,
+							verbindung.getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG));
 
-					this.verbindung.subscribeReceiver(this, obj,
-							datenBeschreibung, ReceiveOptions.delayed(),
+					this.verbindung.subscribeReceiver(this, obj, datenBeschreibung, ReceiveOptions.delayed(),
 							ReceiverRole.receiver());
 
 				}
@@ -316,13 +300,17 @@ public class VerwaltungPlPruefungLogischUFD extends
 		}
 	}
 
-	/** 
-	 * Gibt <tt>true</tt> zurück, wenn es sich um einen untersützen Sensortyp handelt
-	 * @param object Sensor
-	 * @return <tt>true</tt>, wenn es sich um einen untersützen Sensortyp handelt, sonst <tt>false</tt>
+	/**
+	 * Gibt <tt>true</tt> zurück, wenn es sich um einen untersützen Sensortyp
+	 * handelt
+	 * 
+	 * @param object
+	 *            Sensor
+	 * @return <tt>true</tt>, wenn es sich um einen untersützen Sensortyp
+	 *         handelt, sonst <tt>false</tt>
 	 */
 	private boolean isSupportedSensor(final SystemObject object) {
-		for(AttributeGroup atg : _standardAspekte.getAlleAttributGruppen()) {
+		for (AttributeGroup atg : _standardAspekte.getAlleAttributGruppen()) {
 			if (object.getType().getAttributeGroups().contains(atg)) {
 				return true;
 			}
@@ -347,8 +335,7 @@ public class VerwaltungPlPruefungLogischUFD extends
 	 *            Argumente der Kommandozeile
 	 */
 	public static void main(final String[] argumente) {
-		StandardApplicationRunner.run(new VerwaltungPlPruefungLogischUFD(),
-				argumente);
+		StandardApplicationRunner.run(new VerwaltungPlPruefungLogischUFD(), argumente);
 	}
 
 	@Override
@@ -356,75 +343,90 @@ public class VerwaltungPlPruefungLogischUFD extends
 		return 0.9;
 	}
 
-	/** 
+	/**
 	 * Gibt alle Messstellen zurück
+	 * 
 	 * @return alle Messstellen
 	 */
 	public Collection<DUAUmfeldDatenMessStelle> getMesstellen() {
 		return Collections.unmodifiableList(_messtellen);
 	}
 
-	/** 
+	/**
 	 * Gibt alle Sensoren zurück
+	 * 
 	 * @return alle Sensoren
 	 */
 	public Collection<DUAUmfeldDatenSensor> getSensoren() {
 		return Collections.unmodifiableSet(_sensoren);
 	}
-	
-	/** 
+
+	/**
 	 * Gibt alle Sensor-Objekte zurück
+	 * 
 	 * @return alle Sensor-Objekte
 	 */
 	public Collection<SystemObject> getSensorObjekte() {
 		ArrayList<SystemObject> list = new ArrayList<>();
-		for(DUAUmfeldDatenSensor umfeldDatenSensor : _sensoren) {
+		for (DUAUmfeldDatenSensor umfeldDatenSensor : _sensoren) {
 			list.add(umfeldDatenSensor.getObjekt());
 		}
 		return list;
 	}
 
-	/** 
-	 * Gibt zu einem Sensor-Objekt das Objekt zurück, dass in der Betriebsmeldung referenziert werden soll.
-	 * Ist eine Messtelle vorhanden, wird diese zurückgegeben, sonst das ursprüngliche Objekt.
-	 * @param objekt Systemobjekt eines Sensors
-	 * @return zu einem Sensor-Objekt das Objekt, dass in der Betriebsmeldung referenziert werden soll.
+	/**
+	 * Gibt zu einem Sensor-Objekt das Objekt zurück, dass in der
+	 * Betriebsmeldung referenziert werden soll. Ist eine Messtelle vorhanden,
+	 * wird diese zurückgegeben, sonst das ursprüngliche Objekt.
+	 * 
+	 * @param objekt
+	 *            Systemobjekt eines Sensors
+	 * @return zu einem Sensor-Objekt das Objekt, dass in der Betriebsmeldung
+	 *         referenziert werden soll.
 	 */
 	public SystemObject getBetriebsmeldungsObjekt(final SystemObject objekt) {
 		DUAUmfeldDatenMessStelle messstelle = getMessstelle(objekt);
-		if(messstelle != null) return messstelle.getObjekt();
+		if (messstelle != null)
+			return messstelle.getObjekt();
 		return objekt;
 	}
-	
-	/** 
+
+	/**
 	 * Gibt zu einem Systemobjekt eines Sensors die Messstelle zurück
-	 * @param objekt Systemobjekt eines Sensors
+	 * 
+	 * @param objekt
+	 *            Systemobjekt eines Sensors
 	 * @return zu einem Systemobjekt eines Sensors die Messstelle
 	 */
 	public DUAUmfeldDatenMessStelle getMessstelle(final SystemObject objekt) {
 		return getMessstelle(getSensor(objekt));
 	}
-	
-	/** 
+
+	/**
 	 * Gibt zu einem Sensor die Messstelle zurück
-	 * @param objekt Sensor
+	 * 
+	 * @param objekt
+	 *            Sensor
 	 * @return zu einem Sensor die Messstelle
 	 */
 	public DUAUmfeldDatenMessStelle getMessstelle(final DUAUmfeldDatenSensor objekt) {
 		return _sensorZuMessstelle.get(objekt);
 	}
 
-	/** 
+	/**
 	 * Gibt zu einem Systemobjekt den Sensor zurück
-	 * @param objekt Systemobjekt
+	 * 
+	 * @param objekt
+	 *            Systemobjekt
 	 * @return zu einem Systemobjekt den Sensor
 	 */
 	public DUAUmfeldDatenSensor getSensor(final SystemObject objekt) {
 		return _objectZuSensor.get(objekt);
 	}
 
-	/** 
+	/**
 	 * Gibt alle Messstellen zurück
+	 * 
 	 * @return alle Messstellen
 	 */
 	public Collection<DUAUmfeldDatenMessStelle> getMessstellen() {
