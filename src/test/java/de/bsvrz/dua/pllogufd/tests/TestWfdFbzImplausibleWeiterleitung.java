@@ -65,7 +65,7 @@ public class TestWfdFbzImplausibleWeiterleitung extends DuAPlLogUfdTestBase {
 	}
 
 	@Test
-	public void testWfdFbzMitGrenzwert() throws Exception {
+	public void testImplausibleWeiterleitung() throws Exception {
 		SystemObject ni = _dataModel.getObject("ufd.ni");
 		SystemObject ns = _dataModel.getObject("ufd.na");
 		SystemObject wfd = _dataModel.getObject("ufd.wfd");

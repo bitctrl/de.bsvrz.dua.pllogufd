@@ -27,7 +27,7 @@ public class MeteoRule11 extends MeteoRule {
 				implausibleDatenArten.add(UmfeldDatenArt.wfd);
 				implausibleDatenArten.add(UmfeldDatenArt.fbz);
 				verletzteBedingungen.add(CONDITION);
-				ids.add("[DUA-PP-MK10]");
+				ids.add("[DUA-PP-MK11]");
 			}
 		} else {
 			if (messStelle.wfdIsNull() && messStelle.fbzNass()) {
