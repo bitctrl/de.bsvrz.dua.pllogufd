@@ -16,7 +16,7 @@ public class MeteoRule4 extends MeteoRule {
 			new Object[] { UmfeldDatenArt.ni, UmfeldDatenArt.rlf, MeteoParameterType.RLF_GRENZ_NASS });
 
 	public MeteoRule4() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
+		super(4, new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
 				new UmfeldDatenArt[] { UmfeldDatenArt.ni });
 	}
 

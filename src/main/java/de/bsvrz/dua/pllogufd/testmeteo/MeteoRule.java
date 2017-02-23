@@ -13,12 +13,16 @@ import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
 public abstract class MeteoRule {
 
+	private final int id;
 	private Set<UmfeldDatenArt> inputTypes = new LinkedHashSet<>();
 	private Set<UmfeldDatenArt> resultTypes = new LinkedHashSet<>();
 
 	private Map<UmfeldDatenArt, UmfeldDatenSensorWert> inputData = new LinkedHashMap<>();
 	
-	protected MeteoRule(UmfeldDatenArt[] inputTypes, UmfeldDatenArt[] resultTypes) {
+	protected MeteoRule(int id, UmfeldDatenArt[] inputTypes, UmfeldDatenArt[] resultTypes) {
+
+		this.id = id;
+		
 		for (UmfeldDatenArt inputType : inputTypes) {
 			this.inputTypes.add(inputType);
 		}
@@ -102,5 +106,9 @@ public abstract class MeteoRule {
 
 	protected Set<UmfeldDatenArt> getResultTypes() {
 		return resultTypes;
+	}
+
+	protected int getId() {
+		return id;
 	}
 }

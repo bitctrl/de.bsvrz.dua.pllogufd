@@ -28,6 +28,12 @@
 
 package de.bsvrz.dua.pllogufd.vew;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import de.bsvrz.sys.funclib.debug.Debug;
+
 /**
  * Allgemeine Optionen der SWE, die per Startzeilen-Parameter übergeben werden.
  * 
@@ -53,6 +59,8 @@ public class PllogUfdOptions {
 	
 	private boolean fehlerhafteWertePublizieren = false;
 
+	private final Set<Integer> ignoredMeteoRules = new LinkedHashSet<>();
+	
 	public void update(VerwaltungPlPruefungLogischUFD verwaltung) {
 
 		String argument = verwaltung.getArgument("useWfdTrockenGrenzwert");
@@ -70,17 +78,31 @@ public class PllogUfdOptions {
 			fehlerhafteWertePublizieren  = Boolean.valueOf(argument);
 		}
 
+		argument = verwaltung.getArgument("ignoriereRegeln");
+		if (argument != null) {
+			String[] items = argument.split(",");
+			for( String item : items) {
+				try {
+					ignoredMeteoRules.add(Integer.parseInt(item));
+				} catch (NumberFormatException e) {
+					Debug.getLogger().warning("Fehler beim Einlesen des Parameters für ignorierte Regeln", e);
+				}
+			}
+		}
 	}
 
 	public boolean isUseNiGrenzNS() {
 		return useNiGrenzNS;
 	}
-
 	public boolean isUseWfdTrockenGrenzwert() {
 		return useWfdTrockenGrenzwert;
 	}
 
 	public boolean isFehlerhafteWertePublizieren() {
 		return fehlerhafteWertePublizieren;
+	}
+
+	public Set<Integer> getIgnoredMeteoRules() {
+		return Collections.unmodifiableSet(ignoredMeteoRules);
 	}
 }

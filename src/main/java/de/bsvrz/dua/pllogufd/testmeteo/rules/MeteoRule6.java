@@ -16,7 +16,7 @@ public class MeteoRule6 extends MeteoRule {
 			MeteoParameterType.WFD_GRENZ_TROCKEN, UmfeldDatenArt.rlf, MeteoParameterType.RLF_GRENZ_NASS});
 
 	public MeteoRule6() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ni, UmfeldDatenArt.wfd, UmfeldDatenArt.rlf },
+		super(6, new UmfeldDatenArt[] { UmfeldDatenArt.ni, UmfeldDatenArt.wfd, UmfeldDatenArt.rlf },
 				new UmfeldDatenArt[] { UmfeldDatenArt.wfd });
 	}
 

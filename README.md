@@ -24,6 +24,8 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 - NERZ-Fehler 231,232: Für die Auswertung der Regeln der meteorologischen Kontrolle werden nur Werte
   mit identischem Zeitstempel verwendet (Testfall ergänzt)
+- NERZ-Fehler 235: Über den Kommandozeilenparameter ignoriereRegeln=<n>,<n>,... können die Regeln der
+  Meteorologischen Kontrolle global ausgeschlossen werden
 
 ### Version 2.0.4
 

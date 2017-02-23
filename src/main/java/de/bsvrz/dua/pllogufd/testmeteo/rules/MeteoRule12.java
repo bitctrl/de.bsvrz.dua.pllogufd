@@ -16,7 +16,7 @@ public class MeteoRule12 extends MeteoRule {
 			new Object[] { UmfeldDatenArt.ni, MeteoParameterType.NI_GRENZ_NS });
 
 	public MeteoRule12() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
+		super(12, new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
 				new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni });
 	}
 

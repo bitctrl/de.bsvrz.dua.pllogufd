@@ -16,7 +16,7 @@ public class MeteoRule2 extends MeteoRule {
 			new Object[] { UmfeldDatenArt.ni, UmfeldDatenArt.rlf, MeteoParameterType.RLF_GRENZ_TROCKEN });
 
 	public MeteoRule2() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
+		super(2, new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
 				new UmfeldDatenArt[] { UmfeldDatenArt.ns });
 	}
 

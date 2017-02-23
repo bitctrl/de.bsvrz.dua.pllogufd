@@ -14,7 +14,7 @@ public class MeteoRule11 extends MeteoRule {
 			new Object[] { UmfeldDatenArt.wfd });
 
 	public MeteoRule11() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.wfd, UmfeldDatenArt.fbz },
+		super(11, new UmfeldDatenArt[] { UmfeldDatenArt.wfd, UmfeldDatenArt.fbz },
 				new UmfeldDatenArt[] { UmfeldDatenArt.wfd, UmfeldDatenArt.fbz });
 	}
 
