@@ -27,6 +27,8 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ### Version 2.0.4
 
+- Datenart GlätteAlarmStatus ergänzt
+
 ### Version 2.0.3
 
 - Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt

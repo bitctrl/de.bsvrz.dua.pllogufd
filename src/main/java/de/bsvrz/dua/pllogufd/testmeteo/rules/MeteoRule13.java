@@ -22,12 +22,22 @@ public class MeteoRule13 extends MeteoRule {
 	public void checkRule(MeteoMessstelle messStelle, Set<MeteoRuleCondition> verletzteBedingungen,
 			Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids, PllogUfdOptions options) {
 
-		if (messStelle.niederschlag() && messStelle.niIsNull()
-				&& (messStelle.rlfUndef() || messStelle.rlfZwischenTrockenUndNass())) {
-			implausibleDatenArten.add(UmfeldDatenArt.ns);
-			implausibleDatenArten.add(UmfeldDatenArt.ni);
-			verletzteBedingungen.add(CONDITION);
-			ids.add("[DUA-PP-MK13]");
+		if (options.isUseNiGrenzNS()) {
+			if (messStelle.niederschlag() && messStelle.niKleinerGrenzNsOrGleichNull()
+					&& (messStelle.rlfUndef() || messStelle.rlfZwischenTrockenUndNass())) {
+				implausibleDatenArten.add(UmfeldDatenArt.ns);
+				implausibleDatenArten.add(UmfeldDatenArt.ni);
+				verletzteBedingungen.add(CONDITION);
+				ids.add("[DUA-PP-MK13]");
+			}
+		} else {
+			if (messStelle.niederschlag() && messStelle.niIsNull()
+					&& (messStelle.rlfUndef() || messStelle.rlfZwischenTrockenUndNass())) {
+				implausibleDatenArten.add(UmfeldDatenArt.ns);
+				implausibleDatenArten.add(UmfeldDatenArt.ni);
+				verletzteBedingungen.add(CONDITION);
+				ids.add("[DUA-PP-MK13]");
+			}
 		}
 	}
 }

@@ -24,10 +24,18 @@ public class MeteoRule2 extends MeteoRule {
 	public void checkRule(MeteoMessstelle messStelle, Set<MeteoRuleCondition> verletzteBedingungen,
 			Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids, PllogUfdOptions options) {
 
-		if (messStelle.niederschlag() && messStelle.niIsNull() && messStelle.rlfKleinerTrocken()) {
-			implausibleDatenArten.add(UmfeldDatenArt.ns);
-			verletzteBedingungen.add(CONDITION);
-			ids.add("[DUA-PP-MK02]");
+		if (options.isUseNiGrenzNS()) {
+			if (messStelle.niederschlag() && messStelle.niKleinerGrenzNsOrGleichNull() && messStelle.rlfKleinerTrocken()) {
+				implausibleDatenArten.add(UmfeldDatenArt.ns);
+				verletzteBedingungen.add(CONDITION);
+				ids.add("[DUA-PP-MK02]");
+			}
+		} else {
+			if (messStelle.niederschlag() && messStelle.niIsNull() && messStelle.rlfKleinerTrocken()) {
+				implausibleDatenArten.add(UmfeldDatenArt.ns);
+				verletzteBedingungen.add(CONDITION);
+				ids.add("[DUA-PP-MK02]");
+			}
 		}
 	}
 }

@@ -414,6 +414,20 @@ public class MeteoMessstelle {
 		return niWert.getWert() > niGrenzNs.getWert();
 	}
 
+	public boolean niKleinerGrenzNsOrGleichNull() {
+		UmfeldDatenSensorWert niWert = getData(UmfeldDatenArt.ni);
+		if ((niWert == null) || !niWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert niGrenzNs = parameter.getParameter(MeteoParameterType.NI_GRENZ_NS);
+		if ((niGrenzNs == null) || !niGrenzNs.isOk()) {
+			return niIsNull();
+		}
+
+		return niWert.getWert() < niGrenzNs.getWert();
+	}
+
 	public boolean niGroesserGrenzWfd() {
 		UmfeldDatenSensorWert niWert = getData(UmfeldDatenArt.ni);
 		if ((niWert == null) || !niWert.isOk()) {
@@ -508,6 +522,35 @@ public class MeteoMessstelle {
 		return wfdWert.getWert() <= wfdGrenzTrocken.getWert();
 	}
 
+	public boolean wfdGroesserTrockenOrNull() {
+		UmfeldDatenSensorWert wfdWert = getData(UmfeldDatenArt.wfd);
+		if ((wfdWert == null) || !wfdWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert wfdGrenzTrocken = parameter.getParameter(MeteoParameterType.WFD_GRENZ_TROCKEN);
+		if ((wfdGrenzTrocken == null) || !wfdGrenzTrocken.isOk()) {
+			return wfdGroesserNull();
+		}
+
+		return wfdWert.getWert() > wfdGrenzTrocken.getWert();
+	}
+
+	public boolean wfdKleinerTrockenOrGleichNull() {
+		UmfeldDatenSensorWert wfdWert = getData(UmfeldDatenArt.wfd);
+		if ((wfdWert == null) || !wfdWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert wfdGrenzTrocken = parameter.getParameter(MeteoParameterType.WFD_GRENZ_TROCKEN);
+		if ((wfdGrenzTrocken == null) || !wfdGrenzTrocken.isOk()) {
+			return wfdIsNull();
+		}
+
+		return wfdWert.getWert() < wfdGrenzTrocken.getWert();
+	}
+
+	
 	public boolean wfdGroesserNull() {
 		UmfeldDatenSensorWert wfdWert = getData(UmfeldDatenArt.wfd);
 		if ((wfdWert == null) || !wfdWert.isOk()) {
@@ -516,7 +559,7 @@ public class MeteoMessstelle {
 
 		return wfdWert.getWert() > 0;
 	}
-
+	
 	public boolean wfdIsNull() {
 		UmfeldDatenSensorWert wfdWert = getData(UmfeldDatenArt.wfd);
 		if ((wfdWert == null) || !wfdWert.isOk()) {
