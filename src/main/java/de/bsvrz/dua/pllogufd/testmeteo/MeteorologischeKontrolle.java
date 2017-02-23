@@ -72,7 +72,7 @@ public class MeteorologischeKontrolle extends AbstraktBearbeitungsKnotenAdapter 
 		super.initialisiere(dieVerwaltung);
 		_verwaltung = (VerwaltungPlPruefungLogischUFD) dieVerwaltung;
 		for(DUAUmfeldDatenMessStelle messStelle : _verwaltung.getMessstellen()) {
-			_meteoMessstellen.put(messStelle, new MeteoMessstelle(dieVerwaltung.getVerbindung(), messStelle));
+			_meteoMessstellen.put(messStelle, new MeteoMessstelle(dieVerwaltung.getVerbindung(), messStelle, _verwaltung.getPllogUfdOptions()));
 		}
 	}
 

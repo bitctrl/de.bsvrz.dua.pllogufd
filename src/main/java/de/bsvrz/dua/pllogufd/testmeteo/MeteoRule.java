@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import de.bsvrz.dua.pllogufd.vew.PllogUfdOptions;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 
@@ -45,7 +46,7 @@ public abstract class MeteoRule {
 		return true;
 	}
 
-	public Set<UmfeldDatenArt> pruefe(MeteoMessstelle meteoMessstelle, Set<MeteoRuleCondition> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids) {
+	public Set<UmfeldDatenArt> pruefe(MeteoMessstelle meteoMessstelle, Set<MeteoRuleCondition> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids, PllogUfdOptions options) {
 
 		Set<UmfeldDatenArt> result = new LinkedHashSet<>();
 
@@ -61,13 +62,13 @@ public abstract class MeteoRule {
 			}
 		}
 
-		checkRule(meteoMessstelle, verletzteBedingungen, implausibleDatenArten, ids);
+		checkRule(meteoMessstelle, verletzteBedingungen, implausibleDatenArten, ids, options);
 		result.removeAll(implausibleDatenArten);
 		
 		return result;
 	}
 
-	public abstract void checkRule(MeteoMessstelle meteoMessstelle, Set<MeteoRuleCondition> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids);
+	public abstract void checkRule(MeteoMessstelle meteoMessstelle, Set<MeteoRuleCondition> verletzteBedingungen, Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids, PllogUfdOptions options);
 
 	protected boolean isOk(final UmfeldDatenSensorWert wert) {
 		return wert != null && wert.isOk();

@@ -108,6 +108,8 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 			MessageTemplate.fixed("Unbekannter Umfelddatensensor "), MessageTemplate.object(),
 			MessageTemplate.fixed(" entdeckt. Sensor wird ignoriert. "), MessageTemplate.ids());
 
+	private PllogUfdOptions options = new PllogUfdOptions();
+	
 	/**
 	 * Verwendete Uhr, verwendet normalerweise die Systemzeit, kann aber von
 	 * Testfällen anders gesetzt werden.
@@ -426,5 +428,9 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 	 */
 	public Collection<DUAUmfeldDatenMessStelle> getMessstellen() {
 		return _sensorZuMessstelle.values();
+	}
+
+	public PllogUfdOptions getPllogUfdOptions() {
+		return options;
 	}
 }

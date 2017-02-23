@@ -54,6 +54,7 @@ import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule6;
 import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule7;
 import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule8;
 import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule9;
+import de.bsvrz.dua.pllogufd.vew.PllogUfdOptions;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
@@ -90,6 +91,8 @@ public class MeteoMessstelle {
 	private final DUAUmfeldDatenMessStelle messStelle;
 	private final MeteoParameter parameter;
 
+	private PllogUfdOptions options;
+
 	/**
 	 * Logger
 	 */
@@ -103,7 +106,8 @@ public class MeteoMessstelle {
 	 * @param messStelle
 	 *            Messstellen-Objekt
 	 */
-	public MeteoMessstelle(final ClientDavInterface connection, final DUAUmfeldDatenMessStelle messStelle) {
+	public MeteoMessstelle(final ClientDavInterface connection, final DUAUmfeldDatenMessStelle messStelle, PllogUfdOptions options) {
+		this.options = options;
 		this.parameter = new MeteoParameter(connection, messStelle);
 		this.messStelle = messStelle;
 		initSensor(messStelle, UmfeldDatenArt.ni);
@@ -254,7 +258,7 @@ public class MeteoMessstelle {
 					continue;
 				}
 			}
-			plausibleDatenArten.addAll(rule.pruefe(this, verletzteBedingungen, implausibleDatenArten, ids));
+			plausibleDatenArten.addAll(rule.pruefe(this, verletzteBedingungen, implausibleDatenArten, ids, options));
 			checkedRules.add(rule);
 		}
 
