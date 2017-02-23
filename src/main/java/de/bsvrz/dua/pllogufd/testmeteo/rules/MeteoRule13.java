@@ -14,7 +14,7 @@ public class MeteoRule13 extends MeteoRule {
 			new Object[] { UmfeldDatenArt.ni });
 
 	public MeteoRule13() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
+		super(13, new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
 				new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni });
 	}
 

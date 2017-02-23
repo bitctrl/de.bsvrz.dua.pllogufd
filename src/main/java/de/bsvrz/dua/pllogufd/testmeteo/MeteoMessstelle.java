@@ -150,6 +150,11 @@ public class MeteoMessstelle {
 	}
 
 	private void initRule(MeteoRule rule) {
+		
+		if( options.getIgnoredMeteoRules().contains(rule.getId())) {
+			return;
+		}
+		
 		if (rule.isValidFor(sensoren.values())) {
 			rules.add(rule);
 		}

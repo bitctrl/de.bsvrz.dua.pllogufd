@@ -15,7 +15,7 @@ public class MeteoRule8 extends MeteoRule {
 			new Object[] { UmfeldDatenArt.lt, MeteoParameterType.LT_GRENZ_REGEN });
 
 	public MeteoRule8() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.lt },
+		super(8, new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.lt },
 				new UmfeldDatenArt[] { UmfeldDatenArt.ns });
 	}
 

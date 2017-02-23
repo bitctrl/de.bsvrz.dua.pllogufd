@@ -15,7 +15,7 @@ public class MeteoRule9 extends MeteoRule {
 			new Object[] { UmfeldDatenArt.lt, MeteoParameterType.LT_GRENZ_SCHNEE });
 
 	public MeteoRule9() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.lt },
+		super(9, new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.lt },
 				new UmfeldDatenArt[] { UmfeldDatenArt.ns });
 	}
 

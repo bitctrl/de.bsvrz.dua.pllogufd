@@ -28,10 +28,37 @@
 
 package de.bsvrz.dua.pllogufd.vew;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import de.bsvrz.sys.funclib.debug.Debug;
+
 /**
  * Allgemeine Optionen der SWE, die per Startzeilen-Parameter übergeben werden.
  * 
  * @author BitCtrl Systems GmbH, Uwe Peuker
  */
 public class PllogUfdOptions {
+
+	private final Set<Integer> ignoredMeteoRules = new LinkedHashSet<>();
+	
+	public void update(VerwaltungPlPruefungLogischUFD verwaltung) {
+
+		String argument = verwaltung.getArgument("ignoriereRegeln");
+		if (argument != null) {
+			String[] items = argument.split(",");
+			for( String item : items) {
+				try {
+					ignoredMeteoRules.add(Integer.parseInt(item));
+				} catch (NumberFormatException e) {
+					Debug.getLogger().warning("Fehler beim Einlesen des Parameters für ignorierte Regeln", e);
+				}
+			}
+		}
+	}
+
+	public Set<Integer> getIgnoredMeteoRules() {
+		return Collections.unmodifiableSet(ignoredMeteoRules);
+	}
 }

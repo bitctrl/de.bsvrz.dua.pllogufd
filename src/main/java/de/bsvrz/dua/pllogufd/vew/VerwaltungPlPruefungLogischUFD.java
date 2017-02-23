@@ -181,6 +181,7 @@ public class VerwaltungPlPruefungLogischUFD extends AbstraktVerwaltungsAdapterMi
 	protected void initialisiere() throws DUAInitialisierungsException {
 
 		super.initialisiere();
+		options.update(this);
 
 		UmfeldDatenArt.initialisiere(this.verbindung);
 

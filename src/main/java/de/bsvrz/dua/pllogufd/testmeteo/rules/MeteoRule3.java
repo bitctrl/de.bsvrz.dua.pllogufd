@@ -16,7 +16,7 @@ public class MeteoRule3 extends MeteoRule {
 					MeteoParameterType.NI_GRENZ_NS, UmfeldDatenArt.rlf, MeteoParameterType.RLF_GRENZ_TROCKEN });
 
 	public MeteoRule3() {
-		super(new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
+		super(3, new UmfeldDatenArt[] { UmfeldDatenArt.ns, UmfeldDatenArt.ni, UmfeldDatenArt.rlf },
 				new UmfeldDatenArt[] { UmfeldDatenArt.ni });
 	}
 
