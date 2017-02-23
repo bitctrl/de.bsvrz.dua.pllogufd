@@ -28,8 +28,11 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
   Sichtweite, Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß 
   Anforderungen keine Anstiegs-Abstiegs-Plausibilisierung mehr durchgeführt
 - Sourcecode-Bereinigung
+
 - NERZ-Fehler 226: Sonderbehandlung der Restsalz-Wertes 255 (physikalisch nicht messbar)
   bei der Anstiegs-Abstiegs-Kontrolle
+- NERZ-Fehler 231,232: Für die Auswertung der Regeln der meteorologischen Kontrolle werden nur Werte
+  mit identischem Zeitstempel verwendet (Testfall ergänzt)
 
 ### 2.0.2
 
