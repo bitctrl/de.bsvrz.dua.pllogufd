@@ -66,9 +66,9 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 
 		String[] datenArten = new String[] { "FahrBahnOberFlächenTemperatur", "FahrBahnOberFlächenZustand",
 				"GefrierTemperatur", "Helligkeit", "LuftTemperatur", "NiederschlagsArt", "NiederschlagsIntensität",
-				"RelativeLuftFeuchte", "RestSalz", "SichtWeite", "TaupunktTemperatur", "TemperaturInTiefe1",
+				"RelativeLuftFeuchte", "RestSalz", "SichtWeite", "Taustoffmenge", "TaupunktTemperatur", "TemperaturInTiefe1",
 				"TemperaturInTiefe3", "WasserFilmDicke", "WindRichtung", "WindGeschwindigkeitMittelWert",
-				"WindGeschwindigkeitSpitzenWert" };
+				"WindGeschwindigkeitSpitzenWert", "ZeitReserveEisGlätte", "ZeitReserveReifGlätte", "GlätteAlarmStatus" };
 
 		Collection<StandardPublikationsZuordnung> zuordnungen = new ArrayList<>();
 
