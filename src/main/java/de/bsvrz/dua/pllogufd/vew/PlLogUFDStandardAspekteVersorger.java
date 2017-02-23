@@ -28,10 +28,14 @@
 
 package de.bsvrz.dua.pllogufd.vew;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.StandardAspekteVersorger;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
  * Diese Klasse repräsentiert die Versorgung des Moduls Pl-Prüfung logisch UFD
@@ -42,6 +46,8 @@ import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
  * @author BitCtrl Systems GmbH, Thierfelder
  */
 public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
+
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * Standardkonstruktor.
@@ -58,45 +64,26 @@ public class PlLogUFDStandardAspekteVersorger extends StandardAspekteVersorger {
 	@Override
 	protected void init() throws DUAInitialisierungsException {
 
-		this.standardAspekte = new StandardAspekteAdapter(new StandardPublikationsZuordnung[] {
-				new StandardPublikationsZuordnung("typ.ufdsFahrBahnOberFlächenTemperatur",
-						"atg.ufdsFahrBahnOberFlächenTemperatur", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsFahrBahnOberFlächenZustand",
-						"atg.ufdsFahrBahnOberFlächenZustand", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsGefrierTemperatur", "atg.ufdsGefrierTemperatur",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsHelligkeit", "atg.ufdsHelligkeit",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsLuftTemperatur", "atg.ufdsLuftTemperatur",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsNiederschlagsArt", "atg.ufdsNiederschlagsArt",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsNiederschlagsIntensität", "atg.ufdsNiederschlagsIntensität",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsRelativeLuftFeuchte", "atg.ufdsRelativeLuftFeuchte",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsRestSalz", "atg.ufdsRestSalz",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsSichtWeite", "atg.ufdsSichtWeite",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsTaupunktTemperatur", "atg.ufdsTaupunktTemperatur",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsTemperaturInTiefe1", "atg.ufdsTemperaturInTiefe1",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsTemperaturInTiefe3", "atg.ufdsTemperaturInTiefe3",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsWasserFilmDicke", "atg.ufdsWasserFilmDicke",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsWindRichtung", "atg.ufdsWindRichtung",
-						DUAKonstanten.ASP_EXTERNE_ERFASSUNG, DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsWindGeschwindigkeitMittelWert",
-						"atg.ufdsWindGeschwindigkeitMittelWert", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH),
-				new StandardPublikationsZuordnung("typ.ufdsWindGeschwindigkeitSpitzenWert",
-						"atg.ufdsWindGeschwindigkeitSpitzenWert", DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
-						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH), });
+		String[] datenArten = new String[] { "FahrBahnOberFlächenTemperatur", "FahrBahnOberFlächenZustand",
+				"GefrierTemperatur", "Helligkeit", "LuftTemperatur", "NiederschlagsArt", "NiederschlagsIntensität",
+				"RelativeLuftFeuchte", "RestSalz", "SichtWeite", "TaupunktTemperatur", "TemperaturInTiefe1",
+				"TemperaturInTiefe3", "WasserFilmDicke", "WindRichtung", "WindGeschwindigkeitMittelWert",
+				"WindGeschwindigkeitSpitzenWert" };
+
+		Collection<StandardPublikationsZuordnung> zuordnungen = new ArrayList<>();
+
+		for( String datenArt : datenArten) {
+			try {
+				StandardPublikationsZuordnung zuordung = new StandardPublikationsZuordnung("typ.ufds" + datenArt, "atg.ufds" + datenArt, DUAKonstanten.ASP_EXTERNE_ERFASSUNG,
+						DUAKonstanten.ASP_PL_PRUEFUNG_LOGISCH);
+				zuordnungen.add(zuordung);
+			} catch (DUAInitialisierungsException e) {
+				LOGGER.fine(e.getLocalizedMessage());
+			}
+		}
+
+		this.standardAspekte = new StandardAspekteAdapter(
+				zuordnungen.toArray(new StandardPublikationsZuordnung[zuordnungen.size()]));
 
 	}
 
