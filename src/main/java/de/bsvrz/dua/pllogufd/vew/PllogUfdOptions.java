@@ -41,18 +41,35 @@ import de.bsvrz.sys.funclib.debug.Debug;
  */
 public class PllogUfdOptions {
 
+	private static final Debug LOGGER = Debug.getLogger();
 	private final Set<Integer> ignoredMeteoRules = new LinkedHashSet<>();
+	private boolean initialeAusfallKontrolle;
+	private long defaultMaxZeitVerzug = -1;
 	
 	public void update(VerwaltungPlPruefungLogischUFD verwaltung) {
 
-		String argument = verwaltung.getArgument("ignoriereRegeln");
+		String argument = verwaltung.getArgument("initialeAusfallKontrolle");
+		if (argument != null) {
+			initialeAusfallKontrolle = Boolean.valueOf(argument);
+		}
+
+		argument = verwaltung.getArgument("defaultMaxZeitVerzug");
+		if (argument != null) {
+			try {
+				defaultMaxZeitVerzug = Long.valueOf(argument);
+			} catch (NumberFormatException e) {
+				LOGGER.warning("Fehler beim Einlesen des Parameters für den Standard-Zeitverzug", e);
+			}
+		}
+		
+		argument = verwaltung.getArgument("ignoriereRegeln");
 		if (argument != null) {
 			String[] items = argument.split(",");
 			for( String item : items) {
 				try {
 					ignoredMeteoRules.add(Integer.parseInt(item));
 				} catch (NumberFormatException e) {
-					Debug.getLogger().warning("Fehler beim Einlesen des Parameters für ignorierte Regeln", e);
+					LOGGER.warning("Fehler beim Einlesen des Parameters für ignorierte Regeln", e);
 				}
 			}
 		}
@@ -60,5 +77,13 @@ public class PllogUfdOptions {
 
 	public Set<Integer> getIgnoredMeteoRules() {
 		return Collections.unmodifiableSet(ignoredMeteoRules);
+	}
+
+	public boolean isInitialeAusfallKontrolle() {
+		return initialeAusfallKontrolle;
+	}
+
+	public long getDefaultMaxZeitVerzug() {
+		return defaultMaxZeitVerzug ;
 	}
 }

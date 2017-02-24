@@ -28,9 +28,35 @@
 
 package de.bsvrz.dua.pllogufd.testausfall;
 
-import de.bsvrz.dav.daf.main.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
+
+import de.bsvrz.dav.daf.main.ClientDavInterface;
+import de.bsvrz.dav.daf.main.ClientReceiverInterface;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.DataDescription;
+import de.bsvrz.dav.daf.main.DavConnectionListener;
+import de.bsvrz.dav.daf.main.ReceiveOptions;
+import de.bsvrz.dav.daf.main.ReceiverRole;
+import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.config.Aspect;
+import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dua.pllogufd.clock.ClockScheduler;
+import de.bsvrz.dua.pllogufd.vew.PllogUfdOptions;
 import de.bsvrz.dua.pllogufd.vew.VerwaltungPlPruefungLogischUFD;
 import de.bsvrz.sys.funclib.bitctrl.daf.DaVKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAInitialisierungsException;
@@ -40,18 +66,13 @@ import de.bsvrz.sys.funclib.bitctrl.dua.dfs.schnittstellen.IDatenFlussSteuerung;
 import de.bsvrz.sys.funclib.bitctrl.dua.dfs.typen.ModulTyp;
 import de.bsvrz.sys.funclib.bitctrl.dua.schnittstellen.IVerwaltung;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
+import de.bsvrz.sys.funclib.bitctrl.dua.ufd.typen.UmfeldDatenArt;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.operatingMessage.MessageGrade;
 import de.bsvrz.sys.funclib.operatingMessage.MessageTemplate;
 import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
-
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.*;
 
 /**
  * Das Modul Ausfallüberwachung meldet sich auf alle Parameter an und führt mit
@@ -84,6 +105,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 	 * interner Kontrollprozess.
 	 */
 	private ClockScheduler kontrollProzess = null;
+	private PllogUfdOptions options;
 
 	private static final MessageTemplate TEMPLATE = new MessageTemplate(MessageGrade.ERROR,
 			MessageType.APPLICATION_DOMAIN, MessageTemplate.fixed("Datensatz mit Zeitstempel "),
@@ -96,6 +118,10 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung) throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
+		
+		if( dieVerwaltung instanceof VerwaltungPlPruefungLogischUFD) {
+			options = ((VerwaltungPlPruefungLogischUFD) dieVerwaltung).getPllogUfdOptions();
+		}
 		kontrollProzess = new ClockScheduler(VerwaltungPlPruefungLogischUFD.clock);
 
 		dieVerwaltung.getVerbindung().addConnectionListener(new DavConnectionListener() {
@@ -105,15 +131,91 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 			}
 		});
 
-		for (final SystemObject objekt : verwaltung.getSystemObjekte()) {
-			letzteEmpfangeneDatenZeitProObj.put(objekt, (long) -1);
-		}
-
 		final DataDescription parameterBeschreibung = new DataDescription(
 				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.ufdsAusfallÜberwachung"),
 				dieVerwaltung.getVerbindung().getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dieVerwaltung.getVerbindung().subscribeReceiver(this, dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
+		
+		for( SystemObject objekt : dieVerwaltung.getSystemObjekte()) {
+			ResultData data = dieVerwaltung.getVerbindung().getData(objekt, parameterBeschreibung, 0);
+			if( data != null) {
+				update(new ResultData[]{data});
+			}
+		}
+		
+
+		for (final SystemObject objekt : verwaltung.getSystemObjekte()) {
+			letzteEmpfangeneDatenZeitProObj.put(objekt, (long) -1);
+			initInitalChecker(dieVerwaltung, objekt);
+		}
+	}
+
+	private void initInitalChecker(IVerwaltung dieVerwaltung, SystemObject objekt) {
+		
+		if((options == null) || !options.isInitialeAusfallKontrolle()) {
+			return;
+		}
+		
+		UmfeldDatenArt datenArt;
+		try {
+			datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(objekt);
+		} catch (UmfeldDatenSensorUnbekannteDatenartException e) {
+			LOGGER.warning(e.getLocalizedMessage());
+			return;
+		}
+		
+		int periodenDauer = 1;
+		
+		Data configData = objekt.getConfigurationData(
+				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.umfeldDatenSensor"));
+		if (configData == null) {
+			return;
+		}
+
+		SystemObject quelle = configData.getReferenceValue("UmfeldDatenSensorQuelle").getSystemObject();
+		if ((quelle != null) && quelle.isOfType("typ.deUfd")) {
+			ResultData parameter = dieVerwaltung.getVerbindung().getData(quelle, new DataDescription(dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.tlsUfdBetriebsParameter"), dieVerwaltung.getVerbindung().getDataModel().getAspect("asp.parameterSoll")), 0);
+			if ((parameter != null) && parameter.hasData()) {
+				periodenDauer = parameter.getData().getUnscaledValue("Erfassungsperiodendauer").intValue();
+			}
+		}
+
+		ZonedDateTime now = ZonedDateTime.now();
+		ZonedDateTime cal = ZonedDateTime.of(LocalDate.now(), LocalTime.of(0, 0), ZoneId.systemDefault());
+		
+		while( cal.isBefore(now)) {
+			cal = cal.plus(Duration.ofMinutes(periodenDauer));
+		}
+		cal = cal.minus(Duration.ofMinutes(periodenDauer));
+		
+		AttributeGroup atg = dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.ufds" + datenArt.getName());
+		Aspect asp = dieVerwaltung.getVerbindung().getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG);
+		
+		Data data = dieVerwaltung.getVerbindung().createData(atg);
+		data.getTimeValue("T").setMillis(TimeUnit.MINUTES.toMillis(periodenDauer));
+		
+		Data item = data.getItem(datenArt.getName());
+		item.getUnscaledValue("Wert").setText("nicht ermittelbar");
+		
+		item.getItem("Status").getItem("Erfassung").getUnscaledValue("NichtErfasst").setText("Ja");
+		item.getItem("Status").getItem("PlFormal").getUnscaledValue("WertMax").setText("Nein");
+		item.getItem("Status").getItem("PlFormal").getUnscaledValue("WertMin").setText("Nein");
+		item.getItem("Status").getItem("PlLogisch").getUnscaledValue("WertMaxLogisch").setText("Nein");
+		item.getItem("Status").getItem("PlLogisch").getUnscaledValue("WertMinLogisch").setText("Nein");
+		item.getItem("Status").getItem("MessWertErsetzung").getUnscaledValue("Implausibel").setText("Nein");
+		item.getItem("Status").getItem("MessWertErsetzung").getUnscaledValue("Interpoliert").setText("Nein");
+
+		item.getItem("Güte").getUnscaledValue("Index").set(1);
+		item.getItem("Güte").getUnscaledValue("Verfahren").setText("Standard");
+		
+		long datenZeitpunkt = cal.toInstant().toEpochMilli();
+		ResultData resultData = new ResultData(objekt, new DataDescription(atg, asp), datenZeitpunkt, data);
+		
+		long kontrollZeitpunkt = getKontrollZeitpunktVon(resultData);
+		if( kontrollZeitpunkt > 0) {
+			scheduleKontrollTask(resultData, kontrollZeitpunkt);
+		}
 	}
 
 	/**
@@ -196,36 +298,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 						}
 						if (resultat.getData() != null) {
 							final long kontrollZeitpunkt = getKontrollZeitpunktVon(resultat);
-							if (!kontrollProzess.isTerminated()) {
-								// Timer starten zur Ausfallüberwachung
-								kontrollProzess.schedule(Instant.ofEpochMilli(kontrollZeitpunkt), new Runnable() {
-									@Override
-									public void run() {
-										// Schon mal vorab einen leeren
-										// Datensatz erstellen
-										ResultData ausfallDatum = getAusfallDatumVon(resultat);
-
-										if (letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < ausfallDatum
-												.getDataTime()) {
-											// Datum nicht rechtzeitig
-											// angekommen, da der leere
-											// Datensatz hinter dem zuletzt
-											// empfangenen Datensatz liegt
-
-											aktualisiereDaten(ausfallDatum);
-
-											// Betriebsmeldung erzeugen
-											VerwaltungPlPruefungLogischUFD verwaltung = (VerwaltungPlPruefungLogischUFD) getVerwaltung();
-											OperatingMessage message = TEMPLATE.newMessage(
-													verwaltung.getBetriebsmeldungsObjekt(resultat.getObject()));
-											LocalTime localTime = Instant.ofEpochMilli(ausfallDatum.getDataTime())
-													.atZone(ZoneId.systemDefault()).toLocalTime();
-											message.put("timestamp", TIME_FORMAT.format(localTime));
-											message.addId("[DUA-PP-UA01]");
-										}
-									}
-								});
-							}
+							scheduleKontrollTask(resultat, kontrollZeitpunkt);
 						}
 					}
 				}
@@ -234,6 +307,40 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 			if ((knoten != null) && !weiterzuleitendeResultate.isEmpty()) {
 				knoten.aktualisiereDaten(weiterzuleitendeResultate.toArray(new ResultData[0]));
 			}
+		}
+	}
+
+	private void scheduleKontrollTask(final ResultData resultat, final long kontrollZeitpunkt) {
+		
+		if (!kontrollProzess.isTerminated()) {
+			// Timer starten zur Ausfallüberwachung
+			kontrollProzess.schedule(Instant.ofEpochMilli(kontrollZeitpunkt), new Runnable() {
+				@Override
+				public void run() {
+					
+					// Schon mal vorab einen leeren
+					// Datensatz erstellen
+					ResultData ausfallDatum = getAusfallDatumVon(resultat);
+
+					if (letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < ausfallDatum.getDataTime()) {
+						// Datum nicht rechtzeitig
+						// angekommen, da der leere
+						// Datensatz hinter dem zuletzt
+						// empfangenen Datensatz liegt
+
+						aktualisiereDaten(ausfallDatum);
+
+						// Betriebsmeldung erzeugen
+						VerwaltungPlPruefungLogischUFD verwaltung = (VerwaltungPlPruefungLogischUFD) getVerwaltung();
+						OperatingMessage message = TEMPLATE
+								.newMessage(verwaltung.getBetriebsmeldungsObjekt(resultat.getObject()));
+						LocalTime localTime = Instant.ofEpochMilli(ausfallDatum.getDataTime())
+								.atZone(ZoneId.systemDefault()).toLocalTime();
+						message.put("timestamp", TIME_FORMAT.format(localTime));
+						message.addId("[DUA-PP-UA01]");
+					}
+				}
+			});
 		}
 	}
 
@@ -246,14 +353,14 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 	 *         nicht ermittelt werden konnte
 	 */
 	protected long getMaxZeitVerzug(final SystemObject obj) {
-		long maxZeitVerzug = -1;
+		long maxZeitVerzug = options.getDefaultMaxZeitVerzug();
 
 		if (obj != null) {
 			synchronized (objektWertErfassungVerzug) {
 				final Long dummy = objektWertErfassungVerzug.get(obj);
 				if ((dummy != null) && (dummy > 0)) {
 					maxZeitVerzug = dummy;
-				}
+				} 
 			}
 		}
 
