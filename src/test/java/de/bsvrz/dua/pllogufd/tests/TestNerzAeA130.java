@@ -54,7 +54,7 @@ import de.kappich.pat.testumg.util.DavTestUtil;
  *
  * @author Kappich Systemberatung
  */
-public class TestNerzAaA130 extends DuAPlLogUfdTestBase {
+public class TestNerzAeA130 extends DuAPlLogUfdTestBase {
 
 	private SystemObject ltSensor;
 	private AttributeGroup ltAtg;
