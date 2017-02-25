@@ -47,6 +47,8 @@ import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dua.pllogufd.clock.WaitableClock;
+import de.bsvrz.dua.pllogufd.vew.VerwaltungPlPruefungLogischUFD;
 import de.kappich.pat.testumg.util.DavTestUtil;
 
 /**
@@ -59,15 +61,16 @@ public class TestNerzAeA130 extends DuAPlLogUfdTestBase {
 	private SystemObject ltSensor;
 	private AttributeGroup ltAtg;
 
-	private Aspect _aspReceive;
+	private Aspect aspReceive;
 
 	@Override
 	@Before
 	public void setUp() throws Exception {
+		VerwaltungPlPruefungLogischUFD.clock = WaitableClock.systemClock();
 		super.setUp();
 		ltSensor = _dataModel.getObject("ufd.lt");
 		ltAtg = _dataModel.getAttributeGroup("atg.ufdsLuftTemperatur");
-		_aspReceive = _dataModel.getAspect("asp.plausibilitätsPrüfungLogisch");
+		aspReceive = _dataModel.getAspect("asp.plausibilitätsPrüfungLogisch");
 	}
 	
 	@Override
@@ -81,7 +84,7 @@ public class TestNerzAeA130 extends DuAPlLogUfdTestBase {
 
 	@Test
 	public void testNerzAeA130() throws Exception {
-		DataDescription ltReceive = new DataDescription(ltAtg, _aspReceive);
+		DataDescription ltReceive = new DataDescription(ltAtg, aspReceive);
 	
 		ZonedDateTime now = ZonedDateTime.now();
 		ZonedDateTime cal = ZonedDateTime.of(LocalDate.now(), LocalTime.of(0, 0), ZoneId.systemDefault());
@@ -97,7 +100,7 @@ public class TestNerzAeA130 extends DuAPlLogUfdTestBase {
 	}
 
 	private void expectLtData(final ZonedDateTime cal, final String value) throws InterruptedException {
-		DataDescription ddReceive = new DataDescription(ltAtg, _aspReceive);
+		DataDescription ddReceive = new DataDescription(ltAtg, aspReceive);
 		ResultData data = null;
 		do {
 			data = DavTestUtil.readData(ltSensor, ddReceive, TimeUnit.MINUTES.toMillis(2));
