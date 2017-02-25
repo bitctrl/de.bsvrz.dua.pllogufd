@@ -26,6 +26,8 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
   mit identischem Zeitstempel verwendet (Testfall ergänzt)
 - NERZ-Fehler 235: Über den Kommandozeilenparameter ignoriereRegeln=<n>,<n>,... können die Regeln der
   Meteorologischen Kontrolle global ausgeschlossen werden
+- NERZ-ÄA 130: Über den Kommandozeilenparameter initialeAusfallKontrolle=true/false erfolgt die Ausfallüberwachung 
+  auf Wunsch auch, wenn initial keine Daten von einem Sensor geliefert werden
 
 ### Version 2.0.4
 

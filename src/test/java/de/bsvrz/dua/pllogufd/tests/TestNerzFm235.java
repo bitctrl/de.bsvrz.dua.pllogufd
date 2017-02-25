@@ -89,7 +89,7 @@ public class TestNerzFm235 extends DuAPlLogUfdTestBase {
 	}
 
 	@Test
-	public void testNerzFm235MitRegeln() throws Exception {
+	public void testNerzFm235() throws Exception {
 		DataDescription wfdSend = new DataDescription(wfdAtg, _aspSend);
 		DataDescription fbzSend = new DataDescription(fbzAtg, _aspSend);
 		DataDescription wfdReceive = new DataDescription(wfdAtg, _aspReceive);
