@@ -90,7 +90,7 @@ public class PllogUfdOptions {
 		argument = verwaltung.getArgument("defaultMaxZeitVerzug");
 		if (argument != null) {
 			try {
-				defaultMaxZeitVerzug = Long.valueOf(argument);
+				defaultMaxZeitVerzug = Long.parseLong(argument);
 			} catch (NumberFormatException e) {
 				LOGGER.warning("Fehler beim Einlesen des Parameters für den Standard-Zeitverzug", e);
 			}
