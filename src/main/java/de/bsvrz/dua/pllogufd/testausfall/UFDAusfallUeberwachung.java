@@ -328,7 +328,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 						// Datensatz hinter dem zuletzt
 						// empfangenen Datensatz liegt
 
-						aktualisiereDaten(ausfallDatum);
+						aktualisiereDaten(new ResultData[]{ausfallDatum});
 
 						// Betriebsmeldung erzeugen
 						VerwaltungPlPruefungLogischUFD verwaltung = (VerwaltungPlPruefungLogischUFD) getVerwaltung();
