@@ -193,7 +193,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 		Aspect asp = dieVerwaltung.getVerbindung().getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG);
 		
 		Data data = dieVerwaltung.getVerbindung().createData(atg);
-		data.getTimeValue("T").setMillis(TimeUnit.MINUTES.toMillis(periodenDauer));
+		data.getTimeValue("T").setMillis(TimeUnit.SECONDS.toMillis(periodenDauer));
 		
 		Data item = data.getItem(datenArt.getName());
 		item.getUnscaledValue("Wert").setText("nicht ermittelbar");
