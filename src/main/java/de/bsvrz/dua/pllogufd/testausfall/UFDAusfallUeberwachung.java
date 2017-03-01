@@ -164,7 +164,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 			return;
 		}
 
-		int periodenDauer = 1;
+		int periodenDauerInSeconds = 60;
 
 		Data configData = objekt.getConfigurationData(
 				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.umfeldDatenSensor"));
@@ -181,7 +181,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 							dieVerwaltung.getVerbindung().getDataModel().getAspect("asp.parameterSoll")),
 					0);
 			if ((parameter != null) && parameter.hasData()) {
-				periodenDauer = parameter.getData().getUnscaledValue("Erfassungsperiodendauer").intValue();
+				periodenDauerInSeconds = parameter.getData().getUnscaledValue("Erfassungsperiodendauer").intValue();
 			}
 		}
 
@@ -189,16 +189,16 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 		ZonedDateTime cal = ZonedDateTime.of(LocalDate.now(), LocalTime.of(0, 0), ZoneId.systemDefault());
 
 		while (cal.isBefore(now)) {
-			cal = cal.plus(Duration.ofMinutes(periodenDauer));
+			cal = cal.plus(Duration.ofSeconds(periodenDauerInSeconds));
 		}
-		cal = cal.minus(Duration.ofMinutes(periodenDauer));
+		cal = cal.minus(Duration.ofSeconds(periodenDauerInSeconds));
 
 		AttributeGroup atg = dieVerwaltung.getVerbindung().getDataModel()
 				.getAttributeGroup("atg.ufds" + datenArt.getName());
 		Aspect asp = dieVerwaltung.getVerbindung().getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG);
 
 		Data data = dieVerwaltung.getVerbindung().createData(atg);
-		data.getTimeValue("T").setMillis(TimeUnit.SECONDS.toMillis(periodenDauer));
+		data.getTimeValue("T").setMillis(TimeUnit.SECONDS.toMillis(periodenDauerInSeconds));
 
 		Data item = data.getItem(datenArt.getName());
 		item.getUnscaledValue("Wert").setText("nicht ermittelbar");
@@ -320,6 +320,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 
 		if (!kontrollProzess.isTerminated()) {
 			// Timer starten zur Ausfallüberwachung
+			
 			kontrollProzess.schedule(Instant.ofEpochMilli(kontrollZeitpunkt), new Runnable() {
 				@Override
 				public void run() {
