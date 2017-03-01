@@ -118,8 +118,8 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 	@Override
 	public void initialisiere(final IVerwaltung dieVerwaltung) throws DUAInitialisierungsException {
 		super.initialisiere(dieVerwaltung);
-		
-		if( dieVerwaltung instanceof VerwaltungPlPruefungLogischUFD) {
+
+		if (dieVerwaltung instanceof VerwaltungPlPruefungLogischUFD) {
 			options = ((VerwaltungPlPruefungLogischUFD) dieVerwaltung).getPllogUfdOptions();
 		}
 		kontrollProzess = new ClockScheduler(VerwaltungPlPruefungLogischUFD.clock);
@@ -136,14 +136,13 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 				dieVerwaltung.getVerbindung().getDataModel().getAspect(DaVKonstanten.ASP_PARAMETER_SOLL));
 		dieVerwaltung.getVerbindung().subscribeReceiver(this, dieVerwaltung.getSystemObjekte(), parameterBeschreibung,
 				ReceiveOptions.normal(), ReceiverRole.receiver());
-		
-		for( SystemObject objekt : dieVerwaltung.getSystemObjekte()) {
+
+		for (SystemObject objekt : dieVerwaltung.getSystemObjekte()) {
 			ResultData data = dieVerwaltung.getVerbindung().getData(objekt, parameterBeschreibung, 0);
-			if( data != null) {
-				update(new ResultData[]{data});
+			if (data != null) {
+				update(new ResultData[] { data });
 			}
 		}
-		
 
 		for (final SystemObject objekt : verwaltung.getSystemObjekte()) {
 			letzteEmpfangeneDatenZeitProObj.put(objekt, (long) -1);
@@ -152,11 +151,11 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 	}
 
 	private void initInitalChecker(IVerwaltung dieVerwaltung, SystemObject objekt) {
-		
-		if((options == null) || !options.isInitialeAusfallKontrolle()) {
+
+		if ((options == null) || !options.isInitialeAusfallKontrolle()) {
 			return;
 		}
-		
+
 		UmfeldDatenArt datenArt;
 		try {
 			datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(objekt);
@@ -164,9 +163,9 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 			LOGGER.warning(e.getLocalizedMessage());
 			return;
 		}
-		
-		int periodenDauer = 1;
-		
+
+		int periodenDauerInSeconds = 60;
+
 		Data configData = objekt.getConfigurationData(
 				dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.umfeldDatenSensor"));
 		if (configData == null) {
@@ -175,29 +174,35 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 
 		SystemObject quelle = configData.getReferenceValue("UmfeldDatenSensorQuelle").getSystemObject();
 		if ((quelle != null) && quelle.isOfType("typ.deUfd")) {
-			ResultData parameter = dieVerwaltung.getVerbindung().getData(quelle, new DataDescription(dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.tlsUfdBetriebsParameter"), dieVerwaltung.getVerbindung().getDataModel().getAspect("asp.parameterSoll")), 0);
+			ResultData parameter = dieVerwaltung.getVerbindung().getData(quelle,
+					new DataDescription(
+							dieVerwaltung.getVerbindung().getDataModel()
+									.getAttributeGroup("atg.tlsUfdBetriebsParameter"),
+							dieVerwaltung.getVerbindung().getDataModel().getAspect("asp.parameterSoll")),
+					0);
 			if ((parameter != null) && parameter.hasData()) {
-				periodenDauer = parameter.getData().getUnscaledValue("Erfassungsperiodendauer").intValue();
+				periodenDauerInSeconds = parameter.getData().getUnscaledValue("Erfassungsperiodendauer").intValue();
 			}
 		}
 
 		ZonedDateTime now = ZonedDateTime.now();
 		ZonedDateTime cal = ZonedDateTime.of(LocalDate.now(), LocalTime.of(0, 0), ZoneId.systemDefault());
-		
-		while( cal.isBefore(now)) {
-			cal = cal.plus(Duration.ofMinutes(periodenDauer));
+
+		while (cal.isBefore(now)) {
+			cal = cal.plus(Duration.ofSeconds(periodenDauerInSeconds));
 		}
-		cal = cal.minus(Duration.ofMinutes(periodenDauer));
-		
-		AttributeGroup atg = dieVerwaltung.getVerbindung().getDataModel().getAttributeGroup("atg.ufds" + datenArt.getName());
+		cal = cal.minus(Duration.ofSeconds(periodenDauerInSeconds));
+
+		AttributeGroup atg = dieVerwaltung.getVerbindung().getDataModel()
+				.getAttributeGroup("atg.ufds" + datenArt.getName());
 		Aspect asp = dieVerwaltung.getVerbindung().getDataModel().getAspect(DUAKonstanten.ASP_EXTERNE_ERFASSUNG);
-		
+
 		Data data = dieVerwaltung.getVerbindung().createData(atg);
-		data.getTimeValue("T").setMillis(TimeUnit.SECONDS.toMillis(periodenDauer));
-		
+		data.getTimeValue("T").setMillis(TimeUnit.SECONDS.toMillis(periodenDauerInSeconds));
+
 		Data item = data.getItem(datenArt.getName());
 		item.getUnscaledValue("Wert").setText("nicht ermittelbar");
-		
+
 		item.getItem("Status").getItem("Erfassung").getUnscaledValue("NichtErfasst").setText("Ja");
 		item.getItem("Status").getItem("PlFormal").getUnscaledValue("WertMax").setText("Nein");
 		item.getItem("Status").getItem("PlFormal").getUnscaledValue("WertMin").setText("Nein");
@@ -208,12 +213,12 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 
 		item.getItem("Güte").getUnscaledValue("Index").set(1);
 		item.getItem("Güte").getUnscaledValue("Verfahren").setText("Standard");
-		
+
 		long datenZeitpunkt = cal.toInstant().toEpochMilli();
 		ResultData resultData = new ResultData(objekt, new DataDescription(atg, asp), datenZeitpunkt, data);
-		
+
 		long kontrollZeitpunkt = getKontrollZeitpunktVon(resultData);
-		if( kontrollZeitpunkt > 0) {
+		if (kontrollZeitpunkt > 0) {
 			scheduleKontrollTask(resultData, kontrollZeitpunkt);
 		}
 	}
@@ -287,7 +292,8 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 						 * Ausfallkontrolle quasi zu unrecht generiert wurden,
 						 * da das Datum nur minimal zu spät kam.
 						 */
-						if (letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < resultat.getDataTime()) {
+						Long letzteZeit = letzteEmpfangeneDatenZeitProObj.get(resultat.getObject());
+						if ((letzteZeit == null) || (letzteZeit < resultat.getDataTime())) {
 
 							/**
 							 * Zeitstempel ist echt neu!
@@ -311,18 +317,20 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 	}
 
 	private void scheduleKontrollTask(final ResultData resultat, final long kontrollZeitpunkt) {
-		
+
 		if (!kontrollProzess.isTerminated()) {
 			// Timer starten zur Ausfallüberwachung
+			
 			kontrollProzess.schedule(Instant.ofEpochMilli(kontrollZeitpunkt), new Runnable() {
 				@Override
 				public void run() {
-					
+
 					// Schon mal vorab einen leeren
 					// Datensatz erstellen
 					ResultData ausfallDatum = getAusfallDatumVon(resultat);
 
-					if (letzteEmpfangeneDatenZeitProObj.get(resultat.getObject()) < ausfallDatum.getDataTime()) {
+					Long letzteZeit = letzteEmpfangeneDatenZeitProObj.get(resultat.getObject());
+					if ((letzteZeit == null) || (letzteZeit < ausfallDatum.getDataTime())) {
 						// Datum nicht rechtzeitig
 						// angekommen, da der leere
 						// Datensatz hinter dem zuletzt
@@ -360,7 +368,7 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 				final Long dummy = objektWertErfassungVerzug.get(obj);
 				if ((dummy != null) && (dummy > 0)) {
 					maxZeitVerzug = dummy;
-				} 
+				}
 			}
 		}
 
