@@ -90,11 +90,62 @@ import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
  */
 public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter implements ClientReceiverInterface {
 
+	private final class AusfallDatenKontrollTask implements Runnable {
+		private final ResultData resultat;
+		private boolean stopped;
+
+		private AusfallDatenKontrollTask(ResultData resultat) {
+			this.resultat = resultat;
+		}
+
+		@Override
+		public void run() {
+
+			if(stopped) {
+				return;
+			}
+			
+			// Schon mal vorab einen leeren
+			// Datensatz erstellen
+			ResultData ausfallDatum = getAusfallDatumVon(resultat);
+
+			Long letzteZeit = letzteEmpfangeneDatenZeitProObj.get(resultat.getObject());
+			long ausfallDataTime = ausfallDatum.getDataTime();
+			if ((letzteZeit == null) || (letzteZeit < ausfallDataTime)) {
+				// Datum nicht rechtzeitig
+				// angekommen, da der leere
+				// Datensatz hinter dem zuletzt
+				// empfangenen Datensatz liegt
+
+				aktualisiereDaten(ausfallDatum);
+
+				// Betriebsmeldung erzeugen
+				VerwaltungPlPruefungLogischUFD verwaltung = (VerwaltungPlPruefungLogischUFD) getVerwaltung();
+				OperatingMessage message = TEMPLATE
+						.newMessage(verwaltung.getBetriebsmeldungsObjekt(resultat.getObject()));
+				LocalTime localTime = Instant.ofEpochMilli(ausfallDataTime).atZone(ZoneId.systemDefault())
+						.toLocalTime();
+				message.put("timestamp", TIME_FORMAT.format(localTime));
+				message.addId("[DUA-PP-UA01]");
+			}
+		}
+
+		public void stop() {
+			stopped = true;
+		}
+	}
+
 	private static final Debug LOGGER = Debug.getLogger();
 	/**
 	 * speichert pro Systemobjekt die letzte empfangene Datenzeit.
 	 */
+	private final Map<SystemObject, AusfallDatenKontrollTask> kontrollTasks = new HashMap<SystemObject, AusfallDatenKontrollTask>();
+
+	/**
+	 * speichert pro Systemobjekt die letzte empfangene Datenzeit.
+	 */
 	private final Map<SystemObject, Long> letzteEmpfangeneDatenZeitProObj = new HashMap<SystemObject, Long>();
+
 	/**
 	 * Mapt alle betrachteten Systemobjekte auf den aktuell für sie erlaubten
 	 * maximalen Zeitverzug.
@@ -295,12 +346,11 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 						Long letzteZeit = letzteEmpfangeneDatenZeitProObj.get(resultat.getObject());
 						if ((letzteZeit == null) || (letzteZeit < resultat.getDataTime())) {
 
-							/**
-							 * Zeitstempel ist echt neu!
-							 */
+							/** Zeitstempel ist echt neu! */
 							weiterzuleitendeResultate.add(resultat);
-
-							letzteEmpfangeneDatenZeitProObj.put(resultat.getObject(), resultat.getDataTime());
+							if (resultat.hasData()) {
+								letzteEmpfangeneDatenZeitProObj.put(resultat.getObject(), resultat.getDataTime());
+							}
 						}
 						if (resultat.getData() != null) {
 							final long kontrollZeitpunkt = getKontrollZeitpunktVon(resultat);
@@ -319,36 +369,15 @@ public class UFDAusfallUeberwachung extends AbstraktBearbeitungsKnotenAdapter im
 	private void scheduleKontrollTask(final ResultData resultat, final long kontrollZeitpunkt) {
 
 		if (!kontrollProzess.isTerminated()) {
-			// Timer starten zur Ausfallüberwachung
 			
-			kontrollProzess.schedule(Instant.ofEpochMilli(kontrollZeitpunkt), new Runnable() {
-				@Override
-				public void run() {
-
-					// Schon mal vorab einen leeren
-					// Datensatz erstellen
-					ResultData ausfallDatum = getAusfallDatumVon(resultat);
-
-					Long letzteZeit = letzteEmpfangeneDatenZeitProObj.get(resultat.getObject());
-					if ((letzteZeit == null) || (letzteZeit < ausfallDatum.getDataTime())) {
-						// Datum nicht rechtzeitig
-						// angekommen, da der leere
-						// Datensatz hinter dem zuletzt
-						// empfangenen Datensatz liegt
-
-						aktualisiereDaten(ausfallDatum);
-
-						// Betriebsmeldung erzeugen
-						VerwaltungPlPruefungLogischUFD verwaltung = (VerwaltungPlPruefungLogischUFD) getVerwaltung();
-						OperatingMessage message = TEMPLATE
-								.newMessage(verwaltung.getBetriebsmeldungsObjekt(resultat.getObject()));
-						LocalTime localTime = Instant.ofEpochMilli(ausfallDatum.getDataTime())
-								.atZone(ZoneId.systemDefault()).toLocalTime();
-						message.put("timestamp", TIME_FORMAT.format(localTime));
-						message.addId("[DUA-PP-UA01]");
-					}
-				}
-			});
+			AusfallDatenKontrollTask task = kontrollTasks.get(resultat.getObject());
+			if( task != null) {
+				task.stop();
+			}
+			
+			task = new AusfallDatenKontrollTask(resultat);
+			kontrollProzess.schedule(Instant.ofEpochMilli(kontrollZeitpunkt), task);
+			kontrollTasks.put(resultat.getObject(), task);
 		}
 	}
 
