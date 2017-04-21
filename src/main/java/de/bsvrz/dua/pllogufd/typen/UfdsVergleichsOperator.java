@@ -52,25 +52,20 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 	 * Alle wirklichen Enumerationswerte
 	 */
 	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_FALSCH = new UfdsVergleichsOperator(
-			"BedingungImmerFalsch", 0); //$NON-NLS-1$
+			"BedingungImmerFalsch", 0);
 
-	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_WAHR = new UfdsVergleichsOperator(
-			"BedingungImmerWahr", 1); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator BEDINGUNG_IMMER_WAHR = new UfdsVergleichsOperator("BedingungImmerWahr",
+			1);
 
-	public static final UfdsVergleichsOperator KLEINER = new UfdsVergleichsOperator(
-			"kleiner", 2); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator KLEINER = new UfdsVergleichsOperator("kleiner", 2);
 
-	public static final UfdsVergleichsOperator KLEINER_GLEICH = new UfdsVergleichsOperator(
-			"kleinerGleich", 3); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator KLEINER_GLEICH = new UfdsVergleichsOperator("kleinerGleich", 3);
 
-	public static final UfdsVergleichsOperator GLEICH = new UfdsVergleichsOperator(
-			"gleich", 4); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator GLEICH = new UfdsVergleichsOperator("gleich", 4);
 
-	public static final UfdsVergleichsOperator GROESSER_GLEICH = new UfdsVergleichsOperator(
-			"größerGleich", 5); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator GROESSER_GLEICH = new UfdsVergleichsOperator("größerGleich", 5);
 
-	public static final UfdsVergleichsOperator GROESSER = new UfdsVergleichsOperator(
-			"größer", 6); //$NON-NLS-1$
+	public static final UfdsVergleichsOperator GROESSER = new UfdsVergleichsOperator("größer", 6);
 
 	/**
 	 * Standardkonstruktor
@@ -113,21 +108,18 @@ public class UfdsVergleichsOperator extends AbstractDavZustand {
 		} else if (this.equals(UfdsVergleichsOperator.BEDINGUNG_IMMER_WAHR)) {
 			ergebnis = true;
 		} else {
-			if(!wert1.isOk() || !wert2.isOk()) return false;
-			
-			if(this.equals(UfdsVergleichsOperator.KLEINER)) {
+			if (!wert1.isOk() || !wert2.isOk())
+				return false;
+
+			if (this.equals(UfdsVergleichsOperator.KLEINER)) {
 				ergebnis = wert1.getWert() < wert2.getWert();
-			}
-			else if(this.equals(UfdsVergleichsOperator.KLEINER_GLEICH)) {
+			} else if (this.equals(UfdsVergleichsOperator.KLEINER_GLEICH)) {
 				ergebnis = wert1.getWert() <= wert2.getWert();
-			}
-			else if(this.equals(UfdsVergleichsOperator.GLEICH)) {
+			} else if (this.equals(UfdsVergleichsOperator.GLEICH)) {
 				ergebnis = wert1.getWert() == wert2.getWert();
-			}
-			else if(this.equals(UfdsVergleichsOperator.GROESSER_GLEICH)) {
+			} else if (this.equals(UfdsVergleichsOperator.GROESSER_GLEICH)) {
 				ergebnis = wert1.getWert() >= wert2.getWert();
-			}
-			else if(this.equals(UfdsVergleichsOperator.GROESSER)) {
+			} else if (this.equals(UfdsVergleichsOperator.GROESSER)) {
 				ergebnis = wert1.getWert() > wert2.getWert();
 			}
 		}

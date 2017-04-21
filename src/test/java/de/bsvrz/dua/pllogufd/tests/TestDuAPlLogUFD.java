@@ -213,6 +213,12 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 	public void testDua56NI() throws Exception {
 		startDua56Test("NI", "NiederschlagsIntensität", "0,1", "4 Minuten", "größer");
 	}
+
+	@Test
+	public void testDua56NIOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("NI", "NiederschlagsIntensität", "0,1", "4 Minuten", "größer");
+	}
+
 	
 	@Test
 	public void testDua56WFD() throws Exception {
@@ -220,23 +226,49 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 	}	
 	
 	@Test
+	public void testDua56WFDOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("WFD", "WasserFilmDicke", "0,04", "7 Minuten", "größer");
+	}	
+
+	@Test
 	public void testDua56RLF() throws Exception {
 		startDua56Test("RLF", "RelativeLuftFeuchte", "100", "3 Minuten", "kleiner");
+	}	
+
+	@Test
+	public void testDua56RLFOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("RLF", "RelativeLuftFeuchte", "100", "3 Minuten", "kleiner");
 	}	
 	
 	@Test
 	public void testDua56SW() throws Exception {
 		startDua56Test("SW", "SichtWeite", "652", "5 Minuten", "kleiner");
 	}
+
+	@Test
+	public void testDua56SWOhneBetriebsMeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("SW", "SichtWeite", "652", "5 Minuten", "kleiner");
+	}
 	
 	@Test
 	public void testDua56HK() throws Exception {
 		startDua56Test("HK", "Helligkeit", "-1", "4 Minuten", "BedingungImmerWahr");
 	}
+
+	@Test
+	public void testDua56HKOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("HK", "Helligkeit", "-1", "4 Minuten", "BedingungImmerWahr");
+	}
+
 	
 	@Test
 	public void testDua56RS() throws Exception {
 		startDua56Test("RS", "RestSalz", "2", "3 Minuten", "größer");
+	}
+
+	@Test
+	public void testDua56RSOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("RS", "RestSalz", "2", "3 Minuten", "größer");
 	}
 	
 	@Test
@@ -245,38 +277,78 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 	}	
 	
 	@Test
+	public void testDua56WGMOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("WGM", "WindGeschwindigkeitMittelWert", "3,1", "4 Minuten", "größer");
+	}	
+
+	@Test
 	public void testDua56WGS() throws Exception {
 		startDua56Test("WGS", "WindGeschwindigkeitSpitzenWert", "3,3", "4 Minuten", "größer");
+	}	
+
+	@Test
+	public void testDua56WGSOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("WGS", "WindGeschwindigkeitSpitzenWert", "3,3", "4 Minuten", "größer");
 	}	
 	
 	@Test
 	public void testDua56WR() throws Exception {
 		startDua56Test("WR", "WindRichtung", "-1", "2 Minuten", "BedingungImmerWahr");
 	}
+
+	@Test
+	public void testDua56WROhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("WR", "WindRichtung", "-1", "2 Minuten", "BedingungImmerWahr");
+	}
 	
 	@Test
 	public void testDua56TT1() throws Exception {
 		startDua56Test("TT1", "TemperaturInTiefe1", "nicht ermittelbar", "4 Minuten", "BedingungImmerWahr");
 	}	
-			
+
+	@Test
+	public void testDua56TT1OhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("TT1", "TemperaturInTiefe1", "nicht ermittelbar", "4 Minuten", "BedingungImmerWahr");
+	}	
+	
 	@Test
 	public void testDua56TT3() throws Exception {
 		startDua56Test("TT3", "TemperaturInTiefe3", "nicht ermittelbar", "4 Minuten", "BedingungImmerWahr");
 	}	
-					
+
+	@Test
+	public void testDua56TT3OhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("TT3", "TemperaturInTiefe3", "nicht ermittelbar", "4 Minuten", "BedingungImmerWahr");
+	}	
+	
 	@Test
 	public void testDua56GT() throws Exception {
 		startDua56Test("GT", "GefrierTemperatur", "-0,2", "5 Minuten", "kleinerGleich");
+	}	
+
+	@Test
+	public void testDua56GTOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("GT", "GefrierTemperatur", "-0,2", "5 Minuten", "kleinerGleich");
 	}	
 		
 	@Test
 	public void testDua56LT() throws Exception {
 		startDua56Test("LT", "LuftTemperatur", "nicht ermittelbar", "5 Minuten", "BedingungImmerWahr");
 	}	
+
+	@Test
+	public void testDua56LTOhneBetriebsmeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("LT", "LuftTemperatur", "nicht ermittelbar", "5 Minuten", "BedingungImmerWahr");
+	}	
 	
 	@Test
 	public void testDua56TPT() throws Exception {
 		startDua56Test("TPT", "TaupunktTemperatur", "nicht ermittelbar", "5 Minuten", "BedingungImmerWahr");
+	}	
+
+	@Test
+	public void testDua56TPTOhneBetriebsMeldungen() throws Exception {
+		startDua56TestOhneBetriebsmeldungen("TPT", "TaupunktTemperatur", "nicht ermittelbar", "5 Minuten", "BedingungImmerWahr");
 	}	
 	
 	@Test
@@ -301,6 +373,14 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 		DataDescription ddOut = new DataDescription(atg, _aspReceive);
 		fakeParamApp.publishParam(sensor[0].getPid(), "atg.ufdsDifferenzialKontrolle" + typeLong, "{Operator:'" + op + "'," + type + "Grenz:'" + grenz + "'," + type + "maxZeit:'" + tGrenz + "'}");
 		startTestCase("DUA56" + type + ".csv", sensor, sensor, ddIn, ddOut, new Dua56Layout());
+	}
+
+	private void startDua56TestOhneBetriebsmeldungen(final String type, final String typeLong, final String grenz, final String tGrenz, final String op) throws Exception {
+		
+		SystemObject[] sensor = {_dataModel.getObject("ufd." + type.toLowerCase())};
+		AttributeGroup atg = _dataModel.getAttributeGroup("atg.ufds" + typeLong);
+		DataDescription ddIn = new DataDescription(atg, _aspSend);
+		DataDescription ddOut = new DataDescription(atg, _aspReceive);
 
 		// Test mit Betriebsmeldugn aus
 
@@ -318,29 +398,55 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 		});
 	}
 
+	
 	@Test
 	public void testDua57LT() throws Exception {
 		startDua57Test("LT", "LuftTemperatur", "1,8 °C");
 	}
 
 	@Test
+	public void testDua57LTOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("LT", "LuftTemperatur", "1,8 °C");
+	}
+	
+	@Test
 	public void testDua57FBT() throws Exception {
 		startDua57Test("FBT", "FahrBahnOberFlächenTemperatur", "11,0 °C");
 	}
 	
+	@Test
+	public void testDua57FBTOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("FBT", "FahrBahnOberFlächenTemperatur", "11,0 °C");
+	}
+
 	@Test
 	public void testDua57HK() throws Exception {
 		startDua57Test("HK", "Helligkeit", "5432 Lx");
 	}	
 	
 	@Test
+	public void testDua57HKOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("HK", "Helligkeit", "5432 Lx");
+	}	
+
+	@Test
 	public void testDua57RLF() throws Exception {
 		startDua57Test("RLF", "RelativeLuftFeuchte", "11 %");
 	}	
 	
 	@Test
+	public void testDua57RLFOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("RLF", "RelativeLuftFeuchte", "11 %");
+	}	
+
+	@Test
 	public void testDua57TPT() throws Exception {
 		startDua57Test("TPT", "TaupunktTemperatur", "2,4 °C");
+	}
+
+	@Test
+	public void testDua57TPTOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("TPT", "TaupunktTemperatur", "2,4 °C");
 	}
 	
 	@Test
@@ -349,25 +455,49 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 	}	
 	
 	@Test
+	public void testDua57TT1OhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("TT1", "TemperaturInTiefe1", "1,7 °C");
+	}	
+
+	@Test
 	public void testDua57TT3() throws Exception {
 		startDua57Test("TT3", "TemperaturInTiefe3", "1,7 °C");
 	}	
 	
+	@Test
+	public void testDua57TT3OhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("TT3", "TemperaturInTiefe3", "1,7 °C");
+	}	
+
 	@Test
 	public void testDua57WFD() throws Exception {
 		startDua57Test("WFD", "WasserFilmDicke", "0,8 mm");
 	}
 	
 	@Test
+	public void testDua57WFDOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("WFD", "WasserFilmDicke", "0,8 mm");
+	}
+
+	@Test
 	public void testDua57WGM() throws Exception {
 		startDua57Test("WGM", "WindGeschwindigkeitMittelWert", "13,1");
 	}
 	
 	@Test
+	public void testDua57WGMOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("WGM", "WindGeschwindigkeitMittelWert", "13,1");
+	}
+
+	@Test
 	public void testDua57WGS() throws Exception {
 		startDua57Test("WGS", "WindGeschwindigkeitSpitzenWert", "15");
 	}
 
+	@Test
+	public void testDua57WGSOhneBetriebsmeldungen() throws Exception {
+		startDua57TestOhneBetriebsmeldungen("WGS", "WindGeschwindigkeitSpitzenWert", "15");
+	}
 
 	private void startDua57Test(final String type, final String typeLong, final String grenz) throws Exception {
 		// Test mit Betriebsmeldung an
@@ -378,8 +508,15 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 		DataDescription ddOut = new DataDescription(atg, _aspReceive);
 		fakeParamApp.publishParam(sensor[0].getPid(), "atg.ufdsAnstiegAbstiegKontrolle" + typeLong, "{" + type + "maxDiff:'" + grenz + "'}");
 		startTestCase("DUA57" + type + ".csv", sensor, sensor, ddIn, ddOut, new Dua57Layout());
+	}
+
+	private void startDua57TestOhneBetriebsmeldungen(final String type, final String typeLong, final String grenz) throws Exception {
 		
-		// Test mit Betriebsmeldugn aus
+		SystemObject[] sensor = {_dataModel.getObject("ufd." + type.toLowerCase())};
+		AttributeGroup atg = _dataModel.getAttributeGroup("atg.ufds" + typeLong);
+		DataDescription ddIn = new DataDescription(atg, _aspSend);
+		DataDescription ddOut = new DataDescription(atg, _aspReceive);
+
 		fakeParamApp.publishParam(sensor[0].getPid(), "atg.ufdsAnstiegAbstiegKontrolle" + typeLong, "{" + type + "maxDiff:'" + 0 + "'}");
 		startTestCase("DUA57" + type + ".csv", sensor, sensor, ddIn, ddOut, new Dua57Layout(){
 			@Override
@@ -393,7 +530,7 @@ public class TestDuAPlLogUFD extends DuAPlLogUfdTestBase {
 			}
 		});
 	}
-
+	
 	@Test
 	public void testDua5859() throws Exception {
 		SystemObject ni = _dataModel.getObject("ufd.ni");

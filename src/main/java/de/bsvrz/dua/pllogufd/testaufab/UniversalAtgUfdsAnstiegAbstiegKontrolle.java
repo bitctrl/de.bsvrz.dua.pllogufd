@@ -66,33 +66,28 @@ public class UniversalAtgUfdsAnstiegAbstiegKontrolle {
 	 * @param parameter
 	 *            ein Parameterdatensatz der Attributgruppe
 	 *            <code>atg.ufdsAnstiegAbstiegKontrolle<b>*</b></code>
-	 * @throws UmfeldDatenSensorUnbekannteDatenartException 
+	 * @throws UmfeldDatenSensorUnbekannteDatenartException
 	 */
-	public UniversalAtgUfdsAnstiegAbstiegKontrolle(final ResultData parameter) throws UmfeldDatenSensorUnbekannteDatenartException {
+	public UniversalAtgUfdsAnstiegAbstiegKontrolle(final ResultData parameter)
+			throws UmfeldDatenSensorUnbekannteDatenartException {
 		if (parameter == null) {
-			throw new NullPointerException("Übergebener Parameter ist <<null>>"); //$NON-NLS-1$
+			throw new NullPointerException("Übergebener Parameter ist <<null>>");
 		}
 		if (parameter.getData() == null) {
-			throw new NullPointerException(
-					"Übergebener Parameter hat keine Daten"); //$NON-NLS-1$
+			throw new NullPointerException("Übergebener Parameter hat keine Daten");
 		}
 
-		final UmfeldDatenArt datenArt = UmfeldDatenArt
-				.getUmfeldDatenArtVon(parameter.getObject());
+		final UmfeldDatenArt datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(parameter.getObject());
 
 		final UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(datenArt);
-		wert.setWert(parameter
-				.getData()
-				.getUnscaledValue(datenArt.getAbkuerzung() + "maxDiff").longValue()); //$NON-NLS-1$
+		wert.setWert(parameter.getData().getUnscaledValue(datenArt.getAbkuerzung() + "maxDiff").longValue());
 
 		this.maxDiff = wert.getWert();
 
-		this.sinnvoll = !wert.isFehlerhaft()
-				&& !wert.isFehlerhaftBzwNichtErmittelbar()
-				&& !wert.isNichtErmittelbar()
+		this.sinnvoll = !wert.isFehlerhaft() && !wert.isFehlerhaftBzwNichtErmittelbar() && !wert.isNichtErmittelbar()
 				&& wert.getWert() > 0;
 
-		if(sinnvoll) {
+		if (sinnvoll) {
 			_scaledMax = parameter.getData().getScaledValue(datenArt.getAbkuerzung() + "maxDiff").doubleValue();
 		} else {
 			_scaledMax = Double.NaN;
@@ -109,7 +104,9 @@ public class UniversalAtgUfdsAnstiegAbstiegKontrolle {
 	}
 
 	/**
-	 * Gibt den skalierten MaxDiff-Wert zurück (für die Ausgabe in Meldungen u.ä.)
+	 * Gibt den skalierten MaxDiff-Wert zurück (für die Ausgabe in Meldungen
+	 * u.ä.)
+	 * 
 	 * @return Skalierter MaxDiff-Wert
 	 */
 	public double getScaledMax() {

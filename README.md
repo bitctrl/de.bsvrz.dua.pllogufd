@@ -21,6 +21,23 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
+### Version 2.0.3
+
+- Applikationsname für MessageSender entsprechend NERZ-Vorgabe gesetzt
+- Für die Datenarten Niederschlagsintensität, Niederschlagsart, Fahrbahnzustand, 
+  Sichtweite, Restsalzgehalt, Gefriertemperatur und Windrichtung wird gemäß 
+  Anforderungen keine Anstiegs-Abstiegs-Plausibilisierung mehr durchgeführt
+- Sourcecode-Bereinigung
+
+- NERZ-Fehler 226: Sonderbehandlung der Restsalz-Wertes 255 (physikalisch nicht messbar)
+  bei der Anstiegs-Abstiegs-Kontrolle
+- NERZ-Fehler 231,232: Für die Auswertung der Regeln der meteorologischen Kontrolle werden nur Werte
+  mit identischem Zeitstempel verwendet (Testfall ergänzt)
+- NERZ-Fehler 235: Über den Kommandozeilenparameter -ignoriereRegeln=<n>,<n>,... können die Regeln der
+  Meteorologischen Kontrolle global ausgeschlossen werden
+- NERZ-ÄA 130: Über den Kommandozeilenparameter -initialeAusfallKontrolle=true/false erfolgt die Ausfallüberwachung 
+  auf Wunsch auch, wenn initial keine Daten von einem Sensor geliefert werden
+
 ### 2.0.2
 
 Release-Datum: 28.07.2016

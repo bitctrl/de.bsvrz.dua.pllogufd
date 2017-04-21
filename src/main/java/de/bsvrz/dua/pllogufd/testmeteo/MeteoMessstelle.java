@@ -27,14 +27,36 @@
 
 package de.bsvrz.dua.pllogufd.testmeteo;
 
-import de.bsvrz.dav.daf.main.*;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.DataModel;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import de.bsvrz.dav.daf.main.ClientDavInterface;
+import de.bsvrz.dav.daf.main.ResultData;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dua.pllogufd.testmeteo.MeteoParameter.MeteoParameterType;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule1;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule10;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule11;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule12;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule13;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule2;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule3;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule4;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule5;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule6;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule7;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule8;
+import de.bsvrz.dua.pllogufd.testmeteo.rules.MeteoRule9;
+import de.bsvrz.dua.pllogufd.vew.PllogUfdOptions;
 import de.bsvrz.sys.funclib.bitctrl.dua.DUAKonstanten;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorDatum;
-import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorUnbekannteDatenartException;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.UmfeldDatenSensorWert;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenMessStelle;
 import de.bsvrz.sys.funclib.bitctrl.dua.ufd.modell.DUAUmfeldDatenSensor;
@@ -45,122 +67,31 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageTemplate;
 import de.bsvrz.sys.funclib.operatingMessage.MessageType;
 import de.bsvrz.sys.funclib.operatingMessage.OperatingMessage;
 
-import java.text.NumberFormat;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 /**
  * Eine konkrete Messstelle für die Meteorologische Kontrolle
  *
  * @author Kappich Systemberatung
- */                                                                                                     
-public class MeteoMessstelle implements ClientReceiverInterface {
+ */
+public class MeteoMessstelle {
 
-	/**
-	 * Messstellen-Objekt
-	 */
-	private final DUAUmfeldDatenMessStelle _messStelle;
+	/** Template für Betriebsmeldungstext. */
+	private final MessageTemplate MESSAGE_TEMPLATE = new MessageTemplate(MessageGrade.ERROR,
+			MessageType.APPLICATION_DOMAIN, MessageTemplate.set("attr", ", ", "Messwert ", "Messwerte "),
+			MessageTemplate.fixed(" bei meteorologischer Kontrolle an Messstelle "), MessageTemplate.object(),
+			MessageTemplate.fixed(" auf fehlerhaft gesetzt, da "), MessageTemplate.set("values", ", "),
+			MessageTemplate.fixed(". "), MessageTemplate.ids());
 
-	/**
-	 * NiederschlagsIntensitäts-Sensor oder null
-	 */
-	private SystemObject _niSensor = null;
-	/**
-	 * NiederschlagsArt-Sensor oder null 
-	 */
-	private SystemObject _nsSensor = null;
-	/**
-	 * WasserFilmDicke-Sensor oder null
-	 */
-	private SystemObject _wfdSensor = null;
-	/**
-	 * Fahrbahnoberflächenzustand-Sensor oder null 
-	 */
-	private SystemObject _fbzSensor = null;
-	/**
-	 * Lufttemperatur-Sensor oder null
-	 */
-	private SystemObject _ltSensor = null;
-	/**
-	 * RLF-Sensor oder null
-	 */
-	private SystemObject _rlfSensor = null;
-	/**
-	 * Sichtweitensensor oder null
-	 */
-	private SystemObject _swSensor = null;
+	private long dataTime;
+	private Map<SystemObject, UmfeldDatenArt> sensoren = new LinkedHashMap<>();
+	private final Map<UmfeldDatenArt, ResultData> sensorWerte = new LinkedHashMap<>();
+	private final Set<UmfeldDatenArt> publiziert = new LinkedHashSet<>();
+	private List<MeteoRule> rules = new ArrayList<>();
+	private List<MeteoRule> checkedRules = new ArrayList<>();
 
-	/**
-	 * Aktueller NI-Wert
-	 */
-	private UmfeldDatenSensorWert _niWert = null;
-	/**
-	 * Aktueller NS-Wert
-	 */	private UmfeldDatenSensorWert _nsWert = null;
-	/**
-	 * Aktueller WFD-Wert
-	 */	private UmfeldDatenSensorWert _wfdWert = null;
-	/**
-	 * Aktueller FBZ-Wert
-	 */	private UmfeldDatenSensorWert _fbzWert = null;
-	/**
-	 * Aktueller LT-Wert
-	 */	private UmfeldDatenSensorWert _ltWert = null;
-	/**
-	 * Aktueller RLF-Wert
-	 */	private UmfeldDatenSensorWert _rlfWert = null;
-	/**
-	 * Aktueller SW-Wert
-	 */private UmfeldDatenSensorWert _swWert = null;
+	private final DUAUmfeldDatenMessStelle messStelle;
+	private final MeteoParameter parameter;
 
-	/**
-	 * Aktuelle Datenarten, die implausible Daten liefern
-	 */
-	private final Set<UmfeldDatenArt> _implausibleDatenArten =  new LinkedHashSet<>();
-	/**
-	 * Aktuelle verletze Bedingungen (für die Ausgabe in der Betriebsmeldung)
-	 */
-	private final Set<String> _verletzteBedingungen = new LinkedHashSet<>();
-	/**
-	 * Aktuell vorliegende Betriebsmeldungs-IDs
-	 */
-	private final Set<String> _ids = new LinkedHashSet<>();
-
-	/**
-	 * Aktueller Parameterwert  _niGrenzNs
-	 */
-	private UmfeldDatenSensorWert _niGrenzNs;
-	/**
-	 * Aktueller Parameterwert  _niGrenzWfd
-	 */	private UmfeldDatenSensorWert _niGrenzWfd;
-	/**
-	 * Aktueller Parameterwert      _wfdGrenzTrocken
-	 */	private UmfeldDatenSensorWert _wfdGrenzTrocken;
-	/**
-	 * Aktueller Parameterwert      _ltGrenzRegen
-	 */	private UmfeldDatenSensorWert _ltGrenzRegen;
-	/**
-	 * Aktueller Parameterwert        _ltGrenzSchnee
-	 */	private UmfeldDatenSensorWert _ltGrenzSchnee;
-	/**
-	 * Aktueller Parameterwert        _rlfGrenzTrocken
-	 */	private UmfeldDatenSensorWert _rlfGrenzTrocken;
-	/**
-	 * Aktueller Parameterwert         _rlfGrenzNass
-	 */	private UmfeldDatenSensorWert _rlfGrenzNass;
-	/**
-	 * Aktueller Parameterwert      _swGrenz
-	 */	private UmfeldDatenSensorWert _swGrenz;
-
-	/**
-	 * Sollen Betriebsmeldungen versendet werden?
-	 */
-	private boolean _sendMessage = true;
-
-	/**
-	 * Wurden die aktuellen Eingangsdaten bereits geprüft? Verhindert, dass Meldungen doppelt verschickt werden, obwohl sich nichts ändert.
-	 */
-	private boolean _geprueft = false;
+	private PllogUfdOptions options;
 
 	/**
 	 * Logger
@@ -168,349 +99,480 @@ public class MeteoMessstelle implements ClientReceiverInterface {
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Template für Betriebsmeldungstext
-	 */
-	private final MessageTemplate MESSAGE_TEMPLATE = new MessageTemplate(
-			MessageGrade.ERROR, 
-			MessageType.APPLICATION_DOMAIN,
-	        MessageTemplate.set("attr", ", ", "Messwert ", "Messwerte "),
-	        MessageTemplate.fixed(" bei meteorologischer Kontrolle an Messstelle "),
-	        MessageTemplate.object(),
-	        MessageTemplate.fixed(" auf fehlerhaft gesetzt, da "),
-	        MessageTemplate.set("values", ", "),
-	        MessageTemplate.fixed(". "),
-	        MessageTemplate.ids()
-			);
-	
-	/** 
 	 * Erstellt eine neue MeteoMessstelle
-	 * @param connection Verbindung
-	 * @param messStelle Messstellen-Objekt
+	 * 
+	 * @param connection
+	 *            Verbindung
+	 * @param messStelle
+	 *            Messstellen-Objekt
 	 */
-	public MeteoMessstelle(final ClientDavInterface connection, final DUAUmfeldDatenMessStelle messStelle) {
-		_messStelle = messStelle;
-		_niSensor = getObjekt(messStelle, UmfeldDatenArt.ni);
-		_nsSensor = getObjekt(messStelle, UmfeldDatenArt.ns);
-		_wfdSensor = getObjekt(messStelle, UmfeldDatenArt.wfd);
-		_fbzSensor = getObjekt(messStelle, UmfeldDatenArt.fbz);
-		_ltSensor = getObjekt(messStelle, UmfeldDatenArt.lt);
-		_rlfSensor = getObjekt(messStelle, UmfeldDatenArt.rlf);
-		_swSensor = getObjekt(messStelle, UmfeldDatenArt.sw);
-		DataModel dataModel = connection.getDataModel();
-		String atgPid = "atg.ufdmsParameterMeteorologischeKontrolle";
-		AttributeGroup attributeGroup = dataModel.getAttributeGroup(atgPid);
-		Aspect aspect = dataModel.getAspect("asp.parameterSoll");
+	public MeteoMessstelle(final ClientDavInterface connection, final DUAUmfeldDatenMessStelle messStelle, PllogUfdOptions options) {
+		this.options = options;
+		this.parameter = new MeteoParameter(connection, messStelle);
+		this.messStelle = messStelle;
+		initSensor(messStelle, UmfeldDatenArt.ni);
+		initSensor(messStelle, UmfeldDatenArt.ns);
+		initSensor(messStelle, UmfeldDatenArt.wfd);
+		initSensor(messStelle, UmfeldDatenArt.fbz);
+		initSensor(messStelle, UmfeldDatenArt.lt);
+		initSensor(messStelle, UmfeldDatenArt.rlf);
+		initSensor(messStelle, UmfeldDatenArt.sw);
+
+		initRules();
+	}
+
+	private void initSensor(final DUAUmfeldDatenMessStelle messStelle, final UmfeldDatenArt datenArt) {
+		DUAUmfeldDatenSensor hauptSensor = messStelle.getHauptSensor(datenArt);
+		if (hauptSensor == null) {
+			return;
+		}
+
+		SystemObject sensor = hauptSensor.getObjekt();
+		if (sensor != null) {
+			sensoren.put(sensor, datenArt);
+		}
+	}
+
+	private void initRules() {
+		initRule(new MeteoRule1());
+		initRule(new MeteoRule2());
+		initRule(new MeteoRule3());
+		initRule(new MeteoRule4());
+		initRule(new MeteoRule5());
+		initRule(new MeteoRule6());
+		initRule(new MeteoRule7());
+		initRule(new MeteoRule8());
+		initRule(new MeteoRule9());
+		initRule(new MeteoRule10());
+		initRule(new MeteoRule11());
+		initRule(new MeteoRule12());
+		initRule(new MeteoRule13());
+	}
+
+	private void initRule(MeteoRule rule) {
 		
-		if(attributeGroup == null) {
-			_debug.fine(
-					"Es konnte keine Parameter-Attributgruppe für die " + 
-							"Meteorologische Kontrolle des Objektes "
-							+ messStelle + " bestimmt werden\n" + 
-							"Atg-Name: " + atgPid); 			
+		if( options.getIgnoredMeteoRules().contains(rule.getId())) {
 			return;
 		}
 		
-		connection.subscribeReceiver(this, messStelle.getObjekt(), new DataDescription(
-				attributeGroup,
-				aspect
-		), ReceiveOptions.normal(), ReceiverRole.receiver());
-	}
-
-	protected SystemObject getObjekt(final DUAUmfeldDatenMessStelle messStelle, final UmfeldDatenArt datenArt) {
-		DUAUmfeldDatenSensor hauptSensor = messStelle.getHauptSensor(datenArt);
-		if(hauptSensor == null) return null;
-		return hauptSensor.getObjekt();
-	}
-
-	public void updateData(final ResultData resultData) {
-		UmfeldDatenSensorWert data;
-		if(resultData.hasData()) {
-			data = new UmfeldDatenSensorDatum(resultData).getWert();
+		if (rule.isValidFor(sensoren.values())) {
+			rules.add(rule);
 		}
-		else {
+	}
+
+	public Collection<ResultData> updateData(final ResultData resultData) {
+
+		Collection<ResultData> resultList = new ArrayList<>();
+
+		if (!sensoren.containsKey(resultData.getObject())) {
+			resultList.add(resultData);
+			return resultList;
+		}
+
+		ResultData data;
+		if (resultData.hasData()) {
+			data = resultData;
+		} else {
 			data = null;
 		}
-		
-		if(resultData.getObject().equals(_niSensor)){
-			_niWert = data;
-		}	
-		else if(resultData.getObject().equals(_nsSensor)){
-			_nsWert = data;
-		}	
-		else if(resultData.getObject().equals(_wfdSensor)){
-			_wfdWert = data;
-		}	
-		else if(resultData.getObject().equals(_fbzSensor)){
-			_fbzWert = data;
-		}	
-		else if(resultData.getObject().equals(_ltSensor)){
-			_ltWert = data;
-		}	
-		else if(resultData.getObject().equals(_rlfSensor)){
-			_rlfWert = data;
-		}	
-		else if(resultData.getObject().equals(_swSensor)){
-			_swWert = data;
-		}
-		_geprueft = false;
+
+		long timeStamp = resultData.getDataTime();
+		resultList.addAll(setData(resultData.getObject(), timeStamp, data));
+		return resultList;
 	}
 
-	public ResultData plausibilisiere(final ResultData resultData) {
-		if(!resultData.hasData()) {
-			return resultData;
-		}
-		else {
-			UmfeldDatenArt datenArt;
-			try {
-				datenArt = UmfeldDatenArt.getUmfeldDatenArtVon(resultData.getObject());
-			}
-			catch(UmfeldDatenSensorUnbekannteDatenartException e) {
-				return resultData;
-			}
-			
-			pruefe();
-			
-			if(_implausibleDatenArten.contains(datenArt)){
-				UmfeldDatenSensorDatum umfeldDatenSensorDatum = new UmfeldDatenSensorDatum(resultData);
-				umfeldDatenSensorDatum.getWert().setFehlerhaftAn();
-				umfeldDatenSensorDatum.getDatum(); // Workaround fehlende Aktualisierung
-				umfeldDatenSensorDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
-				return umfeldDatenSensorDatum.getVeraendertesOriginalDatum();
-			}
-			return resultData;
-		}
+	public MeteoParameter getParameter() {
+		return parameter;
 	}
 
-	private void pruefe() {
-		if(_geprueft) return;
-		_geprueft = true;
-		_verletzteBedingungen.clear();
-		_implausibleDatenArten.clear();
-		_ids.clear();
-		
-		// Prüfung 1
-		if(isOk(_nsWert) && keinNiederschlag()
-				&& isOk(_niWert) && isOk(_niGrenzNs) && _niWert.getWert() > _niGrenzNs.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_verletzteBedingungen.add("NS=Kein Niederschlag, "
-					                          + "NI=" + formatWert(_niWert) + " mm/h > " + formatWert(_niGrenzNs) + " mm/h, "
-					                          + "RLF=" + formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF"
-			);
-			_ids.add("[DUA-PP-MK01]");
-		}	
-		
-		// Prüfung 2
-		if(isOk(_nsWert) && niederschlag()
-				&& isOk(_niWert) && _niWert.getWert() == 0
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_verletzteBedingungen.add("NS=Niederschlag, "
-					                          + "NI=" + formatWert(_niWert) + " mm/h, "
-					                          + "RLF=" + formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF"
-			);
-			_ids.add("[DUA-PP-MK02]");
+	private Collection<ResultData> setData(SystemObject sensorObject, long timeStamp, ResultData data) {
+
+		Collection<ResultData> resultList = new ArrayList<>();
+
+		if (data == null) {
+			return resultList;
 		}
 
-		// Prüfung 3
-		if(isOk(_nsWert) && keinNiederschlag()
-				&& isOk(_niWert) && isOk(_niGrenzNs) && _niWert.getWert() > _niGrenzNs.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.ni);
-			_verletzteBedingungen.add("NS=Kein Niederschlag, "
-					                          + "NI=" + formatWert(_niWert) + " mm/h > " + formatWert(_niGrenzNs) + " mm/h, "
-					                          + "RLF=" + formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF"
-			);
-			_ids.add("[DUA-PP-MK03]");
+		if (dataTime != 0) {
+			if (timeStamp < dataTime) {
+				return resultList;
+			}
+			if (timeStamp > dataTime) {
+				checkRules(resultList, true);
+				reset();
+			}
 		}
 
-		// Prüfung 4
-		if(isOk(_nsWert) && niederschlag()
-				&& isOk(_niWert) && _niWert.getWert() == 0
-				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.ni);
-			_verletzteBedingungen.add("NS=Niederschlag, "
-					                          + "NI=" + formatWert(_niWert) + " mm/h, "
-					                          + "RLF=" + formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF"
-			);
-			_ids.add("[DUA-PP-MK04]");
-		}
-		
-		// Prüfung 5
-		if(isOk(_niWert) && isOk(_niGrenzWfd) && _niWert.getWert() > _niGrenzWfd.getWert()
-				&& isOk(_wfdWert) && isOk(_wfdGrenzTrocken) && _wfdWert.getWert() <= _wfdGrenzTrocken.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.ni);
-			_verletzteBedingungen.add("NI=" + formatWert(_niWert) + " mm/h, "
-					                          + "WFD=" + formatWert(_wfdWert) + " mm <= " + formatWert(_wfdGrenzTrocken) + " mm, "
-					                          + "RLF=" + formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF"
-			);
-			_ids.add("[DUA-PP-MK05]");
-		}	
-		
-		// Prüfung 6
-		if(isOk(_niWert) && isOk(_niGrenzWfd) && _niWert.getWert() > _niGrenzWfd.getWert()
-				&& isOk(_wfdWert) && isOk(_wfdGrenzTrocken) && _wfdWert.getWert() <= _wfdGrenzTrocken.getWert()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzNass) && _rlfWert.getWert() > _rlfGrenzNass.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.wfd);
-			_verletzteBedingungen.add("NI=" + formatWert(_niWert) + " mm/h, "
-					                          + "WFD=" + formatWert(_wfdWert) + " mm <= " + formatWert(_wfdGrenzTrocken) + " mm, "
-					                          + "RLF=" + formatWert(_rlfWert) + " % rF > " + formatWert(_rlfGrenzNass) + " % rF"
-			);
-			_ids.add("[DUA-PP-MK06]");
-		}	
-		
-		// Prüfung 7
-		if(isOk(_swWert) && isOk(_swGrenz) && _swWert.getWert() <= _swGrenz.getWert()
-				&& isOk(_nsWert) && keinNiederschlag()
-				&& isOk(_rlfWert) && isOk(_rlfGrenzTrocken) && _rlfWert.getWert() < _rlfGrenzTrocken.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.sw);
-			_verletzteBedingungen.add("SW=" + formatWert(_swWert) + " m <= " + formatWert(_swGrenz) + " m, "
-					                          + "NS=Kein Niederschlag, "
-					                          + "RLF=" + formatWert(_rlfWert) + " % rF < " + formatWert(_rlfGrenzTrocken) + " % rF"
-			);
-			_ids.add("[DUA-PP-MK07]");
-		}	
-		
-		// Prüfung 8
-		if(isOk(_nsWert) && regen()
-				&& isOk(_ltWert) && isOk(_ltGrenzRegen) && _ltWert.getWert() < _ltGrenzRegen.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_verletzteBedingungen.add("NS=Regen, "
-					                          + "LT=" + formatWert(_ltWert) + " °C < " + formatWert(_ltGrenzRegen) + " °C"
-			);
-			_ids.add("[DUA-PP-MK08]");
-		}	
-		
-		// Prüfung 9
-		if(isOk(_nsWert) && schnee()
-				&& isOk(_ltWert) && isOk(_ltGrenzSchnee) && _ltWert.getWert() > _ltGrenzSchnee.getWert()){
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_verletzteBedingungen.add("NS=Schnee, "
-					                          + "LT=" + formatWert(_ltWert) + " °C > " + formatWert(_ltGrenzSchnee) + " °C"
-			);
-			_ids.add("[DUA-PP-MK09]");
-		}		
-		
-		// Prüfung 10
-		if(isOk(_wfdWert) && _wfdWert.getWert() > 0
-				&& isOk(_fbzWert) && _fbzWert.getWert() == 0){
-			_implausibleDatenArten.add(UmfeldDatenArt.wfd);
-			_implausibleDatenArten.add(UmfeldDatenArt.fbz);
-			_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm > 0,0 mm, "
-					                          + "FBZ=Trocken"
-			);
-			_ids.add("[DUA-PP-MK10]");
-		}	
-		
-		// Prüfung 11
-		if(isOk(_wfdWert) && _wfdWert.getWert() == 0
-				&& isOk(_fbzWert) && _fbzWert.getWert() != 0){
-			_implausibleDatenArten.add(UmfeldDatenArt.wfd);
-			_implausibleDatenArten.add(UmfeldDatenArt.fbz);
-			_verletzteBedingungen.add("WFD=" + formatWert(_wfdWert) + " mm, "
-					                          + "FBZ=Nass"
-			);
-			_ids.add("[DUA-PP-MK11]");
+		dataTime = timeStamp;
+
+		UmfeldDatenArt umfeldDatenArt = sensoren.get(sensorObject);
+		if (data != null) {
+			sensorWerte.put(umfeldDatenArt, data);
 		}
 
-		boolean rlfUndef = !isOk(_rlfWert) ||
-				(isOk(_rlfGrenzNass) && isOk(_rlfGrenzTrocken)
-						&& _rlfWert.getWert() >= _rlfGrenzTrocken.getWert()
-						&& _rlfWert.getWert() <= _rlfGrenzNass.getWert()
-				);
-		
-		// Prüfung 12
-		if(isOk(_nsWert) && keinNiederschlag()
-				&& isOk(_niWert) && isOk(_niGrenzNs) && _niWert.getWert() > _niGrenzNs.getWert()
-				&& rlfUndef){
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_implausibleDatenArten.add(UmfeldDatenArt.ni);
-			_verletzteBedingungen.add("NS=Kein Niederschlag, "
-					                          + "NI=" + formatWert(_niWert) + " mm/h > " + formatWert(_niGrenzNs) + " mm/h"
-			);
-			_ids.add("[DUA-PP-MK12]");
+		checkRules(resultList, false);
+
+		if (data != null) {
+			if (!publiziert.contains(umfeldDatenArt)) {
+				boolean publication = true;
+				for (MeteoRule rule : rules) {
+					if (rule.getResultTypes().contains(umfeldDatenArt)) {
+						publication = false;
+						break;
+					}
+				}
+				if (publication) {
+					publiziert.add(umfeldDatenArt);
+					resultList.add(data);
+				}
+			}
 		}
 
-		// Prüfung 13
-		if(isOk(_nsWert) && niederschlag()
-				&& isOk(_niWert) && _niWert.getWert() == 0
-				&& rlfUndef){
-			_implausibleDatenArten.add(UmfeldDatenArt.ns);
-			_implausibleDatenArten.add(UmfeldDatenArt.ni);
-			_verletzteBedingungen.add("NS=Niederschlag, "
-					                          + "NI=" + formatWert(_niWert) + " mm/h"
-			);
-			_ids.add("[DUA-PP-MK13]");
+		return resultList;
+	}
+
+	private void checkRules(Collection<ResultData> resultList, boolean force) {
+
+		Set<MeteoRuleCondition> verletzteBedingungen = new LinkedHashSet<>();
+		Set<UmfeldDatenArt> implausibleDatenArten = new LinkedHashSet<>();
+		Set<UmfeldDatenArt> plausibleDatenArten = new LinkedHashSet<>();
+		Set<String> ids = new LinkedHashSet<>();
+
+		for (MeteoRule rule : rules) {
+			if (checkedRules.contains(rule)) {
+				continue;
+			}
+
+			if (!force) {
+				if (!rule.isEvaluableFor(this)) {
+					continue;
+				}
+
+				Set<MeteoRule> connectedRules = new LinkedHashSet<>(rules);
+				connectedRules.removeAll(checkedRules);
+				connectedRules.remove(rule);
+				boolean checkable = true;
+				for (MeteoRule connectedRule : connectedRules) {
+					if (!connectedRule.isEvaluableFor(this)) {
+						checkable = false;
+						break;
+					}
+				}
+
+				if (!checkable) {
+					continue;
+				}
+			}
+			plausibleDatenArten.addAll(rule.pruefe(this, verletzteBedingungen, implausibleDatenArten, ids, options));
+			checkedRules.add(rule);
 		}
 
-		if(!_ids.isEmpty()) {
-			OperatingMessage message = MESSAGE_TEMPLATE.newMessage(_messStelle.getObjekt());
-			for(String id : _ids) {
+		plausibleDatenArten.removeAll(implausibleDatenArten);
+
+		for (Entry<UmfeldDatenArt, ResultData> entry : sensorWerte.entrySet()) {
+			if (entry.getValue() == null) {
+				continue;
+			}
+			if (!publiziert.contains(entry.getKey())) {
+				if (plausibleDatenArten.contains(entry.getKey())) {
+					resultList.add(entry.getValue());
+				}
+				if (implausibleDatenArten.contains(entry.getKey())) {
+					UmfeldDatenSensorDatum umfeldDatenSensorDatum = new UmfeldDatenSensorDatum(entry.getValue());
+					umfeldDatenSensorDatum.getWert().setFehlerhaftAn();
+					umfeldDatenSensorDatum.getDatum(); // Workaround fehlende
+														// Aktualisierung
+					umfeldDatenSensorDatum.setStatusMessWertErsetzungImplausibel(DUAKonstanten.JA);
+					resultList.add(umfeldDatenSensorDatum.getVeraendertesOriginalDatum());
+				}
+			}
+		}
+		publiziert.addAll(plausibleDatenArten);
+		publiziert.addAll(implausibleDatenArten);
+
+		if (!ids.isEmpty()) {
+			OperatingMessage message = MESSAGE_TEMPLATE.newMessage(messStelle.getObjekt());
+			for (String id : ids) {
 				message.addId(id);
 			}
-			for(UmfeldDatenArt art : _implausibleDatenArten) {
+			for (UmfeldDatenArt art : implausibleDatenArten) {
 				message.add("attr", art.getName() + " " + art.getAbkuerzung());
 			}
-			for(String s : _verletzteBedingungen) {
-				message.add("values", s);
+			for (MeteoRuleCondition condition : verletzteBedingungen) {
+				message.add("values", formatCondition(condition));
 			}
-			if(_sendMessage) {
+			if (parameter.isSendMessage()) {
 				message.send();
-			}
-			else {
+			} else {
 				_debug.info(message.toString());
 			}
 		}
 	}
 
-	private boolean keinNiederschlag() {
-		return _nsWert.getWert() == 0;
-	}
+	private Object formatCondition(MeteoRuleCondition condition) {
+		String result = condition.getTemplateStr();
+		List<Object> arguments = condition.getArguments();
 
-	private boolean niederschlag() {
-		return _nsWert.getWert() >= 50 && _nsWert.getWert() <= 69;
-	}
-	
-	private boolean regen() {
-		return (_nsWert.getWert() >= 40 && _nsWert.getWert() <= 69) || (_nsWert.getWert() >= 80 && _nsWert.getWert() <= 84);
-	}
-	
-	private boolean schnee() {
-		return (_nsWert.getWert() >= 70 && _nsWert.getWert() <= 78) || (_nsWert.getWert() >= 85 && _nsWert.getWert() <= 87);
-	}
+		for (int idx = 0; idx < arguments.size(); idx++) {
+			String pattern = "\\{" + idx + "\\}";
+			UmfeldDatenSensorWert wert = null;
+			Object argument = arguments.get(idx);
+			if (argument instanceof MeteoParameterType) {
+				wert = parameter.getParameter((MeteoParameterType) argument);
+			} else if (argument instanceof UmfeldDatenArt) {
+				wert = getData((UmfeldDatenArt) argument);
+			}
 
-	private String formatWert(final UmfeldDatenSensorWert wert) {
-		NumberFormat numberInstance = NumberFormat.getNumberInstance();
-		numberInstance.setGroupingUsed(false);
-		return numberInstance.format(wert.getSkaliertenWert());
-	}
-
-	private boolean isOk(final UmfeldDatenSensorWert wert) {
-		return wert != null && wert.isOk();
-	}
-
-	@Override
-	public void update(final ResultData[] results) {
-		for(ResultData result : results) {
-			if(result.hasData()){
-				Data data = result.getData();
-				_sendMessage = data.getTextValue("erzeugeBetriebsmeldungMeteorologischeKontrolle").getValueText().equals("Ja");
-				_niGrenzNs = get(data, "NIgrenzNS", UmfeldDatenArt.ni);
-				_niGrenzWfd = get(data, "NIgrenzWFD", UmfeldDatenArt.ni);
-				_wfdGrenzTrocken = get(data, "WFDgrenzTrocken", UmfeldDatenArt.wfd);
-				_ltGrenzRegen = get(data, "LTgrenzRegen", UmfeldDatenArt.lt);
-				_ltGrenzSchnee = get(data, "LTgrenzSchnee", UmfeldDatenArt.lt);
-				_rlfGrenzTrocken = get(data, "RLFgrenzTrocken", UmfeldDatenArt.rlf);
-				_rlfGrenzNass = get(data, "RLFgrenzNass", UmfeldDatenArt.rlf);
-				_swGrenz = get(data, "SWgrenz", UmfeldDatenArt.sw);
+			if (wert == null) {
+				result = result.replaceAll(pattern, "(null)");
+			} else {
+				NumberFormat numberInstance = NumberFormat.getNumberInstance();
+				numberInstance.setGroupingUsed(false);
+				result = result.replaceAll(pattern, numberInstance.format(wert.getSkaliertenWert()));
 			}
 		}
+
+		return result;
 	}
 
-	private static UmfeldDatenSensorWert get(final Data data, final String name, final UmfeldDatenArt art) {
-		UmfeldDatenSensorWert wert = new UmfeldDatenSensorWert(art);
-		wert.setWert(data.getUnscaledValue(name).longValue());
-		return wert;
+	public void reset() {
+		sensorWerte.clear();
+		checkedRules.clear();
+		publiziert.clear();
 	}
+
+	public boolean hasData(UmfeldDatenArt art) {
+		return sensorWerte.containsKey(art);
+	}
+
+	public long getDataTime() {
+		return dataTime;
+	}
+
+	public UmfeldDatenSensorWert getData(UmfeldDatenArt datenArt) {
+		ResultData resultData = sensorWerte.get(datenArt);
+		if ((resultData == null) || !resultData.hasData()) {
+			return null;
+		}
+
+		UmfeldDatenSensorDatum wert = new UmfeldDatenSensorDatum(resultData);
+		return wert.getWert();
+	}
+
+	/* Hilfsfunktionen für die Niederschlagsart. */
+
+	public boolean keinNiederschlag() {
+		UmfeldDatenSensorWert data = getData(UmfeldDatenArt.ns);
+		return (data != null) && data.isOk() && data.getWert() == 0;
+	}
+
+	public boolean niederschlag() {
+		UmfeldDatenSensorWert data = getData(UmfeldDatenArt.ns);
+		return (data != null) && data.isOk() && data.getWert() >= 50 && data.getWert() <= 69;
+	}
+
+	public boolean regen() {
+		UmfeldDatenSensorWert data = getData(UmfeldDatenArt.ns);
+		return (data != null) && data.isOk()
+				&& ((data.getWert() >= 40 && data.getWert() <= 69) || (data.getWert() >= 80 && data.getWert() <= 84));
+	}
+
+	public boolean schnee() {
+		UmfeldDatenSensorWert data = getData(UmfeldDatenArt.ns);
+		return (data != null) && data.isOk()
+				&& ((data.getWert() >= 70 && data.getWert() <= 78) || (data.getWert() >= 85 && data.getWert() <= 87));
+	}
+
+	/* Hilfsfunktionen für den Fahrbahnzustand. */
+
+	public boolean fbzTrocken() {
+		UmfeldDatenSensorWert fbzWert = getData(UmfeldDatenArt.fbz);
+		if ((fbzWert == null) || !fbzWert.isOk()) {
+			return false;
+		}
+
+		return fbzWert.getWert() == 0;
+	}
+
+	public boolean fbzNass() {
+		UmfeldDatenSensorWert fbzWert = getData(UmfeldDatenArt.fbz);
+		if ((fbzWert == null) || !fbzWert.isOk()) {
+			return false;
+		}
+
+		return fbzWert.getWert() != 0;
+	}
+
+	
+	/* Hilfsfunktionen für die Niederschlagsintensität. */
+	public boolean niGroesserGrenzNs() {
+		UmfeldDatenSensorWert niWert = getData(UmfeldDatenArt.ni);
+		if ((niWert == null) || !niWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert niGrenzNs = parameter.getParameter(MeteoParameterType.NI_GRENZ_NS);
+		if ((niGrenzNs == null) || !niGrenzNs.isOk()) {
+			return false;
+		}
+
+		return niWert.getWert() > niGrenzNs.getWert();
+	}
+
+	public boolean niGroesserGrenzWfd() {
+		UmfeldDatenSensorWert niWert = getData(UmfeldDatenArt.ni);
+		if ((niWert == null) || !niWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert niGrenzWfd = parameter.getParameter(MeteoParameterType.NI_GRENZ_WFD);
+		if ((niGrenzWfd == null) || !niGrenzWfd.isOk()) {
+			return false;
+		}
+
+		return niWert.getWert() > niGrenzWfd.getWert();
+	}
+
+	public boolean niIsNull() {
+		UmfeldDatenSensorWert niWert = getData(UmfeldDatenArt.ni);
+		if ((niWert == null) || !niWert.isOk()) {
+			return false;
+		}
+
+		return niWert.getWert() == 0;
+	}
+
+	/* Hilfsfunktionen für die Restluftfeuchte. */
+	public boolean rlfGroesserNass() {
+		UmfeldDatenSensorWert rlfWert = getData(UmfeldDatenArt.rlf);
+		if ((rlfWert == null) || !rlfWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert rlfGrenzNass = parameter.getParameter(MeteoParameterType.RLF_GRENZ_NASS);
+		if ((rlfGrenzNass == null) || !rlfGrenzNass.isOk()) {
+			return false;
+		}
+
+		return rlfWert.getWert() > rlfGrenzNass.getWert();
+	}
+
+	public boolean rlfKleinerTrocken() {
+		UmfeldDatenSensorWert rlfWert = getData(UmfeldDatenArt.rlf);
+		if ((rlfWert == null) || !rlfWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert rlfGrenzTrocken = parameter.getParameter(MeteoParameterType.RLF_GRENZ_TROCKEN);
+		if ((rlfGrenzTrocken == null) || !rlfGrenzTrocken.isOk()) {
+			return false;
+		}
+
+		return rlfWert.getWert() < rlfGrenzTrocken.getWert();
+	}
+
+	public boolean rlfUndef() {
+		UmfeldDatenSensorWert rlfWert = getData(UmfeldDatenArt.rlf);
+		if (rlfWert == null) {
+			return false;
+		}
+		return !rlfWert.isOk();
+	}
+
+	public boolean rlfZwischenTrockenUndNass() {
+		UmfeldDatenSensorWert rlfWert = getData(UmfeldDatenArt.rlf);
+		if ((rlfWert == null) || !rlfWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert rlfGrenzTrocken = parameter.getParameter(MeteoParameterType.RLF_GRENZ_TROCKEN);
+		if ((rlfGrenzTrocken == null) || !rlfGrenzTrocken.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert rlfGrenzNass = parameter.getParameter(MeteoParameterType.RLF_GRENZ_NASS);
+		if ((rlfGrenzNass == null) || !rlfGrenzNass.isOk()) {
+			return false;
+		}
+
+		return (rlfWert.getWert() >= rlfGrenzTrocken.getWert()) && (rlfWert.getWert() <= rlfGrenzNass.getWert());
+	}
+
+	/* Hilfsfunktionen für die Wasserfilmdicke. */
+	public boolean wfdKleinerGleichTrocken() {
+		UmfeldDatenSensorWert wfdWert = getData(UmfeldDatenArt.wfd);
+		if ((wfdWert == null) || !wfdWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert wfdGrenzTrocken = parameter.getParameter(MeteoParameterType.WFD_GRENZ_TROCKEN);
+		if ((wfdGrenzTrocken == null) || !wfdGrenzTrocken.isOk()) {
+			return false;
+		}
+
+		return wfdWert.getWert() <= wfdGrenzTrocken.getWert();
+	}
+
+	public boolean wfdGroesserNull() {
+		UmfeldDatenSensorWert wfdWert = getData(UmfeldDatenArt.wfd);
+		if ((wfdWert == null) || !wfdWert.isOk()) {
+			return false;
+		}
+
+		return wfdWert.getWert() > 0;
+	}
+
+	public boolean wfdIsNull() {
+		UmfeldDatenSensorWert wfdWert = getData(UmfeldDatenArt.wfd);
+		if ((wfdWert == null) || !wfdWert.isOk()) {
+			return false;
+		}
+
+		return wfdWert.getWert() == 0;
+	}
+
+	/* Hilfsfunktionen für die Sichtweite. */
+	public boolean swKleinerGleichGrenze() {
+		UmfeldDatenSensorWert swWert = getData(UmfeldDatenArt.sw);
+		if ((swWert == null) || !swWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert swGrenz = parameter.getParameter(MeteoParameterType.SW_GRENZ);
+		if ((swGrenz == null) || !swGrenz.isOk()) {
+			return false;
+		}
+
+		return swWert.getWert() <= swGrenz.getWert();
+	}
+
+	/* Hilfsfunktionen für die LuftTemperatur. */
+	public boolean ltKleinerGrenzRegen() {
+		UmfeldDatenSensorWert ltWert = getData(UmfeldDatenArt.lt);
+		if ((ltWert == null) || !ltWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert ltGrenzRegen = parameter.getParameter(MeteoParameterType.LT_GRENZ_REGEN);
+		if ((ltGrenzRegen == null) || !ltGrenzRegen.isOk()) {
+			return false;
+		}
+
+		return ltWert.getWert() < ltGrenzRegen.getWert();
+	}
+
+	public boolean ltGroesserGrenzSchnee() {
+		UmfeldDatenSensorWert ltWert = getData(UmfeldDatenArt.lt);
+		if ((ltWert == null) || !ltWert.isOk()) {
+			return false;
+		}
+
+		UmfeldDatenSensorWert ltGrenzSchnee = parameter.getParameter(MeteoParameterType.LT_GRENZ_SCHNEE);
+		if ((ltGrenzSchnee == null) || !ltGrenzSchnee.isOk()) {
+			return false;
+		}
+
+		return ltWert.getWert() > ltGrenzSchnee.getWert();
+	}
+
 }
