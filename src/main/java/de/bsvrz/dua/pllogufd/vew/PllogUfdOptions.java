@@ -64,6 +64,8 @@ public class PllogUfdOptions {
 	private final Set<Integer> ignoredMeteoRules = new LinkedHashSet<>();
 	private boolean initialeAusfallKontrolle;
 	private long defaultMaxZeitVerzug = -1;
+
+	private boolean skipRules;
 	
 	public void update(VerwaltungPlPruefungLogischUFD verwaltung) {
 
@@ -107,6 +109,11 @@ public class PllogUfdOptions {
 				}
 			}
 		}
+		
+		argument = verwaltung.getArgument("skipRules");
+		if (argument != null) {
+			skipRules = Boolean.valueOf(argument);
+		}
 	}
 
 	public boolean isUseNiGrenzNS() {
@@ -130,5 +137,9 @@ public class PllogUfdOptions {
 
 	public long getDefaultMaxZeitVerzug() {
 		return defaultMaxZeitVerzug ;
+	}
+
+	public boolean isSkipRules() {
+		return skipRules;
 	}
 }
