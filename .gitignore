@@ -71,7 +71,7 @@ local.properties
 .loadpath
 
 # Eclipse Core
-.project
+# .project
 
 # Eclipse Checkstyle
 .checkstyle
