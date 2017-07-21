@@ -43,6 +43,13 @@ Prüfung werden die Daten ggf. unter einem parametrierbaren Aspekt publiziert.
 
 ## Versionsgeschichte
 
+### Version 2.0.6
+
+- neuer Parameter "-skipRules=<false/true>" zum Überspringen von Regeln, wenn Grenzwerte auf dem Wert "NICHT ERMITTELBAR" stehen.
+  Momentan integriert:
+  - WfdGrenzTrocken in einer Umfelddatenmessstelle schaltet die Regeln 5,6,10 und 11 aus.
+
+
 ### Version 2.0.5
 
 - NERZ-Fehler 231,232: Für die Auswertung der Regeln der meteorologischen Kontrolle werden nur Werte

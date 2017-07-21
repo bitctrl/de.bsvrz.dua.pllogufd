@@ -618,4 +618,10 @@ public class MeteoMessstelle {
 		return ltWert.getWert() > ltGrenzSchnee.getWert();
 	}
 
+	public boolean wfdGrenzInvalid() {
+		
+		UmfeldDatenSensorWert wfdGrenzTrocken = parameter.getParameter(MeteoParameterType.WFD_GRENZ_TROCKEN);
+		return ((wfdGrenzTrocken != null) && !wfdGrenzTrocken.isOk());
+	}
+
 }

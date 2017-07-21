@@ -41,30 +41,36 @@ import de.bsvrz.sys.funclib.debug.Debug;
  */
 public class PllogUfdOptions {
 
-    private static final Debug LOGGER = Debug.getLogger();
+	private static final Debug LOGGER = Debug.getLogger();
 
 	/**
 	 * bestimmt, ob für die Plausibilitätsprüfung von WFD in Bezug zum FBZ, der
 	 * Grenzwert 0 (Standard in TLS2012) oder der im Parameter
-	 * "atg.ufdmsParameterMeteorologischeKontrolle" festgelegte Grenzwert
-	 * verwendet wird (Unterstützung der TLS2002 und nicht konformer Systeme).
+	 * "atg.ufdmsParameterMeteorologischeKontrolle" festgelegte Grenzwert verwendet
+	 * wird (Unterstützung der TLS2002 und nicht konformer Systeme).
 	 */
 	private boolean useWfdTrockenGrenzwert = false;
 
 	/**
 	 * bestimmt, ob für die Plausibilitätsprüfung der Niederschlagsintensität, der
 	 * Grenzwert 0 (Standard in TLS2012) oder der im Parameter
-	 * "atg.ufdmsParameterMeteorologischeKontrolle" festgelegte Grenzwert
-	 * verwendet wird (Unterstützung der TLS2002 und nicht konformer Systeme).
+	 * "atg.ufdmsParameterMeteorologischeKontrolle" festgelegte Grenzwert verwendet
+	 * wird (Unterstützung der TLS2002 und nicht konformer Systeme).
 	 */
 	private boolean useNiGrenzNS = false;
-	
+
 	private boolean fehlerhafteWertePublizieren = false;
 
 	private final Set<Integer> ignoredMeteoRules = new LinkedHashSet<>();
 	private boolean initialeAusfallKontrolle;
 	private long defaultMaxZeitVerzug = -1;
-	
+
+	/**
+	 * erlaubt das Abschalten von Regeln über einen Parameter mit dem Wert NICHT
+	 * ERMITTELBAR.
+	 */
+	private boolean skipRules = true;
+
 	public void update(VerwaltungPlPruefungLogischUFD verwaltung) {
 
 		String argument = verwaltung.getArgument("useWfdTrockenGrenzwert");
@@ -76,10 +82,10 @@ public class PllogUfdOptions {
 		if (argument != null) {
 			useNiGrenzNS = Boolean.valueOf(argument);
 		}
-		
+
 		argument = verwaltung.getArgument("fehlerhafteWertePublizieren");
 		if (argument != null) {
-			fehlerhafteWertePublizieren  = Boolean.valueOf(argument);
+			fehlerhafteWertePublizieren = Boolean.valueOf(argument);
 		}
 
 		argument = verwaltung.getArgument("initialeAusfallKontrolle");
@@ -95,11 +101,11 @@ public class PllogUfdOptions {
 				LOGGER.warning("Fehler beim Einlesen des Parameters für den Standard-Zeitverzug", e);
 			}
 		}
-		
+
 		argument = verwaltung.getArgument("ignoriereRegeln");
 		if (argument != null) {
 			String[] items = argument.split(",");
-			for( String item : items) {
+			for (String item : items) {
 				try {
 					ignoredMeteoRules.add(Integer.parseInt(item));
 				} catch (NumberFormatException e) {
@@ -107,11 +113,17 @@ public class PllogUfdOptions {
 				}
 			}
 		}
+
+		argument = verwaltung.getArgument("skipRules");
+		if (argument != null) {
+			skipRules = Boolean.valueOf(argument);
+		}
 	}
 
 	public boolean isUseNiGrenzNS() {
 		return useNiGrenzNS;
 	}
+
 	public boolean isUseWfdTrockenGrenzwert() {
 		return useWfdTrockenGrenzwert;
 	}
@@ -129,6 +141,10 @@ public class PllogUfdOptions {
 	}
 
 	public long getDefaultMaxZeitVerzug() {
-		return defaultMaxZeitVerzug ;
+		return defaultMaxZeitVerzug;
+	}
+
+	public boolean isSkipRules() {
+		return skipRules;
 	}
 }

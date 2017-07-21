@@ -24,6 +24,12 @@ public class MeteoRule6 extends MeteoRule {
 	public void checkRule(MeteoMessstelle messStelle, Set<MeteoRuleCondition> verletzteBedingungen,
 			Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids, PllogUfdOptions options) {
 
+		if( options.isSkipRules()) {
+			if (messStelle.wfdGrenzInvalid()) {
+				return;
+			}
+		}
+		
 		if (messStelle.niGroesserGrenzWfd() && messStelle.wfdKleinerGleichTrocken() && messStelle.rlfGroesserNass()) {
 			implausibleDatenArten.add(UmfeldDatenArt.wfd);
 			verletzteBedingungen.add(CONDITION);

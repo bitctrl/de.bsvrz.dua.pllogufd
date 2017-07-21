@@ -23,6 +23,13 @@ public class MeteoRule10 extends MeteoRule {
 			Set<UmfeldDatenArt> implausibleDatenArten, Set<String> ids, PllogUfdOptions options) {
 
 		if (options.isUseWfdTrockenGrenzwert()) {
+			
+			if( options.isSkipRules()) {
+				if (messStelle.wfdGrenzInvalid()) {
+					return;
+				}
+			}
+			
 			if (messStelle.wfdGroesserTrockenOrNull() && messStelle.fbzTrocken()) {
 				implausibleDatenArten.add(UmfeldDatenArt.wfd);
 				implausibleDatenArten.add(UmfeldDatenArt.fbz);
