@@ -5,6 +5,8 @@
 
 Version: ${version}
 
+ **Alle Änderungen wurden in die offizielle SWE des NERZ übernommen ->**_https://gitlab.nerz-ev.de/ERZ/SWE_de.bsvrz.dua.pllogufd_**. Dieses Repo wird archiviert!**
+
 ## Übersicht
 
 Aufgabe der SWE PL-Prüfung logisch UFD besteht in der Durchführung der logischen
